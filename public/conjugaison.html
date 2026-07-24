@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Carnet — Conjugaison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #1b2a4a;
+    --ink-soft: #3a4a6b;
+    --paper: #f6f1e6;
+    --paper-line: #ded4bd;
+    --gold: #b8891f;
+    --gold-soft: #e8d9b0;
+    --green: #4f7a5c;
+    --green-soft: #e2ecdf;
+    --red: #a8443a;
+    --red-soft: #f3e0dc;
+    --shadow: 0 1px 0 rgba(27,42,74,0.06), 0 8px 24px rgba(27,42,74,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      repeating-linear-gradient(transparent, transparent 35px, var(--paper-line) 36px),
+      var(--paper);
+    background-attachment:local;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 60px;
+  }
+  .app{
+    width:100%;
+    max-width:620px;
+  }
+  .masthead{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--ink);
+  }
+  .masthead h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.7rem;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .masthead .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .card{
+    background:#fffdf8;
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:28px;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0;
+    width:6px; height:100%;
+    background:var(--gold);
+  }
+  /* --- Home / setup screen --- */
+  .home h2{
+    font-family:'Fraunces',serif;
+    font-size:1.25rem;
+    margin:0 0 6px;
+  }
+  .home p.lede{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    line-height:1.5;
+    margin:0 0 22px;
+  }
+  .mode-choice{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .mode-btn{
+    border:1.5px solid var(--ink);
+    background:transparent;
+    border-radius:4px;
+    padding:16px 10px;
+    text-align:center;
+    cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;
+    transition:background .15s ease, color .15s ease, transform .1s ease;
+  }
+  .mode-btn .num{
+    display:block;
+    font-size:1.9rem;
+    font-weight:600;
+    font-family:'Fraunces',serif;
+  }
+  .mode-btn .lbl{
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+  }
+  .mode-btn:hover{background:var(--ink); color:var(--paper);}
+  .mode-btn:hover .lbl{color:var(--gold-soft);}
+  .mode-btn.selected{background:var(--ink); color:var(--paper);}
+  .mode-btn.selected .lbl{color:var(--gold-soft);}
+  .start-btn{
+    width:100%;
+    padding:14px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    border-radius:4px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    letter-spacing:0.01em;
+  }
+  .start-btn:disabled{opacity:0.35; cursor:not-allowed;}
+  .start-btn:not(:disabled):hover{background:var(--gold);}
+
+  .scale{
+    margin-top:24px;
+    padding-top:16px;
+    border-top:1px dashed var(--paper-line);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.74rem;
+    color:var(--ink-soft);
+  }
+  .scale .row{display:flex; justify-content:space-between; padding:2px 0;}
+
+  /* --- History strip --- */
+  .history-toggle{
+    text-align:center;
+    margin-top:14px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .history{
+    margin-top:14px;
+  }
+  .history-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:7px 0;
+    border-bottom:1px solid var(--paper-line);
+    font-size:0.82rem;
+  }
+  .history-row .date{
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--ink-soft);
+    width:78px;
+    flex-shrink:0;
+  }
+  .history-bar-wrap{flex:1; background:var(--paper-line); border-radius:2px; height:8px; overflow:hidden;}
+  .history-bar{height:100%; background:var(--gold);}
+  .history-score{font-family:'IBM Plex Mono',monospace; width:56px; text-align:right; flex-shrink:0;}
+  .history-empty{font-size:0.82rem; color:var(--ink-soft); text-align:center; padding:10px 0;}
+
+  /* --- Verb picker --- */
+  .verb-picker{
+    margin-bottom:22px;
+  }
+  .verb-picker-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+  }
+  .verb-picker-head .label{
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  .verb-picker-toggle{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.74rem;
+    color:var(--gold);
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    background:none;
+    border:none;
+    padding:0;
+  }
+  .verb-all-btn{
+    display:inline-block;
+    width:100%;
+    text-align:left;
+    padding:12px 14px;
+    border:1.5px solid var(--paper-line);
+    border-radius:4px;
+    background:#fffefb;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .verb-all-btn b{color:var(--ink); font-weight:600;}
+  .verb-grid-wrap{
+    border:1.5px solid var(--paper-line);
+    border-radius:4px;
+    padding:12px;
+    background:#fffefb;
+  }
+  .verb-grid-actions{
+    display:flex;
+    gap:14px;
+    margin-bottom:10px;
+    padding-bottom:10px;
+    border-bottom:1px dashed var(--paper-line);
+  }
+  .verb-grid-actions button{
+    background:none;
+    border:none;
+    padding:0;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.74rem;
+    color:var(--ink-soft);
+    text-decoration:underline;
+    text-underline-offset:3px;
+    cursor:pointer;
+  }
+  .verb-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:4px 10px;
+    max-height:260px;
+    overflow-y:auto;
+  }
+  .verb-chip{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 4px;
+    cursor:pointer;
+    font-size:0.85rem;
+    border-radius:3px;
+  }
+  .verb-chip:hover{background:var(--gold-soft);}
+  .verb-chip input{accent-color:var(--ink); width:15px; height:15px; flex-shrink:0;}
+  .verb-chip .vname{font-family:'IBM Plex Mono',monospace;}
+  .verb-count-note{
+    margin-top:10px;
+    font-size:0.76rem;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+
+  /* --- Tense picker --- */
+  .tense-picker{
+    margin-bottom:22px;
+  }
+  .tense-choice{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+  }
+  .tense-btn{
+    border:1.5px solid var(--paper-line);
+    background:#fffefb;
+    border-radius:4px;
+    padding:11px 6px;
+    text-align:center;
+    cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.76rem;
+    color:var(--ink-soft);
+  }
+  .tense-btn.selected{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  .tense-hint{
+    margin-top:8px;
+    font-size:0.74rem;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+
+  /* --- Quiz screen --- */
+  .quiz-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:18px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+  }
+  .progress-track{
+    height:4px;
+    background:var(--paper-line);
+    border-radius:2px;
+    margin-bottom:26px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--gold);
+    transition:width .25s ease;
+  }
+  .prompt-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--gold);
+    margin-bottom:6px;
+  }
+  .prompt-verb{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:2rem;
+    margin:0 0 2px;
+    line-height:1.1;
+  }
+  .prompt-verb .pronoun{color:var(--ink-soft); font-weight:400; font-style:italic; font-size:1.3rem;}
+  .field{margin-top:22px;}
+  .field label{
+    display:block;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .field .opt{font-weight:400; font-style:italic; color:var(--ink-soft);}
+  .field input{
+    width:100%;
+    padding:12px 14px;
+    border:1.5px solid var(--paper-line);
+    border-radius:4px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:1rem;
+    background:#fffefb;
+    color:var(--ink);
+  }
+  .field input:focus{outline:none; border-color:var(--ink);}
+  .field input.ok{border-color:var(--green); background:var(--green-soft);}
+  .field input.bad{border-color:var(--red); background:var(--red-soft);}
+  .accent-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:8px;
+  }
+  .accent-btn{
+    width:32px;
+    height:32px;
+    border:1.5px solid var(--paper-line);
+    border-radius:4px;
+    background:#fffefb;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.95rem;
+    color:var(--ink);
+    cursor:pointer;
+    line-height:1;
+  }
+  .accent-btn:hover{border-color:var(--ink); background:var(--gold-soft);}
+  .accent-btn:disabled{opacity:0.3; cursor:not-allowed;}
+  .actions{display:flex; gap:10px; margin-top:24px;}
+  .btn{
+    flex:1;
+    padding:13px;
+    border-radius:4px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    cursor:pointer;
+    border:1.5px solid var(--ink);
+  }
+  .btn-primary{background:var(--ink); color:var(--paper);}
+  .btn-primary:hover{background:var(--gold); border-color:var(--gold);}
+  .btn-ghost{background:transparent; color:var(--ink-soft); border-color:var(--paper-line);}
+  .feedback{
+    margin-top:18px;
+    padding:14px 16px;
+    border-radius:4px;
+    font-size:0.88rem;
+    line-height:1.5;
+  }
+  .feedback.ok{background:var(--green-soft); color:#2e4a37;}
+  .feedback.bad{background:var(--red-soft); color:#6e2f28;}
+  .feedback b{font-family:'IBM Plex Mono',monospace;}
+
+  /* --- Result screen --- */
+  .result h2{
+    font-family:'Fraunces',serif;
+    font-size:1.1rem;
+    margin:0 0 4px;
+    color:var(--ink-soft);
+    font-weight:400;
+  }
+  .result .score{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:3.2rem;
+    margin:2px 0 6px;
+  }
+  .result .mention{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding:5px 12px;
+    border-radius:20px;
+    margin-bottom:22px;
+  }
+  .m-revoir{background:var(--red-soft); color:var(--red);}
+  .m-passable{background:#f3ecd8; color:#8a6a13;}
+  .m-assezbien{background:#eef1de; color:#5c6b2e;}
+  .m-bien{background:var(--green-soft); color:var(--green);}
+  .m-tresbien{background:var(--ink); color:var(--paper);}
+  .breakdown{
+    border-top:1px dashed var(--paper-line);
+    padding-top:14px;
+    margin-top:6px;
+    max-height:260px;
+    overflow-y:auto;
+  }
+  .breakdown-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-size:0.82rem;
+    padding:6px 0;
+    border-bottom:1px solid var(--paper-line);
+  }
+  .breakdown-row .bv{font-family:'IBM Plex Mono',monospace;}
+  .breakdown-row .status{flex-shrink:0; font-weight:600;}
+  .status.yes{color:var(--green);}
+  .status.no{color:var(--red);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="masthead">
+    <h1>Le Carnet</h1>
+    <span class="tag">Verbes irréguliers</span>
+  </div>
+  <div class="card" id="cardRoot"></div>
+</div>
+
+<script>
+const VERBS = [
+  {inf:"être", en:"to be", aux:"avoir", pp:"été", forms:{je:"suis", tu:"es", il:"est", nous:"sommes", vous:"êtes", ils:"sont"}},
+  {inf:"avoir", en:"to have", aux:"avoir", pp:"eu", forms:{je:"ai", tu:"as", il:"a", nous:"avons", vous:"avez", ils:"ont"}},
+  {inf:"aller", en:"to go", aux:"etre", pp:"allé", forms:{je:"vais", tu:"vas", il:"va", nous:"allons", vous:"allez", ils:"vont"}},
+  {inf:"faire", en:"to make / to do", aux:"avoir", pp:"fait", forms:{je:"fais", tu:"fais", il:"fait", nous:"faisons", vous:"faites", ils:"font"}},
+  {inf:"vouloir", en:"to want", aux:"avoir", pp:"voulu", forms:{je:"veux", tu:"veux", elle:"veut", nous:"voulons", vous:"voulez", elles:"veulent"}},
+  {inf:"pouvoir", en:"to be able to / can", aux:"avoir", pp:"pu", forms:{je:"peux", tu:"peux", elle:"peut", nous:"pouvons", vous:"pouvez", elles:"peuvent"}},
+  {inf:"devoir", en:"to have to / must", aux:"avoir", pp:"dû", forms:{je:"dois", tu:"dois", elle:"doit", nous:"devons", vous:"devez", elles:"doivent"}},
+  {inf:"savoir", en:"to know (things)", aux:"avoir", pp:"su", forms:{je:"sais", tu:"sais", elle:"sait", nous:"savons", vous:"savez", elles:"savent"}},
+  {inf:"venir", en:"to come", aux:"etre", pp:"venu", forms:{je:"viens", tu:"viens", elle:"vient", nous:"venons", vous:"venez", elles:"viennent"}},
+  {inf:"tenir", en:"to hold", aux:"avoir", pp:"tenu", forms:{je:"tiens", tu:"tiens", elle:"tient", nous:"tenons", vous:"tenez", elles:"tiennent"}},
+  {inf:"lire", en:"to read", aux:"avoir", pp:"lu", forms:{je:"lis", tu:"lis", elle:"lit", nous:"lisons", vous:"lisez", elles:"lisent"}},
+  {inf:"dire", en:"to say", aux:"avoir", pp:"dit", forms:{je:"dis", tu:"dis", il:"dit", nous:"disons", vous:"dites", elles:"disent"}},
+  {inf:"recevoir", en:"to receive (get)", aux:"avoir", pp:"reçu", forms:{je:"reçois", tu:"reçois", il:"reçoit", nous:"recevons", vous:"recevez", ils:"reçoivent"}},
+  {inf:"voir", en:"to see", aux:"avoir", pp:"vu", forms:{je:"vois", tu:"vois", elle:"voit", nous:"voyons", vous:"voyez", elles:"voient"}},
+  {inf:"croire", en:"to believe", aux:"avoir", pp:"cru", forms:{je:"crois", tu:"crois", elle:"croit", nous:"croyons", vous:"croyez", elles:"croient"}},
+  {inf:"boire", en:"to drink", aux:"avoir", pp:"bu", forms:{je:"bois", tu:"bois", elle:"boit", nous:"buvons", vous:"buvez", elles:"boivent"}},
+  {inf:"écrire", en:"to write", aux:"avoir", pp:"écrit", forms:{je:"écris", tu:"écris", elle:"écrit", nous:"écrivons", vous:"écrivez", elles:"écrivent"}},
+  {inf:"dormir", en:"to sleep", aux:"avoir", pp:"dormi", forms:{je:"dors", tu:"dors", il:"dort", nous:"dormons", vous:"dormez", ils:"dorment"}},
+  {inf:"partir", en:"to leave", aux:"etre", pp:"parti", forms:{je:"pars", tu:"pars", il:"part", nous:"partons", vous:"partez", ils:"partent"}},
+  {inf:"sortir", en:"to go out", aux:"etre", pp:"sorti", forms:{je:"sors", tu:"sors", il:"sort", nous:"sortons", vous:"sortez", ils:"sortent"}},
+  {inf:"mettre", en:"to put", aux:"avoir", pp:"mis", forms:{je:"mets", tu:"mets", elle:"met", nous:"mettons", vous:"mettez", elles:"mettent"}},
+  {inf:"prendre", en:"to take", aux:"avoir", pp:"pris", forms:{je:"prends", tu:"prends", il:"prend", nous:"prenons", vous:"prenez", ils:"prennent"}},
+  {inf:"ouvrir", en:"to open", aux:"avoir", pp:"ouvert", forms:{je:"ouvre", tu:"ouvres", il:"ouvre", nous:"ouvrons", vous:"ouvrez", ils:"ouvrent"}},
+  {inf:"offrir", en:"to offer", aux:"avoir", pp:"offert", forms:{je:"offre", tu:"offres", elle:"offre", nous:"offrons", vous:"offrez", elles:"offrent"}},
+  {inf:"appeler", en:"to call", aux:"avoir", pp:"appelé", forms:{je:"appelle", tu:"appelles", il:"appelle", nous:"appelons", vous:"appelez", ils:"appellent"}},
+  {inf:"connaître", en:"to know (places, people)", aux:"avoir", pp:"connu", forms:{je:"connais", tu:"connais", elle:"connaît", nous:"connaissons", vous:"connaissez", elles:"connaissent"}},
+  {inf:"conduire", en:"to drive", aux:"avoir", pp:"conduit", forms:{je:"conduis", tu:"conduis", elle:"conduit", nous:"conduisons", vous:"conduisez", elles:"conduisent"}},
+  {inf:"produire", en:"to produce", aux:"avoir", pp:"produit", forms:{je:"produis", tu:"produis", il:"produit", nous:"produisons", vous:"produisez", ils:"produisent"}},
+];
+
+const AVOIR_PRESENT = {je:"ai", tu:"as", il:"a", elle:"a", nous:"avons", vous:"avez", ils:"ont", elles:"ont"};
+const ETRE_PRESENT = {je:"suis", tu:"es", il:"est", elle:"est", nous:"sommes", vous:"êtes", ils:"sont", elles:"sont"};
+const IMPARFAIT_ENDINGS = {je:"ais", tu:"ais", il:"ait", elle:"ait", nous:"ions", vous:"iez", ils:"aient", elles:"aient"};
+
+function imparfaitStem(v){
+  if(v.inf === "être") return "ét";
+  return v.forms.nous.replace(/ons$/, "");
+}
+function buildImparfaitForms(v){
+  const stem = imparfaitStem(v);
+  const out = {};
+  for(const p of Object.keys(v.forms)) out[p] = stem + IMPARFAIT_ENDINGS[p];
+  return out;
+}
+function agreePastParticiple(pp, pronoun, aux){
+  if(aux !== "etre") return pp;
+  if(pronoun === "elle") return pp + "e";
+  if(pronoun === "ils") return pp + "s";
+  if(pronoun === "elles") return pp + "es";
+  return pp; // il, je, tu, nous, vous: forme masculine non marquée
+}
+function buildPasseComposeForms(v){
+  const auxForms = v.aux === "etre" ? ETRE_PRESENT : AVOIR_PRESENT;
+  const out = {};
+  for(const p of Object.keys(v.forms)) out[p] = auxForms[p] + " " + agreePastParticiple(v.pp, p, v.aux);
+  return out;
+}
+for(const v of VERBS){
+  v.tenses = {
+    present: v.forms,
+    imparfait: buildImparfaitForms(v),
+    passeCompose: buildPasseComposeForms(v),
+  };
+}
+
+const TENSE_META = {
+  present: {label:"Présent", eyebrow:"Conjugue au présent de l'indicatif"},
+  imparfait: {label:"Imparfait", eyebrow:"Conjugue à l'imparfait"},
+  passeCompose: {label:"Passé composé", eyebrow:"Conjugue au passé composé"},
+};
+
+function pronounLabel(pronoun, formText){
+  if(pronoun === "je"){
+    return /^[aeiouyhâàéèêëîïôùûüœ]/i.test(formText) ? "j'" : "je";
+  }
+  return {je:"je", tu:"tu", il:"il", elle:"elle", nous:"nous", vous:"vous", ils:"ils", elles:"elles"}[pronoun];
+}
+
+function stripAccents(s){
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+}
+function normConj(s){
+  return stripAccents(s.trim().toLowerCase())
+    .replace(/^(je|j'|j|tu|il|elle|on|nous|vous|ils|elles)\s*['\s]+/,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+function normEn(s){
+  return stripAccents(s.trim().toLowerCase())
+    .replace(/^to\s+/,"")
+    .replace(/[().,]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+function levenshtein(a,b){
+  const m=a.length,n=b.length;
+  const d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
+  for(let j=0;j<=n;j++) d[0][j]=j;
+  for(let i=1;i<=m;i++){
+    for(let j=1;j<=n;j++){
+      d[i][j]=a[i-1]===b[j-1] ? d[i-1][j-1] : 1+Math.min(d[i-1][j-1],d[i-1][j],d[i][j-1]);
+    }
+  }
+  return d[m][n];
+}
+function translationApprox(guess, correct){
+  if(!guess.trim()) return false;
+  const g = normEn(guess), c = normEn(correct);
+  if(!g) return false;
+  // handle multi-option correct answers like "to make / to do"
+  const options = c.split("/").map(x=>x.trim()).filter(Boolean);
+  for(const opt of options){
+    if(g===opt || opt.includes(g) || g.includes(opt)) return true;
+    if(levenshtein(g,opt) <= Math.max(1, Math.floor(opt.length*0.25))) return true;
+  }
+  return false;
+}
+
+const PRONOUNS = ["je","tu","il","elle","nous","vous","ils","elles"];
+const ACCENTS = ["é","è","ê","ë","à","â","î","ï","ô","ù","û","ç","œ"];
+
+function buildQuestionPool(verbFilter, tenseFilter){
+  const pool=[];
+  for(const v of VERBS){
+    if(verbFilter && !verbFilter.has(v.inf)) continue;
+    for(const tense of Object.keys(v.tenses)){
+      if(tenseFilter && !tenseFilter.has(tense)) continue;
+      const forms = v.tenses[tense];
+      for(const p of Object.keys(forms)){
+        pool.push({inf:v.inf, en:v.en, pronoun:p, answer:forms[p], tense});
+      }
+    }
+  }
+  return pool;
+}
+function insertAtCursor(input, char){
+  const start = input.selectionStart ?? input.value.length;
+  const end = input.selectionEnd ?? input.value.length;
+  const val = input.value;
+  input.value = val.slice(0,start) + char + val.slice(end);
+  const pos = start + char.length;
+  input.focus();
+  input.setSelectionRange(pos,pos);
+}
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let state = {
+  screen: "home",
+  selectedCount: 10,
+  selectedVerbs: new Set(VERBS.map(v=>v.inf)),
+  selectedTenses: new Set(["present"]),
+  questions: [],
+  idx: 0,
+  results: [], // {inf, pronoun, answer, en, given, correct, gaveTranslation, translationCorrect, points}
+  totalScore: 0,
+  totalScoreTenths: 0,
+  answered: false,
+  lastFeedback: null,
+};
+
+const HISTORY_KEY = "quiz-history";
+
+async function loadHistory(){
+  try{
+    const res = await window.storage.get(HISTORY_KEY, false);
+    return res ? JSON.parse(res.value) : [];
+  }catch(e){
+    return [];
+  }
+}
+async function saveHistoryEntry(entry){
+  try{
+    const hist = await loadHistory();
+    hist.push(entry);
+    await window.storage.set(HISTORY_KEY, JSON.stringify(hist), false);
+  }catch(e){
+    console.error("Erreur de sauvegarde", e);
+  }
+}
+
+function mention(percent){
+  if(percent < 50) return {label:"à revoir", cls:"m-revoir"};
+  if(percent < 60) return {label:"passable", cls:"m-passable"};
+  if(percent < 70) return {label:"assez bien", cls:"m-assezbien"};
+  if(percent < 80) return {label:"bien", cls:"m-bien"};
+  return {label:"très bien", cls:"m-tresbien"};
+}
+
+function startQuiz(count){
+  const pool = shuffle(buildQuestionPool(state.selectedVerbs, state.selectedTenses));
+  if(pool.length === 0) return;
+  state.questions = pool.slice(0, Math.min(count, pool.length));
+  state.idx = 0;
+  state.results = [];
+  state.totalScore = 0;
+  state.totalScoreTenths = 0;
+  state.answered = false;
+  state.lastFeedback = null;
+  state.screen = "quiz";
+  render();
+}
+
+function currentQuestion(){
+  return state.questions[state.idx];
+}
+
+function submitAnswer(conjInput, transInput){
+  const q = currentQuestion();
+  const given = conjInput.value;
+  const gaveTranslation = normEn(transInput.value).length > 0;
+  const correctConj = normConj(given) === normConj(q.answer);
+  const correctTrans = gaveTranslation ? translationApprox(transInput.value, q.en) : false;
+  let pointsTenths = 0;
+  if(correctConj) pointsTenths += 10;
+  if(correctConj && correctTrans) pointsTenths += 1;
+  const points = pointsTenths / 10;
+  state.totalScoreTenths = (state.totalScoreTenths || 0) + pointsTenths;
+  state.totalScore = state.totalScoreTenths / 10;
+  state.results.push({
+    inf:q.inf, pronoun:q.pronoun, answer:q.answer, en:q.en, tense:q.tense,
+    given: given.trim(), correctConj, gaveTranslation, correctTrans, points
+  });
+  state.answered = true;
+  state.lastFeedback = {correctConj, correctTrans, gaveTranslation};
+  render();
+}
+
+function nextQuestion(){
+  state.answered = false;
+  state.lastFeedback = null;
+  if(state.idx + 1 >= state.questions.length){
+    finishQuiz();
+  } else {
+    state.idx += 1;
+    render();
+  }
+}
+
+async function finishQuiz(){
+  state.screen = "result";
+  const total = state.questions.length;
+  const correctCount = state.results.filter(r=>r.correctConj).length;
+  const percent = (correctCount/total)*100;
+  await saveHistoryEntry({
+    date: new Date().toISOString(),
+    total,
+    correctCount,
+    score: Math.round(state.totalScore*100)/100,
+    mention: mention(percent).label
+  });
+  render();
+}
+
+function goHome(){
+  state.screen = "home";
+  render();
+}
+
+let showHistory = false;
+let showVerbPicker = false;
+
+function fmtDate(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', year:'2-digit'});
+}
+
+async function renderHistory(container){
+  const hist = await loadHistory();
+  if(hist.length === 0){
+    container.innerHTML = '<div class="history-empty">Aucun test enregistré pour l’instant.</div>';
+    return;
+  }
+  const recent = hist.slice(-8).reverse();
+  container.innerHTML = recent.map(h=>{
+    const pct = Math.min(100, Math.round((h.correctCount/h.total)*100));
+    return `<div class="history-row">
+      <span class="date">${fmtDate(h.date)}</span>
+      <span class="history-bar-wrap"><span class="history-bar" style="width:${pct}%"></span></span>
+      <span class="history-score">${h.score}/${h.total}</span>
+    </div>`;
+  }).join("");
+}
+
+function render(){
+  const root = document.getElementById("cardRoot");
+
+  if(state.screen === "home"){
+    root.innerHTML = `
+      <div class="home">
+        <h2>Verbes irréguliers</h2>
+        <p class="lede">Conjugue le verbe demandé à la personne indiquée. Ajoute la traduction en anglais pour gagner un bonus de +0,1 point (une traduction approximative est acceptée).</p>
+        <div class="mode-choice">
+          <button class="mode-btn ${state.selectedCount===10?'selected':''}" data-count="10">
+            <span class="num">10</span><span class="lbl">questions</span>
+          </button>
+          <button class="mode-btn ${state.selectedCount===20?'selected':''}" data-count="20">
+            <span class="num">20</span><span class="lbl">questions</span>
+          </button>
+        </div>
+        <div class="tense-picker">
+          <div class="verb-picker-head">
+            <span class="label">Temps inclus</span>
+          </div>
+          <div class="tense-choice">
+            ${Object.keys(TENSE_META).map(t=>`
+              <button class="tense-btn ${state.selectedTenses.has(t)?'selected':''}" data-tense="${t}">${TENSE_META[t].label}</button>
+            `).join("")}
+          </div>
+        </div>
+        <div class="verb-picker">
+          <div class="verb-picker-head">
+            <span class="label">Verbes inclus</span>
+            <button class="verb-picker-toggle" id="verbPickerToggle">${showVerbPicker ? 'fermer' : 'choisir des verbes'}</button>
+          </div>
+          ${showVerbPicker ? `
+            <div class="verb-grid-wrap">
+              <div class="verb-grid-actions">
+                <button id="selectAllVerbs">Tout cocher</button>
+                <button id="selectNoneVerbs">Tout décocher</button>
+              </div>
+              <div class="verb-grid">
+                ${VERBS.map(v=>`
+                  <label class="verb-chip">
+                    <input type="checkbox" data-verb="${v.inf}" ${state.selectedVerbs.has(v.inf)?'checked':''}>
+                    <span class="vname">${v.inf}</span>
+                  </label>
+                `).join("")}
+              </div>
+            </div>
+          ` : `
+            <button class="verb-all-btn" id="verbAllSummary">
+              ${state.selectedVerbs.size === VERBS.length
+                ? `<b>Tous les verbes</b> (${VERBS.length})`
+                : `<b>${state.selectedVerbs.size} verbe${state.selectedVerbs.size>1?'s':''} sélectionné${state.selectedVerbs.size>1?'s':''}</b> sur ${VERBS.length}`}
+            </button>
+          `}
+          <div class="verb-count-note">${state.selectedVerbs.size * 6 * state.selectedTenses.size} formes disponibles avec cette sélection</div>
+        </div>
+        <button class="start-btn" id="startBtn" ${(state.selectedVerbs.size===0 || state.selectedTenses.size===0)?'disabled':''}>Commencer le test</button>
+        <div class="scale">
+          <div class="row"><span>Moins de 50 %</span><span>à revoir</span></div>
+          <div class="row"><span>50 – 60 %</span><span>passable</span></div>
+          <div class="row"><span>60 – 70 %</span><span>assez bien</span></div>
+          <div class="row"><span>70 – 80 %</span><span>bien</span></div>
+          <div class="row"><span>80 % et +</span><span>très bien</span></div>
+        </div>
+        <div class="history-toggle" id="histToggle">${showHistory ? 'Masquer l’historique' : 'Voir l’historique des tests'}</div>
+        <div class="history" id="histBox" style="display:${showHistory?'block':'none'}"></div>
+      </div>
+    `;
+    root.querySelectorAll(".mode-btn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        state.selectedCount = parseInt(btn.dataset.count, 10);
+        render();
+      });
+    });
+    document.getElementById("startBtn").addEventListener("click", ()=>startQuiz(state.selectedCount));
+    root.querySelectorAll(".tense-btn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const t = btn.dataset.tense;
+        if(state.selectedTenses.has(t)){
+          if(state.selectedTenses.size > 1) state.selectedTenses.delete(t);
+        } else {
+          state.selectedTenses.add(t);
+        }
+        render();
+      });
+    });
+    document.getElementById("verbPickerToggle").addEventListener("click", ()=>{
+      showVerbPicker = !showVerbPicker;
+      render();
+    });
+    const allSummaryBtn = document.getElementById("verbAllSummary");
+    if(allSummaryBtn){
+      allSummaryBtn.addEventListener("click", ()=>{
+        showVerbPicker = true;
+        render();
+      });
+    }
+    function renderPreservingScroll(){
+      const grid = document.querySelector(".verb-grid");
+      const gridScroll = grid ? grid.scrollTop : 0;
+      const pageScroll = window.scrollY;
+      render();
+      const newGrid = document.querySelector(".verb-grid");
+      if(newGrid) newGrid.scrollTop = gridScroll;
+      window.scrollTo(0, pageScroll);
+    }
+    const selectAllBtn = document.getElementById("selectAllVerbs");
+    if(selectAllBtn){
+      selectAllBtn.addEventListener("click", ()=>{
+        state.selectedVerbs = new Set(VERBS.map(v=>v.inf));
+        renderPreservingScroll();
+      });
+    }
+    const selectNoneBtn = document.getElementById("selectNoneVerbs");
+    if(selectNoneBtn){
+      selectNoneBtn.addEventListener("click", ()=>{
+        state.selectedVerbs = new Set();
+        renderPreservingScroll();
+      });
+    }
+    root.querySelectorAll(".verb-chip input").forEach(cb=>{
+      cb.addEventListener("change", ()=>{
+        const inf = cb.dataset.verb;
+        if(cb.checked) state.selectedVerbs.add(inf);
+        else state.selectedVerbs.delete(inf);
+        renderPreservingScroll();
+      });
+    });
+    document.getElementById("histToggle").addEventListener("click", async ()=>{
+      showHistory = !showHistory;
+      render();
+      if(showHistory){
+        await renderHistory(document.getElementById("histBox"));
+      }
+    });
+    if(showHistory){
+      renderHistory(document.getElementById("histBox"));
+    }
+    return;
+  }
+
+  if(state.screen === "quiz"){
+    const q = currentQuestion();
+    const num = state.idx + 1;
+    const total = state.questions.length;
+    const pct = Math.round((num-1)/total*100);
+    const pronounDisp = pronounLabel(q.pronoun, q.answer);
+
+    root.innerHTML = `
+      <div class="quiz-top">
+        <span>Question ${num} / ${total}</span>
+        <span>Score : ${Math.round(state.totalScore*100)/100}</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="prompt-eyebrow">${TENSE_META[q.tense].eyebrow}</div>
+      <div class="prompt-verb"><span class="pronoun">${pronounDisp}</span> ${q.inf}</div>
+      <div class="field">
+        <label for="conjInput">Forme conjuguée</label>
+        <input type="text" id="conjInput" autocomplete="off" ${state.answered?'disabled':''} placeholder="ex. ${pronounDisp}...">
+        <div class="accent-row" id="accentRow">
+          ${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}" ${state.answered?'disabled':''}>${c}</button>`).join("")}
+        </div>
+      </div>
+      <div class="field">
+        <label for="transInput">Traduction du verbe <span class="opt">(optionnel, +0,1 pt)</span></label>
+        <input type="text" id="transInput" autocomplete="off" ${state.answered?'disabled':''} placeholder="ex. to ...">
+      </div>
+      <div id="feedbackZone"></div>
+      <div class="actions">
+        ${state.answered
+          ? `<button class="btn btn-primary" id="nextBtn">${num===total ? 'Voir le résultat' : 'Question suivante'}</button>`
+          : `<button class="btn btn-primary" id="submitBtn">Valider</button>`
+        }
+      </div>
+    `;
+
+    const conjInput = document.getElementById("conjInput");
+    const transInput = document.getElementById("transInput");
+
+    if(!state.answered){
+      conjInput.focus();
+      const submit = ()=>submitAnswer(conjInput, transInput);
+      document.getElementById("submitBtn").addEventListener("click", submit);
+      conjInput.addEventListener("keydown", e=>{ if(e.key==="Enter") transInput.focus(); });
+      transInput.addEventListener("keydown", e=>{ if(e.key==="Enter") submit(); });
+      root.querySelectorAll(".accent-btn").forEach(btn=>{
+        btn.addEventListener("click", ()=>insertAtCursor(conjInput, btn.dataset.char));
+      });
+    } else {
+      const r = state.results[state.results.length-1];
+      conjInput.className = r.correctConj ? "ok" : "bad";
+      if(r.gaveTranslation){
+        transInput.className = r.correctTrans ? "ok" : "bad";
+      }
+      const fb = document.getElementById("feedbackZone");
+      let msg = "";
+      if(r.correctConj){
+        msg += `Correct — <b>${pronounDisp} ${r.answer}</b>. `;
+      } else {
+        msg += `Pas tout à fait — la bonne forme est <b>${pronounDisp} ${r.answer}</b>. `;
+      }
+      if(r.gaveTranslation){
+        msg += r.correctTrans ? `Traduction correcte (+0,1). ` : `Traduction attendue : <b>${r.en}</b>.`;
+      } else {
+        msg += `Traduction : <b>${r.en}</b>.`;
+      }
+      fb.innerHTML = `<div class="feedback ${r.correctConj?'ok':'bad'}">${msg}</div>`;
+      document.getElementById("nextBtn").addEventListener("click", nextQuestion);
+    }
+    return;
+  }
+
+  if(state.screen === "result"){
+    const total = state.questions.length;
+    const correctCount = state.results.filter(r=>r.correctConj).length;
+    const percent = (correctCount/total)*100;
+    const m = mention(percent);
+    const score = Math.round(state.totalScore*100)/100;
+
+    root.innerHTML = `
+      <div class="result">
+        <h2>Résultat</h2>
+        <div class="score">${score} <span style="font-size:1.4rem; color:var(--ink-soft); font-weight:400;">/ ${total}</span></div>
+        <span class="mention ${m.cls}">${m.label}</span>
+        <div class="actions" style="margin-top:0; margin-bottom:20px;">
+          <button class="btn btn-primary" id="retryBtn">Refaire un test</button>
+          <button class="btn btn-ghost" id="homeBtn">Accueil</button>
+        </div>
+        <div class="breakdown">
+          ${state.results.map(r=>{
+            const pronounDisp = pronounLabel(r.pronoun, r.answer);
+            const tenseTag = r.tense !== 'present' ? ` <span style="color:var(--ink-soft); font-style:italic;">(${TENSE_META[r.tense].label.toLowerCase()})</span>` : '';
+            return `<div class="breakdown-row">
+              <span class="bv">${pronounDisp} ${r.inf} → ${r.given || '—'}${tenseTag}</span>
+              <span class="status ${r.correctConj?'yes':'no'}">${r.correctConj?'✓':'✗ '+r.answer}</span>
+            </div>`;
+          }).join("")}
+        </div>
+      </div>
+    `;
+    document.getElementById("retryBtn").addEventListener("click", ()=>startQuiz(state.selectedCount));
+    document.getElementById("homeBtn").addEventListener("click", goHome);
+    return;
+  }
+}
+
+render();
+</script>
+</body>
+</html>
