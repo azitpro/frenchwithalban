@@ -3,470 +3,298 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Le Carnet — Conjugaison</title>
+<title>Conjugaison — French with Alban</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink: #1b2a4a;
-    --ink-soft: #3a4a6b;
-    --paper: #f6f1e6;
-    --paper-line: #ded4bd;
-    --gold: #b8891f;
-    --gold-soft: #e8d9b0;
-    --green: #4f7a5c;
-    --green-soft: #e2ecdf;
-    --red: #a8443a;
-    --red-soft: #f3e0dc;
-    --shadow: 0 1px 0 rgba(27,42,74,0.06), 0 8px 24px rgba(27,42,74,0.10);
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    min-height:100vh;
-    background:
-      repeating-linear-gradient(transparent, transparent 35px, var(--paper-line) 36px),
-      var(--paper);
-    background-attachment:local;
-    font-family:'Inter',sans-serif;
-    color:var(--ink);
-    display:flex;
-    justify-content:center;
-    padding:32px 16px 60px;
-  }
-  .app{
-    width:100%;
-    max-width:620px;
-  }
-  .masthead{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    margin-bottom:22px;
-    padding-bottom:14px;
-    border-bottom:2px solid var(--ink);
-  }
-  .masthead h1{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:1.7rem;
-    margin:0;
-    letter-spacing:-0.01em;
-  }
-  .masthead .tag{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.72rem;
-    color:var(--ink-soft);
-    text-transform:uppercase;
-    letter-spacing:0.08em;
-  }
-  .card{
-    background:#fffdf8;
-    border:1px solid var(--paper-line);
-    border-radius:4px;
-    box-shadow:var(--shadow);
-    padding:28px;
-    position:relative;
-    overflow:hidden;
-  }
-  .card::before{
-    content:"";
-    position:absolute;
-    top:0; left:0;
-    width:6px; height:100%;
-    background:var(--gold);
-  }
-  /* --- Home / setup screen --- */
-  .home h2{
-    font-family:'Fraunces',serif;
-    font-size:1.25rem;
-    margin:0 0 6px;
-  }
-  .home p.lede{
-    color:var(--ink-soft);
-    font-size:0.92rem;
-    line-height:1.5;
-    margin:0 0 22px;
-  }
-  .mode-choice{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-bottom:22px;
-  }
-  .mode-btn{
-    border:1.5px solid var(--ink);
-    background:transparent;
-    border-radius:4px;
-    padding:16px 10px;
-    text-align:center;
-    cursor:pointer;
-    font-family:'IBM Plex Mono',monospace;
-    transition:background .15s ease, color .15s ease, transform .1s ease;
-  }
-  .mode-btn .num{
-    display:block;
-    font-size:1.9rem;
-    font-weight:600;
-    font-family:'Fraunces',serif;
-  }
-  .mode-btn .lbl{
-    font-size:0.7rem;
-    text-transform:uppercase;
-    letter-spacing:0.06em;
-    color:var(--ink-soft);
-  }
-  .mode-btn:hover{background:var(--ink); color:var(--paper);}
-  .mode-btn:hover .lbl{color:var(--gold-soft);}
-  .mode-btn.selected{background:var(--ink); color:var(--paper);}
-  .mode-btn.selected .lbl{color:var(--gold-soft);}
-  .start-btn{
-    width:100%;
-    padding:14px;
-    background:var(--ink);
-    color:var(--paper);
-    border:none;
-    border-radius:4px;
-    font-family:'Inter',sans-serif;
-    font-weight:600;
-    font-size:0.95rem;
-    cursor:pointer;
-    letter-spacing:0.01em;
-  }
-  .start-btn:disabled{opacity:0.35; cursor:not-allowed;}
-  .start-btn:not(:disabled):hover{background:var(--gold);}
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+  --green: #2e7d4f;
+  --green-soft: #e8f4ed;
+  --red-soft: #fbeae8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  background: var(--cream);
+  font-family: 'Inter', sans-serif;
+  color: var(--navy);
+  display: flex;
+  flex-direction: column;
+}
 
-  .scale{
-    margin-top:24px;
-    padding-top:16px;
-    border-top:1px dashed var(--paper-line);
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.74rem;
-    color:var(--ink-soft);
-  }
-  .scale .row{display:flex; justify-content:space-between; padding:2px 0;}
+/* HEADER */
+header {
+  padding: 18px 40px;
+  border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream);
+}
+.logo { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+.logo .red { color: var(--red); }
+.logo .gold { color: var(--gold); }
+.back-link {
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em;
+  color: var(--navy); text-decoration: none; opacity: 0.6;
+  border-bottom: 1px solid var(--border); padding-bottom: 1px;
+}
+.back-link:hover { opacity: 1; }
 
-  /* --- History strip --- */
-  .history-toggle{
-    text-align:center;
-    margin-top:14px;
-    font-size:0.82rem;
-    color:var(--ink-soft);
-    cursor:pointer;
-    text-decoration:underline;
-    text-underline-offset:3px;
-  }
-  .history{
-    margin-top:14px;
-  }
-  .history-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:7px 0;
-    border-bottom:1px solid var(--paper-line);
-    font-size:0.82rem;
-  }
-  .history-row .date{
-    font-family:'IBM Plex Mono',monospace;
-    color:var(--ink-soft);
-    width:78px;
-    flex-shrink:0;
-  }
-  .history-bar-wrap{flex:1; background:var(--paper-line); border-radius:2px; height:8px; overflow:hidden;}
-  .history-bar{height:100%; background:var(--gold);}
-  .history-score{font-family:'IBM Plex Mono',monospace; width:56px; text-align:right; flex-shrink:0;}
-  .history-empty{font-size:0.82rem; color:var(--ink-soft); text-align:center; padding:10px 0;}
+/* MAIN */
+main {
+  flex: 1; display: flex; justify-content: center;
+  padding: 48px 20px 64px;
+}
+.app { width: 100%; max-width: 580px; }
 
-  /* --- Verb picker --- */
-  .verb-picker{
-    margin-bottom:22px;
-  }
-  .verb-picker-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-  }
-  .verb-picker-head .label{
-    font-size:0.8rem;
-    color:var(--ink-soft);
-    font-weight:600;
-  }
-  .verb-picker-toggle{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.74rem;
-    color:var(--gold);
-    cursor:pointer;
-    text-decoration:underline;
-    text-underline-offset:3px;
-    background:none;
-    border:none;
-    padding:0;
-  }
-  .verb-all-btn{
-    display:inline-block;
-    width:100%;
-    text-align:left;
-    padding:12px 14px;
-    border:1.5px solid var(--paper-line);
-    border-radius:4px;
-    background:#fffefb;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.85rem;
-    color:var(--ink-soft);
-    cursor:pointer;
-  }
-  .verb-all-btn b{color:var(--ink); font-weight:600;}
-  .verb-grid-wrap{
-    border:1.5px solid var(--paper-line);
-    border-radius:4px;
-    padding:12px;
-    background:#fffefb;
-  }
-  .verb-grid-actions{
-    display:flex;
-    gap:14px;
-    margin-bottom:10px;
-    padding-bottom:10px;
-    border-bottom:1px dashed var(--paper-line);
-  }
-  .verb-grid-actions button{
-    background:none;
-    border:none;
-    padding:0;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.74rem;
-    color:var(--ink-soft);
-    text-decoration:underline;
-    text-underline-offset:3px;
-    cursor:pointer;
-  }
-  .verb-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:4px 10px;
-    max-height:260px;
-    overflow-y:auto;
-  }
-  .verb-chip{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:6px 4px;
-    cursor:pointer;
-    font-size:0.85rem;
-    border-radius:3px;
-  }
-  .verb-chip:hover{background:var(--gold-soft);}
-  .verb-chip input{accent-color:var(--ink); width:15px; height:15px; flex-shrink:0;}
-  .verb-chip .vname{font-family:'IBM Plex Mono',monospace;}
-  .verb-count-note{
-    margin-top:10px;
-    font-size:0.76rem;
-    color:var(--ink-soft);
-    text-align:center;
-  }
+/* MASTHEAD */
+.masthead {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 24px; padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.masthead h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem; font-weight: 400; margin: 0; color: var(--navy);
+}
+.masthead .tag {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--red);
+}
 
-  /* --- Tense picker --- */
-  .tense-picker{
-    margin-bottom:22px;
-  }
-  .tense-choice{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-  }
-  .tense-btn{
-    border:1.5px solid var(--paper-line);
-    background:#fffefb;
-    border-radius:4px;
-    padding:11px 6px;
-    text-align:center;
-    cursor:pointer;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.76rem;
-    color:var(--ink-soft);
-  }
-  .tense-btn.selected{
-    background:var(--ink);
-    color:var(--paper);
-    border-color:var(--ink);
-  }
-  .tense-hint{
-    margin-top:8px;
-    font-size:0.74rem;
-    color:var(--ink-soft);
-    text-align:center;
-  }
+/* CARD */
+.card {
+  background: var(--cream-dark);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--navy);
+  padding: 32px;
+}
 
-  /* --- Quiz screen --- */
-  .quiz-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    margin-bottom:18px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.78rem;
-    color:var(--ink-soft);
-  }
-  .progress-track{
-    height:4px;
-    background:var(--paper-line);
-    border-radius:2px;
-    margin-bottom:26px;
-    overflow:hidden;
-  }
-  .progress-fill{
-    height:100%;
-    background:var(--gold);
-    transition:width .25s ease;
-  }
-  .prompt-eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.72rem;
-    text-transform:uppercase;
-    letter-spacing:0.08em;
-    color:var(--gold);
-    margin-bottom:6px;
-  }
-  .prompt-verb{
-    font-family:'Fraunces',serif;
-    font-weight:700;
-    font-size:2rem;
-    margin:0 0 2px;
-    line-height:1.1;
-  }
-  .prompt-verb .pronoun{color:var(--ink-soft); font-weight:400; font-style:italic; font-size:1.3rem;}
-  .field{margin-top:22px;}
-  .field label{
-    display:block;
-    font-size:0.8rem;
-    color:var(--ink-soft);
-    margin-bottom:6px;
-    font-weight:600;
-  }
-  .field .opt{font-weight:400; font-style:italic; color:var(--ink-soft);}
-  .field input{
-    width:100%;
-    padding:12px 14px;
-    border:1.5px solid var(--paper-line);
-    border-radius:4px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:1rem;
-    background:#fffefb;
-    color:var(--ink);
-  }
-  .field input:focus{outline:none; border-color:var(--ink);}
-  .field input.ok{border-color:var(--green); background:var(--green-soft);}
-  .field input.bad{border-color:var(--red); background:var(--red-soft);}
-  .accent-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px;
-    margin-top:8px;
-  }
-  .accent-btn{
-    width:32px;
-    height:32px;
-    border:1.5px solid var(--paper-line);
-    border-radius:4px;
-    background:#fffefb;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.95rem;
-    color:var(--ink);
-    cursor:pointer;
-    line-height:1;
-  }
-  .accent-btn:hover{border-color:var(--ink); background:var(--gold-soft);}
-  .accent-btn:disabled{opacity:0.3; cursor:not-allowed;}
-  .actions{display:flex; gap:10px; margin-top:24px;}
-  .btn{
-    flex:1;
-    padding:13px;
-    border-radius:4px;
-    font-family:'Inter',sans-serif;
-    font-weight:600;
-    font-size:0.92rem;
-    cursor:pointer;
-    border:1.5px solid var(--ink);
-  }
-  .btn-primary{background:var(--ink); color:var(--paper);}
-  .btn-primary:hover{background:var(--gold); border-color:var(--gold);}
-  .btn-ghost{background:transparent; color:var(--ink-soft); border-color:var(--paper-line);}
-  .feedback{
-    margin-top:18px;
-    padding:14px 16px;
-    border-radius:4px;
-    font-size:0.88rem;
-    line-height:1.5;
-  }
-  .feedback.ok{background:var(--green-soft); color:#2e4a37;}
-  .feedback.bad{background:var(--red-soft); color:#6e2f28;}
-  .feedback b{font-family:'IBM Plex Mono',monospace;}
+/* HOME */
+.home h2 {
+  font-family: 'Fraunces', serif; font-size: 1.2rem;
+  font-weight: 600; margin: 0 0 8px; color: var(--navy);
+}
+.home p.lede {
+  font-size: 0.88rem; line-height: 1.6; color: var(--text-soft);
+  font-weight: 300; margin: 0 0 24px;
+}
+.mode-choice {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;
+}
+.mode-btn {
+  border: 1.5px solid var(--navy); background: transparent;
+  padding: 16px 10px; text-align: center; cursor: pointer;
+  font-family: 'Inter', sans-serif; transition: all 0.15s;
+}
+.mode-btn .num {
+  display: block; font-family: 'DM Serif Display', serif;
+  font-size: 2rem; color: var(--navy);
+}
+.mode-btn .lbl {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text-soft);
+}
+.mode-btn:hover, .mode-btn.selected {
+  background: var(--navy); color: var(--cream);
+  box-shadow: 3px 3px 0 var(--red);
+}
+.mode-btn:hover .num, .mode-btn.selected .num { color: var(--cream); }
+.mode-btn:hover .lbl, .mode-btn.selected .lbl { color: var(--gold); }
 
-  /* --- Result screen --- */
-  .result h2{
-    font-family:'Fraunces',serif;
-    font-size:1.1rem;
-    margin:0 0 4px;
-    color:var(--ink-soft);
-    font-weight:400;
-  }
-  .result .score{
-    font-family:'Fraunces',serif;
-    font-weight:700;
-    font-size:3.2rem;
-    margin:2px 0 6px;
-  }
-  .result .mention{
-    display:inline-block;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.78rem;
-    text-transform:uppercase;
-    letter-spacing:0.06em;
-    padding:5px 12px;
-    border-radius:20px;
-    margin-bottom:22px;
-  }
-  .m-revoir{background:var(--red-soft); color:var(--red);}
-  .m-passable{background:#f3ecd8; color:#8a6a13;}
-  .m-assezbien{background:#eef1de; color:#5c6b2e;}
-  .m-bien{background:var(--green-soft); color:var(--green);}
-  .m-tresbien{background:var(--ink); color:var(--paper);}
-  .breakdown{
-    border-top:1px dashed var(--paper-line);
-    padding-top:14px;
-    margin-top:6px;
-    max-height:260px;
-    overflow-y:auto;
-  }
-  .breakdown-row{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    font-size:0.82rem;
-    padding:6px 0;
-    border-bottom:1px solid var(--paper-line);
-  }
-  .breakdown-row .bv{font-family:'IBM Plex Mono',monospace;}
-  .breakdown-row .status{flex-shrink:0; font-weight:600;}
-  .status.yes{color:var(--green);}
-  .status.no{color:var(--red);}
+.section-label {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 10px;
+}
 
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important;}
-  }
+/* TENSE PICKER */
+.tense-picker { margin-bottom: 24px; }
+.tense-choice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.tense-btn {
+  border: 1.5px solid var(--border); background: var(--cream);
+  padding: 11px 6px; text-align: center; cursor: pointer;
+  font-size: 0.76rem; font-weight: 500; color: var(--text-soft);
+  transition: all 0.15s;
+}
+.tense-btn.selected {
+  background: var(--navy); color: var(--cream); border-color: var(--navy);
+}
+.tense-btn:hover:not(.selected) { border-color: var(--navy); color: var(--navy); }
+
+/* VERB PICKER */
+.verb-picker { margin-bottom: 24px; }
+.verb-picker-head {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+}
+.verb-picker-toggle {
+  font-size: 0.74rem; color: var(--red); cursor: pointer;
+  text-decoration: underline; background: none; border: none;
+  font-family: 'Inter', sans-serif; font-weight: 500;
+}
+.verb-all-btn {
+  width: 100%; text-align: left; padding: 12px 14px;
+  border: 1.5px solid var(--border); background: var(--cream);
+  font-size: 0.84rem; color: var(--text-soft); cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.verb-all-btn b { color: var(--navy); font-weight: 600; }
+.verb-grid-wrap { border: 1.5px solid var(--border); padding: 12px; background: var(--cream); }
+.verb-grid-actions { display: flex; gap: 14px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed var(--border); }
+.verb-grid-actions button {
+  background: none; border: none; padding: 0; font-size: 0.74rem;
+  color: var(--text-soft); text-decoration: underline; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.verb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; max-height: 240px; overflow-y: auto; }
+.verb-chip { display: flex; align-items: center; gap: 8px; padding: 6px 4px; cursor: pointer; font-size: 0.84rem; }
+.verb-chip:hover { background: var(--cream-dark); }
+.verb-chip input { accent-color: var(--navy); width: 14px; height: 14px; flex-shrink: 0; }
+.verb-count-note { margin-top: 10px; font-size: 0.74rem; color: var(--text-soft); text-align: center; }
+
+/* START BTN */
+.start-btn {
+  width: 100%; padding: 14px; background: var(--red); color: var(--cream);
+  border: none; font-family: 'Inter', sans-serif; font-weight: 600;
+  font-size: 0.92rem; cursor: pointer; letter-spacing: 0.04em;
+  box-shadow: 4px 4px 0 var(--navy); transition: all 0.15s;
+}
+.start-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--navy); }
+.start-btn:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+
+/* SCALE */
+.scale {
+  margin-top: 24px; padding-top: 16px;
+  border-top: 1px dashed var(--border);
+  font-size: 0.74rem; color: var(--text-soft);
+}
+.scale .row { display: flex; justify-content: space-between; padding: 2px 0; }
+
+/* HISTORY */
+.history-toggle {
+  text-align: center; margin-top: 14px; font-size: 0.82rem;
+  color: var(--text-soft); cursor: pointer; text-decoration: underline;
+}
+.history { margin-top: 14px; }
+.history-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+.history-row .date { color: var(--text-soft); width: 78px; flex-shrink: 0; font-size: 0.76rem; }
+.history-bar-wrap { flex: 1; background: var(--border); height: 6px; overflow: hidden; }
+.history-bar { height: 100%; background: var(--gold); }
+.history-score { width: 56px; text-align: right; flex-shrink: 0; font-size: 0.76rem; }
+.history-empty { font-size: 0.82rem; color: var(--text-soft); text-align: center; padding: 10px 0; }
+
+/* QUIZ */
+.quiz-top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 16px; font-size: 0.78rem; color: var(--text-soft);
+}
+.progress-track {
+  height: 3px; background: var(--border); margin-bottom: 28px; overflow: hidden;
+}
+.progress-fill { height: 100%; background: var(--red); transition: width 0.25s ease; }
+.prompt-eyebrow {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--gold); margin-bottom: 6px; font-weight: 600;
+}
+.prompt-verb {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.4rem; margin: 0 0 4px; line-height: 1.1; color: var(--navy);
+}
+.prompt-verb .pronoun { color: var(--text-soft); font-size: 1.6rem; }
+
+.field { margin-top: 20px; }
+.field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-soft); margin-bottom: 6px; }
+.field .opt { font-weight: 300; }
+.field input {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--border); background: var(--cream);
+  font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--navy);
+  outline: none; transition: border-color 0.15s;
+}
+.field input:focus { border-color: var(--navy); }
+.field input.ok { border-color: var(--green); background: var(--green-soft); }
+.field input.bad { border-color: var(--red); background: var(--red-soft); }
+
+.accent-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.accent-btn {
+  width: 30px; height: 30px; border: 1.5px solid var(--border);
+  background: var(--cream); font-size: 0.9rem; color: var(--navy);
+  cursor: pointer; transition: all 0.15s;
+}
+.accent-btn:hover { border-color: var(--navy); background: var(--cream-dark); }
+.accent-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.actions { display: flex; gap: 10px; margin-top: 24px; }
+.btn { flex: 1; padding: 13px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1.5px solid var(--navy); transition: all 0.15s; }
+.btn-primary { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--red); }
+.btn-primary:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--red); }
+.btn-ghost { background: transparent; color: var(--text-soft); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
+
+.feedback { margin-top: 16px; padding: 14px 16px; font-size: 0.88rem; line-height: 1.5; border-left: 3px solid; }
+.feedback.ok { background: var(--green-soft); color: #1e5c35; border-color: var(--green); }
+.feedback.bad { background: var(--red-soft); color: #8b2a20; border-color: var(--red); }
+.feedback b { font-weight: 600; }
+
+/* RESULT */
+.result h2 { font-family: 'Fraunces', serif; font-size: 1rem; margin: 0 0 4px; color: var(--text-soft); font-weight: 400; }
+.result .score { font-family: 'DM Serif Display', serif; font-size: 3.5rem; margin: 4px 0 8px; color: var(--navy); }
+.result .score span { font-size: 1.5rem; color: var(--text-soft); }
+.mention {
+  display: inline-block; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 24px;
+  border: 1.5px solid;
+}
+.m-revoir { background: var(--red-soft); color: var(--red); border-color: var(--red); }
+.m-passable { background: #fdf3e3; color: #9a6c1a; border-color: #c9972a; }
+.m-assezbien { background: #f0f5e8; color: #5a6e28; border-color: #8a9e3a; }
+.m-bien { background: var(--green-soft); color: var(--green); border-color: var(--green); }
+.m-tresbien { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+
+.breakdown { border-top: 1px dashed var(--border); padding-top: 14px; margin-top: 6px; max-height: 260px; overflow-y: auto; }
+.breakdown-row { display: flex; justify-content: space-between; gap: 10px; font-size: 0.82rem; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.breakdown-row .bv { color: var(--navy); }
+.breakdown-row .status { flex-shrink: 0; font-weight: 600; }
+.status.yes { color: var(--green); }
+.status.no { color: var(--red); }
+
+/* FOOTER */
+footer {
+  background: var(--navy); padding: 18px 40px;
+  border-top: 3px solid var(--gold);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-logo { font-family: 'Fraunces', serif; font-size: 0.9rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.7rem; font-weight: 300; color: rgba(250,247,242,0.4); }
 </style>
 </head>
 <body>
+
+<header>
+  <div class="logo">French with <span class="red">Alban</span></div>
+  <a href="/" class="back-link">← Accueil</a>
+</header>
+
+<main>
 <div class="app">
   <div class="masthead">
-    <h1>Le Carnet</h1>
+    <h1>Conjugaison</h1>
     <span class="tag">Verbes irréguliers</span>
   </div>
   <div class="card" id="cardRoot"></div>
 </div>
+</main>
+
+<footer>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+</footer>
 
 <script>
 const VERBS = [
@@ -482,7 +310,7 @@ const VERBS = [
   {inf:"tenir", en:"to hold", aux:"avoir", pp:"tenu", forms:{je:"tiens", tu:"tiens", elle:"tient", nous:"tenons", vous:"tenez", elles:"tiennent"}},
   {inf:"lire", en:"to read", aux:"avoir", pp:"lu", forms:{je:"lis", tu:"lis", elle:"lit", nous:"lisons", vous:"lisez", elles:"lisent"}},
   {inf:"dire", en:"to say", aux:"avoir", pp:"dit", forms:{je:"dis", tu:"dis", il:"dit", nous:"disons", vous:"dites", elles:"disent"}},
-  {inf:"recevoir", en:"to receive (get)", aux:"avoir", pp:"reçu", forms:{je:"reçois", tu:"reçois", il:"reçoit", nous:"recevons", vous:"recevez", ils:"reçoivent"}},
+  {inf:"recevoir", en:"to receive", aux:"avoir", pp:"reçu", forms:{je:"reçois", tu:"reçois", il:"reçoit", nous:"recevons", vous:"recevez", ils:"reçoivent"}},
   {inf:"voir", en:"to see", aux:"avoir", pp:"vu", forms:{je:"vois", tu:"vois", elle:"voit", nous:"voyons", vous:"voyez", elles:"voient"}},
   {inf:"croire", en:"to believe", aux:"avoir", pp:"cru", forms:{je:"crois", tu:"crois", elle:"croit", nous:"croyons", vous:"croyez", elles:"croient"}},
   {inf:"boire", en:"to drink", aux:"avoir", pp:"bu", forms:{je:"bois", tu:"bois", elle:"boit", nous:"buvons", vous:"buvez", elles:"boivent"}},
@@ -500,323 +328,79 @@ const VERBS = [
   {inf:"produire", en:"to produce", aux:"avoir", pp:"produit", forms:{je:"produis", tu:"produis", il:"produit", nous:"produisons", vous:"produisez", ils:"produisent"}},
 ];
 
-const AVOIR_PRESENT = {je:"ai", tu:"as", il:"a", elle:"a", nous:"avons", vous:"avez", ils:"ont", elles:"ont"};
-const ETRE_PRESENT = {je:"suis", tu:"es", il:"est", elle:"est", nous:"sommes", vous:"êtes", ils:"sont", elles:"sont"};
-const IMPARFAIT_ENDINGS = {je:"ais", tu:"ais", il:"ait", elle:"ait", nous:"ions", vous:"iez", ils:"aient", elles:"aient"};
+const AVOIR_PRESENT = {je:"ai",tu:"as",il:"a",elle:"a",nous:"avons",vous:"avez",ils:"ont",elles:"ont"};
+const ETRE_PRESENT = {je:"suis",tu:"es",il:"est",elle:"est",nous:"sommes",vous:"êtes",ils:"sont",elles:"sont"};
+const IMPARFAIT_ENDINGS = {je:"ais",tu:"ais",il:"ait",elle:"ait",nous:"ions",vous:"iez",ils:"aient",elles:"aient"};
 
-function imparfaitStem(v){
-  if(v.inf === "être") return "ét";
-  return v.forms.nous.replace(/ons$/, "");
-}
-function buildImparfaitForms(v){
-  const stem = imparfaitStem(v);
-  const out = {};
-  for(const p of Object.keys(v.forms)) out[p] = stem + IMPARFAIT_ENDINGS[p];
-  return out;
-}
-function agreePastParticiple(pp, pronoun, aux){
-  if(aux !== "etre") return pp;
-  if(pronoun === "elle") return pp + "e";
-  if(pronoun === "ils") return pp + "s";
-  if(pronoun === "elles") return pp + "es";
-  return pp; // il, je, tu, nous, vous: forme masculine non marquée
-}
-function buildPasseComposeForms(v){
-  const auxForms = v.aux === "etre" ? ETRE_PRESENT : AVOIR_PRESENT;
-  const out = {};
-  for(const p of Object.keys(v.forms)) out[p] = auxForms[p] + " " + agreePastParticiple(v.pp, p, v.aux);
-  return out;
-}
-for(const v of VERBS){
-  v.tenses = {
-    present: v.forms,
-    imparfait: buildImparfaitForms(v),
-    passeCompose: buildPasseComposeForms(v),
-  };
-}
+function imparfaitStem(v){ return v.inf==="être" ? "ét" : v.forms.nous.replace(/ons$/,""); }
+function buildImparfaitForms(v){ const stem=imparfaitStem(v),out={}; for(const p of Object.keys(v.forms)) out[p]=stem+IMPARFAIT_ENDINGS[p]; return out; }
+function agreePP(pp,pronoun,aux){ if(aux!=="etre") return pp; if(pronoun==="elle") return pp+"e"; if(pronoun==="ils") return pp+"s"; if(pronoun==="elles") return pp+"es"; return pp; }
+function buildPasseCompose(v){ const aux=v.aux==="etre"?ETRE_PRESENT:AVOIR_PRESENT,out={}; for(const p of Object.keys(v.forms)) out[p]=aux[p]+" "+agreePP(v.pp,p,v.aux); return out; }
+for(const v of VERBS) v.tenses={present:v.forms, imparfait:buildImparfaitForms(v), passeCompose:buildPasseCompose(v)};
 
 const TENSE_META = {
-  present: {label:"Présent", eyebrow:"Conjugue au présent de l'indicatif"},
-  imparfait: {label:"Imparfait", eyebrow:"Conjugue à l'imparfait"},
-  passeCompose: {label:"Passé composé", eyebrow:"Conjugue au passé composé"},
+  present:{label:"Présent", eyebrow:"Conjugue au présent"},
+  imparfait:{label:"Imparfait", eyebrow:"Conjugue à l'imparfait"},
+  passeCompose:{label:"Passé composé", eyebrow:"Conjugue au passé composé"},
 };
 
-function pronounLabel(pronoun, formText){
-  if(pronoun === "je"){
-    return /^[aeiouyhâàéèêëîïôùûüœ]/i.test(formText) ? "j'" : "je";
-  }
-  return {je:"je", tu:"tu", il:"il", elle:"elle", nous:"nous", vous:"vous", ils:"ils", elles:"elles"}[pronoun];
-}
+function pronounLabel(p,form){ if(p==="je") return /^[aeiouyhâàéèêëîïôùûüœ]/i.test(form)?"j'":"je"; return {je:"je",tu:"tu",il:"il",elle:"elle",nous:"nous",vous:"vous",ils:"ils",elles:"elles"}[p]; }
+function stripAccents(s){ return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function normConj(s){ return stripAccents(s.trim().toLowerCase()).replace(/^(je|j'|j|tu|il|elle|on|nous|vous|ils|elles)\s*['\s]+/,"").replace(/\s+/g," ").trim(); }
+function normEn(s){ return stripAccents(s.trim().toLowerCase()).replace(/^to\s+/,"").replace(/[().,]/g,"").replace(/\s+/g," ").trim(); }
+function levenshtein(a,b){ const m=a.length,n=b.length,d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]); for(let j=0;j<=n;j++) d[0][j]=j; for(let i=1;i<=m;i++) for(let j=1;j<=n;j++) d[i][j]=a[i-1]===b[j-1]?d[i-1][j-1]:1+Math.min(d[i-1][j-1],d[i-1][j],d[i][j-1]); return d[m][n]; }
+function translationApprox(guess,correct){ if(!guess.trim()) return false; const g=normEn(guess),opts=normEn(correct).split("/").map(x=>x.trim()).filter(Boolean); for(const opt of opts){ if(g===opt||opt.includes(g)||g.includes(opt)) return true; if(levenshtein(g,opt)<=Math.max(1,Math.floor(opt.length*0.25))) return true; } return false; }
 
-function stripAccents(s){
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-}
-function normConj(s){
-  return stripAccents(s.trim().toLowerCase())
-    .replace(/^(je|j'|j|tu|il|elle|on|nous|vous|ils|elles)\s*['\s]+/,"")
-    .replace(/\s+/g," ")
-    .trim();
-}
-function normEn(s){
-  return stripAccents(s.trim().toLowerCase())
-    .replace(/^to\s+/,"")
-    .replace(/[().,]/g,"")
-    .replace(/\s+/g," ")
-    .trim();
-}
-function levenshtein(a,b){
-  const m=a.length,n=b.length;
-  const d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
-  for(let j=0;j<=n;j++) d[0][j]=j;
-  for(let i=1;i<=m;i++){
-    for(let j=1;j<=n;j++){
-      d[i][j]=a[i-1]===b[j-1] ? d[i-1][j-1] : 1+Math.min(d[i-1][j-1],d[i-1][j],d[i][j-1]);
-    }
-  }
-  return d[m][n];
-}
-function translationApprox(guess, correct){
-  if(!guess.trim()) return false;
-  const g = normEn(guess), c = normEn(correct);
-  if(!g) return false;
-  // handle multi-option correct answers like "to make / to do"
-  const options = c.split("/").map(x=>x.trim()).filter(Boolean);
-  for(const opt of options){
-    if(g===opt || opt.includes(g) || g.includes(opt)) return true;
-    if(levenshtein(g,opt) <= Math.max(1, Math.floor(opt.length*0.25))) return true;
-  }
-  return false;
-}
-
-const PRONOUNS = ["je","tu","il","elle","nous","vous","ils","elles"];
 const ACCENTS = ["é","è","ê","ë","à","â","î","ï","ô","ù","û","ç","œ"];
 
-function buildQuestionPool(verbFilter, tenseFilter){
-  const pool=[];
-  for(const v of VERBS){
-    if(verbFilter && !verbFilter.has(v.inf)) continue;
-    for(const tense of Object.keys(v.tenses)){
-      if(tenseFilter && !tenseFilter.has(tense)) continue;
-      const forms = v.tenses[tense];
-      for(const p of Object.keys(forms)){
-        pool.push({inf:v.inf, en:v.en, pronoun:p, answer:forms[p], tense});
-      }
-    }
-  }
-  return pool;
-}
-function insertAtCursor(input, char){
-  const start = input.selectionStart ?? input.value.length;
-  const end = input.selectionEnd ?? input.value.length;
-  const val = input.value;
-  input.value = val.slice(0,start) + char + val.slice(end);
-  const pos = start + char.length;
-  input.focus();
-  input.setSelectionRange(pos,pos);
-}
+function buildPool(verbFilter,tenseFilter){ const pool=[]; for(const v of VERBS){ if(verbFilter&&!verbFilter.has(v.inf)) continue; for(const tense of Object.keys(v.tenses)){ if(tenseFilter&&!tenseFilter.has(tense)) continue; for(const p of Object.keys(v.tenses[tense])) pool.push({inf:v.inf,en:v.en,pronoun:p,answer:v.tenses[tense][p],tense}); } } return pool; }
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]; } return a; }
+function insertAtCursor(input,char){ const s=input.selectionStart??input.value.length,e=input.selectionEnd??input.value.length; input.value=input.value.slice(0,s)+char+input.value.slice(e); input.focus(); input.setSelectionRange(s+char.length,s+char.length); }
 
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-
-let state = {
-  screen: "home",
-  selectedCount: 10,
-  selectedVerbs: new Set(VERBS.map(v=>v.inf)),
-  selectedTenses: new Set(["present"]),
-  questions: [],
-  idx: 0,
-  results: [], // {inf, pronoun, answer, en, given, correct, gaveTranslation, translationCorrect, points}
-  totalScore: 0,
-  totalScoreTenths: 0,
-  answered: false,
-  lastFeedback: null,
-};
-
+let state = { screen:"home", selectedCount:10, selectedVerbs:new Set(VERBS.map(v=>v.inf)), selectedTenses:new Set(["present"]), questions:[], idx:0, results:[], totalScore:0, answered:false };
 const HISTORY_KEY = "quiz-history";
+async function loadHistory(){ try{ const r=await window.storage.get(HISTORY_KEY,false); return r?JSON.parse(r.value):[]; }catch(e){ return []; } }
+async function saveHistory(entry){ try{ const h=await loadHistory(); h.push(entry); await window.storage.set(HISTORY_KEY,JSON.stringify(h),false); }catch(e){} }
+function mention(pct){ if(pct<50) return{label:"à revoir",cls:"m-revoir"}; if(pct<60) return{label:"passable",cls:"m-passable"}; if(pct<70) return{label:"assez bien",cls:"m-assezbien"}; if(pct<80) return{label:"bien",cls:"m-bien"}; return{label:"très bien",cls:"m-tresbien"}; }
 
-async function loadHistory(){
-  try{
-    const res = await window.storage.get(HISTORY_KEY, false);
-    return res ? JSON.parse(res.value) : [];
-  }catch(e){
-    return [];
-  }
-}
-async function saveHistoryEntry(entry){
-  try{
-    const hist = await loadHistory();
-    hist.push(entry);
-    await window.storage.set(HISTORY_KEY, JSON.stringify(hist), false);
-  }catch(e){
-    console.error("Erreur de sauvegarde", e);
-  }
-}
+function startQuiz(n){ const pool=shuffle(buildPool(state.selectedVerbs,state.selectedTenses)); if(!pool.length) return; state.questions=pool.slice(0,Math.min(n,pool.length)); state.idx=0; state.results=[]; state.totalScore=0; state.answered=false; state.screen="quiz"; render(); }
+function currentQ(){ return state.questions[state.idx]; }
+function submitAnswer(ci,ti){ const q=currentQ(),given=ci.value,trans=ti.value.trim().length>0,correctConj=normConj(given)===normConj(q.answer),correctTrans=trans?translationApprox(ti.value,q.en):false; let pts=0; if(correctConj) pts+=1; if(correctConj&&correctTrans) pts+=0.1; state.totalScore+=pts; state.results.push({inf:q.inf,pronoun:q.pronoun,answer:q.answer,en:q.en,tense:q.tense,given:given.trim(),correctConj,gaveTranslation:trans,correctTrans,points:pts}); state.answered=true; render(); }
+function nextQ(){ state.answered=false; if(state.idx+1>=state.questions.length){ finishQuiz(); }else{ state.idx++; render(); } }
+async function finishQuiz(){ state.screen="result"; const total=state.questions.length,correct=state.results.filter(r=>r.correctConj).length,pct=(correct/total)*100; await saveHistory({date:new Date().toISOString(),total,correctCount:correct,score:Math.round(state.totalScore*100)/100,mention:mention(pct).label}); render(); }
+function goHome(){ state.screen="home"; render(); }
 
-function mention(percent){
-  if(percent < 50) return {label:"à revoir", cls:"m-revoir"};
-  if(percent < 60) return {label:"passable", cls:"m-passable"};
-  if(percent < 70) return {label:"assez bien", cls:"m-assezbien"};
-  if(percent < 80) return {label:"bien", cls:"m-bien"};
-  return {label:"très bien", cls:"m-tresbien"};
-}
-
-function startQuiz(count){
-  const pool = shuffle(buildQuestionPool(state.selectedVerbs, state.selectedTenses));
-  if(pool.length === 0) return;
-  state.questions = pool.slice(0, Math.min(count, pool.length));
-  state.idx = 0;
-  state.results = [];
-  state.totalScore = 0;
-  state.totalScoreTenths = 0;
-  state.answered = false;
-  state.lastFeedback = null;
-  state.screen = "quiz";
-  render();
-}
-
-function currentQuestion(){
-  return state.questions[state.idx];
-}
-
-function submitAnswer(conjInput, transInput){
-  const q = currentQuestion();
-  const given = conjInput.value;
-  const gaveTranslation = normEn(transInput.value).length > 0;
-  const correctConj = normConj(given) === normConj(q.answer);
-  const correctTrans = gaveTranslation ? translationApprox(transInput.value, q.en) : false;
-  let pointsTenths = 0;
-  if(correctConj) pointsTenths += 10;
-  if(correctConj && correctTrans) pointsTenths += 1;
-  const points = pointsTenths / 10;
-  state.totalScoreTenths = (state.totalScoreTenths || 0) + pointsTenths;
-  state.totalScore = state.totalScoreTenths / 10;
-  state.results.push({
-    inf:q.inf, pronoun:q.pronoun, answer:q.answer, en:q.en, tense:q.tense,
-    given: given.trim(), correctConj, gaveTranslation, correctTrans, points
-  });
-  state.answered = true;
-  state.lastFeedback = {correctConj, correctTrans, gaveTranslation};
-  render();
-}
-
-function nextQuestion(){
-  state.answered = false;
-  state.lastFeedback = null;
-  if(state.idx + 1 >= state.questions.length){
-    finishQuiz();
-  } else {
-    state.idx += 1;
-    render();
-  }
-}
-
-async function finishQuiz(){
-  state.screen = "result";
-  const total = state.questions.length;
-  const correctCount = state.results.filter(r=>r.correctConj).length;
-  const percent = (correctCount/total)*100;
-  await saveHistoryEntry({
-    date: new Date().toISOString(),
-    total,
-    correctCount,
-    score: Math.round(state.totalScore*100)/100,
-    mention: mention(percent).label
-  });
-  render();
-}
-
-function goHome(){
-  state.screen = "home";
-  render();
-}
-
-let showHistory = false;
-let showVerbPicker = false;
-
-function fmtDate(iso){
-  const d = new Date(iso);
-  return d.toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', year:'2-digit'});
-}
-
-async function renderHistory(container){
-  const hist = await loadHistory();
-  if(hist.length === 0){
-    container.innerHTML = '<div class="history-empty">Aucun test enregistré pour l’instant.</div>';
-    return;
-  }
-  const recent = hist.slice(-8).reverse();
-  container.innerHTML = recent.map(h=>{
-    const pct = Math.min(100, Math.round((h.correctCount/h.total)*100));
-    return `<div class="history-row">
-      <span class="date">${fmtDate(h.date)}</span>
-      <span class="history-bar-wrap"><span class="history-bar" style="width:${pct}%"></span></span>
-      <span class="history-score">${h.score}/${h.total}</span>
-    </div>`;
-  }).join("");
-}
+let showHistory=false, showVerbPicker=false;
+function fmtDate(iso){ const d=new Date(iso); return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit'}); }
+async function renderHistory(container){ const hist=await loadHistory(); if(!hist.length){ container.innerHTML='<div class="history-empty">Aucun test enregistré.</div>'; return; } container.innerHTML=hist.slice(-8).reverse().map(h=>{ const pct=Math.min(100,Math.round((h.correctCount/h.total)*100)); return`<div class="history-row"><span class="date">${fmtDate(h.date)}</span><span class="history-bar-wrap"><span class="history-bar" style="width:${pct}%"></span></span><span class="history-score">${h.score}/${h.total}</span></div>`; }).join(""); }
 
 function render(){
-  const root = document.getElementById("cardRoot");
+  const root=document.getElementById("cardRoot");
 
-  if(state.screen === "home"){
-    root.innerHTML = `
+  if(state.screen==="home"){
+    root.innerHTML=`
       <div class="home">
         <h2>Verbes irréguliers</h2>
-        <p class="lede">Conjugue le verbe demandé à la personne indiquée. Ajoute la traduction en anglais pour gagner un bonus de +0,1 point (une traduction approximative est acceptée).</p>
+        <p class="lede">Conjugue le verbe demandé. Ajoute la traduction en anglais pour un bonus de +0,1 point.</p>
+        <div class="section-label">Nombre de questions</div>
         <div class="mode-choice">
-          <button class="mode-btn ${state.selectedCount===10?'selected':''}" data-count="10">
-            <span class="num">10</span><span class="lbl">questions</span>
-          </button>
-          <button class="mode-btn ${state.selectedCount===20?'selected':''}" data-count="20">
-            <span class="num">20</span><span class="lbl">questions</span>
-          </button>
+          <button class="mode-btn ${state.selectedCount===10?'selected':''}" data-count="10"><span class="num">10</span><span class="lbl">questions</span></button>
+          <button class="mode-btn ${state.selectedCount===20?'selected':''}" data-count="20"><span class="num">20</span><span class="lbl">questions</span></button>
         </div>
         <div class="tense-picker">
-          <div class="verb-picker-head">
-            <span class="label">Temps inclus</span>
-          </div>
-          <div class="tense-choice">
-            ${Object.keys(TENSE_META).map(t=>`
-              <button class="tense-btn ${state.selectedTenses.has(t)?'selected':''}" data-tense="${t}">${TENSE_META[t].label}</button>
-            `).join("")}
-          </div>
+          <div class="section-label">Temps verbaux</div>
+          <div class="tense-choice">${Object.keys(TENSE_META).map(t=>`<button class="tense-btn ${state.selectedTenses.has(t)?'selected':''}" data-tense="${t}">${TENSE_META[t].label}</button>`).join("")}</div>
         </div>
         <div class="verb-picker">
           <div class="verb-picker-head">
-            <span class="label">Verbes inclus</span>
-            <button class="verb-picker-toggle" id="verbPickerToggle">${showVerbPicker ? 'fermer' : 'choisir des verbes'}</button>
+            <div class="section-label" style="margin:0">Verbes inclus</div>
+            <button class="verb-picker-toggle" id="vpToggle">${showVerbPicker?'Fermer':'Choisir'}</button>
           </div>
-          ${showVerbPicker ? `
-            <div class="verb-grid-wrap">
-              <div class="verb-grid-actions">
-                <button id="selectAllVerbs">Tout cocher</button>
-                <button id="selectNoneVerbs">Tout décocher</button>
-              </div>
-              <div class="verb-grid">
-                ${VERBS.map(v=>`
-                  <label class="verb-chip">
-                    <input type="checkbox" data-verb="${v.inf}" ${state.selectedVerbs.has(v.inf)?'checked':''}>
-                    <span class="vname">${v.inf}</span>
-                  </label>
-                `).join("")}
-              </div>
-            </div>
-          ` : `
-            <button class="verb-all-btn" id="verbAllSummary">
-              ${state.selectedVerbs.size === VERBS.length
-                ? `<b>Tous les verbes</b> (${VERBS.length})`
-                : `<b>${state.selectedVerbs.size} verbe${state.selectedVerbs.size>1?'s':''} sélectionné${state.selectedVerbs.size>1?'s':''}</b> sur ${VERBS.length}`}
-            </button>
-          `}
-          <div class="verb-count-note">${state.selectedVerbs.size * 6 * state.selectedTenses.size} formes disponibles avec cette sélection</div>
+          ${showVerbPicker?`<div class="verb-grid-wrap"><div class="verb-grid-actions"><button id="selAll">Tout cocher</button><button id="selNone">Tout décocher</button></div><div class="verb-grid">${VERBS.map(v=>`<label class="verb-chip"><input type="checkbox" data-verb="${v.inf}" ${state.selectedVerbs.has(v.inf)?'checked':''}><span>${v.inf}</span></label>`).join("")}</div></div>`
+          :`<button class="verb-all-btn" id="vpSummary">${state.selectedVerbs.size===VERBS.length?`<b>Tous les verbes</b> (${VERBS.length})`:`<b>${state.selectedVerbs.size} verbe${state.selectedVerbs.size>1?'s':''}</b> sur ${VERBS.length}`}</button>`}
+          <div class="verb-count-note">${state.selectedVerbs.size*6*state.selectedTenses.size} formes disponibles</div>
         </div>
-        <button class="start-btn" id="startBtn" ${(state.selectedVerbs.size===0 || state.selectedTenses.size===0)?'disabled':''}>Commencer le test</button>
+        <button class="start-btn" id="startBtn" ${(state.selectedVerbs.size===0||state.selectedTenses.size===0)?'disabled':''}>Commencer le test</button>
         <div class="scale">
           <div class="row"><span>Moins de 50 %</span><span>à revoir</span></div>
           <div class="row"><span>50 – 60 %</span><span>passable</span></div>
@@ -824,188 +408,76 @@ function render(){
           <div class="row"><span>70 – 80 %</span><span>bien</span></div>
           <div class="row"><span>80 % et +</span><span>très bien</span></div>
         </div>
-        <div class="history-toggle" id="histToggle">${showHistory ? 'Masquer l’historique' : 'Voir l’historique des tests'}</div>
+        <div class="history-toggle" id="histToggle">${showHistory?'Masquer l\'historique':'Voir l\'historique'}</div>
         <div class="history" id="histBox" style="display:${showHistory?'block':'none'}"></div>
-      </div>
-    `;
-    root.querySelectorAll(".mode-btn").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        state.selectedCount = parseInt(btn.dataset.count, 10);
-        render();
-      });
-    });
-    document.getElementById("startBtn").addEventListener("click", ()=>startQuiz(state.selectedCount));
-    root.querySelectorAll(".tense-btn").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const t = btn.dataset.tense;
-        if(state.selectedTenses.has(t)){
-          if(state.selectedTenses.size > 1) state.selectedTenses.delete(t);
-        } else {
-          state.selectedTenses.add(t);
-        }
-        render();
-      });
-    });
-    document.getElementById("verbPickerToggle").addEventListener("click", ()=>{
-      showVerbPicker = !showVerbPicker;
-      render();
-    });
-    const allSummaryBtn = document.getElementById("verbAllSummary");
-    if(allSummaryBtn){
-      allSummaryBtn.addEventListener("click", ()=>{
-        showVerbPicker = true;
-        render();
-      });
-    }
-    function renderPreservingScroll(){
-      const grid = document.querySelector(".verb-grid");
-      const gridScroll = grid ? grid.scrollTop : 0;
-      const pageScroll = window.scrollY;
-      render();
-      const newGrid = document.querySelector(".verb-grid");
-      if(newGrid) newGrid.scrollTop = gridScroll;
-      window.scrollTo(0, pageScroll);
-    }
-    const selectAllBtn = document.getElementById("selectAllVerbs");
-    if(selectAllBtn){
-      selectAllBtn.addEventListener("click", ()=>{
-        state.selectedVerbs = new Set(VERBS.map(v=>v.inf));
-        renderPreservingScroll();
-      });
-    }
-    const selectNoneBtn = document.getElementById("selectNoneVerbs");
-    if(selectNoneBtn){
-      selectNoneBtn.addEventListener("click", ()=>{
-        state.selectedVerbs = new Set();
-        renderPreservingScroll();
-      });
-    }
-    root.querySelectorAll(".verb-chip input").forEach(cb=>{
-      cb.addEventListener("change", ()=>{
-        const inf = cb.dataset.verb;
-        if(cb.checked) state.selectedVerbs.add(inf);
-        else state.selectedVerbs.delete(inf);
-        renderPreservingScroll();
-      });
-    });
-    document.getElementById("histToggle").addEventListener("click", async ()=>{
-      showHistory = !showHistory;
-      render();
-      if(showHistory){
-        await renderHistory(document.getElementById("histBox"));
-      }
-    });
-    if(showHistory){
-      renderHistory(document.getElementById("histBox"));
-    }
+      </div>`;
+
+    root.querySelectorAll(".mode-btn").forEach(b=>b.addEventListener("click",()=>{state.selectedCount=parseInt(b.dataset.count);render();}));
+    document.getElementById("startBtn").addEventListener("click",()=>startQuiz(state.selectedCount));
+    root.querySelectorAll(".tense-btn").forEach(b=>b.addEventListener("click",()=>{const t=b.dataset.tense;if(state.selectedTenses.has(t)){if(state.selectedTenses.size>1)state.selectedTenses.delete(t);}else state.selectedTenses.add(t);render();}));
+    document.getElementById("vpToggle").addEventListener("click",()=>{showVerbPicker=!showVerbPicker;render();});
+    const vpSummary=document.getElementById("vpSummary");
+    if(vpSummary) vpSummary.addEventListener("click",()=>{showVerbPicker=true;render();});
+    const selAll=document.getElementById("selAll");
+    if(selAll) selAll.addEventListener("click",()=>{state.selectedVerbs=new Set(VERBS.map(v=>v.inf));render();});
+    const selNone=document.getElementById("selNone");
+    if(selNone) selNone.addEventListener("click",()=>{state.selectedVerbs=new Set();render();});
+    root.querySelectorAll(".verb-chip input").forEach(cb=>cb.addEventListener("change",()=>{if(cb.checked)state.selectedVerbs.add(cb.dataset.verb);else state.selectedVerbs.delete(cb.dataset.verb);render();}));
+    document.getElementById("histToggle").addEventListener("click",async()=>{showHistory=!showHistory;render();if(showHistory)await renderHistory(document.getElementById("histBox"));});
+    if(showHistory) renderHistory(document.getElementById("histBox"));
     return;
   }
 
-  if(state.screen === "quiz"){
-    const q = currentQuestion();
-    const num = state.idx + 1;
-    const total = state.questions.length;
-    const pct = Math.round((num-1)/total*100);
-    const pronounDisp = pronounLabel(q.pronoun, q.answer);
-
-    root.innerHTML = `
-      <div class="quiz-top">
-        <span>Question ${num} / ${total}</span>
-        <span>Score : ${Math.round(state.totalScore*100)/100}</span>
-      </div>
+  if(state.screen==="quiz"){
+    const q=currentQ(),num=state.idx+1,total=state.questions.length,pct=Math.round((num-1)/total*100),pDisp=pronounLabel(q.pronoun,q.answer);
+    root.innerHTML=`
+      <div class="quiz-top"><span>Question ${num} / ${total}</span><span>Score : ${Math.round(state.totalScore*100)/100}</span></div>
       <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
       <div class="prompt-eyebrow">${TENSE_META[q.tense].eyebrow}</div>
-      <div class="prompt-verb"><span class="pronoun">${pronounDisp}</span> ${q.inf}</div>
-      <div class="field">
-        <label for="conjInput">Forme conjuguée</label>
-        <input type="text" id="conjInput" autocomplete="off" ${state.answered?'disabled':''} placeholder="ex. ${pronounDisp}...">
-        <div class="accent-row" id="accentRow">
-          ${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}" ${state.answered?'disabled':''}>${c}</button>`).join("")}
-        </div>
-      </div>
-      <div class="field">
-        <label for="transInput">Traduction du verbe <span class="opt">(optionnel, +0,1 pt)</span></label>
-        <input type="text" id="transInput" autocomplete="off" ${state.answered?'disabled':''} placeholder="ex. to ...">
-      </div>
-      <div id="feedbackZone"></div>
-      <div class="actions">
-        ${state.answered
-          ? `<button class="btn btn-primary" id="nextBtn">${num===total ? 'Voir le résultat' : 'Question suivante'}</button>`
-          : `<button class="btn btn-primary" id="submitBtn">Valider</button>`
-        }
-      </div>
-    `;
+      <div class="prompt-verb"><span class="pronoun">${pDisp}</span> ${q.inf}</div>
+      <div class="field"><label for="ci">Forme conjuguée</label><input type="text" id="ci" autocomplete="off" ${state.answered?'disabled':''} placeholder="${pDisp}..."><div class="accent-row" id="accentRow">${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}" ${state.answered?'disabled':''}>${c}</button>`).join("")}</div></div>
+      <div class="field"><label for="ti">Traduction <span class="opt">(optionnel, +0,1 pt)</span></label><input type="text" id="ti" autocomplete="off" ${state.answered?'disabled':''} placeholder="to ..."></div>
+      <div id="fb"></div>
+      <div class="actions">${state.answered?`<button class="btn btn-primary" id="nextBtn">${num===total?'Voir le résultat':'Suivant'}</button>`:`<button class="btn btn-primary" id="submitBtn">Valider</button>`}</div>`;
 
-    const conjInput = document.getElementById("conjInput");
-    const transInput = document.getElementById("transInput");
-
+    const ci=document.getElementById("ci"),ti=document.getElementById("ti");
     if(!state.answered){
-      conjInput.focus();
-      const submit = ()=>submitAnswer(conjInput, transInput);
-      document.getElementById("submitBtn").addEventListener("click", submit);
-      conjInput.addEventListener("keydown", e=>{ if(e.key==="Enter") transInput.focus(); });
-      transInput.addEventListener("keydown", e=>{ if(e.key==="Enter") submit(); });
-      root.querySelectorAll(".accent-btn").forEach(btn=>{
-        btn.addEventListener("click", ()=>insertAtCursor(conjInput, btn.dataset.char));
-      });
-    } else {
-      const r = state.results[state.results.length-1];
-      conjInput.className = r.correctConj ? "ok" : "bad";
-      if(r.gaveTranslation){
-        transInput.className = r.correctTrans ? "ok" : "bad";
-      }
-      const fb = document.getElementById("feedbackZone");
-      let msg = "";
-      if(r.correctConj){
-        msg += `Correct — <b>${pronounDisp} ${r.answer}</b>. `;
-      } else {
-        msg += `Pas tout à fait — la bonne forme est <b>${pronounDisp} ${r.answer}</b>. `;
-      }
-      if(r.gaveTranslation){
-        msg += r.correctTrans ? `Traduction correcte (+0,1). ` : `Traduction attendue : <b>${r.en}</b>.`;
-      } else {
-        msg += `Traduction : <b>${r.en}</b>.`;
-      }
-      fb.innerHTML = `<div class="feedback ${r.correctConj?'ok':'bad'}">${msg}</div>`;
-      document.getElementById("nextBtn").addEventListener("click", nextQuestion);
+      ci.focus();
+      const submit=()=>submitAnswer(ci,ti);
+      document.getElementById("submitBtn").addEventListener("click",submit);
+      ci.addEventListener("keydown",e=>{if(e.key==="Enter")ti.focus();});
+      ti.addEventListener("keydown",e=>{if(e.key==="Enter")submit();});
+      root.querySelectorAll(".accent-btn").forEach(b=>b.addEventListener("click",()=>insertAtCursor(ci,b.dataset.char)));
+    }else{
+      const r=state.results[state.results.length-1];
+      ci.className=r.correctConj?"ok":"bad";
+      if(r.gaveTranslation) ti.className=r.correctTrans?"ok":"bad";
+      let msg=r.correctConj?`Correct — <b>${pDisp} ${r.answer}</b>. `:`La bonne forme est <b>${pDisp} ${r.answer}</b>. `;
+      msg+=r.gaveTranslation?(r.correctTrans?`Traduction correcte (+0,1). `:`Traduction attendue : <b>${r.en}</b>.`):`Traduction : <b>${r.en}</b>.`;
+      document.getElementById("fb").innerHTML=`<div class="feedback ${r.correctConj?'ok':'bad'}">${msg}</div>`;
+      document.getElementById("nextBtn").addEventListener("click",nextQ);
     }
     return;
   }
 
-  if(state.screen === "result"){
-    const total = state.questions.length;
-    const correctCount = state.results.filter(r=>r.correctConj).length;
-    const percent = (correctCount/total)*100;
-    const m = mention(percent);
-    const score = Math.round(state.totalScore*100)/100;
-
-    root.innerHTML = `
+  if(state.screen==="result"){
+    const total=state.questions.length,correct=state.results.filter(r=>r.correctConj).length,pct=(correct/total)*100,m=mention(pct),score=Math.round(state.totalScore*100)/100;
+    root.innerHTML=`
       <div class="result">
         <h2>Résultat</h2>
-        <div class="score">${score} <span style="font-size:1.4rem; color:var(--ink-soft); font-weight:400;">/ ${total}</span></div>
+        <div class="score">${score} <span>/ ${total}</span></div>
         <span class="mention ${m.cls}">${m.label}</span>
-        <div class="actions" style="margin-top:0; margin-bottom:20px;">
+        <div class="actions" style="margin-top:0;margin-bottom:20px;">
           <button class="btn btn-primary" id="retryBtn">Refaire un test</button>
           <button class="btn btn-ghost" id="homeBtn">Accueil</button>
         </div>
-        <div class="breakdown">
-          ${state.results.map(r=>{
-            const pronounDisp = pronounLabel(r.pronoun, r.answer);
-            const tenseTag = r.tense !== 'present' ? ` <span style="color:var(--ink-soft); font-style:italic;">(${TENSE_META[r.tense].label.toLowerCase()})</span>` : '';
-            return `<div class="breakdown-row">
-              <span class="bv">${pronounDisp} ${r.inf} → ${r.given || '—'}${tenseTag}</span>
-              <span class="status ${r.correctConj?'yes':'no'}">${r.correctConj?'✓':'✗ '+r.answer}</span>
-            </div>`;
-          }).join("")}
-        </div>
-      </div>
-    `;
-    document.getElementById("retryBtn").addEventListener("click", ()=>startQuiz(state.selectedCount));
-    document.getElementById("homeBtn").addEventListener("click", goHome);
+        <div class="breakdown">${state.results.map(r=>{const pDisp=pronounLabel(r.pronoun,r.answer),tTag=r.tense!=='present'?` <span style="color:var(--text-soft);font-style:italic;">(${TENSE_META[r.tense].label.toLowerCase()})</span>`:'';return`<div class="breakdown-row"><span class="bv">${pDisp} ${r.inf} → ${r.given||'—'}${tTag}</span><span class="status ${r.correctConj?'yes':'no'}">${r.correctConj?'✓':'✗ '+r.answer}</span></div>`;}).join("")}</div>
+      </div>`;
+    document.getElementById("retryBtn").addEventListener("click",()=>startQuiz(state.selectedCount));
+    document.getElementById("homeBtn").addEventListener("click",goHome);
     return;
   }
 }
-
 render();
 </script>
 </body>
