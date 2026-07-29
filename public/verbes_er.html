@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les verbes en -ER au présent — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --blue: #1a56a0;
+  --orange: #d4770a;
+  --green: #2e7d4f;
+  --violet: #7b2d8b;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #d4cfc5;
+  font-family: 'Inter', sans-serif;
+  color: var(--navy);
+  font-size: 11.5pt;
+}
+.page-wrap {
+  background: var(--cream);
+  max-width: 860px;
+  margin: 0 auto;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.12);
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  padding: 16px 36px;
+  border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream);
+}
+.logo {
+  display: flex; align-items: center; gap: 4px;
+  font-family: 'Fraunces', serif; font-size: 1.2rem;
+  font-weight: 700; color: var(--navy);
+  white-space: nowrap;
+}
+.logo .red { color: var(--red); }
+.page-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--navy); }
+.page-title .red { color: var(--red); }
+.gold-line { height: 2px; background: var(--gold); }
+
+/* SECTION HEADERS */
+.section-head {
+  display: flex; align-items: center; gap: 9px;
+  margin: 24px 36px 14px;
+}
+.section-head h2 {
+  font-family: 'Fraunces', serif; font-size: 1.15rem;
+  font-weight: 600; color: var(--navy);
+}
+
+/* VOCABULARY */
+.vocab-grid {
+  display: grid; grid-template-columns: 210px 1fr;
+  gap: 0 24px; margin: 0 36px 20px;
+}
+.vocab-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.vocab-table tr:nth-child(even) td { background: var(--cream-dark); }
+.vocab-table td { padding: 6px 8px; }
+.vocab-table .fr { font-weight: 600; color: var(--navy); }
+.vocab-table .en { color: #444; font-weight: 300; }
+
+.verb-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.verb-table tr:nth-child(even) td { background: var(--cream-dark); }
+.verb-table td { padding: 6px 6px; white-space: nowrap; }
+.verb-table .num { color: #bbb; font-size: 0.75rem; font-weight: 300; width: 18px; text-align: right; padding-right: 5px; }
+.verb-table .vfr { font-weight: 600; color: var(--navy); width: 95px; }
+.verb-table .ven { color: #444; font-weight: 300; }
+
+/* SEPARATOR */
+.sep { margin: 20px 36px; border: none; border-top: 1px solid var(--border); }
+
+/* PARLER — featured block */
+.parler-block {
+  margin: 0 36px 24px;
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 28px; align-items: start;
+  background: var(--cream-dark);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--navy);
+  padding: 32px 32px;
+}
+.parler-verb-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.6rem; color: var(--navy);
+  margin-bottom: 18px;
+}
+.parler-verb-title .er { color: var(--red); }
+.parler-rows { font-size: 1.15rem; line-height: 2.4; }
+.parler-rows .row { display: block; }
+.parler-right {
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 18px; padding-top: 4px;
+}
+.parler-rule {
+  font-size: 0.95rem; line-height: 1.7; color: var(--navy);
+}
+.parler-note {
+  background: #fdecea;
+  border: 1px solid var(--red);
+  border-left: 3px solid var(--red);
+  padding: 12px 16px;
+  font-size: 0.84rem;
+  color: var(--red);
+  line-height: 1.7;
+}
+
+/* CAS PARTICULIERS GRID */
+.conj-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; margin: 0 36px;
+}
+.conj-block {
+  padding: 20px 20px 16px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.conj-block:nth-child(2n) { border-right: none; }
+.conj-block:nth-last-child(-n+2) { border-bottom: none; }
+
+.verb-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem; color: var(--navy);
+  margin-bottom: 14px;
+}
+.verb-title .er { color: var(--red); }
+.conj-rows { font-size: 0.95rem; line-height: 2.1; margin-bottom: 14px; }
+.conj-rows .row { display: block; }
+
+.s { color: var(--blue); }
+.p { color: var(--red); }
+.o { color: var(--orange); }
+.g { color: var(--green); }
+.v { color: var(--violet); }
+.sm { font-size: 0.73rem; }
+
+.note {
+  background: #fdecea;
+  border: 1px solid var(--red);
+  border-left: 3px solid var(--red);
+  padding: 12px 16px;
+  font-size: 0.78rem;
+  color: var(--red);
+  line-height: 1.7;
+}
+
+/* BOTTOM SPACING */
+.bottom-pad { height: 36px; }
+.example-label {
+  font-family: 'Fraunces', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  
+}
+.parler-example {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--gold);
+  background: var(--cream);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--navy);
+}
+.ex-line { display: block; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <svg width="22" height="26" viewBox="0 0 24 28">
+      <defs><clipPath id="h1"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h1)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h1)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h1)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.2"/>
+    </svg>French&nbsp;with <span class="red">Alban</span>
+  </div>
+  <div class="page-title">Les verbes en -ER au <span class="red">présent</span></div>
+</header>
+<div class="gold-line"></div>
+
+<!-- VOCABULARY -->
+<div class="section-head">
+  <svg width="14" height="17" viewBox="0 0 24 28">
+    <defs><clipPath id="h2"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+    <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h2)"/>
+    <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h2)"/>
+    <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h2)"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+  </svg>
+  <h2>Un peu de vocabulaire</h2>
+</div>
+
+<div class="vocab-grid">
+  <table class="vocab-table">
+    <tr><td class="fr">je</td><td class="en"><em>I</em></td></tr>
+    <tr><td class="fr">tu</td><td class="en"><em>You (informal)</em></td></tr>
+    <tr><td class="fr">il / elle / on</td><td class="en"><em>He / She / One, we</em></td></tr>
+    <tr><td class="fr">nous</td><td class="en"><em>We</em></td></tr>
+    <tr><td class="fr">vous</td><td class="en"><em>You (formal)</em></td></tr>
+    <tr><td class="fr">ils / elles</td><td class="en"><em>They</em></td></tr>
+  </table>
+  <table class="verb-table">
+    <tr><td class="num">1</td><td class="vfr">Acheter</td><td class="ven"><em>To buy</em></td><td class="num">12</td><td class="vfr">Habiter</td><td class="ven"><em>To live</em></td></tr>
+    <tr><td class="num">2</td><td class="vfr">Aider</td><td class="ven"><em>To help</em></td><td class="num">13</td><td class="vfr">Jouer</td><td class="ven"><em>To play</em></td></tr>
+    <tr><td class="num">3</td><td class="vfr">Aimer</td><td class="ven"><em>To like / love</em></td><td class="num">14</td><td class="vfr">Manger</td><td class="ven"><em>To eat</em></td></tr>
+    <tr><td class="num">4</td><td class="vfr">Appeler</td><td class="ven"><em>To call</em></td><td class="num">15</td><td class="vfr">Montrer</td><td class="ven"><em>To show</em></td></tr>
+    <tr><td class="num">5</td><td class="vfr">Arrêter</td><td class="ven"><em>To stop</em></td><td class="num">16</td><td class="vfr">Oublier</td><td class="ven"><em>To forget</em></td></tr>
+    <tr><td class="num">6</td><td class="vfr">Chercher</td><td class="ven"><em>To look for</em></td><td class="num">17</td><td class="vfr">Parler</td><td class="ven"><em>To speak</em></td></tr>
+    <tr><td class="num">7</td><td class="vfr">Commander</td><td class="ven"><em>To order</em></td><td class="num">18</td><td class="vfr">Payer</td><td class="ven"><em>To pay</em></td></tr>
+    <tr><td class="num">8</td><td class="vfr">Commencer</td><td class="ven"><em>To start</em></td><td class="num">19</td><td class="vfr">Penser</td><td class="ven"><em>To think</em></td></tr>
+    <tr><td class="num">9</td><td class="vfr">Demander</td><td class="ven"><em>To ask</em></td><td class="num">20</td><td class="vfr">Regarder</td><td class="ven"><em>To look</em></td></tr>
+    <tr><td class="num">10</td><td class="vfr">Donner</td><td class="ven"><em>To give</em></td><td class="num">21</td><td class="vfr">Trouver</td><td class="ven"><em>To find</em></td></tr>
+    <tr><td class="num">11</td><td class="vfr">Écouter</td><td class="ven"><em>To listen</em></td><td class="num">22</td><td class="vfr">Étudier</td><td class="ven"><em>To study</em></td></tr>
+  </table>
+</div>
+
+<hr class="sep">
+
+<!-- PARLER -->
+<div class="section-head">
+  <svg width="14" height="17" viewBox="0 0 24 28">
+    <defs><clipPath id="h3"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+    <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h3)"/>
+    <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h3)"/>
+    <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h3)"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+  </svg>
+  <h2>Conjugaison des verbes en -ER</h2>
+</div>
+
+<div class="parler-block">
+  <div>
+    <div class="parler-verb-title">PARL<span class="er">ER</span></div>
+    <div class="parler-rows">
+      <span class="row">je parl<span class="s"><strong>e</strong></span></span>
+      <span class="row">tu parl<span class="s"><strong>es</strong></span></span>
+      <span class="row">il / elle / on parl<span class="s"><strong>e</strong></span></span>
+      <span class="row">nous parl<span class="p"><strong>ons</strong></span></span>
+      <span class="row">vous parl<span class="p"><strong>ez</strong></span></span>
+      <span class="row">ils / elles parl<span class="s"><strong>ent</strong></span></span>
+    </div>
+  </div>
+  <div class="parler-right">
+    <div class="parler-rule">
+      The vast majority of <strong>-ER verbs</strong> follow this pattern.<br>
+      Simply remove <strong>-er</strong> from the infinitive to get the stem,<br>
+      then add the endings shown on the left.
+    </div>
+    <div class="parler-note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
+      The endings <span class="s"><strong>-e</strong></span>, <span class="s"><strong>-es</strong></span>, <span class="s"><strong>-ent</strong></span> are <strong>silent</strong>.<br>
+      Only <span class="p"><strong>-ons</strong></span> and <span class="p"><strong>-ez</strong></span> (nous, vous) are <strong>pronounced</strong>.
+    </div>
+    <div class="parler-example">
+      <div class="example-label" style="display:flex;align-items:center;gap:6px;"><img src="/coq.png" style="width:28px;height:28px;object-fit:contain;flex-shrink:0;"> Exemple</div>
+      <div class="ex-line">— Est-ce que vous parl<span class="p"><strong>ez</strong></span> français ?</div>
+      <div class="ex-line">— Oui, je parl<span class="s"><strong>e</strong></span> français, anglais et espagnol.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- CAS PARTICULIERS -->
+<div class="section-head">
+  <svg width="14" height="17" viewBox="0 0 24 28">
+    <defs><clipPath id="h4"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+    <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h4)"/>
+    <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h4)"/>
+    <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h4)"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+  </svg>
+  <h2>Cas particuliers</h2>
+</div>
+
+<div class="conj-grid">
+
+  <div class="conj-block">
+    <div class="verb-title">COMMENC<span class="er">ER</span></div>
+    <div class="conj-rows">
+      <span class="row">je commenc<span class="s"><strong>e</strong></span></span>
+      <span class="row">tu commenc<span class="s"><strong>es</strong></span></span>
+      <span class="row">il / elle / on commenc<span class="s"><strong>e</strong></span></span>
+      <span class="row">nous commen<span class="o"><strong>ç</strong></span><span class="p"><strong>ons</strong></span></span>
+      <span class="row">vous commenc<span class="p"><strong>ez</strong></span></span>
+      <span class="row">ils / elles commenc<span class="s"><strong>ent</strong></span></span>
+    </div>
+    <div class="note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
+      The -ce- combination is /s/, but -co- would be /k/.<br>
+      A cedilla (<span class="o"><strong>ç</strong></span>) is added to preserve the /s/ sound in <em>nous commençons</em>.
+    </div>
+  </div>
+
+  <div class="conj-block">
+    <div class="verb-title">MANG<span class="er">ER</span></div>
+    <div class="conj-rows">
+      <span class="row">je mang<span class="s"><strong>e</strong></span></span>
+      <span class="row">tu mang<span class="s"><strong>es</strong></span></span>
+      <span class="row">il / elle / on mang<span class="s"><strong>e</strong></span></span>
+      <span class="row">nous mang<span class="o"><strong>e</strong></span><span class="p"><strong>ons</strong></span></span>
+      <span class="row">vous mang<span class="p"><strong>ez</strong></span></span>
+      <span class="row">ils / elles mang<span class="s"><strong>ent</strong></span></span>
+    </div>
+    <div class="note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
+      Similarly, -ge- is /ʒ/ (like <em>s</em> in <em>measure</em>), but -go- would be /ɡ/.<br>
+      An <span class="o"><strong>-e-</strong></span> is added after g to preserve the /ʒ/ sound in <em>nous mangeons</em>.
+    </div>
+  </div>
+
+  <div class="conj-block">
+    <div class="verb-title">APPEL<span class="er">ER</span></div>
+    <div class="conj-rows">
+      <span class="row">j'app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>e</strong></span> <span class="sm g">/ɛ/ (approx. e in bed)</span></span>
+      <span class="row">tu app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>es</strong></span></span>
+      <span class="row">il / elle / on app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>e</strong></span></span>
+      <span class="row">nous app<span class="v"><strong>e</strong></span>l<span class="p"><strong>ons</strong></span> <span class="sm v">/ə/ (approx. u in but)</span></span>
+      <span class="row">vous app<span class="v"><strong>e</strong></span>l<span class="p"><strong>ez</strong></span></span>
+      <span class="row">ils / elles app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>ent</strong></span></span>
+    </div>
+    <div class="note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
+      Double l → tense <span class="g"><strong>/ɛ/</strong></span> vowel. Single l → neutral <span class="v"><strong>/ə/</strong></span> vowel.<br>
+      (Approximations — exact sound varies by accent.)
+    </div>
+  </div>
+
+  <div class="conj-block">
+    <div class="verb-title">ACHET<span class="er">ER</span></div>
+    <div class="conj-rows">
+      <span class="row">j'ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>e</strong></span> <span class="sm g">/ɛ/ (approx. e in bed)</span></span>
+      <span class="row">tu ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>es</strong></span></span>
+      <span class="row">il / elle / on ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>e</strong></span></span>
+      <span class="row">nous ach<span class="v"><strong>e</strong></span>t<span class="p"><strong>ons</strong></span> <span class="sm v">/ə/ (approx. u in but)</span></span>
+      <span class="row">vous ach<span class="v"><strong>e</strong></span>t<span class="p"><strong>ez</strong></span></span>
+      <span class="row">ils / elles ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>ent</strong></span></span>
+    </div>
+    <div class="note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
+      Silent ending → stem vowel becomes <span class="g"><strong>/ɛ/</strong></span> (accent grave: <span class="g"><strong>è</strong></span>).<br>
+      Pronounced ending (nous, vous) → vowel stays <span class="v"><strong>/ə/</strong></span> (no accent).<br>
+      (Approximations — exact sound varies by accent.)
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-pad"></div>
+</div>
+</body>
+</html>

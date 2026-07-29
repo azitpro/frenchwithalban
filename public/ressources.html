@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ressources — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+  --conj-color: #1a56a0;
+  --gram-color: #b8860b;
+  --orth-color: #c0392b;
+  --vocab-color: #2e7d4f;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
+
+header {
+  padding: 20px 64px;
+  border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream);
+}
+.logo { display: flex; align-items: center; gap: 4px; text-decoration: none; }
+.logo-text { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 700; color: var(--navy); }
+.logo-text .red { color: var(--red); }
+nav { display: flex; gap: 32px; align-items: center; }
+nav a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
+nav a:hover { opacity: 1; }
+nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 2px; }
+.nav-cta { padding: 9px 22px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); }
+.gold-line { height: 2px; background: var(--gold); }
+
+/* PAGE HEADER */
+.page-header {
+  padding: 56px 64px 40px;
+  border-bottom: 1px solid var(--border);
+}
+.page-header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 3.5rem; font-weight: 400; color: var(--navy);
+  margin-bottom: 12px;
+}
+.page-header h1 .red { color: var(--red); }
+.page-header p {
+  font-size: 1rem; font-weight: 300; color: var(--text-soft);
+  line-height: 1.7; max-width: 520px;
+}
+
+/* CONTENT */
+.content { padding: 48px 64px 80px; display: flex; flex-direction: column; gap: 48px; }
+
+/* CATEGORY */
+.category {}
+.category-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+.category-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+.category-title {
+  font-family: 'Fraunces', serif; font-size: 1.1rem;
+  font-weight: 600; color: var(--navy);
+}
+.category-count {
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-soft);
+  margin-left: auto;
+}
+
+/* RESOURCE CARDS */
+.resource-list { display: flex; flex-direction: column; gap: 12px; }
+.resource-card {
+  display: flex; align-items: center;
+  padding: 18px 24px;
+  background: var(--cream-dark);
+  border: 1px solid var(--border);
+  text-decoration: none; color: var(--navy);
+  transition: box-shadow 0.15s, transform 0.15s;
+  gap: 20px;
+}
+.resource-card:hover { box-shadow: 4px 4px 0 var(--navy); transform: translate(-2px, -2px); }
+.resource-tag {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 4px 9px;
+  border-radius: 2px; white-space: nowrap; flex-shrink: 0;
+  color: white;
+}
+.resource-info { flex: 1; }
+.resource-name {
+  font-family: 'Fraunces', serif; font-size: 1.05rem;
+  font-weight: 600; color: var(--navy); margin-bottom: 4px;
+}
+.resource-desc {
+  font-size: 0.82rem; font-weight: 300;
+  color: var(--text-soft); line-height: 1.5;
+}
+.resource-arrow {
+  font-size: 1.1rem; color: var(--text-soft); flex-shrink: 0;
+  transition: transform 0.15s;
+}
+.resource-card:hover .resource-arrow { transform: translateX(4px); }
+
+/* COMING SOON */
+.coming-soon {
+  padding: 20px 24px;
+  border: 1px dashed var(--border);
+  font-size: 0.82rem; font-weight: 300;
+  color: var(--text-soft); font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="22" height="26" viewBox="0 0 24 28">
+      <defs><clipPath id="h1"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h1)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h1)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h1)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span class="logo-text">French with <span class="red">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/ressources.html" class="active">Ressources</a>
+    <a href="#">À propos</a>
+    <a href="#" class="nav-cta">Réserver</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="page-header">
+  <h1>Ressources</h1>
+  <p>Fiches, exercices et outils pour progresser en français. Toutes les ressources sont gratuites.</p>
+</div>
+
+<div class="content">
+
+  <!-- CONJUGAISON -->
+  <div class="category">
+    <div class="category-header">
+      <div class="category-dot" style="background:var(--conj-color)"></div>
+      <div class="category-title">Conjugaison</div>
+      <div class="category-count">2 ressources</div>
+    </div>
+    <div class="resource-list">
+      <a href="/conjugaison.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--conj-color)">Test</div>
+        <div class="resource-info">
+          <div class="resource-name">Les verbes irréguliers</div>
+          <div class="resource-desc">28 verbes essentiels — présent, imparfait, passé composé. Exercice interactif avec score et historique.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a href="/verbes_er.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--conj-color)">Fiche</div>
+        <div class="resource-info">
+          <div class="resource-name">Les verbes en -ER au présent</div>
+          <div class="resource-desc">Conjugaison standard et cas particuliers (commencer, manger, appeler, acheter) avec code couleur.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- GRAMMAIRE -->
+  <div class="category">
+    <div class="category-header">
+      <div class="category-dot" style="background:var(--gram-color)"></div>
+      <div class="category-title">Grammaire</div>
+      <div class="category-count">À venir</div>
+    </div>
+    <div class="coming-soon">Prochaines ressources en cours de préparation…</div>
+  </div>
+
+  <!-- ORTHOGRAPHE -->
+  <div class="category">
+    <div class="category-header">
+      <div class="category-dot" style="background:var(--orth-color)"></div>
+      <div class="category-title">Orthographe</div>
+      <div class="category-count">À venir</div>
+    </div>
+    <div class="coming-soon">Prochaines ressources en cours de préparation…</div>
+  </div>
+
+  <!-- VOCABULAIRE -->
+  <div class="category">
+    <div class="category-header">
+      <div class="category-dot" style="background:var(--vocab-color)"></div>
+      <div class="category-title">Vocabulaire</div>
+      <div class="category-count">À venir</div>
+    </div>
+    <div class="coming-soon">Prochaines ressources en cours de préparation…</div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <svg width="18" height="22" viewBox="0 0 24 28">
+      <defs><clipPath id="hf"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hf)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hf)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hf)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#faf7f2" stroke-width="1.5"/>
+    </svg>
+    French with Alban
+  </div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+</footer>
+
+</body>
+</html>
