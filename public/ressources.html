@@ -39,7 +39,6 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
 .nav-cta { padding: 9px 22px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); }
 .gold-line { height: 2px; background: var(--gold); }
 
-/* PAGE HEADER */
 .page-header {
   padding: 56px 64px 40px;
   border-bottom: 1px solid var(--border);
@@ -55,10 +54,8 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
   line-height: 1.7; max-width: 520px;
 }
 
-/* CONTENT */
 .content { padding: 48px 64px 80px; display: flex; flex-direction: column; gap: 48px; }
 
-/* CATEGORY */
 .category {}
 .category-header {
   display: flex; align-items: center; gap: 10px;
@@ -76,7 +73,6 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
   margin-left: auto;
 }
 
-/* RESOURCE CARDS */
 .resource-list { display: flex; flex-direction: column; gap: 12px; }
 .resource-card {
   display: flex; align-items: center;
@@ -109,7 +105,6 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
 }
 .resource-card:hover .resource-arrow { transform: translateX(4px); }
 
-/* COMING SOON */
 .coming-soon {
   padding: 20px 24px;
   border: 1px dashed var(--border);
@@ -118,7 +113,6 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
   text-align: center;
 }
 
-/* FOOTER */
 footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
 .footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
@@ -158,7 +152,7 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
     <div class="category-header">
       <div class="category-dot" style="background:var(--conj-color)"></div>
       <div class="category-title">Conjugaison</div>
-      <div class="category-count">2 ressources</div>
+      <div class="category-count">3 ressources</div>
     </div>
     <div class="resource-list">
       <a href="/conjugaison.html" class="resource-card">
@@ -174,6 +168,14 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
         <div class="resource-info">
           <div class="resource-name">Les verbes en -ER au présent</div>
           <div class="resource-desc">Conjugaison standard et cas particuliers (commencer, manger, appeler, acheter) avec code couleur.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a href="/verbes_irreguliers.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--conj-color)">Fiche</div>
+        <div class="resource-info">
+          <div class="resource-name">Les verbes irréguliers au présent</div>
+          <div class="resource-desc">24 verbes essentiels (être, avoir, aller, faire...) avec code couleur pour repérer les vraies irrégularités.</div>
         </div>
         <div class="resource-arrow">→</div>
       </a>
@@ -205,9 +207,18 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
     <div class="category-header">
       <div class="category-dot" style="background:var(--vocab-color)"></div>
       <div class="category-title">Vocabulaire</div>
-      <div class="category-count">À venir</div>
+      <div class="category-count">1 ressource</div>
     </div>
-    <div class="coming-soon">Prochaines ressources en cours de préparation…</div>
+    <div class="resource-list">
+      <a href="/vocab_prototype.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercices</div>
+        <div class="resource-info">
+          <div class="resource-name">Salutations et politesse</div>
+          <div class="resource-desc">Vocabulaire essentiel avec phonétique, plus 3 exercices interactifs (QCM, lettres mélangées, traduction écrite).</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+    </div>
   </div>
 
 </div>
