@@ -85,7 +85,6 @@ export default function Home() {
         <nav>
           <a href="#">Cours</a>
           <a href="/planning_public.html">Créneaux</a>
-          <a href="/planning_public.html">Créneaux</a>
           <a href="/ressources.html">Ressources</a>
           <a href="#">À propos</a>
           <a href="#" className="nav-cta">Réserver</a>
