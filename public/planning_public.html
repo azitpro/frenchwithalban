@@ -173,6 +173,9 @@ document.getElementById('weekLabel').textContent = label;
 
     // Occupied intervals for this date
     const occupied = [];
+    // Check full-day unavailability first
+    const fullDayBlocked = (scheduleData.unavailability || []).some(u => u.type === 'day' && u.date === dateStr);
+    if (fullDayBlocked) return;
     scheduleData.recurring.forEach(r => {
       if (!r.active) return;
       if (r.weekday !== weekdayName) return;
@@ -188,6 +191,10 @@ document.getElementById('weekLabel').textContent = label;
   if (b.date !== dateStr) return;
   occupied.push([b.startHour, b.endHour]);
 });
+(scheduleData.unavailability || []).forEach(u => {
+      if (u.type !== 'range' || u.date !== dateStr) return;
+      occupied.push([u.start, u.end]);
+    });
     occupied.sort((a,b) => a[0]-b[0]);
 
     // Compute free intervals within each availability window
@@ -239,6 +246,7 @@ async function loadSchedule() {
       exceptions: data.exceptions || [],
       oneOff: data.oneOff || [],
       availability: data.availability || [],
+      unavailability: data.unavailability || [],
     };
 
     if (preplyRes && preplyRes.ok) {
