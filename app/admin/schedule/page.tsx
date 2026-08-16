@@ -43,8 +43,25 @@ const STUDENTS = [
   'Anastasiia', 'Yoshi',
 ];
 
+// Generate half-hour options from 6h00 to 23h30
+const HOUR_OPTIONS: { value: number; label: string }[] = [];
+for (let h = 6; h <= 23; h++) {
+  HOUR_OPTIONS.push({ value: h, label: `${h}h00` });
+  HOUR_OPTIONS.push({ value: h + 0.5, label: `${h}h30` });
+}
+
 function uid() {
   return Math.random().toString(36).slice(2, 10);
+}
+
+function HourSelect({ value, onChange, style }: { value: number; onChange: (v: number) => void; style: any }) {
+  return (
+    <select value={value} onChange={(e) => onChange(parseFloat(e.target.value))} style={style}>
+      {HOUR_OPTIONS.map((o) => (
+        <option key={o.value} value={o.value}>{o.label}</option>
+      ))}
+    </select>
+  );
 }
 
 export default function ScheduleAdmin() {
@@ -55,17 +72,17 @@ export default function ScheduleAdmin() {
   const [error, setError] = useState('');
 
   const [availWeekday, setAvailWeekday] = useState('Lundi');
-  const [availStart, setAvailStart] = useState('9');
-  const [availEnd, setAvailEnd] = useState('18');
+  const [availStart, setAvailStart] = useState(9);
+  const [availEnd, setAvailEnd] = useState(18);
 
   const [newStudent, setNewStudent] = useState(STUDENTS[0]);
   const [newWeekday, setNewWeekday] = useState('Lundi');
-  const [newHour, setNewHour] = useState('10');
+  const [newHour, setNewHour] = useState(10);
   const [newDuration, setNewDuration] = useState<25 | 50>(50);
 
   const [oneOffStudent, setOneOffStudent] = useState(STUDENTS[0]);
   const [oneOffDate, setOneOffDate] = useState('');
-  const [oneOffHour, setOneOffHour] = useState('10');
+  const [oneOffHour, setOneOffHour] = useState(10);
   const [oneOffDuration, setOneOffDuration] = useState<25 | 50>(50);
 
   const [excDate, setExcDate] = useState('');
@@ -109,8 +126,8 @@ export default function ScheduleAdmin() {
     const win: AvailabilityWindow = {
       id: uid(),
       weekday: availWeekday,
-      start: parseFloat(availStart),
-      end: parseFloat(availEnd),
+      start: availStart,
+      end: availEnd,
     };
     save({ ...schedule, availability: [...schedule.availability, win] });
   }
@@ -124,7 +141,7 @@ export default function ScheduleAdmin() {
       id: uid(),
       student: newStudent,
       weekday: newWeekday,
-      hour: parseFloat(newHour),
+      hour: newHour,
       duration: newDuration,
       active: true,
     };
@@ -158,7 +175,7 @@ export default function ScheduleAdmin() {
       id: uid(),
       student: oneOffStudent,
       date: oneOffDate,
-      hour: parseFloat(oneOffHour),
+      hour: oneOffHour,
       duration: oneOffDuration,
     };
     save({ ...schedule, oneOff: [...schedule.oneOff, item] });
@@ -172,6 +189,12 @@ export default function ScheduleAdmin() {
   const inputStyle = { padding: 10, border: '1.5px solid #ddd8ce', fontFamily: 'Inter, sans-serif' };
   const btnStyle = { padding: '10px 18px', background: '#0d2b45', color: '#faf7f2', border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif' };
   const dangerStyle = { padding: '6px 12px', cursor: 'pointer', color: '#c0392b', background: 'none', border: '1px solid #c0392b', fontFamily: 'Inter, sans-serif' };
+
+  function fmtHour(h: number) {
+    const hh = Math.floor(h);
+    const mm = h % 1 === 0.5 ? '30' : '00';
+    return `${hh}h${mm}`;
+  }
 
   if (!authenticated) {
     return (
@@ -210,15 +233,16 @@ export default function ScheduleAdmin() {
           <select value={availWeekday} onChange={(e) => setAvailWeekday(e.target.value)} style={inputStyle}>
             {WEEKDAYS.map((d) => <option key={d} value={d}>{d}</option>)}
           </select>
-          <input type="number" step="0.5" placeholder="Début (ex: 9)" value={availStart} onChange={(e) => setAvailStart(e.target.value)} style={{ ...inputStyle, width: 130 }} />
-          <input type="number" step="0.5" placeholder="Fin (ex: 18)" value={availEnd} onChange={(e) => setAvailEnd(e.target.value)} style={{ ...inputStyle, width: 130 }} />
+          <HourSelect value={availStart} onChange={setAvailStart} style={inputStyle} />
+          <span style={{ alignSelf: 'center', color: '#666' }}>à</span>
+          <HourSelect value={availEnd} onChange={setAvailEnd} style={inputStyle} />
           <button onClick={addAvailability} style={btnStyle}>Ajouter</button>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {schedule.availability.map((a) => (
             <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 10, background: '#f0ece4', border: '1px solid #ddd8ce' }}>
-              <span style={{ flex: 1 }}><strong>{a.weekday}</strong> — {a.start}h à {a.end}h</span>
+              <span style={{ flex: 1 }}><strong>{a.weekday}</strong> — {fmtHour(a.start)} à {fmtHour(a.end)}</span>
               <button onClick={() => removeAvailability(a.id)} style={dangerStyle}>Supprimer</button>
             </div>
           ))}
@@ -241,7 +265,7 @@ export default function ScheduleAdmin() {
           <select value={newWeekday} onChange={(e) => setNewWeekday(e.target.value)} style={inputStyle}>
             {WEEKDAYS.map((d) => <option key={d} value={d}>{d}</option>)}
           </select>
-          <input type="number" step="0.5" placeholder="Heure (ex: 10 ou 13.5)" value={newHour} onChange={(e) => setNewHour(e.target.value)} style={{ ...inputStyle, width: 160 }} />
+          <HourSelect value={newHour} onChange={setNewHour} style={inputStyle} />
           <select value={newDuration} onChange={(e) => setNewDuration(Number(e.target.value) as 25 | 50)} style={inputStyle}>
             <option value={25}>25 min</option>
             <option value={50}>50 min</option>
@@ -256,7 +280,7 @@ export default function ScheduleAdmin() {
               <div key={r.id} style={{ padding: 12, background: '#f0ece4', border: '1px solid #ddd8ce' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
                   <span style={{ flex: 1 }}>
-                    <strong>{r.student}</strong> — {r.weekday} {r.hour}h ({r.duration} min)
+                    <strong>{r.student}</strong> — {r.weekday} {fmtHour(r.hour)} ({r.duration} min)
                   </span>
                   <button onClick={() => removeRecurring(r.id)} style={dangerStyle}>Supprimer</button>
                 </div>
@@ -291,7 +315,7 @@ export default function ScheduleAdmin() {
             {STUDENTS.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
           <input type="date" value={oneOffDate} onChange={(e) => setOneOffDate(e.target.value)} style={inputStyle} />
-          <input type="number" step="0.5" placeholder="Heure" value={oneOffHour} onChange={(e) => setOneOffHour(e.target.value)} style={{ ...inputStyle, width: 100 }} />
+          <HourSelect value={oneOffHour} onChange={setOneOffHour} style={inputStyle} />
           <select value={oneOffDuration} onChange={(e) => setOneOffDuration(Number(e.target.value) as 25 | 50)} style={inputStyle}>
             <option value={25}>25 min</option>
             <option value={50}>50 min</option>
@@ -303,7 +327,7 @@ export default function ScheduleAdmin() {
           {schedule.oneOff.map((o) => (
             <div key={o.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#f0ece4', border: '1px solid #ddd8ce' }}>
               <span style={{ flex: 1 }}>
-                <strong>{o.student}</strong> — {o.date} à {o.hour}h ({o.duration} min)
+                <strong>{o.student}</strong> — {o.date} à {fmtHour(o.hour)} ({o.duration} min)
               </span>
               <button onClick={() => removeOneOff(o.id)} style={dangerStyle}>Supprimer</button>
             </div>
