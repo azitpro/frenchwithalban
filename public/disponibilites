@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disponibilités — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+  --green: #2e7d4f;
+  --green-soft: #e8f4ed;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+header {
+  padding: 28px 48px; border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream); width: 100%; box-sizing: border-box;
+}
+h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 24px; }
+.day-block { margin-bottom: 28px; }
+.day-title {
+  font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 2px solid var(--border);
+}
+.slot-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.slot {
+  padding: 9px 16px; background: var(--green-soft); border: 1.5px solid var(--green);
+  color: var(--green); font-weight: 600; font-size: 0.9rem;
+}
+.loading { color: var(--text-soft); font-style: italic; }
+footer {
+  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-nav { display: flex; gap: 20px; }
+.footer-btn {
+  font-size: 0.8rem; font-weight: 500; color: var(--cream);
+  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
+}
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; color: rgba(250,247,242,0.4); }
+</style>
+</head>
+<body>
+<header>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <svg width="30" height="35" viewBox="0 0 24 28">
+      <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hHeader)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hHeader)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span style="font-family:'Fraunces',serif; font-size:1.7rem; font-weight:700; color:var(--navy); letter-spacing:-0.01em;">French with <span style="color:var(--red)">Alban</span></span>
+  </div>
+  <nav style="display: flex; gap: 44px; align-items: center;">
+    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">Accueil</a>
+  </nav>
+</header>
+<div class="wrap">
+<h1>Disponibilités</h1>
+<div id="scheduleRoot"><p class="loading">Chargement des créneaux...</p></div>
+</div>
+<footer>
+  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+</footer>
+<script>
+async function loadSlots() {
+  const root = document.getElementById('scheduleRoot');
+  try {
+    const res = await fetch('/api/slots');
+    const slots = await res.json();
+    const free = slots.filter(s => s.status === 'libre');
+    if (free.length === 0) {
+      root.innerHTML = '<p class="loading">Aucun créneau disponible pour le moment.</p>';
+      return;
+    }
+    const byDay = {};
+    free.forEach(s => {
+      if (!byDay[s.day]) byDay[s.day] = [];
+      byDay[s.day].push(s.hour);
+    });
+    root.innerHTML = Object.entries(byDay).map(([day, hours]) => `
+      <div class="day-block">
+        <div class="day-title">${day}</div>
+        <div class="slot-list">${hours.map(h => `<div class="slot">${h}</div>`).join('')}</div>
+      </div>
+    `).join('');
+  } catch (e) {
+    root.innerHTML = '<p class="loading">Erreur de chargement. Réessayez plus tard.</p>';
+  }
+}
+loadSlots();
+</script>
+</body>
+</html>

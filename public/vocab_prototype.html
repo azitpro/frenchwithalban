@@ -20,8 +20,8 @@
   --red-soft: #fbeae8;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 40px 20px 80px; }
-.wrap { max-width: 640px; margin: 0 auto; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
 
 h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin-bottom: 24px; }
 .sub { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 24px; }
@@ -81,6 +81,7 @@ td { padding: 12px 16px; font-size: 0.95rem; vertical-align: top; }
   width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 1.1rem; color: var(--navy); border-bottom: 2px solid var(--border);
 }
+.scramble-slot.auto { color: var(--text-soft); font-weight: 400; border-bottom-color: transparent; }
 .scramble-letters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
 .scramble-letter {
   width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
@@ -150,15 +151,21 @@ td { padding: 12px 16px; font-size: 0.95rem; vertical-align: top; }
 </head>
 <body>
 
-<header style="padding: 24px 48px; border-bottom: 3px solid var(--navy); display: flex; align-items: center; gap: 10px; background: var(--cream);">
-  <svg width="32" height="37" viewBox="0 0 24 28">
-    <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-    <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
-    <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hHeader)"/>
-    <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hHeader)"/>
-    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-  </svg>
-  <span style="font-family:'Fraunces',serif; font-size:1.9rem; font-weight:700; color:var(--navy);">French with <span style="color:var(--red)">Alban</span></span>
+<header style="padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); width: 100%; box-sizing: border-box;">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <svg width="30" height="35" viewBox="0 0 24 28">
+      <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hHeader)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hHeader)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span style="font-family:'Fraunces',serif; font-size:1.7rem; font-weight:700; color:var(--navy); letter-spacing:-0.01em;">French with <span style="color:var(--red)">Alban</span></span>
+  </div>
+  <nav style="display: flex; gap: 44px; align-items: center;">
+    <a href="/ressources.html" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65; transition:opacity 0.2s;">← Retour</a>
+    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65; transition:opacity 0.2s;">Accueil</a>
+  </nav>
 </header>
 
 <div class="wrap" style="padding-top: 40px;">
@@ -217,8 +224,8 @@ const VOCAB = [
   { fr: "De rien", pho: "/də ʁjɛ̃/", en: "You're welcome" },
   { fr: "Excusez-moi", pho: "/ɛk.sky.ze mwa/", en: "Excuse me (formal)" },
   { fr: "Pardon", pho: "/paʁ.dɔ̃/", en: "Sorry / Excuse me" },
-  { fr: "Comment allez-vous", pho: "/kɔ.mɑ̃ t‿a.le vu/", en: "How are you (formal)" },
-  { fr: "Ça va", pho: "/sa va/", en: "How's it going (informal)" },
+  { fr: "Comment allez-vous ?", pho: "/kɔ.mɑ̃ t‿a.le vu/", en: "How are you (formal)" },
+  { fr: "Ça va ?", pho: "/sa va/", en: "How's it going (informal)" },
   { fr: "Enchanté", pho: "/ɑ̃.ʃɑ̃.te/", en: "Nice to meet you" },
   { fr: "Bonne journée", pho: "/bɔn ʒuʁ.ne/", en: "Have a good day" },
 ];
@@ -299,7 +306,8 @@ function setupEx2Word() {
   const q = ex2Order[ex2Idx];
   ex2Target = q.fr.toLowerCase().replace(/[^a-zàâäéèêëîïôöùûüÿçœ \-']/g, "");
   ex2Built = [];
-  ex2Letters = shuffle(ex2Target.split("")).map((ch,i) => ({ch, id:i, used:false}));
+  const AUTO_CHARS = [" ", "-", "'", "?"];
+  ex2Letters = shuffle(ex2Target.split("").filter(ch => !AUTO_CHARS.includes(ch)).map((ch,i) => ({ch, id:i, used:false})));
 }
 function renderEx2() {
   const root = document.getElementById('ex2Root');
@@ -334,25 +342,41 @@ function renderEx2() {
   document.getElementById('scrValidate').onclick = validateEx2;
 }
 function displayChar(ch) { return ch === " " ? "·" : ch; }
+const AUTO_CHARS_UI = [" ", "-", "'", "?"];
 function renderScrambleUI() {
   const ans = document.getElementById('scrAnswer');
   const lets = document.getElementById('scrLetters');
-  ans.innerHTML = ex2Target.split("").map((_,i) => `<div class="scramble-slot">${ex2Built[i] ? displayChar(ex2Built[i].ch) : ""}</div>`).join('');
+  let builtIdx = 0;
+  ans.innerHTML = ex2Target.split("").map((targetCh) => {
+    if (AUTO_CHARS_UI.includes(targetCh)) {
+      return `<div class="scramble-slot auto">${displayChar(targetCh)}</div>`;
+    }
+    const filled = ex2Built[builtIdx];
+    builtIdx++;
+    return `<div class="scramble-slot">${filled ? displayChar(filled.ch) : ""}</div>`;
+  }).join('');
   lets.innerHTML = ex2Letters.map(l => `<div class="scramble-letter ${l.used?'used':''}" data-id="${l.id}">${displayChar(l.ch)}</div>`).join('');
+  const realLetterCount = ex2Letters.length;
   lets.querySelectorAll('.scramble-letter').forEach(el => {
     el.addEventListener('click', () => {
       const id = parseInt(el.dataset.id);
       const letterObj = ex2Letters.find(l => l.id===id);
-      if (letterObj.used || ex2Built.length >= ex2Target.length) return;
+      if (letterObj.used || ex2Built.length >= realLetterCount) return;
       letterObj.used = true; ex2Built.push(letterObj);
       renderScrambleUI();
-      document.getElementById('scrValidate').disabled = ex2Built.length !== ex2Target.length;
+      document.getElementById('scrValidate').disabled = ex2Built.length !== realLetterCount;
     });
   });
 }
 function validateEx2() {
-  const built = ex2Built.map(l=>l.ch).join("");
-  const correct = built === ex2Target;
+  let builtIdx = 0;
+  const reconstructed = ex2Target.split("").map(targetCh => {
+    if (AUTO_CHARS_UI.includes(targetCh)) return targetCh;
+    const ch = ex2Built[builtIdx] ? ex2Built[builtIdx].ch : "";
+    builtIdx++;
+    return ch;
+  }).join("");
+  const correct = reconstructed === ex2Target;
   if (correct) ex2Score++;
   document.getElementById('scrFeedback').innerHTML = `<div class="feedback ${correct?'ok':'bad'}">${correct?'Correct !':'La bonne orthographe était : <b>'+ex2Order[ex2Idx].fr+'</b>'}</div>`;
   document.getElementById('scrValidate').disabled = true;

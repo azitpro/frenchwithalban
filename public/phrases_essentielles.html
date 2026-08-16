@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phrases essentielles — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+  --green: #2e7d4f;
+  --green-soft: #e8f4ed;
+  --red-soft: #fbeae8;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+
+header {
+  padding: 28px 48px; border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream); width: 100%; box-sizing: border-box;
+}
+h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 24px; }
+
+.toggle-row { display: flex; gap: 8px; margin-bottom: 20px; }
+.toggle-btn {
+  padding: 9px 20px; border: 1.5px solid var(--navy); background: transparent;
+  color: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.82rem;
+  font-weight: 500; cursor: pointer; transition: all 0.15s;
+}
+.toggle-btn.active { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--gold); }
+.toggle-btn:hover:not(.active) { background: var(--cream-dark); }
+
+table.vocab-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; table-layout: fixed; }
+table.vocab-table tr { border-bottom: 1px solid var(--border); }
+table.vocab-table tr:nth-child(even) { background: var(--cream-dark); }
+table.vocab-table td { padding: 12px 16px; font-size: 0.92rem; vertical-align: top; transition: opacity 0.2s; }
+table.vocab-table .fr-cell { font-weight: 700; color: var(--navy); width: 38%; }
+table.vocab-table .pho-cell { font-style: italic; font-weight: 300; color: var(--red); font-size: 0.8rem; width: 30%; }
+table.vocab-table .en-cell { font-style: italic; font-weight: 300; color: var(--text-soft); width: 32%; }
+.hidden-col { opacity: 0; pointer-events: none; }
+
+/* EXERCISE */
+.ex-block { padding-top: 40px; }
+.ex-desc { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 24px; }
+
+.ex-card {
+  background: var(--cream-dark); border: 1px solid var(--border);
+  border-top: 3px solid var(--navy); padding: 28px;
+}
+.ex-progress { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 12px; display: flex; justify-content: space-between; }
+.ex-prompt {
+  font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--navy);
+  margin-bottom: 20px; text-align: center; line-height: 1.3;
+}
+
+.option-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.option-item {
+  padding: 12px 16px; border: 1.5px solid var(--border); background: var(--cream);
+  font-size: 0.9rem; font-weight: 500; color: var(--navy); cursor: pointer;
+  transition: all 0.15s;
+}
+.option-item:hover { border-color: var(--navy); }
+.option-item.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+.option-item.wrong { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+.option-item.disabled { pointer-events: none; }
+.option-item.faded { opacity: 0.4; }
+
+.btn { padding: 13px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1.5px solid var(--navy); transition: all 0.15s; width: 100%; max-width: 220px; margin: 0 auto; display: block; }
+.btn-primary { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--red); }
+.btn-primary:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--red); }
+
+.start-screen { text-align: center; padding: 20px 0; }
+.start-screen p { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 20px; }
+
+.ex-result { text-align: center; }
+.ex-result .score { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--navy); margin: 8px 0; }
+.mention { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 20px; border: 1.5px solid; }
+.m-revoir { background: var(--red-soft); color: var(--red); border-color: var(--red); }
+.m-passable { background: #fdf3e3; color: #9a6c1a; border-color: #c9972a; }
+.m-assezbien { background: #f0f5e8; color: #5a6e28; border-color: #8a9e3a; }
+.m-bien { background: var(--green-soft); color: var(--green); border-color: var(--green); }
+.m-tresbien { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <svg width="30" height="35" viewBox="0 0 24 28">
+      <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hHeader)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hHeader)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span style="font-family:'Fraunces',serif; font-size:1.7rem; font-weight:700; color:var(--navy); letter-spacing:-0.01em;">French with <span style="color:var(--red)">Alban</span></span>
+  </div>
+  <nav style="display: flex; gap: 44px; align-items: center;">
+    <a href="/ressources.html" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">← Retour</a>
+    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">Accueil</a>
+  </nav>
+</header>
+
+<div class="wrap">
+<h1>Phrases essentielles</h1>
+
+<div class="toggle-row">
+  <button class="toggle-btn" data-mode="fr">Français</button>
+  <button class="toggle-btn" data-mode="en">Anglais</button>
+  <button class="toggle-btn active" data-mode="both">Les deux</button>
+</div>
+
+<table class="vocab-table" id="phraseTable"></table>
+
+<div class="ex-block">
+  <div class="ex-desc">La phrase s'affiche en anglais — choisissez la bonne traduction française parmi les 12 options.</div>
+  <div class="ex-card" id="exRoot"></div>
+</div>
+</div>
+
+<script>
+const PHRASES = [
+  { fr: "Je ne parle pas bien français", pho: "/ʒə nə paʁl pa bjɛ̃ fʁɑ̃.sɛ/", en: "I don't speak French well" },
+  { fr: "Est-ce que vous parlez anglais ?", pho: "/ɛs kə vu paʁ.le ɑ̃.glɛ/", en: "Do you speak English?" },
+  { fr: "Je ne comprends pas", pho: "/ʒə nə kɔ̃.pʁɑ̃ pa/", en: "I don't understand" },
+  { fr: "Est-ce que vous pouvez répéter ?", pho: "/ɛs kə vu pu.ve ʁe.pe.te/", en: "Can you repeat that?" },
+  { fr: "Est-ce que vous pouvez parler plus lentement ?", pho: "/ɛs kə vu pu.ve paʁ.le ply lɑ̃t.mɑ̃/", en: "Can you speak more slowly?" },
+  { fr: "Combien ça coûte ?", pho: "/kɔ̃.bjɛ̃ sa kut/", en: "How much does it cost?" },
+  { fr: "Je cherche la station Palais Royal", pho: "/ʒə ʃɛʁʃ la sta.sjɔ̃ pa.lɛ ʁwa.jal/", en: "I'm looking for Palais Royal station" },
+  { fr: "Où sont les toilettes ?", pho: "/u sɔ̃ le twa.lɛt/", en: "Where are the toilets?" },
+  { fr: "Vous prenez la carte bancaire ?", pho: "/vu pʁə.ne la kaʁt bɑ̃.kɛʁ/", en: "Do you take card payment?" },
+  { fr: "J'ai une réservation au nom de ...", pho: "/ʒe yn ʁe.zɛʁ.va.sjɔ̃ o nɔ̃ də/", en: "I have a reservation under the name..." },
+  { fr: "Je vais à l'aéroport", pho: "/ʒə vɛ a la.e.ʁɔ.pɔʁ/", en: "I'm going to the airport" },
+  { fr: "Une table pour trois personnes, s'il vous plaît", pho: "/yn tabl puʁ tʁwa pɛʁ.sɔn sil vu plɛ/", en: "A table for three people, please" },
+];
+
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function mention(pct) {
+  if(pct<50) return {label:"à revoir",cls:"m-revoir"};
+  if(pct<60) return {label:"passable",cls:"m-passable"};
+  if(pct<70) return {label:"assez bien",cls:"m-assezbien"};
+  if(pct<80) return {label:"bien",cls:"m-bien"};
+  return {label:"très bien",cls:"m-tresbien"};
+}
+
+const table = document.getElementById('phraseTable');
+table.innerHTML = PHRASES.map(p => `<tr><td class="fr-cell">${p.fr}</td><td class="pho-cell">${p.pho}</td><td class="en-cell">${p.en}</td></tr>`).join('');
+
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const mode = btn.dataset.mode;
+    document.querySelectorAll('.fr-cell').forEach(c => c.classList.toggle('hidden-col', mode === 'en'));
+    document.querySelectorAll('.pho-cell').forEach(c => c.classList.toggle('hidden-col', mode === 'en'));
+    document.querySelectorAll('.en-cell').forEach(c => c.classList.toggle('hidden-col', mode === 'fr'));
+  });
+});
+
+let order = [], idx = 0, score = 0, started = false, answered = false;
+const optionsList = PHRASES.map(p => p.fr); // fixed list, same order each time
+
+function render() {
+  const root = document.getElementById('exRoot');
+
+  if (!started) {
+    root.innerHTML = `<div class="start-screen"><p>${PHRASES.length} phrases, ordre aléatoire. Les 12 options restent affichées à chaque question.</p><button class="btn btn-primary" id="startBtn">Commencer</button></div>`;
+    document.getElementById('startBtn').onclick = () => { started = true; order = shuffle(PHRASES); idx = 0; score = 0; render(); };
+    return;
+  }
+
+  if (idx >= order.length) {
+    const pct = Math.round((score/order.length)*100);
+    const m = mention(pct);
+    root.innerHTML = `<div class="ex-result">
+      <div class="score">${score} / ${order.length}</div>
+      <span class="mention ${m.cls}">${m.label} — ${pct}%</span><br>
+      <button class="btn btn-primary" id="retryBtn">Recommencer</button></div>`;
+    document.getElementById('retryBtn').onclick = () => { started = false; render(); };
+    return;
+  }
+
+  const q = order[idx];
+  root.innerHTML = `
+    <div class="ex-progress"><span>Question ${idx+1} / ${order.length}</span><span>Score : ${score}</span></div>
+    <div class="ex-prompt">${q.en}</div>
+    <div class="option-list">${optionsList.map(o => `<div class="option-item" data-fr="${o.replace(/"/g,'&quot;')}">${o}</div>`).join('')}</div>`;
+
+  root.querySelectorAll('.option-item').forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (answered) return;
+      answered = true;
+      const correct = opt.dataset.fr === q.fr;
+      if (correct) score++;
+      root.querySelectorAll('.option-item').forEach(o => {
+        o.classList.add('disabled');
+        if (o.dataset.fr === q.fr) o.classList.add('correct');
+        else if (o === opt) o.classList.add('wrong');
+        else o.classList.add('faded');
+      });
+      setTimeout(() => { answered = false; idx++; render(); }, 1100);
+    });
+  });
+}
+render();
+</script>
+</body>
+</html>
