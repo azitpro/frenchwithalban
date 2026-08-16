@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mots interrogatifs — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+  --green: #2e7d4f;
+  --green-soft: #e8f4ed;
+  --red-soft: #fbeae8;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+
+header {
+  padding: 28px 48px; border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream); width: 100%; box-sizing: border-box;
+}
+h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 24px; }
+
+.toggle-row { display: flex; gap: 8px; margin-bottom: 20px; }
+.toggle-btn {
+  padding: 9px 20px; border: 1.5px solid var(--navy); background: transparent;
+  color: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.82rem;
+  font-weight: 500; cursor: pointer; transition: all 0.15s;
+}
+.toggle-btn.active { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--gold); }
+.toggle-btn:hover:not(.active) { background: var(--cream-dark); }
+
+table.vocab-table { width: 100%; border-collapse: collapse; margin-bottom: 56px; table-layout: fixed; }
+table.vocab-table tr { border-bottom: 1px solid var(--border); }
+table.vocab-table tr:nth-child(even) { background: var(--cream-dark); }
+table.vocab-table td { padding: 12px 16px; font-size: 0.92rem; vertical-align: top; transition: opacity 0.2s; }
+.fr-cell { font-weight: 700; color: var(--navy); width: 34%; }
+.fr-cell .note { font-weight: 400; font-style: italic; color: var(--text-soft); font-size: 0.78rem; display: block; margin-top: 2px; }
+.pho-cell { font-style: italic; font-weight: 300; color: var(--red); font-size: 0.8rem; width: 30%; }
+.en-cell { font-style: italic; font-weight: 300; color: var(--text-soft); width: 36%; }
+.hidden-col { opacity: 0; pointer-events: none; }
+
+.ex-block { margin-bottom: 56px; padding-top: 32px; border-top: 2px solid var(--border); }
+.ex-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.ex-desc { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 20px; }
+
+.ex-card { background: var(--cream-dark); border: 1px solid var(--border); border-top: 3px solid var(--navy); padding: 28px; }
+
+.start-screen { text-align: center; padding: 20px 0; }
+.start-screen p { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 20px; }
+
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 20px; }
+.match-col { display: flex; flex-direction: column; gap: 8px; }
+.match-item {
+  padding: 12px 16px; border: 1.5px solid var(--border); background: var(--cream);
+  font-size: 0.9rem; font-weight: 500; color: var(--navy); cursor: pointer;
+  transition: all 0.15s; text-align: center;
+}
+.match-item:hover { border-color: var(--navy); }
+.match-item.selected { border-color: var(--navy); background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--gold); }
+.match-item.matched { border-color: var(--green); background: var(--green-soft); color: var(--green); cursor: default; pointer-events: none; }
+.match-item.wrong-flash { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+
+.btn { padding: 13px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1.5px solid var(--navy); transition: all 0.15s; }
+.btn-primary { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--red); width: 100%; max-width: 220px; margin: 0 auto; display: block; }
+.btn-primary:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--red); }
+
+.ex-result { text-align: center; }
+.ex-result .score { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--navy); margin: 8px 0; }
+.mention { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 20px; border: 1.5px solid; }
+.m-revoir { background: var(--red-soft); color: var(--red); border-color: var(--red); }
+.m-passable { background: #fdf3e3; color: #9a6c1a; border-color: #c9972a; }
+.m-assezbien { background: #f0f5e8; color: #5a6e28; border-color: #8a9e3a; }
+.m-bien { background: var(--green-soft); color: var(--green); border-color: var(--green); }
+.m-tresbien { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+
+.ex-progress { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 16px; display: flex; justify-content: space-between; }
+.ex-prompt { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--navy); margin-bottom: 20px; text-align: center; }
+
+.type-field { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.type-field input {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+  background: var(--cream); font-family: 'Inter', sans-serif; font-size: 1rem;
+  color: var(--navy); outline: none;
+}
+.type-field input:focus { border-color: var(--navy); }
+.type-field input.ok { border-color: var(--green); background: var(--green-soft); }
+.type-field input.bad { border-color: var(--red); background: var(--red-soft); }
+.accent-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.accent-btn {
+  width: 30px; height: 30px; border: 1.5px solid var(--border); background: var(--cream);
+  font-size: 0.9rem; color: var(--navy); cursor: pointer; transition: all 0.15s;
+}
+.accent-btn:hover { border-color: var(--navy); background: var(--cream-dark); }
+
+.feedback { margin-top: 14px; padding: 12px 14px; font-size: 0.85rem; border-left: 3px solid; }
+.feedback.ok { background: var(--green-soft); color: #1e5c35; border-color: var(--green); }
+.feedback.bad { background: var(--red-soft); color: #8b2a20; border-color: var(--red); }
+
+footer {
+  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-nav { display: flex; gap: 20px; }
+.footer-btn {
+  font-size: 0.8rem; font-weight: 500; color: var(--cream);
+  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
+}
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; color: rgba(250,247,242,0.4); }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <svg width="30" height="35" viewBox="0 0 24 28">
+      <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hHeader)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hHeader)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span style="font-family:'Fraunces',serif; font-size:1.7rem; font-weight:700; color:var(--navy); letter-spacing:-0.01em;">French with <span style="color:var(--red)">Alban</span></span>
+  </div>
+  <nav style="display: flex; gap: 44px; align-items: center;">
+    <a href="/ressources.html" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">← Retour</a>
+    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">Accueil</a>
+  </nav>
+</header>
+
+<div class="wrap">
+<h1>Mots interrogatifs</h1>
+
+<div class="toggle-row">
+  <button class="toggle-btn" data-mode="fr">Français</button>
+  <button class="toggle-btn" data-mode="en">Anglais</button>
+  <button class="toggle-btn active" data-mode="both">Les deux</button>
+</div>
+
+<table class="vocab-table" id="vocabTable"></table>
+
+<!-- EXERCISE 1: MATCHING -->
+<div class="ex-block">
+  <div class="ex-title">Exercice 1 — Associer les mots</div>
+  <div class="ex-desc">Cliquez un mot français, puis sa traduction anglaise correspondante.</div>
+  <div class="ex-card" id="exRoot"></div>
+</div>
+
+<!-- EXERCISE 2: TYPED ANSWERS -->
+<div class="ex-block">
+  <div class="ex-title">Exercice 2 — Traduction écrite</div>
+  <div class="ex-desc">Écrivez le mot français correspondant. Plusieurs réponses sont parfois acceptées.</div>
+  <div class="ex-card" id="ex2Root"></div>
+</div>
+</div>
+
+<footer>
+  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+</footer>
+
+<script>
+const WORDS = [
+  { fr: "Combien", note: "", pho: "/kɔ̃.bjɛ̃/", en: "How much / How many", accepted: ["combien"] },
+  { fr: "Comment", note: "", pho: "/kɔ.mɑ̃/", en: "How", accepted: ["comment"] },
+  { fr: "Pourquoi", note: "", pho: "/puʁ.kwa/", en: "Why", accepted: ["pourquoi"] },
+  { fr: "Qui", note: "", pho: "/ki/", en: "Who", accepted: ["qui"] },
+  { fr: "Quand", note: "", pho: "/kɑ̃/", en: "When", accepted: ["quand"] },
+  { fr: "Où", note: "", pho: "/u/", en: "Where", accepted: ["ou", "où"] },
+  { fr: "Que / Quoi", note: "(what + verb)", pho: "/kə/ · /kwa/", en: "What", accepted: ["que", "quoi", "qu'est-ce que", "qu'est ce que"] },
+  { fr: "Quel(s) / Quelle(s)", note: "(which / what + noun)", pho: "/kɛl/", en: "Which / What", accepted: ["quel", "quelle", "quels", "quelles"] },
+];
+
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function mention(pct) {
+  if(pct<50) return {label:"à revoir",cls:"m-revoir"};
+  if(pct<60) return {label:"passable",cls:"m-passable"};
+  if(pct<70) return {label:"assez bien",cls:"m-assezbien"};
+  if(pct<80) return {label:"bien",cls:"m-bien"};
+  return {label:"très bien",cls:"m-tresbien"};
+}
+function stripAccents(s){ return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function normalize(s){ return stripAccents(s.trim().toLowerCase()).replace(/[().]/g, ""); }
+
+function answerMatches(given, accepted) {
+  const normGiven = normalize(given);
+  if (accepted.some(a => normalize(a) === normGiven)) return true;
+  const tokens = normGiven.split(/[\/\s]+/).filter(Boolean);
+  return tokens.some(t => accepted.some(a => normalize(a) === t));
+}
+
+/* VOCAB TABLE */
+const table = document.getElementById('vocabTable');
+table.innerHTML = WORDS.map(w => `
+  <tr>
+    <td class="fr-cell">${w.fr}${w.note ? `<span class="note">${w.note}</span>` : ''}</td>
+    <td class="pho-cell">${w.pho}</td>
+    <td class="en-cell">${w.en}</td>
+  </tr>`).join('');
+
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const mode = btn.dataset.mode;
+    document.querySelectorAll('.fr-cell').forEach(c => c.classList.toggle('hidden-col', mode === 'en'));
+    document.querySelectorAll('.pho-cell').forEach(c => c.classList.toggle('hidden-col', mode === 'en'));
+    document.querySelectorAll('.en-cell').forEach(c => c.classList.toggle('hidden-col', mode === 'fr'));
+  });
+});
+
+/* ===== EXERCISE 1: MATCHING ===== */
+let started = false;
+let leftOrder = [], rightOrder = [];
+let selectedLeft = null;
+let matchedCount = 0;
+let wrongAttempts = 0;
+
+function renderEx() {
+  const root = document.getElementById('exRoot');
+
+  if (!started) {
+    root.innerHTML = `<div class="start-screen"><p>${WORDS.length} paires à associer.</p><button class="btn btn-primary" id="startBtn">Commencer</button></div>`;
+    document.getElementById('startBtn').onclick = () => {
+      started = true;
+      WORDS.forEach(w => w.matched = false);
+      leftOrder = WORDS.map(w => w.fr);
+      rightOrder = shuffle(WORDS.map(w => w.en));
+      selectedLeft = null;
+      matchedCount = 0;
+      wrongAttempts = 0;
+      renderEx();
+    };
+    return;
+  }
+
+  if (matchedCount === WORDS.length) {
+    const totalAttempts = matchedCount + wrongAttempts;
+    const pct = Math.round((matchedCount / totalAttempts) * 100);
+    const m = mention(pct);
+    root.innerHTML = `<div class="ex-result">
+      <div class="score">${matchedCount} / ${WORDS.length}</div>
+      <span class="mention ${m.cls}">${m.label}${wrongAttempts > 0 ? ` — ${wrongAttempts} erreur${wrongAttempts>1?'s':''}` : ''}</span><br>
+      <button class="btn btn-primary" id="retryBtn">Recommencer</button></div>`;
+    document.getElementById('retryBtn').onclick = () => { started = false; renderEx(); };
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="ex-progress" style="justify-content:center;">${matchedCount} / ${WORDS.length} associés</div>
+    <div class="match-grid">
+      <div class="match-col" id="leftCol">
+        ${leftOrder.map(fr => {
+          const w = WORDS.find(x => x.fr === fr);
+          return `<div class="match-item ${w.matched ? 'matched' : ''}" data-fr="${fr}">${fr}</div>`;
+        }).join('')}
+      </div>
+      <div class="match-col" id="rightCol">
+        ${rightOrder.map(en => {
+          const w = WORDS.find(x => x.en === en);
+          return `<div class="match-item ${w.matched ? 'matched' : ''}" data-en="${en}">${en}</div>`;
+        }).join('')}
+      </div>
+    </div>`;
+
+  document.querySelectorAll('#leftCol .match-item:not(.matched)').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('#leftCol .match-item').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedLeft = el.dataset.fr;
+    });
+  });
+
+  document.querySelectorAll('#rightCol .match-item:not(.matched)').forEach(el => {
+    el.addEventListener('click', () => {
+      if (!selectedLeft) return;
+      const w = WORDS.find(x => x.fr === selectedLeft);
+      const rightEn = el.dataset.en;
+
+      if (w.en === rightEn) {
+        w.matched = true;
+        matchedCount++;
+        selectedLeft = null;
+        renderEx();
+      } else {
+        wrongAttempts++;
+        el.classList.add('wrong-flash');
+        setTimeout(() => {
+          el.classList.remove('wrong-flash');
+          document.querySelectorAll('#leftCol .match-item').forEach(e => e.classList.remove('selected'));
+          selectedLeft = null;
+        }, 500);
+      }
+    });
+  });
+}
+renderEx();
+
+/* ===== EXERCISE 2: TYPED ANSWERS ===== */
+const ACCENTS = ["é","è","ê","ë","à","â","î","ï","ô","ù","û","ç","œ"];
+let ex2Order = [], ex2Idx = 0, ex2Score = 0, ex2Started = false, ex2Answered = false;
+
+function renderEx2() {
+  const root = document.getElementById('ex2Root');
+
+  if (!ex2Started) {
+    root.innerHTML = `<div class="start-screen"><p>${WORDS.length} mots, ordre aléatoire.</p><button class="btn btn-primary" id="ex2Start">Commencer</button></div>`;
+    document.getElementById('ex2Start').onclick = () => {
+      ex2Started = true;
+      ex2Order = shuffle(WORDS);
+      ex2Idx = 0;
+      ex2Score = 0;
+      renderEx2();
+    };
+    return;
+  }
+
+  if (ex2Idx >= ex2Order.length) {
+    const pct = Math.round((ex2Score / ex2Order.length) * 100);
+    const m = mention(pct);
+    root.innerHTML = `<div class="ex-result">
+      <div class="score">${ex2Score} / ${ex2Order.length}</div>
+      <span class="mention ${m.cls}">${m.label} — ${pct}%</span><br>
+      <button class="btn btn-primary" id="ex2Retry">Recommencer</button></div>`;
+    document.getElementById('ex2Retry').onclick = () => { ex2Started = false; renderEx2(); };
+    return;
+  }
+
+  const q = ex2Order[ex2Idx];
+  root.innerHTML = `
+    <div class="ex-progress"><span>Mot ${ex2Idx+1} / ${ex2Order.length}</span><span>Score : ${ex2Score}</span></div>
+    <div class="ex-prompt">${q.en}</div>
+    <div class="type-field">
+      <input type="text" id="ex2Input" autocomplete="off" placeholder="Votre réponse...">
+      <div class="accent-row">${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}">${c}</button>`).join('')}</div>
+    </div>
+    <div id="ex2Feedback"></div>
+    <button class="btn btn-primary" id="ex2Submit">Valider</button>`;
+
+  const input = document.getElementById('ex2Input');
+  input.focus();
+  root.querySelectorAll('.accent-btn').forEach(b => b.addEventListener('click', () => {
+    const s=input.selectionStart??input.value.length, e=input.selectionEnd??input.value.length;
+    input.value = input.value.slice(0,s)+b.dataset.char+input.value.slice(e);
+    input.focus(); input.setSelectionRange(s+1,s+1);
+  }));
+
+  function submit() {
+    if (ex2Answered) return;
+    ex2Answered = true;
+    const given = normalize(input.value);
+    const correct = answerMatches(input.value, q.accepted);
+    if (correct) ex2Score++;
+    input.classList.add(correct ? 'ok' : 'bad');
+    const acceptedList = q.accepted.filter(a => !a.includes("qu'est"));
+    const msg = correct
+      ? 'Correct !'
+      : `Réponse attendue : <b>${acceptedList.join(' / ')}</b>`;
+    document.getElementById('ex2Feedback').innerHTML = `<div class="feedback ${correct?'ok':'bad'}">${msg}</div>`;
+    setTimeout(() => { ex2Answered = false; ex2Idx++; renderEx2(); }, 1300);
+  }
+
+  document.getElementById('ex2Submit').onclick = submit;
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+}
+renderEx2();
+</script>
+</body>
+</html>
