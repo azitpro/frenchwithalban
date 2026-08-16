@@ -43,7 +43,6 @@ const STUDENTS = [
   'Anastasiia', 'Yoshi',
 ];
 
-// Generate half-hour options from 6h00 to 23h30
 const HOUR_OPTIONS: { value: number; label: string }[] = [];
 for (let h = 6; h <= 23; h++) {
   HOUR_OPTIONS.push({ value: h, label: `${h}h00` });
@@ -67,6 +66,7 @@ function HourSelect({ value, onChange, style }: { value: number; onChange: (v: n
 export default function ScheduleAdmin() {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(false);
   const [schedule, setSchedule] = useState<Schedule>({ recurring: [], exceptions: [], oneOff: [], availability: [] });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -87,23 +87,40 @@ export default function ScheduleAdmin() {
 
   const [excDate, setExcDate] = useState('');
 
-  useEffect(() => {
-    if (authenticated) load();
-  }, [authenticated]);
+  async function tryLogin() {
+    setLoggingIn(true);
+    setError('');
+    try {
+      const getRes = await fetch('/api/schedule');
+      const current = await getRes.json();
+      const normalized: Schedule = {
+        recurring: current.recurring || [],
+        exceptions: current.exceptions || [],
+        oneOff: current.oneOff || [],
+        availability: current.availability || [],
+      };
 
-  async function load() {
-    const res = await fetch('/api/schedule');
-    const data = await res.json();
-    setSchedule({
-      recurring: data.recurring || [],
-      exceptions: data.exceptions || [],
-      oneOff: data.oneOff || [],
-      availability: data.availability || [],
-    });
+      const verifyRes = await fetch('/api/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, schedule: normalized }),
+      });
+
+      if (verifyRes.ok) {
+        setSchedule(normalized);
+        setAuthenticated(true);
+      } else {
+        setError('Mot de passe incorrect.');
+      }
+    } catch (e) {
+      setError('Erreur de connexion. Réessayez.');
+    }
+    setLoggingIn(false);
   }
 
   async function save(updated: Schedule) {
     setSaving(true);
+    setError('');
     const res = await fetch('/api/schedule', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -111,15 +128,13 @@ export default function ScheduleAdmin() {
     });
     if (res.ok) {
       setSchedule(updated);
+    } else if (res.status === 401) {
+      setError('Session expirée — mot de passe refusé. Reconnectez-vous.');
+      setAuthenticated(false);
     } else {
-      setError('Erreur de sauvegarde');
+      setError('Erreur de sauvegarde.');
     }
     setSaving(false);
-  }
-
-  function tryLogin() {
-    setAuthenticated(true);
-    setError('');
   }
 
   function addAvailability() {
@@ -208,7 +223,9 @@ export default function ScheduleAdmin() {
           onKeyDown={(e) => e.key === 'Enter' && tryLogin()}
           style={{ ...inputStyle, width: '100%', marginBottom: 12 }}
         />
-        <button onClick={tryLogin} style={{ ...btnStyle, width: '100%' }}>Se connecter</button>
+        <button onClick={tryLogin} disabled={loggingIn} style={{ ...btnStyle, width: '100%' }}>
+          {loggingIn ? 'Vérification...' : 'Se connecter'}
+        </button>
         {error && <p style={{ color: '#c0392b', marginTop: 10 }}>{error}</p>}
       </div>
     );
