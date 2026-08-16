@@ -21,12 +21,14 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
 .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+
 header {
   padding: 28px 48px; border-bottom: 3px solid var(--navy);
   display: flex; justify-content: space-between; align-items: center;
   background: var(--cream); width: 100%; box-sizing: border-box;
 }
 h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 24px; }
+
 .day-block { margin-bottom: 28px; }
 .day-title {
   font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600;
@@ -39,6 +41,7 @@ h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--nav
   color: var(--green); font-weight: 600; font-size: 0.9rem;
 }
 .loading { color: var(--text-soft); font-style: italic; }
+
 footer {
   background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
   display: flex; justify-content: space-between; align-items: center;
@@ -53,6 +56,7 @@ footer {
 </style>
 </head>
 <body>
+
 <header>
   <div style="display: flex; align-items: center; gap: 10px;">
     <svg width="30" height="35" viewBox="0 0 24 28">
@@ -65,18 +69,24 @@ footer {
     <span style="font-family:'Fraunces',serif; font-size:1.7rem; font-weight:700; color:var(--navy); letter-spacing:-0.01em;">French with <span style="color:var(--red)">Alban</span></span>
   </div>
   <nav style="display: flex; gap: 44px; align-items: center;">
+    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">← Retour</a>
     <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">Accueil</a>
   </nav>
 </header>
+
 <div class="wrap">
 <h1>Disponibilités</h1>
 <div id="scheduleRoot"><p class="loading">Chargement des créneaux...</p></div>
 </div>
+
 <footer>
-  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
+  <div class="footer-nav">
+    <a href="/" class="footer-btn">Accueil</a>
+  </div>
   <div class="footer-logo">French with Alban</div>
   <div class="footer-copy">© 2026 · frenchwithalban.com</div>
 </footer>
+
 <script>
 async function loadSlots() {
   const root = document.getElementById('scheduleRoot');
@@ -84,15 +94,18 @@ async function loadSlots() {
     const res = await fetch('/api/slots');
     const slots = await res.json();
     const free = slots.filter(s => s.status === 'libre');
+
     if (free.length === 0) {
       root.innerHTML = '<p class="loading">Aucun créneau disponible pour le moment.</p>';
       return;
     }
+
     const byDay = {};
     free.forEach(s => {
       if (!byDay[s.day]) byDay[s.day] = [];
       byDay[s.day].push(s.hour);
     });
+
     root.innerHTML = Object.entries(byDay).map(([day, hours]) => `
       <div class="day-block">
         <div class="day-title">${day}</div>

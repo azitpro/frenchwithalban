@@ -71,7 +71,7 @@ export default function Home() {
             <defs>
               <clipPath id="hxHeader">
                 <polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/>
-              </clipPath>
+              </clipPgit add .ath>
             </defs>
             <rect x="0" y="0" width="8" height="28" fill="#002395" clipPath="url(#hxHeader)"/>
             <rect x="8" y="0" width="8" height="28" fill="#ffffff" clipPath="url(#hxHeader)"/>
@@ -84,6 +84,7 @@ export default function Home() {
         </a>
         <nav>
           <a href="#">Cours</a>
+          <a href="/disponibilites.html">Disponibilités</a>
           <a href="/ressources.html">Ressources</a>
           <a href="#">À propos</a>
           <a href="#" className="nav-cta">Réserver</a>
