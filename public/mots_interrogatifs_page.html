@@ -18,6 +18,12 @@
   --green: #2e7d4f;
   --green-soft: #e8f4ed;
   --red-soft: #fbeae8;
+  --royal-blue: #1a56a0;
+  --pink: #c94f7c;
+  --yellow: #a8650a;
+  --purple: #7b4fa0;
+  --orange: #d4770a;
+  --info-blue: #1a56a0;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
@@ -39,18 +45,80 @@ h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--nav
 .toggle-btn.active { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--gold); }
 .toggle-btn:hover:not(.active) { background: var(--cream-dark); }
 
-table.vocab-table { width: 100%; border-collapse: collapse; margin-bottom: 56px; table-layout: fixed; }
+table.vocab-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; table-layout: fixed; }
 table.vocab-table tr { border-bottom: 1px solid var(--border); }
 table.vocab-table tr:nth-child(even) { background: var(--cream-dark); }
-table.vocab-table td { padding: 12px 16px; font-size: 0.92rem; vertical-align: top; transition: opacity 0.2s; }
+table.vocab-table td { padding: 12px 16px; font-size: 0.9rem; vertical-align: top; transition: opacity 0.2s; }
 .fr-cell { font-weight: 700; color: var(--navy); width: 34%; }
-.fr-cell .note { font-weight: 400; font-style: italic; color: var(--text-soft); font-size: 0.78rem; display: block; margin-top: 2px; }
-.pho-cell { font-style: italic; font-weight: 300; color: var(--red); font-size: 0.8rem; width: 30%; }
+.fr-cell .note { font-weight: 400; font-style: italic; color: var(--text-soft); font-size: 0.76rem; display: block; margin-top: 2px; }
+.pho-cell { font-style: italic; font-weight: 300; color: var(--red); font-size: 0.78rem; width: 30%; }
 .en-cell { font-style: italic; font-weight: 300; color: var(--text-soft); width: 36%; }
 .hidden-col { opacity: 0; pointer-events: none; }
 
+.hex-icon { flex-shrink: 0; margin-right: 8px; vertical-align: middle; margin-top: -3px; }
+
+/* EXPLANATION SECTIONS */
+.explain-block { margin-bottom: 40px; }
+.explain-title { display: flex; align-items: center; font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
+.explain-body { font-size: 0.88rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 16px; }
+.explain-body strong { color: var(--navy); }
+
+.example-card {
+  background: var(--cream-dark); border: 1px solid var(--border);
+  padding: 14px 18px; margin-bottom: 10px;
+}
+.example-card { border-left: none; }
+.example-card.c-formal { background: #e8ecf3; border-color: #c7d0e0; }
+.example-card.c-standard { background: var(--green-soft); border-color: #b8dcc5; }
+.example-card.c-informal { background: #fdf1e3; border-color: #f0d4a8; }
+.example-card.c-masc-sg { background: #e3ecf7; border-color: #b9cde8; }
+.example-card.c-fem-sg { background: #f7e6ee; border-color: #eabdd2; }
+.example-card.c-masc-pl { background: #faf1dc; border-color: #ecd9a3; }
+.example-card.c-esceque { background: #faf1dc; border-color: #ecd9a3; }
+.example-label.c-esceque { color: var(--yellow); }
+.ex-line.c-esceque { color: var(--yellow); }
+.example-card.c-fem-pl { background: #f0e6f5; border-color: #d5bce3; }
+
+.example-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.example-label.c-formal { color: var(--navy); }
+.example-label.c-standard { color: var(--green); }
+.example-label.c-informal { color: var(--orange); }
+.example-label.c-masc-sg { color: var(--royal-blue); }
+.example-label.c-fem-sg { color: var(--pink); }
+.example-label.c-masc-pl { color: var(--yellow); }
+.example-label.c-fem-pl { color: var(--purple); }
+
+.ex-line { font-size: 0.95rem; color: var(--navy); line-height: 1.9; }
+.ex-line.c-formal { color: var(--navy); }
+.ex-line.c-standard { color: var(--green); }
+.ex-line.c-informal { color: var(--orange); }
+.ex-line.c-masc-sg { color: var(--royal-blue); }
+.ex-line.c-fem-sg { color: var(--pink); }
+.ex-line.c-masc-pl { color: var(--yellow); }
+.ex-line.c-fem-pl { color: var(--purple); }
+.ex-line strong { font-weight: 700; }
+.ex-line img { width: 18px; height: 18px; object-fit: contain; vertical-align: middle; margin-right: 6px; margin-top: -2px; }
+.ex-line .tag { font-size: 0.72rem; color: var(--text-soft); font-style: italic; margin-left: 6px; }
+
+.note-box {
+  background: #eaf0f8; border: none; border-radius: 4px 16px 16px 16px;
+  padding: 12px 16px; font-size: 0.84rem; color: var(--navy); line-height: 1.6; margin-top: 12px;
+  display: flex; align-items: flex-start; gap: 10px; position: relative;
+}
+.note-box b { color: var(--navy); }
+.note-box .info-hex { flex-shrink: 0; margin-top: 2px; }
+
+.warning-box {
+  background: var(--red-soft); border: none; border-radius: 4px 16px 16px 16px;
+  padding: 12px 16px; font-size: 0.84rem; color: var(--red); line-height: 1.6; margin-top: 12px;
+  display: flex; align-items: flex-start; gap: 10px; position: relative;
+  box-shadow: inset 0 0 0 1px rgba(192, 57, 43, 0.35);
+}
+.warning-box b { color: var(--red); }
+.warning-box .warn-hex { flex-shrink: 0; margin-top: 2px; }
+
 .ex-block { margin-bottom: 56px; padding-top: 32px; border-top: 2px solid var(--border); }
-.ex-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.ex-title { display: flex; align-items: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
 .ex-desc { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 20px; }
 
 .ex-card { background: var(--cream-dark); border: 1px solid var(--border); border-top: 3px solid var(--navy); padding: 28px; }
@@ -61,8 +129,8 @@ table.vocab-table td { padding: 12px 16px; font-size: 0.92rem; vertical-align: t
 .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 20px; }
 .match-col { display: flex; flex-direction: column; gap: 8px; }
 .match-item {
-  padding: 12px 16px; border: 1.5px solid var(--border); background: var(--cream);
-  font-size: 0.9rem; font-weight: 500; color: var(--navy); cursor: pointer;
+  padding: 12px 14px; border: 1.5px solid var(--border); background: var(--cream);
+  font-size: 0.85rem; font-weight: 500; color: var(--navy); cursor: pointer;
   transition: all 0.15s; text-align: center;
 }
 .match-item:hover { border-color: var(--navy); }
@@ -149,16 +217,121 @@ footer {
 
 <table class="vocab-table" id="vocabTable"></table>
 
+<!-- EXPLANATION: QUE / QU'EST-CE QUE / QUOI -->
+<div class="explain-block">
+  <div class="explain-title">
+    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hx1"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx1)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx1)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx1)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
+    Que / Qu'est-ce que / Quoi
+  </div>
+  <p class="explain-body">These three all mean <strong>"what"</strong>, but they differ in <strong>register</strong> (formality) rather than meaning:</p>
+
+  <div class="example-card c-formal">
+    <div class="example-label c-formal">Que — formal, with inversion</div>
+    <div class="ex-line c-formal"><img src="/coq.png"> <strong>Que</strong> fais-tu ?</div>
+    <div class="ex-line c-formal"><img src="/coq.png"> <strong>Que</strong> manges-tu ?</div>
+  </div>
+
+  <div class="example-card c-standard">
+    <div class="example-label c-standard">Qu'est-ce que — standard, everyday</div>
+    <div class="ex-line c-standard"><img src="/coq.png"> <strong>Qu'est-ce que</strong> tu fais ?</div>
+    <div class="ex-line c-standard"><img src="/coq.png"> <strong>Qu'est-ce que</strong> tu manges ?</div>
+  </div>
+
+  <div class="example-card c-informal">
+    <div class="example-label c-informal">Quoi — informal, casual</div>
+    <div class="ex-line c-informal"><img src="/coq.png"> Tu fais <strong>quoi</strong> ?</div>
+    <div class="ex-line c-informal"><img src="/coq.png"> Tu manges <strong>quoi</strong> ?</div>
+  </div>
+
+  <div class="warning-box">
+    <svg class="warn-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">!</text></svg>
+    <span><b>Quoi always goes at the end of the sentence.</b> You can't say "Quoi tu fais ?" — only "Tu fais <strong>quoi</strong> ?"</span>
+  </div>
+</div>
+
+<!-- EXPLANATION: EST-CE QUE -->
+<div class="explain-block">
+  <div class="explain-title">
+    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hxEQ"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hxEQ)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hxEQ)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hxEQ)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
+    Est-ce que
+  </div>
+  <p class="explain-body">"Est-ce que" doesn't translate to a single English word — it's a <strong>question marker</strong> placed before a statement to turn it into a question, without needing to invert the subject and verb.</p>
+
+  <div class="example-card c-esceque">
+    <div class="example-label c-esceque">Statement → Question</div>
+    <div class="ex-line c-esceque"><img src="/coq.png"> Tu parles français. → <strong>Est-ce que</strong> tu parles français ?</div>
+  </div>
+
+  <div class="example-card c-esceque">
+    <div class="example-label c-esceque">Combined with other question words</div>
+    <div class="ex-line c-esceque"><img src="/coq.png"> Où <strong>est-ce que</strong> tu habites ?</div>
+    <div class="ex-line c-esceque"><img src="/coq.png"> Quand <strong>est-ce que</strong> tu arrives ?</div>
+  </div>
+
+  <div class="note-box">
+    <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
+    <span><b>This is where "Qu'est-ce que" comes from:</b> it's literally <em>Que</em> + <em>est-ce que</em> combined into one expression.</span>
+  </div>
+  <div class="note-box" style="margin-top: 8px;">
+    <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
+    <span><b>"Est-ce que" is optional</b> — you could also just raise your intonation at the end of a statement ("Tu parles français ?"). But "est-ce que" is very commonly used, both in speech and writing, since it avoids the need for inversion.</span>
+  </div>
+</div>
+
+<!-- EXPLANATION: QUEL / QUELLE / QUELS / QUELLES -->
+<div class="explain-block">
+  <div class="explain-title">
+    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hx2"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx2)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx2)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx2)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
+    Quel / Quelle / Quels / Quelles
+  </div>
+  <p class="explain-body">Unlike que/quoi, these forms don't change with formality — they change based on <strong>gender and number</strong> of the noun that follows.</p>
+
+  <div class="example-card c-masc-sg">
+    <div class="example-label c-masc-sg">Quel — masculine singular</div>
+    <div class="ex-line c-masc-sg"><img src="/coq.png"> <strong>Quel</strong> jour sommes-nous ?</div>
+  </div>
+
+  <div class="example-card c-fem-sg">
+    <div class="example-label c-fem-sg">Quelle — feminine singular</div>
+    <div class="ex-line c-fem-sg"><img src="/coq.png"> <strong>Quelle</strong> heure est-il ?</div>
+  </div>
+
+  <div class="example-card c-masc-pl">
+    <div class="example-label c-masc-pl">Quels — masculine plural</div>
+    <div class="ex-line c-masc-pl"><img src="/coq.png"> <strong>Quels</strong> sports pratiques-tu ?</div>
+  </div>
+
+  <div class="example-card c-fem-pl">
+    <div class="example-label c-fem-pl">Quelles — feminine plural</div>
+    <div class="ex-line c-fem-pl"><img src="/coq.png"> <strong>Quelles</strong> langues parles-tu ?</div>
+  </div>
+
+  <div class="note-box">
+    <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
+    <span><b>Word order is flexible.</b> You can also place the question word at the end: <em>"Nous sommes quel jour ?"</em> or <em>"Il est quelle heure ?"</em> instead of the inverted form above — both are correct and commonly used.</span>
+  </div>
+  <div class="note-box" style="margin-top: 8px;">
+    <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
+    <span><b>Same pronunciation.</b> All four forms — quel, quelle, quels, quelles — sound identical when spoken (/kɛl/). Only the spelling changes, based on the noun's gender and number.</span>
+  </div>
+</div>
+
 <!-- EXERCISE 1: MATCHING -->
 <div class="ex-block">
-  <div class="ex-title">Exercice 1 — Associer les mots</div>
+  <div class="ex-title">
+    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hx3"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx3)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx3)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx3)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
+    Exercice 1 — Associer les mots
+  </div>
   <div class="ex-desc">Cliquez un mot français, puis sa traduction anglaise correspondante.</div>
   <div class="ex-card" id="exRoot"></div>
 </div>
 
 <!-- EXERCISE 2: TYPED ANSWERS -->
 <div class="ex-block">
-  <div class="ex-title">Exercice 2 — Traduction écrite</div>
+  <div class="ex-title">
+    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hx4"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx4)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx4)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx4)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
+    Exercice 2 — Traduction écrite
+  </div>
   <div class="ex-desc">Écrivez le mot français correspondant. Plusieurs réponses sont parfois acceptées.</div>
   <div class="ex-card" id="ex2Root"></div>
 </div>
@@ -178,8 +351,9 @@ const WORDS = [
   { fr: "Qui", note: "", pho: "/ki/", en: "Who", accepted: ["qui"] },
   { fr: "Quand", note: "", pho: "/kɑ̃/", en: "When", accepted: ["quand"] },
   { fr: "Où", note: "", pho: "/u/", en: "Where", accepted: ["ou", "où"] },
-  { fr: "Que / Quoi", note: "(what + verb)", pho: "/kə/ · /kwa/", en: "What", accepted: ["que", "quoi", "qu'est-ce que", "qu'est ce que"] },
+  { fr: "Que / Qu'est-ce que / Quoi", note: "(what + verb)", pho: "/kə/ · /kɛs.kə/ · /kwa/", en: "What", accepted: ["que", "quoi", "qu'est-ce que", "qu'est ce que"] },
   { fr: "Quel(s) / Quelle(s)", note: "(which / what + noun)", pho: "/kɛl/", en: "Which / What", accepted: ["quel", "quelle", "quels", "quelles"] },
+  { fr: "Est-ce que", note: "(turns a statement into a question)", pho: "/ɛs.kə/", en: "(question marker — no direct translation)", accepted: ["est-ce que", "est ce que"] },
 ];
 
 function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
@@ -192,7 +366,6 @@ function mention(pct) {
 }
 function stripAccents(s){ return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
 function normalize(s){ return stripAccents(s.trim().toLowerCase()).replace(/[().]/g, ""); }
-
 function answerMatches(given, accepted) {
   const normGiven = normalize(given);
   if (accepted.some(a => normalize(a) === normGiven)) return true;
@@ -359,14 +532,12 @@ function renderEx2() {
   function submit() {
     if (ex2Answered) return;
     ex2Answered = true;
-    const given = normalize(input.value);
     const correct = answerMatches(input.value, q.accepted);
     if (correct) ex2Score++;
     input.classList.add(correct ? 'ok' : 'bad');
-    const acceptedList = q.accepted.filter(a => !a.includes("qu'est"));
     const msg = correct
       ? 'Correct !'
-      : `Réponse attendue : <b>${acceptedList.join(' / ')}</b>`;
+      : `Réponse attendue : <b>${q.accepted.filter(a => !a.includes("qu'est")).join(' / ')}</b>`;
     document.getElementById('ex2Feedback').innerHTML = `<div class="feedback ${correct?'ok':'bad'}">${msg}</div>`;
     setTimeout(() => { ex2Answered = false; ex2Idx++; renderEx2(); }, 1300);
   }
