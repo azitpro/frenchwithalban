@@ -27,11 +27,20 @@ type AvailabilityWindow = {
   end: number;
 };
 
+type Unavailability = {
+  id: string;
+  type: 'day' | 'range';
+  date: string;
+  start?: number;
+  end?: number;
+};
+
 type Schedule = {
   recurring: RecurringSlot[];
   exceptions: Exception[];
   oneOff: OneOff[];
   availability: AvailabilityWindow[];
+  unavailability: Unavailability[];
 };
 
 const WEEKDAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
@@ -67,7 +76,7 @@ export default function ScheduleAdmin() {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
-  const [schedule, setSchedule] = useState<Schedule>({ recurring: [], exceptions: [], oneOff: [], availability: [] });
+  const [schedule, setSchedule] = useState<Schedule>({ recurring: [], exceptions: [], oneOff: [], availability: [], unavailability: [] });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -87,6 +96,11 @@ export default function ScheduleAdmin() {
 
   const [excDate, setExcDate] = useState('');
 
+  const [unavType, setUnavType] = useState<'day' | 'range'>('day');
+  const [unavDate, setUnavDate] = useState('');
+  const [unavStart, setUnavStart] = useState(9);
+  const [unavEnd, setUnavEnd] = useState(18);
+
   async function tryLogin() {
     setLoggingIn(true);
     setError('');
@@ -98,6 +112,7 @@ export default function ScheduleAdmin() {
         exceptions: current.exceptions || [],
         oneOff: current.oneOff || [],
         availability: current.availability || [],
+        unavailability: current.unavailability || [],
       };
 
       const verifyRes = await fetch('/api/schedule', {
@@ -138,12 +153,7 @@ export default function ScheduleAdmin() {
   }
 
   function addAvailability() {
-    const win: AvailabilityWindow = {
-      id: uid(),
-      weekday: availWeekday,
-      start: availStart,
-      end: availEnd,
-    };
+    const win: AvailabilityWindow = { id: uid(), weekday: availWeekday, start: availStart, end: availEnd };
     save({ ...schedule, availability: [...schedule.availability, win] });
   }
 
@@ -152,14 +162,7 @@ export default function ScheduleAdmin() {
   }
 
   function addRecurring() {
-    const slot: RecurringSlot = {
-      id: uid(),
-      student: newStudent,
-      weekday: newWeekday,
-      hour: newHour,
-      duration: newDuration,
-      active: true,
-    };
+    const slot: RecurringSlot = { id: uid(), student: newStudent, weekday: newWeekday, hour: newHour, duration: newDuration, active: true };
     save({ ...schedule, recurring: [...schedule.recurring, slot] });
   }
 
@@ -178,27 +181,31 @@ export default function ScheduleAdmin() {
   }
 
   function removeException(recurringId: string, date: string) {
-    save({
-      ...schedule,
-      exceptions: schedule.exceptions.filter((e) => !(e.recurringId === recurringId && e.date === date)),
-    });
+    save({ ...schedule, exceptions: schedule.exceptions.filter((e) => !(e.recurringId === recurringId && e.date === date)) });
   }
 
   function addOneOff() {
     if (!oneOffDate) return;
-    const item: OneOff = {
-      id: uid(),
-      student: oneOffStudent,
-      date: oneOffDate,
-      hour: oneOffHour,
-      duration: oneOffDuration,
-    };
+    const item: OneOff = { id: uid(), student: oneOffStudent, date: oneOffDate, hour: oneOffHour, duration: oneOffDuration };
     save({ ...schedule, oneOff: [...schedule.oneOff, item] });
     setOneOffDate('');
   }
 
   function removeOneOff(id: string) {
     save({ ...schedule, oneOff: schedule.oneOff.filter((o) => o.id !== id) });
+  }
+
+  function addUnavailability() {
+    if (!unavDate) return;
+    const item: Unavailability = unavType === 'day'
+      ? { id: uid(), type: 'day', date: unavDate }
+      : { id: uid(), type: 'range', date: unavDate, start: unavStart, end: unavEnd };
+    save({ ...schedule, unavailability: [...schedule.unavailability, item] });
+    setUnavDate('');
+  }
+
+  function removeUnavailability(id: string) {
+    save({ ...schedule, unavailability: schedule.unavailability.filter((u) => u.id !== id) });
   }
 
   const inputStyle = { padding: 10, border: '1.5px solid #ddd8ce', fontFamily: 'Inter, sans-serif' };
@@ -239,13 +246,10 @@ export default function ScheduleAdmin() {
 
       {/* AVAILABILITY WINDOWS */}
       <section style={{ marginBottom: 40 }}>
-        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 6 }}>
-          Disponibilités générales
-        </h2>
+        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 6 }}>Disponibilités générales</h2>
         <p style={{ fontSize: '0.82rem', color: '#666', marginBottom: 12 }}>
           Les jours et plages horaires où vous acceptez d'enseigner. Aucun créneau ne s'affiche publiquement en dehors de ces plages.
         </p>
-
         <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
           <select value={availWeekday} onChange={(e) => setAvailWeekday(e.target.value)} style={inputStyle}>
             {WEEKDAYS.map((d) => <option key={d} value={d}>{d}</option>)}
@@ -255,7 +259,6 @@ export default function ScheduleAdmin() {
           <HourSelect value={availEnd} onChange={setAvailEnd} style={inputStyle} />
           <button onClick={addAvailability} style={btnStyle}>Ajouter</button>
         </div>
-
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {schedule.availability.map((a) => (
             <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 10, background: '#f0ece4', border: '1px solid #ddd8ce' }}>
@@ -269,12 +272,47 @@ export default function ScheduleAdmin() {
         </div>
       </section>
 
+      {/* UNAVAILABILITY */}
+      <section style={{ marginBottom: 40 }}>
+        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 6 }}>Indisponibilités</h2>
+        <p style={{ fontSize: '0.82rem', color: '#666', marginBottom: 12 }}>
+          Bloquez une journée entière ou une plage horaire précise (vacances, absence...), au-dessus de vos disponibilités générales.
+        </p>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+          <select value={unavType} onChange={(e) => setUnavType(e.target.value as 'day' | 'range')} style={inputStyle}>
+            <option value="day">Journée entière</option>
+            <option value="range">Plage horaire</option>
+          </select>
+          <input type="date" value={unavDate} onChange={(e) => setUnavDate(e.target.value)} style={inputStyle} />
+          {unavType === 'range' && (
+            <>
+              <HourSelect value={unavStart} onChange={setUnavStart} style={inputStyle} />
+              <span style={{ alignSelf: 'center', color: '#666' }}>à</span>
+              <HourSelect value={unavEnd} onChange={setUnavEnd} style={inputStyle} />
+            </>
+          )}
+          <button onClick={addUnavailability} style={btnStyle}>Ajouter</button>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {schedule.unavailability.map((u) => (
+            <div key={u.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 10, background: '#fbeae8', border: '1px solid #c0392b' }}>
+              <span style={{ flex: 1, color: '#8b2a20' }}>
+                {u.type === 'day'
+                  ? <><strong>{u.date}</strong> — journée entière</>
+                  : <><strong>{u.date}</strong> — {fmtHour(u.start!)} à {fmtHour(u.end!)}</>}
+              </span>
+              <button onClick={() => removeUnavailability(u.id)} style={dangerStyle}>Supprimer</button>
+            </div>
+          ))}
+          {schedule.unavailability.length === 0 && (
+            <p style={{ fontSize: '0.82rem', color: '#999', fontStyle: 'italic' }}>Aucune indisponibilité définie.</p>
+          )}
+        </div>
+      </section>
+
       {/* RECURRING SLOTS */}
       <section style={{ marginBottom: 40 }}>
-        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 12 }}>
-          Créneaux hebdomadaires (élèves)
-        </h2>
-
+        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 12 }}>Créneaux hebdomadaires (élèves)</h2>
         <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
           <select value={newStudent} onChange={(e) => setNewStudent(e.target.value)} style={inputStyle}>
             {STUDENTS.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -289,16 +327,13 @@ export default function ScheduleAdmin() {
           </select>
           <button onClick={addRecurring} style={btnStyle}>Ajouter</button>
         </div>
-
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {schedule.recurring.map((r) => {
             const exceptionsForThis = schedule.exceptions.filter((e) => e.recurringId === r.id);
             return (
               <div key={r.id} style={{ padding: 12, background: '#f0ece4', border: '1px solid #ddd8ce' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-                  <span style={{ flex: 1 }}>
-                    <strong>{r.student}</strong> — {r.weekday} {fmtHour(r.hour)} ({r.duration} min)
-                  </span>
+                  <span style={{ flex: 1 }}><strong>{r.student}</strong> — {r.weekday} {fmtHour(r.hour)} ({r.duration} min)</span>
                   <button onClick={() => removeRecurring(r.id)} style={dangerStyle}>Supprimer</button>
                 </div>
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -323,10 +358,7 @@ export default function ScheduleAdmin() {
 
       {/* ONE-OFF LESSONS */}
       <section>
-        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 12 }}>
-          Cours ponctuels
-        </h2>
-
+        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 12 }}>Cours ponctuels</h2>
         <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
           <select value={oneOffStudent} onChange={(e) => setOneOffStudent(e.target.value)} style={inputStyle}>
             {STUDENTS.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -339,13 +371,10 @@ export default function ScheduleAdmin() {
           </select>
           <button onClick={addOneOff} style={btnStyle}>Ajouter</button>
         </div>
-
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {schedule.oneOff.map((o) => (
             <div key={o.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#f0ece4', border: '1px solid #ddd8ce' }}>
-              <span style={{ flex: 1 }}>
-                <strong>{o.student}</strong> — {o.date} à {fmtHour(o.hour)} ({o.duration} min)
-              </span>
+              <span style={{ flex: 1 }}><strong>{o.student}</strong> — {o.date} à {fmtHour(o.hour)} ({o.duration} min)</span>
               <button onClick={() => removeOneOff(o.id)} style={dangerStyle}>Supprimer</button>
             </div>
           ))}
