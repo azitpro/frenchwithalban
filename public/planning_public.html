@@ -97,8 +97,8 @@ footer {
 
 <div class="controls">
   <div class="duration-toggle">
-    <button class="dur-btn active" data-dur="25" id="btn25">25 min</button>
-    <button class="dur-btn" data-dur="50" id="btn50">50 min</button>
+    <button class="dur-btn" data-dur="25" id="btn25">25 min</button>
+    <button class="dur-btn active" data-dur="50" id="btn50">50 min</button>
   </div>
   <div class="week-nav">
     <button class="week-arrow" id="prevWeek">←</button>
@@ -122,7 +122,7 @@ const GRID_STEP = 0.5; // toujours sur heures rondes ou demies
 
 let scheduleData = null;
 let currentWeek = 0; // 0 to 3
-let currentDuration = 25;
+let currentDuration = 50;;
 
 function formatHour(h) {
   const hours = Math.floor(h);
@@ -150,7 +150,14 @@ function render() {
   const root = document.getElementById('scheduleRoot');
   const days = getWeekDays(currentWeek);
 
-  document.getElementById('weekLabel').textContent = `Semaine ${currentWeek + 1}`;
+  const weekStart = days[0];
+const weekEnd = days[days.length - 1];
+const sameMonth = weekStart.getMonth() === weekEnd.getMonth();
+const months = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+const label = sameMonth
+  ? `${weekStart.getDate()} - ${weekEnd.getDate()} ${months[weekEnd.getMonth()]}`
+  : `${weekStart.getDate()} ${months[weekStart.getMonth()]} - ${weekEnd.getDate()} ${months[weekEnd.getMonth()]}`;
+document.getElementById('weekLabel').textContent = label;
   document.getElementById('prevWeek').disabled = currentWeek === 0;
   document.getElementById('nextWeek').disabled = currentWeek === 3;
 
