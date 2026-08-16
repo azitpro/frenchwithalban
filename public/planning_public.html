@@ -184,6 +184,10 @@ document.getElementById('weekLabel').textContent = label;
       if (o.date !== dateStr) return;
       occupied.push([o.hour, o.hour + o.duration/60]);
     });
+    preplyBusy.forEach(b => {
+  if (b.date !== dateStr) return;
+  occupied.push([b.startHour, b.endHour]);
+});
     occupied.sort((a,b) => a[0]-b[0]);
 
     // Compute free intervals within each availability window
@@ -220,10 +224,15 @@ document.getElementById('weekLabel').textContent = label;
   root.innerHTML = html || '<p class="no-slots">Aucun créneau disponible cette semaine.</p>';
 }
 
+let preplyBusy = [];
+
 async function loadSchedule() {
   const root = document.getElementById('scheduleRoot');
   try {
-    const res = await fetch('/api/schedule');
+    const [res, preplyRes] = await Promise.all([
+      fetch('/api/schedule'),
+      fetch('/api/preply-busy').catch(() => null),
+    ]);
     const data = await res.json();
     scheduleData = {
       recurring: data.recurring || [],
@@ -231,6 +240,12 @@ async function loadSchedule() {
       oneOff: data.oneOff || [],
       availability: data.availability || [],
     };
+
+    if (preplyRes && preplyRes.ok) {
+      preplyBusy = await preplyRes.json();
+      if (!Array.isArray(preplyBusy)) preplyBusy = [];
+    }
+
     render();
   } catch (e) {
     root.innerHTML = '<p class="loading">Erreur de chargement. Réessayez plus tard.</p>';
