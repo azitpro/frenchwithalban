@@ -28,18 +28,29 @@ header {
   background: var(--cream); width: 100%; box-sizing: border-box;
 }
 h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 8px; }
-.subtitle { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 28px; }
+.subtitle { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 20px; }
 
-.week-block { margin-bottom: 32px; }
-.week-title {
-  font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600;
-  color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em;
-  margin-bottom: 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.duration-toggle { display: flex; gap: 8px; }
+.dur-btn {
+  padding: 9px 18px; border: 1.5px solid var(--navy); background: transparent;
+  color: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.85rem;
+  font-weight: 500; cursor: pointer; transition: all 0.15s;
 }
-.day-block { margin-bottom: 16px; }
+.dur-btn.active { background: var(--navy); color: var(--cream); }
+
+.week-nav { display: flex; align-items: center; gap: 12px; }
+.week-arrow {
+  width: 34px; height: 34px; border: 1.5px solid var(--navy); background: var(--cream);
+  color: var(--navy); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.week-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+.week-label { font-family: 'Fraunces', serif; font-weight: 600; font-size: 0.95rem; min-width: 140px; text-align: center; }
+
+.day-block { margin-bottom: 18px; }
 .day-title {
   font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600;
-  color: var(--navy); margin-bottom: 8px;
+  color: var(--navy); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
 }
 .slot-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .slot {
@@ -82,7 +93,20 @@ footer {
 
 <div class="wrap">
 <h1>Créneaux disponibles</h1>
-<div class="subtitle">Prochaines 4 semaines — cours de 25 ou 50 minutes</div>
+<div class="subtitle">Sélectionnez la durée du cours et naviguez entre les semaines.</div>
+
+<div class="controls">
+  <div class="duration-toggle">
+    <button class="dur-btn active" data-dur="25" id="btn25">25 min</button>
+    <button class="dur-btn" data-dur="50" id="btn50">50 min</button>
+  </div>
+  <div class="week-nav">
+    <button class="week-arrow" id="prevWeek">←</button>
+    <span class="week-label" id="weekLabel">Semaine 1</span>
+    <button class="week-arrow" id="nextWeek">→</button>
+  </div>
+</div>
+
 <div id="scheduleRoot"><p class="loading">Chargement...</p></div>
 </div>
 
@@ -94,8 +118,11 @@ footer {
 
 <script>
 const WEEKDAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-const DAY_START = 8;
-const DAY_END = 21;
+const GRID_STEP = 0.5; // toujours sur heures rondes ou demies
+
+let scheduleData = null;
+let currentWeek = 0; // 0 to 3
+let currentDuration = 25;
 
 function formatHour(h) {
   const hours = Math.floor(h);
@@ -107,85 +134,121 @@ function toDateStr(d) {
   return d.toISOString().split('T')[0];
 }
 
+function getWeekDays(weekIndex) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + weekIndex * 7 + i);
+    days.push(d);
+  }
+  return days;
+}
+
+function render() {
+  const root = document.getElementById('scheduleRoot');
+  const days = getWeekDays(currentWeek);
+
+  document.getElementById('weekLabel').textContent = `Semaine ${currentWeek + 1}`;
+  document.getElementById('prevWeek').disabled = currentWeek === 0;
+  document.getElementById('nextWeek').disabled = currentWeek === 3;
+
+  let html = '';
+
+  days.forEach(date => {
+    const dateStr = toDateStr(date);
+    const weekdayName = WEEKDAYS[date.getDay()];
+
+    // Availability windows for this weekday
+    const windows = scheduleData.availability.filter(a => a.weekday === weekdayName);
+    if (windows.length === 0) return; // no availability defined for this day at all
+
+    // Occupied intervals for this date
+    const occupied = [];
+    scheduleData.recurring.forEach(r => {
+      if (!r.active) return;
+      if (r.weekday !== weekdayName) return;
+      const isException = scheduleData.exceptions.some(e => e.recurringId === r.id && e.date === dateStr);
+      if (isException) return;
+      occupied.push([r.hour, r.hour + r.duration/60]);
+    });
+    scheduleData.oneOff.forEach(o => {
+      if (o.date !== dateStr) return;
+      occupied.push([o.hour, o.hour + o.duration/60]);
+    });
+    occupied.sort((a,b) => a[0]-b[0]);
+
+    // Compute free intervals within each availability window
+    const slots = [];
+    windows.forEach(win => {
+      let cursor = win.start;
+      const relevant = occupied.filter(([s,e]) => e > win.start && s < win.end);
+      const freeIntervals = [];
+      relevant.forEach(([s,e]) => {
+        if (s > cursor) freeIntervals.push([cursor, Math.min(s, win.end)]);
+        cursor = Math.max(cursor, e);
+      });
+      if (cursor < win.end) freeIntervals.push([cursor, win.end]);
+
+      freeIntervals.forEach(([start, end]) => {
+        // Snap start up to next grid step
+        let t = Math.ceil(start / GRID_STEP) * GRID_STEP;
+        while (t + currentDuration/60 <= end + 0.001) {
+          slots.push(t);
+          t += GRID_STEP;
+        }
+      });
+    });
+
+    if (slots.length > 0) {
+      html += `
+        <div class="day-block">
+          <div class="day-title">${weekdayName} ${date.getDate()}/${date.getMonth()+1}</div>
+          <div class="slot-list">${slots.map(h => `<div class="slot">${formatHour(h)}</div>`).join('')}</div>
+        </div>`;
+    }
+  });
+
+  root.innerHTML = html || '<p class="no-slots">Aucun créneau disponible cette semaine.</p>';
+}
+
 async function loadSchedule() {
   const root = document.getElementById('scheduleRoot');
   try {
     const res = await fetch('/api/schedule');
-    const schedule = await res.json();
-
-    const today = new Date();
-    today.setHours(0,0,0,0);
-
-    const days = [];
-    for (let i = 0; i < 28; i++) {
-      const d = new Date(today);
-      d.setDate(d.getDate() + i);
-      days.push(d);
-    }
-
-    const weeks = [days.slice(0,7), days.slice(7,14), days.slice(14,21), days.slice(21,28)];
-
-    let html = '';
-
-    weeks.forEach((week, wi) => {
-      let weekHtml = '';
-      week.forEach(date => {
-        const dateStr = toDateStr(date);
-        const weekdayName = WEEKDAYS[date.getDay()];
-
-        const occupied = [];
-
-        schedule.recurring.forEach(r => {
-          if (!r.active) return;
-          if (r.weekday !== weekdayName) return;
-          const isException = schedule.exceptions.some(e => e.recurringId === r.id && e.date === dateStr);
-          if (isException) return;
-          occupied.push([r.hour, r.hour + r.duration/60]);
-        });
-
-        schedule.oneOff.forEach(o => {
-          if (o.date !== dateStr) return;
-          occupied.push([o.hour, o.hour + o.duration/60]);
-        });
-
-        occupied.sort((a,b) => a[0]-b[0]);
-
-        const free = [];
-        let cursor = DAY_START;
-        occupied.forEach(([start, end]) => {
-          if (start > cursor) free.push([cursor, Math.min(start, DAY_END)]);
-          cursor = Math.max(cursor, end);
-        });
-        if (cursor < DAY_END) free.push([cursor, DAY_END]);
-
-        const slots = [];
-        free.forEach(([start, end]) => {
-          let t = start;
-          while (t + 25/60 <= end + 0.001) {
-            slots.push(t);
-            t += 25/60;
-          }
-        });
-
-        if (slots.length > 0) {
-          weekHtml += `
-            <div class="day-block">
-              <div class="day-title">${weekdayName} ${date.getDate()}/${date.getMonth()+1}</div>
-              <div class="slot-list">${slots.map(h => `<div class="slot">${formatHour(h)}</div>`).join('')}</div>
-            </div>`;
-        }
-      });
-
-      if (weekHtml) {
-        html += `<div class="week-block"><div class="week-title">Semaine ${wi+1}</div>${weekHtml}</div>`;
-      }
-    });
-
-    root.innerHTML = html || '<p class="no-slots">Aucun créneau disponible sur les 4 prochaines semaines.</p>';
+    const data = await res.json();
+    scheduleData = {
+      recurring: data.recurring || [],
+      exceptions: data.exceptions || [],
+      oneOff: data.oneOff || [],
+      availability: data.availability || [],
+    };
+    render();
   } catch (e) {
     root.innerHTML = '<p class="loading">Erreur de chargement. Réessayez plus tard.</p>';
   }
 }
+
+document.getElementById('btn25').addEventListener('click', () => {
+  currentDuration = 25;
+  document.getElementById('btn25').classList.add('active');
+  document.getElementById('btn50').classList.remove('active');
+  render();
+});
+document.getElementById('btn50').addEventListener('click', () => {
+  currentDuration = 50;
+  document.getElementById('btn50').classList.add('active');
+  document.getElementById('btn25').classList.remove('active');
+  render();
+});
+document.getElementById('prevWeek').addEventListener('click', () => {
+  if (currentWeek > 0) { currentWeek--; render(); }
+});
+document.getElementById('nextWeek').addEventListener('click', () => {
+  if (currentWeek < 3) { currentWeek++; render(); }
+});
+
 loadSchedule();
 </script>
 </body>

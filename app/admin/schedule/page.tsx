@@ -20,10 +20,18 @@ type OneOff = {
   duration: 25 | 50;
 };
 
+type AvailabilityWindow = {
+  id: string;
+  weekday: string;
+  start: number;
+  end: number;
+};
+
 type Schedule = {
   recurring: RecurringSlot[];
   exceptions: Exception[];
   oneOff: OneOff[];
+  availability: AvailabilityWindow[];
 };
 
 const WEEKDAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
@@ -42,9 +50,13 @@ function uid() {
 export default function ScheduleAdmin() {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
-  const [schedule, setSchedule] = useState<Schedule>({ recurring: [], exceptions: [], oneOff: [] });
+  const [schedule, setSchedule] = useState<Schedule>({ recurring: [], exceptions: [], oneOff: [], availability: [] });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  const [availWeekday, setAvailWeekday] = useState('Lundi');
+  const [availStart, setAvailStart] = useState('9');
+  const [availEnd, setAvailEnd] = useState('18');
 
   const [newStudent, setNewStudent] = useState(STUDENTS[0]);
   const [newWeekday, setNewWeekday] = useState('Lundi');
@@ -65,7 +77,12 @@ export default function ScheduleAdmin() {
   async function load() {
     const res = await fetch('/api/schedule');
     const data = await res.json();
-    setSchedule(data);
+    setSchedule({
+      recurring: data.recurring || [],
+      exceptions: data.exceptions || [],
+      oneOff: data.oneOff || [],
+      availability: data.availability || [],
+    });
   }
 
   async function save(updated: Schedule) {
@@ -86,6 +103,20 @@ export default function ScheduleAdmin() {
   function tryLogin() {
     setAuthenticated(true);
     setError('');
+  }
+
+  function addAvailability() {
+    const win: AvailabilityWindow = {
+      id: uid(),
+      weekday: availWeekday,
+      start: parseFloat(availStart),
+      end: parseFloat(availEnd),
+    };
+    save({ ...schedule, availability: [...schedule.availability, win] });
+  }
+
+  function removeAvailability(id: string) {
+    save({ ...schedule, availability: schedule.availability.filter((a) => a.id !== id) });
   }
 
   function addRecurring() {
@@ -166,10 +197,41 @@ export default function ScheduleAdmin() {
       {error && <p style={{ color: '#c0392b' }}>{error}</p>}
       {saving && <p style={{ color: '#666' }}>Sauvegarde...</p>}
 
+      {/* AVAILABILITY WINDOWS */}
+      <section style={{ marginBottom: 40 }}>
+        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 6 }}>
+          Disponibilités générales
+        </h2>
+        <p style={{ fontSize: '0.82rem', color: '#666', marginBottom: 12 }}>
+          Les jours et plages horaires où vous acceptez d'enseigner. Aucun créneau ne s'affiche publiquement en dehors de ces plages.
+        </p>
+
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+          <select value={availWeekday} onChange={(e) => setAvailWeekday(e.target.value)} style={inputStyle}>
+            {WEEKDAYS.map((d) => <option key={d} value={d}>{d}</option>)}
+          </select>
+          <input type="number" step="0.5" placeholder="Début (ex: 9)" value={availStart} onChange={(e) => setAvailStart(e.target.value)} style={{ ...inputStyle, width: 130 }} />
+          <input type="number" step="0.5" placeholder="Fin (ex: 18)" value={availEnd} onChange={(e) => setAvailEnd(e.target.value)} style={{ ...inputStyle, width: 130 }} />
+          <button onClick={addAvailability} style={btnStyle}>Ajouter</button>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {schedule.availability.map((a) => (
+            <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 10, background: '#f0ece4', border: '1px solid #ddd8ce' }}>
+              <span style={{ flex: 1 }}><strong>{a.weekday}</strong> — {a.start}h à {a.end}h</span>
+              <button onClick={() => removeAvailability(a.id)} style={dangerStyle}>Supprimer</button>
+            </div>
+          ))}
+          {schedule.availability.length === 0 && (
+            <p style={{ fontSize: '0.82rem', color: '#999', fontStyle: 'italic' }}>Aucune disponibilité définie — rien ne s'affichera publiquement.</p>
+          )}
+        </div>
+      </section>
+
       {/* RECURRING SLOTS */}
       <section style={{ marginBottom: 40 }}>
         <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 12 }}>
-          Créneaux hebdomadaires
+          Créneaux hebdomadaires (élèves)
         </h2>
 
         <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
