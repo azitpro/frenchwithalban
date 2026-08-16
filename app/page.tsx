@@ -71,7 +71,7 @@ export default function Home() {
             <defs>
               <clipPath id="hxHeader">
                 <polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/>
-              </clipPgit add .ath>
+              </clipPath>
             </defs>
             <rect x="0" y="0" width="8" height="28" fill="#002395" clipPath="url(#hxHeader)"/>
             <rect x="8" y="0" width="8" height="28" fill="#ffffff" clipPath="url(#hxHeader)"/>
