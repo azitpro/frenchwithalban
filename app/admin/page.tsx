@@ -13,7 +13,7 @@ export default function AdminPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (authenticated) loadSlots();git add .
+    if (authenticated) loadSlots();
   }, [authenticated]);
 
   async function loadSlots() {
