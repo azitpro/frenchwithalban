@@ -30,7 +30,7 @@ header {
 h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 8px; }
 .subtitle { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 20px; }
 
-.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
 .duration-toggle { display: flex; gap: 8px; }
 .dur-btn {
   padding: 9px 18px; border: 1.5px solid var(--navy); background: transparent;
@@ -46,6 +46,14 @@ h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--nav
 }
 .week-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
 .week-label { font-family: 'Fraunces', serif; font-weight: 600; font-size: 0.95rem; min-width: 140px; text-align: center; }
+
+.tz-row { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.tz-label { font-size: 0.82rem; font-weight: 500; color: var(--text-soft); }
+.tz-select {
+  padding: 9px 14px; border: 1.5px solid var(--border); background: var(--cream-dark);
+  font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--navy);
+  cursor: pointer;
+}
 
 .day-block { margin-bottom: 18px; }
 .day-title {
@@ -93,7 +101,7 @@ footer {
 
 <div class="wrap">
 <h1>Créneaux disponibles</h1>
-<div class="subtitle">Sélectionnez la durée du cours et naviguez entre les semaines.</div>
+<div class="subtitle">Sélectionnez la durée du cours, le fuseau horaire, et naviguez entre les semaines.</div>
 
 <div class="controls">
   <div class="duration-toggle">
@@ -102,9 +110,23 @@ footer {
   </div>
   <div class="week-nav">
     <button class="week-arrow" id="prevWeek">←</button>
-    <span class="week-label" id="weekLabel">Semaine 1</span>
+    <span class="week-label" id="weekLabel">...</span>
     <button class="week-arrow" id="nextWeek">→</button>
   </div>
+</div>
+
+<div class="tz-row">
+  <span class="tz-label">Fuseau horaire :</span>
+  <select class="tz-select" id="tzSelect">
+    <option value="-9">Los Angeles (UTC-8)</option>
+    <option value="-6">New York (UTC-5)</option>
+    <option value="-1">Londres (UTC+0)</option>
+    <option value="0" selected>Paris (CET, UTC+1)</option>
+    <option value="-2">Le Caire (UTC+2)</option>
+    <option value="-3">Moscou (UTC+3)</option>
+    <option value="-4">Dubaï (UTC+4)</option>
+    <option value="8">Tokyo (UTC+9)</option>
+  </select>
 </div>
 
 <div id="scheduleRoot"><p class="loading">Chargement...</p></div>
@@ -118,16 +140,23 @@ footer {
 
 <script>
 const WEEKDAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-const GRID_STEP = 0.5; // toujours sur heures rondes ou demies
+const MONTHS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+const GRID_STEP = 0.5;
 
 let scheduleData = null;
-let currentWeek = 0; // 0 to 3
-let currentDuration = 50;;
+let preplyBusy = [];
+let currentWeek = 0;
+let currentDuration = 50;
+let tzOffset = 0;
 
-function formatHour(h) {
-  const hours = Math.floor(h);
-  const minutes = Math.round((h - hours) * 60);
-  return `${hours}h${minutes > 0 ? minutes.toString().padStart(2,'0') : ''}`;
+function formatHourWithTz(h) {
+  let adjusted = h + tzOffset;
+  let dayTag = '';
+  if (adjusted < 0) { adjusted += 24; dayTag = ' (j-1)'; }
+  if (adjusted >= 24) { adjusted -= 24; dayTag = ' (j+1)'; }
+  const hours = Math.floor(adjusted);
+  const minutes = Math.round((adjusted - hours) * 60);
+  return `${hours}h${minutes > 0 ? minutes.toString().padStart(2,'0') : ''}${dayTag}`;
 }
 
 function toDateStr(d) {
@@ -154,13 +183,13 @@ function render() {
   const days = getWeekDays(currentWeek);
 
   const weekStart = days[0];
-const weekEnd = days[days.length - 1];
-const sameMonth = weekStart.getMonth() === weekEnd.getMonth();
-const months = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
-const label = sameMonth
-  ? `${weekStart.getDate()} - ${weekEnd.getDate()} ${months[weekEnd.getMonth()]}`
-  : `${weekStart.getDate()} ${months[weekStart.getMonth()]} - ${weekEnd.getDate()} ${months[weekEnd.getMonth()]}`;
-document.getElementById('weekLabel').textContent = label;
+  const weekEnd = days[days.length - 1];
+  const sameMonth = weekStart.getMonth() === weekEnd.getMonth();
+  const label = sameMonth
+    ? `${weekStart.getDate()} - ${weekEnd.getDate()} ${MONTHS[weekEnd.getMonth()]}`
+    : `${weekStart.getDate()} ${MONTHS[weekStart.getMonth()]} - ${weekEnd.getDate()} ${MONTHS[weekEnd.getMonth()]}`;
+  document.getElementById('weekLabel').textContent = label;
+
   document.getElementById('prevWeek').disabled = currentWeek === 0;
   document.getElementById('nextWeek').disabled = currentWeek === 3;
 
@@ -170,15 +199,13 @@ document.getElementById('weekLabel').textContent = label;
     const dateStr = toDateStr(date);
     const weekdayName = WEEKDAYS[date.getDay()];
 
-    // Availability windows for this weekday
-    const windows = scheduleData.availability.filter(a => a.weekday === weekdayName);
-    if (windows.length === 0) return; // no availability defined for this day at all
-
-    // Occupied intervals for this date
-    const occupied = [];
-    // Check full-day unavailability first
     const fullDayBlocked = (scheduleData.unavailability || []).some(u => u.type === 'day' && u.date === dateStr);
     if (fullDayBlocked) return;
+
+    const windows = scheduleData.availability.filter(a => a.weekday === weekdayName);
+    if (windows.length === 0) return;
+
+    const occupied = [];
     scheduleData.recurring.forEach(r => {
       if (!r.active) return;
       if (r.weekday !== weekdayName) return;
@@ -191,16 +218,15 @@ document.getElementById('weekLabel').textContent = label;
       occupied.push([o.hour, o.hour + o.duration/60]);
     });
     preplyBusy.forEach(b => {
-  if (b.date !== dateStr) return;
-  occupied.push([b.startHour, b.endHour]);
-});
-(scheduleData.unavailability || []).forEach(u => {
+      if (b.date !== dateStr) return;
+      occupied.push([b.startHour, b.endHour]);
+    });
+    (scheduleData.unavailability || []).forEach(u => {
       if (u.type !== 'range' || u.date !== dateStr) return;
       occupied.push([u.start, u.end]);
     });
     occupied.sort((a,b) => a[0]-b[0]);
 
-    // Compute free intervals within each availability window
     const slots = [];
     windows.forEach(win => {
       let cursor = win.start;
@@ -213,7 +239,6 @@ document.getElementById('weekLabel').textContent = label;
       if (cursor < win.end) freeIntervals.push([cursor, win.end]);
 
       freeIntervals.forEach(([start, end]) => {
-        // Snap start up to next grid step
         let t = Math.ceil(start / GRID_STEP) * GRID_STEP;
         while (t + currentDuration/60 <= end + 0.001) {
           slots.push(t);
@@ -226,15 +251,13 @@ document.getElementById('weekLabel').textContent = label;
       html += `
         <div class="day-block">
           <div class="day-title">${weekdayName} ${date.getDate()}/${date.getMonth()+1}</div>
-          <div class="slot-list">${slots.map(h => `<div class="slot">${formatHour(h)}</div>`).join('')}</div>
+          <div class="slot-list">${slots.map(h => `<div class="slot">${formatHourWithTz(h)}</div>`).join('')}</div>
         </div>`;
     }
   });
 
   root.innerHTML = html || '<p class="no-slots">Aucun créneau disponible cette semaine.</p>';
 }
-
-let preplyBusy = [];
 
 async function loadSchedule() {
   const root = document.getElementById('scheduleRoot');
@@ -280,6 +303,10 @@ document.getElementById('prevWeek').addEventListener('click', () => {
 });
 document.getElementById('nextWeek').addEventListener('click', () => {
   if (currentWeek < 3) { currentWeek++; render(); }
+});
+document.getElementById('tzSelect').addEventListener('change', (e) => {
+  tzOffset = parseFloat(e.target.value);
+  render();
 });
 
 loadSchedule();
