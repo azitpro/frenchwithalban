@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les nombres — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+  --green: #2e7d4f;
+  --green-soft: #e8f4ed;
+  --red-soft: #fbeae8;
+  --info-blue: #1a56a0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+
+header {
+  padding: 28px 48px; border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream); width: 100%; box-sizing: border-box;
+}
+h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 24px; }
+
+.section-head { display: flex; align-items: center; gap: 8px; margin: 32px 0 12px; }
+.section-head h2 { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); }
+.hex-icon { flex-shrink: 0; }
+
+.num-grid { column-count: 2; column-gap: 20px; margin-bottom: 8px; }
+.num-item { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); break-inside: avoid; -webkit-column-break-inside: avoid; }
+.num-n { color: var(--text-soft); min-width: 26px; flex-shrink: 0; font-size: 0.76rem; text-align: right; white-space: nowrap; }
+.num-word { font-weight: 700; color: var(--navy); flex: 1; font-size: 0.86rem; }
+.num-pho { color: var(--red); font-style: italic; font-size: 0.74rem; white-space: nowrap; }
+
+.subgroup-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 14px 0 4px; }
+
+.note-box {
+  background: #eaf0f8; border: none; border-radius: 4px 16px 16px 16px;
+  padding: 12px 16px; font-size: 0.84rem; color: var(--navy); line-height: 1.6; margin-top: 12px;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.note-box b { color: var(--navy); }
+.note-box .info-hex { flex-shrink: 0; margin-top: 2px; }
+
+.ex-block { margin-bottom: 56px; padding-top: 32px; border-top: 2px solid var(--border); }
+.ex-title { display: flex; align-items: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.ex-desc { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 20px; }
+.ex-card { background: var(--cream-dark); border: 1px solid var(--border); border-top: 3px solid var(--navy); padding: 28px; }
+
+.start-screen { text-align: center; padding: 20px 0; }
+.start-screen p { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 20px; }
+
+.btn { padding: 13px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1.5px solid var(--navy); transition: all 0.15s; }
+.btn-primary { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--red); width: 100%; max-width: 220px; margin: 0 auto; display: block; }
+.btn-primary:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--red); }
+
+.ex-result { text-align: center; }
+.ex-result .score { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--navy); margin: 8px 0; }
+.mention { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 20px; border: 1.5px solid; }
+.m-revoir { background: var(--red-soft); color: var(--red); border-color: var(--red); }
+.m-passable { background: #fdf3e3; color: #9a6c1a; border-color: #c9972a; }
+.m-assezbien { background: #f0f5e8; color: #5a6e28; border-color: #8a9e3a; }
+.m-bien { background: var(--green-soft); color: var(--green); border-color: var(--green); }
+.m-tresbien { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+
+.ex-progress { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 16px; display: flex; justify-content: space-between; }
+.ex-prompt { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--navy); margin-bottom: 20px; text-align: center; }
+
+.type-field { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.type-field input {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+  background: var(--cream); font-family: 'Inter', sans-serif; font-size: 1rem;
+  color: var(--navy); outline: none; text-align: center;
+}
+.type-field input:focus { border-color: var(--navy); }
+.type-field input.ok { border-color: var(--green); background: var(--green-soft); }
+.type-field input.bad { border-color: var(--red); background: var(--red-soft); }
+
+.feedback { margin-top: 14px; padding: 12px 14px; font-size: 0.85rem; border-left: 3px solid; }
+.feedback.ok { background: var(--green-soft); color: #1e5c35; border-color: var(--green); }
+.feedback.bad { background: var(--red-soft); color: #8b2a20; border-color: var(--red); }
+
+footer {
+  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-nav { display: flex; gap: 20px; }
+.footer-btn {
+  font-size: 0.8rem; font-weight: 500; color: var(--cream);
+  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
+}
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; color: rgba(250,247,242,0.4); }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <svg width="30" height="35" viewBox="0 0 24 28">
+      <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hHeader)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hHeader)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span style="font-family:'Fraunces',serif; font-size:1.7rem; font-weight:700; color:var(--navy); letter-spacing:-0.01em;">French with <span style="color:var(--red)">Alban</span></span>
+  </div>
+  <nav style="display: flex; gap: 44px; align-items: center;">
+    <a href="/ressources.html" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">← Retour</a>
+    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">Accueil</a>
+  </nav>
+</header>
+
+<div class="wrap">
+<h1>Les nombres</h1>
+
+<div id="vocabRoot"></div>
+
+<div class="note-box">
+  <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
+  <span><b>In Belgium and Switzerland</b>, some numbers are simpler: 70 = <em>septante</em> · 80 = <em>huitante</em> (Switzerland) or <em>quatre-vingts</em> (Belgium) · 90 = <em>nonante</em>.</span>
+</div>
+
+<!-- EXERCISE 1: WORD → DIGIT -->
+<div class="ex-block">
+  <div class="ex-title">
+    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hxE1"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hxE1)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hxE1)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hxE1)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
+    &nbsp;Exercice 1 — Écriture en chiffres
+  </div>
+  <div class="ex-desc">Le nombre s'affiche en lettres — écrivez-le en chiffres.</div>
+  <div class="ex-card" id="ex1Root"></div>
+</div>
+
+<!-- EXERCISE 2: DIGIT → WORD -->
+<div class="ex-block">
+  <div class="ex-title">
+    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hxE2"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hxE2)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hxE2)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hxE2)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
+    &nbsp;Exercice 2 — Écriture en lettres
+  </div>
+  <div class="ex-desc">Le nombre s'affiche en chiffres (1 à 100) — écrivez-le en toutes lettres.</div>
+  <div class="ex-card" id="ex2Root"></div>
+</div>
+</div>
+
+<footer>
+  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+</footer>
+
+<script>
+/* ===== DATA ===== */
+const ONES_TEENS = [
+  [1,"un / une","/œ̃/ · /yn/"], [2,"deux","/dø/"], [3,"trois","/tʁwa/"], [4,"quatre","/katʁ/"],
+  [5,"cinq","/sɛ̃k/"], [6,"six","/sis/"], [7,"sept","/sɛt/"], [8,"huit","/ɥit/"],
+  [9,"neuf","/nœf/"], [10,"dix","/dis/"], [11,"onze","/ɔ̃z/"], [12,"douze","/duz/"],
+  [13,"treize","/tʁɛz/"], [14,"quatorze","/katɔʁz/"], [15,"quinze","/kɛ̃z/"], [16,"seize","/sɛz/"],
+  [17,"dix-sept","/dis.sɛt/"], [18,"dix-huit","/diz.ɥit/"], [19,"dix-neuf","/diz.nœf/"],
+];
+const TWENTIES = [
+  [20,"vingt","/vɛ̃/"], [21,"vingt-et-un","/vɛ̃.te.œ̃/"], [22,"vingt-deux","/vɛ̃t.dø/"],
+  [23,"vingt-trois","/vɛ̃t.tʁwa/"], [24,"vingt-quatre","/vɛ̃t.katʁ/"], [25,"vingt-cinq","/vɛ̃t.sɛ̃k/"],
+  [26,"vingt-six","/vɛ̃t.sis/"], [27,"vingt-sept","/vɛ̃t.sɛt/"], [28,"vingt-huit","/vɛ̃t.ɥit/"], [29,"vingt-neuf","/vɛ̃t.nœf/"],
+];
+const TENS = [
+  [30,"trente","/tʁɑ̃t/"], [40,"quarante","/kaʁɑ̃t/"], [50,"cinquante","/sɛ̃kɑ̃t/"],
+  [60,"soixante","/swasɑ̃t/"], [70,"soixante-dix","/swasɑ̃t.dis/"],
+  [80,"quatre-vingts","/katʁ.vɛ̃/"], [90,"quatre-vingt-dix","/katʁ.vɛ̃.dis/"],
+];
+const SIXTIES = [
+  [60,"soixante","/swasɑ̃t/"], [61,"soixante-et-un","/swasɑ̃t.e.œ̃/"], [62,"soixante-deux","/swasɑ̃t.dø/"],
+  [63,"soixante-trois","/swasɑ̃t.tʁwa/"], [64,"soixante-quatre","/swasɑ̃t.katʁ/"], [65,"soixante-cinq","/swasɑ̃t.sɛ̃k/"],
+  [66,"soixante-six","/swasɑ̃t.sis/"], [67,"soixante-sept","/swasɑ̃t.sɛt/"], [68,"soixante-huit","/swasɑ̃t.ɥit/"], [69,"soixante-neuf","/swasɑ̃t.nœf/"],
+];
+const SEVENTIES = [
+  [70,"soixante-dix","/swasɑ̃t.dis/"], [71,"soixante-et-onze","/swasɑ̃t.e.ɔ̃z/"], [72,"soixante-douze","/swasɑ̃t.duz/"],
+  [73,"soixante-treize","/swasɑ̃t.tʁɛz/"], [74,"soixante-quatorze","/swasɑ̃t.katɔʁz/"], [75,"soixante-quinze","/swasɑ̃t.kɛ̃z/"],
+  [76,"soixante-seize","/swasɑ̃t.sɛz/"], [77,"soixante-dix-sept","/swasɑ̃t.dis.sɛt/"], [78,"soixante-dix-huit","/swasɑ̃t.diz.ɥit/"], [79,"soixante-dix-neuf","/swasɑ̃t.diz.nœf/"],
+];
+const EIGHTIES = [
+  [80,"quatre-vingts","/katʁ.vɛ̃/"], [81,"quatre-vingt-un","/katʁ.vɛ̃.œ̃/"], [82,"quatre-vingt-deux","/katʁ.vɛ̃.dø/"],
+  [83,"quatre-vingt-trois","/katʁ.vɛ̃.tʁwa/"], [84,"quatre-vingt-quatre","/katʁ.vɛ̃.katʁ/"], [85,"quatre-vingt-cinq","/katʁ.vɛ̃.sɛ̃k/"],
+  [86,"quatre-vingt-six","/katʁ.vɛ̃.sis/"], [87,"quatre-vingt-sept","/katʁ.vɛ̃.sɛt/"], [88,"quatre-vingt-huit","/katʁ.vɛ̃.ɥit/"], [89,"quatre-vingt-neuf","/katʁ.vɛ̃.nœf/"],
+];
+const NINETIES = [
+  [90,"quatre-vingt-dix","/katʁ.vɛ̃.dis/"], [91,"quatre-vingt-onze","/katʁ.vɛ̃.ɔ̃z/"], [92,"quatre-vingt-douze","/katʁ.vɛ̃.duz/"],
+  [93,"quatre-vingt-treize","/katʁ.vɛ̃.tʁɛz/"], [94,"quatre-vingt-quatorze","/katʁ.vɛ̃.katɔʁz/"], [95,"quatre-vingt-quinze","/katʁ.vɛ̃.kɛ̃z/"],
+  [96,"quatre-vingt-seize","/katʁ.vɛ̃.sɛz/"], [97,"quatre-vingt-dix-sept","/katʁ.vɛ̃.dis.sɛt/"], [98,"quatre-vingt-dix-huit","/katʁ.vɛ̃.diz.ɥit/"], [99,"quatre-vingt-dix-neuf","/katʁ.vɛ̃.diz.nœf/"],
+];
+const BIG_NUMBERS = [
+  ["100","cent","/sɑ̃/"], ["200","deux cents","/dø.sɑ̃/"], ["1 000","mille","/mil/"],
+  ["10 000","dix mille","/di.mil/"], ["1 000 000","un million","/œ̃.mil.jɔ̃/"], ["1 000 000 000","un milliard","/œ̃.mil.jaʁ/"],
+];
+
+function hexSvg() {
+  return `<svg class="hex-icon" width="12" height="14" viewBox="0 0 24 28"><defs><clipPath id="hx${Math.random().toString(36).slice(2,8)}"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395"/><rect x="8" y="0" width="8" height="28" fill="#fff"/><rect x="16" y="0" width="8" height="28" fill="#ED2939"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>`;
+}
+
+function renderNumGrid(data) {
+  return `<div class="num-grid">${data.map(([n,word,pho]) => `
+    <div class="num-item">
+      <span class="num-n">${n}</span>
+      <span class="num-word">${word}</span>
+      <span class="num-pho">${pho}</span>
+    </div>`).join('')}</div>`;
+}
+
+const vocabRoot = document.getElementById('vocabRoot');
+vocabRoot.innerHTML = `
+  <div class="section-head">${hexSvg()}<h2>1 à 19</h2></div>
+  ${renderNumGrid(ONES_TEENS)}
+
+  <div class="section-head">${hexSvg()}<h2>20 à 29</h2></div>
+  ${renderNumGrid(TWENTIES)}
+
+  <div class="section-head">${hexSvg()}<h2>Les dizaines</h2></div>
+  ${renderNumGrid(TENS)}
+
+  <div class="section-head">${hexSvg()}<h2>60 à 99 — le détail</h2></div>
+  <div class="subgroup-label">60 – 69</div>
+  ${renderNumGrid(SIXTIES)}
+  <div class="subgroup-label">70 – 79</div>
+  ${renderNumGrid(SEVENTIES)}
+  <div class="subgroup-label">80 – 89</div>
+  ${renderNumGrid(EIGHTIES)}
+  <div class="subgroup-label">90 – 99</div>
+  ${renderNumGrid(NINETIES)}
+
+  <div class="section-head">${hexSvg()}<h2>Les grands nombres</h2></div>
+  ${renderNumGrid(BIG_NUMBERS)}
+`;
+
+/* ===== NUMBER <-> WORD LOGIC (1-100) ===== */
+const UNITS = ["zéro","un","deux","trois","quatre","cinq","six","sept","huit","neuf"];
+const TEENS_W = ["dix","onze","douze","treize","quatorze","quinze","seize","dix-sept","dix-huit","dix-neuf"];
+
+function numberToWords(n) {
+  if (n <= 9) return UNITS[n];
+  if (n <= 19) return TEENS_W[n-10];
+  if (n <= 69) {
+    const tensNames = {2:"vingt",3:"trente",4:"quarante",5:"cinquante",6:"soixante"};
+    const td = Math.floor(n/10), rem = n % 10;
+    const base = tensNames[td];
+    if (rem === 0) return base;
+    if (rem === 1) return base + "-et-un";
+    return base + "-" + UNITS[rem];
+  }
+  if (n <= 79) {
+    const rem = n - 60;
+    if (rem === 11) return "soixante-et-onze";
+    return "soixante-" + TEENS_W[rem-10];
+  }
+  if (n <= 89) {
+    const rem = n - 80;
+    if (rem === 0) return "quatre-vingts";
+    return "quatre-vingt-" + UNITS[rem];
+  }
+  if (n <= 99) {
+    const rem = n - 80;
+    return "quatre-vingt-" + TEENS_W[rem-10];
+  }
+  return "cent";
+}
+
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function randomNumbers(count, max) {
+  const pool = Array.from({length: max}, (_, i) => i + 1);
+  return shuffle(pool).slice(0, count);
+}
+function mention(pct) {
+  if(pct<50) return {label:"à revoir",cls:"m-revoir"};
+  if(pct<60) return {label:"passable",cls:"m-passable"};
+  if(pct<70) return {label:"assez bien",cls:"m-assezbien"};
+  if(pct<80) return {label:"bien",cls:"m-bien"};
+  return {label:"très bien",cls:"m-tresbien"};
+}
+function normalizeWord(s) {
+  return s.trim().toLowerCase().replace(/[-\s]+/g, ' ');
+}
+
+/* ===== EXERCISE 1: WORD -> DIGIT ===== */
+let ex1Order = [], ex1Idx = 0, ex1Score = 0, ex1Started = false, ex1Answered = false;
+const EX_LENGTH = 15;
+
+function renderEx1() {
+  const root = document.getElementById('ex1Root');
+  if (!ex1Started) {
+    root.innerHTML = `<div class="start-screen"><p>${EX_LENGTH} nombres, ordre aléatoire.</p><button class="btn btn-primary" id="ex1Start">Commencer</button></div>`;
+    document.getElementById('ex1Start').onclick = () => {
+      ex1Started = true;
+      ex1Order = randomNumbers(EX_LENGTH, 100);
+      ex1Idx = 0; ex1Score = 0;
+      renderEx1();
+    };
+    return;
+  }
+  if (ex1Idx >= ex1Order.length) {
+    const pct = Math.round((ex1Score / ex1Order.length) * 100);
+    const m = mention(pct);
+    root.innerHTML = `<div class="ex-result">
+      <div class="score">${ex1Score} / ${ex1Order.length}</div>
+      <span class="mention ${m.cls}">${m.label} — ${pct}%</span><br>
+      <button class="btn btn-primary" id="ex1Retry">Recommencer</button></div>`;
+    document.getElementById('ex1Retry').onclick = () => { ex1Started = false; renderEx1(); };
+    return;
+  }
+  const n = ex1Order[ex1Idx];
+  const word = numberToWords(n);
+  root.innerHTML = `
+    <div class="ex-progress"><span>Question ${ex1Idx+1} / ${ex1Order.length}</span><span>Score : ${ex1Score}</span></div>
+    <div class="ex-prompt" style="font-size:1.3rem;">${word}</div>
+    <div class="type-field"><input type="text" id="ex1Input" inputmode="numeric" autocomplete="off" placeholder="Votre réponse..."></div>
+    <div id="ex1Feedback"></div>
+    <button class="btn btn-primary" id="ex1Submit">Valider</button>`;
+  const input = document.getElementById('ex1Input');
+  input.focus();
+  function submit() {
+    if (ex1Answered) return;
+    ex1Answered = true;
+    const correct = parseInt(input.value.trim(), 10) === n;
+    if (correct) ex1Score++;
+    input.classList.add(correct ? 'ok' : 'bad');
+    const msg = correct ? 'Correct !' : `Réponse attendue : <b>${n}</b>`;
+    document.getElementById('ex1Feedback').innerHTML = `<div class="feedback ${correct?'ok':'bad'}">${msg}</div>`;
+    setTimeout(() => { ex1Answered = false; ex1Idx++; renderEx1(); }, 1200);
+  }
+  document.getElementById('ex1Submit').onclick = submit;
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+}
+renderEx1();
+
+/* ===== EXERCISE 2: DIGIT -> WORD ===== */
+let ex2Order = [], ex2Idx = 0, ex2Score = 0, ex2Started = false, ex2Answered = false;
+
+function renderEx2() {
+  const root = document.getElementById('ex2Root');
+  if (!ex2Started) {
+    root.innerHTML = `<div class="start-screen"><p>${EX_LENGTH} nombres, ordre aléatoire.</p><button class="btn btn-primary" id="ex2Start">Commencer</button></div>`;
+    document.getElementById('ex2Start').onclick = () => {
+      ex2Started = true;
+      ex2Order = randomNumbers(EX_LENGTH, 100);
+      ex2Idx = 0; ex2Score = 0;
+      renderEx2();
+    };
+    return;
+  }
+  if (ex2Idx >= ex2Order.length) {
+    const pct = Math.round((ex2Score / ex2Order.length) * 100);
+    const m = mention(pct);
+    root.innerHTML = `<div class="ex-result">
+      <div class="score">${ex2Score} / ${ex2Order.length}</div>
+      <span class="mention ${m.cls}">${m.label} — ${pct}%</span><br>
+      <button class="btn btn-primary" id="ex2Retry">Recommencer</button></div>`;
+    document.getElementById('ex2Retry').onclick = () => { ex2Started = false; renderEx2(); };
+    return;
+  }
+  const n = ex2Order[ex2Idx];
+  root.innerHTML = `
+    <div class="ex-progress"><span>Question ${ex2Idx+1} / ${ex2Order.length}</span><span>Score : ${ex2Score}</span></div>
+    <div class="ex-prompt">${n}</div>
+    <div class="type-field"><input type="text" id="ex2Input" autocomplete="off" placeholder="Votre réponse..."></div>
+    <div id="ex2Feedback"></div>
+    <button class="btn btn-primary" id="ex2Submit">Valider</button>`;
+  const input = document.getElementById('ex2Input');
+  input.focus();
+  function submit() {
+    if (ex2Answered) return;
+    ex2Answered = true;
+    const correctWord = numberToWords(n);
+    const correct = normalizeWord(input.value) === normalizeWord(correctWord);
+    if (correct) ex2Score++;
+    input.classList.add(correct ? 'ok' : 'bad');
+    const msg = correct ? 'Correct !' : `Réponse attendue : <b>${correctWord}</b>`;
+    document.getElementById('ex2Feedback').innerHTML = `<div class="feedback ${correct?'ok':'bad'}">${msg}</div>`;
+    setTimeout(() => { ex2Answered = false; ex2Idx++; renderEx2(); }, 1300);
+  }
+  document.getElementById('ex2Submit').onclick = submit;
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+}
+renderEx2();
+</script>
+</body>
+</html>
