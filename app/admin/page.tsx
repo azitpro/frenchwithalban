@@ -23,20 +23,15 @@ export default function AdminHub() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {sections.map((s) => (
-          
-            key={s.href}
-            href={s.href}
-            style={{
-              display: 'block',
-              padding: 22,
-              background: '#f0ece4',
-              border: '1px solid #ddd8ce',
-              borderLeft: '3px solid #0d2b45',
-              textDecoration: 'none',
-              color: '#0d2b45',
-              transition: 'box-shadow 0.15s, transform 0.15s',
-            }}
-          >
+          <a key={s.href} href={s.href} style={{
+            display: 'block',
+            padding: 22,
+            background: '#f0ece4',
+            border: '1px solid #ddd8ce',
+            borderLeft: '3px solid #0d2b45',
+            textDecoration: 'none',
+            color: '#0d2b45',
+          }}>
             <div style={{ fontFamily: 'Fraunces, serif', fontSize: '1.1rem', fontWeight: 600, marginBottom: 6 }}>
               {s.title} →
             </div>
