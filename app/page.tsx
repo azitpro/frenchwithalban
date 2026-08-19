@@ -87,7 +87,7 @@ export default function Home() {
           <a href="/planning_public.html">Créneaux</a>
           <a href="/ressources.html">Ressources</a>
           <a href="#">À propos</a>
-          <a href="#" className="nav-cta">Réserver</a>
+          <a href="/reserver.html" className="nav-cta">Réserver</a>
         </nav>
       </header>
 
@@ -100,7 +100,7 @@ export default function Home() {
           <h1>Apprenez<br />le <span className="red">français</span><br />autrement.</h1>
           <p className="hero-body">Des cours particuliers avec un enseignant français natif. Approche personnalisée, progression mesurable, horaires adaptés à votre vie.</p>
           <div className="hero-actions">
-            <a href="#" className="btn-primary">Réserver un cours</a>
+            <a href="/reserver.html" className="btn-primary">Réserver un cours</a>
             <a href="/conjugaison.html" className="btn-ghost">Voir les ressources</a>
           </div>
         </div>
