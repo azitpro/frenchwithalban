@@ -46,20 +46,17 @@ h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--nav
 }
 .option-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--red); }
 
-.fee-note {
-  font-size: 0.76rem; color: var(--red); font-style: italic; margin-top: 4px;
-}
-.price-tag {
-  font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--navy);
-}
+.fee-note { font-size: 0.76rem; color: var(--red); font-style: italic; margin-top: 4px; }
+.price-tag { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--navy); }
 .price-tag span { font-size: 0.9rem; color: var(--text-soft); font-family: 'Inter', sans-serif; }
 
 .form-section { display: none; padding-top: 24px; border-top: 2px solid var(--border); }
 .form-section.visible { display: block; }
 .form-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 20px; }
 
-.form-field { margin-bottom: 16px; }
+.form-field { margin-bottom: 18px; }
 .form-field label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.form-field .optional-tag { font-weight: 400; font-style: italic; color: var(--text-soft); font-size: 0.76rem; }
 .form-field input, .form-field select, .form-field textarea {
   width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
   background: var(--cream); font-family: 'Inter', sans-serif; font-size: 0.9rem;
@@ -67,6 +64,17 @@ h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--nav
 }
 .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--navy); }
 .form-field textarea { resize: vertical; min-height: 70px; }
+
+.avail-grid { border: 1px solid var(--border); background: var(--cream); }
+.avail-row { display: grid; grid-template-columns: 90px repeat(5, 1fr); border-bottom: 1px solid var(--border); }
+.avail-row:last-child { border-bottom: none; }
+.avail-row.header { background: var(--cream-dark); font-weight: 600; font-size: 0.72rem; text-align: center; }
+.avail-cell { padding: 8px 4px; text-align: center; border-left: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+.avail-cell:first-child { border-left: none; }
+.avail-label { padding: 8px 6px; font-size: 0.76rem; font-weight: 600; color: var(--navy); display: flex; align-items: center; }
+.avail-cell input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--navy); }
+.avail-error { color: var(--red); font-size: 0.78rem; margin-top: 6px; display: none; }
+.avail-error.visible { display: block; }
 
 .submit-btn {
   padding: 13px; background: var(--navy); color: var(--cream); border: none;
@@ -121,7 +129,7 @@ footer {
     <div class="option-title">Réserver sur Preply</div>
     <div class="option-desc">Plateforme sécurisée avec paiement intégré et système d'avis.</div>
     <div class="fee-note">Des frais de service Preply s'appliquent, y compris pour l'élève.</div>
-    <a href="https://preply.com/fr/tuteur/3727337" target="_blankgit" class="option-btn">Voir mon profil Preply →</a>
+    <a href="https://preply.com/fr/tuteur/3727337" target="_blank" class="option-btn">Voir mon profil Preply →</a>
   </div>
 
   <div class="option-card">
@@ -137,42 +145,70 @@ footer {
   <div class="form-title">Parlez-moi de vous</div>
   <form id="contactForm">
     <div class="form-field">
-      <label for="name">Nom</label>
-      <input type="text" id="name" required>
+      <label for="firstName">Prénom</label>
+      <input type="text" id="firstName" required>
     </div>
     <div class="form-field">
       <label for="email">Email</label>
       <input type="email" id="email" required>
     </div>
     <div class="form-field">
-      <label for="schedulePref">Créneaux horaires préférés</label>
-      <input type="text" id="schedulePref" placeholder="Ex : lundi et mercredi soir">
+      <label for="timezone">Fuseau horaire</label>
+      <select id="timezone" required>
+        <option value="Los Angeles (UTC-8)">Los Angeles (UTC-8)</option>
+        <option value="New York (UTC-5)">New York (UTC-5)</option>
+        <option value="Londres (UTC+0)">Londres (UTC+0)</option>
+        <option value="Paris (UTC+1)" selected>Paris (UTC+1)</option>
+        <option value="Le Caire (UTC+2)">Le Caire (UTC+2)</option>
+        <option value="Moscou (UTC+3)">Moscou (UTC+3)</option>
+        <option value="Dubaï (UTC+4)">Dubaï (UTC+4)</option>
+        <option value="Tokyo (UTC+9)">Tokyo (UTC+9)</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Disponibilités</label>
+      <div class="avail-grid" id="availGrid">
+        <div class="avail-row header">
+          <div></div>
+          <div class="avail-cell">Lun</div>
+          <div class="avail-cell">Mar</div>
+          <div class="avail-cell">Mer</div>
+          <div class="avail-cell">Jeu</div>
+          <div class="avail-cell">Ven</div>
+        </div>
+        <!-- rows generated by JS -->
+      </div>
+      <div class="avail-error" id="availError">Veuillez cocher au moins une disponibilité.</div>
     </div>
     <div class="form-field">
       <label for="level">Niveau actuel estimé</label>
-      <select id="level">
-        <option value="Débutant complet">Débutant complet</option>
-        <option value="Débutant">Débutant</option>
-        <option value="Intermédiaire">Intermédiaire</option>
-        <option value="Avancé">Avancé</option>
+      <select id="level" required>
+        <option value="Débutant complet (A0)">Débutant complet (A0)</option>
+        <option value="Débutant (A1–A2)">Débutant (A1–A2)</option>
+        <option value="Intermédiaire (B1–B2)">Intermédiaire (B1–B2)</option>
+        <option value="Avancé (C1–C2)">Avancé (C1–C2)</option>
         <option value="Je ne sais pas">Je ne sais pas</option>
       </select>
     </div>
     <div class="form-field">
       <label for="goals">Objectifs</label>
-      <textarea id="goals" placeholder="Ex : voyage, travail, examen, conversation courante..."></textarea>
+      <textarea id="goals" required placeholder="Ex : voyage, travail, examen, conversation courante..."></textarea>
     </div>
     <div class="form-field">
       <label for="priorities">Priorités</label>
-      <textarea id="priorities" placeholder="Ex : grammaire, prononciation, vocabulaire..."></textarea>
+      <textarea id="priorities" required placeholder="Ex : grammaire, prononciation, vocabulaire..."></textarea>
     </div>
     <div class="form-field">
       <label for="lessonsPerWeek">Nombre de cours par semaine souhaité</label>
-      <select id="lessonsPerWeek">
+      <select id="lessonsPerWeek" required>
         <option value="1">1 cours / semaine</option>
         <option value="2">2 cours / semaine</option>
         <option value="3">3 cours / semaine</option>
       </select>
+    </div>
+    <div class="form-field">
+      <label for="other">Autre <span class="optional-tag">(optionnel)</span></label>
+      <textarea id="other" placeholder="Toute autre information utile..."></textarea>
     </div>
     <button type="submit" class="submit-btn">Envoyer</button>
   </form>
@@ -187,6 +223,30 @@ footer {
 </footer>
 
 <script>
+const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
+const PERIODS = ['Matin', 'Midi', 'Après-midi', 'Soir'];
+
+const grid = document.getElementById('availGrid');
+PERIODS.forEach(period => {
+  const row = document.createElement('div');
+  row.className = 'avail-row';
+  const label = document.createElement('div');
+  label.className = 'avail-label';
+  label.textContent = period;
+  row.appendChild(label);
+  DAYS.forEach(day => {
+    const cell = document.createElement('div');
+    cell.className = 'avail-cell';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.dataset.day = day;
+    cb.dataset.period = period;
+    cell.appendChild(cb);
+    row.appendChild(cell);
+  });
+  grid.appendChild(row);
+});
+
 document.getElementById('showFormBtn').addEventListener('click', () => {
   document.getElementById('formSection').classList.add('visible');
   document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
@@ -194,15 +254,29 @@ document.getElementById('showFormBtn').addEventListener('click', () => {
 
 document.getElementById('contactForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  const checked = Array.from(grid.querySelectorAll('input[type="checkbox"]:checked'))
+    .map(cb => `${cb.dataset.day} ${cb.dataset.period}`);
+
+  const availError = document.getElementById('availError');
+  if (checked.length === 0) {
+    availError.classList.add('visible');
+    return;
+  }
+  availError.classList.remove('visible');
+
   const data = {
-    name: document.getElementById('name').value,
+    firstName: document.getElementById('firstName').value,
     email: document.getElementById('email').value,
-    schedulePref: document.getElementById('schedulePref').value,
+    timezone: document.getElementById('timezone').value,
+    availability: checked,
     level: document.getElementById('level').value,
     goals: document.getElementById('goals').value,
     priorities: document.getElementById('priorities').value,
     lessonsPerWeek: document.getElementById('lessonsPerWeek').value,
+    other: document.getElementById('other').value,
   };
+
   const submitBtn = e.target.querySelector('.submit-btn');
   submitBtn.disabled = true;
   submitBtn.textContent = 'Envoi...';
@@ -214,7 +288,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     });
     if (res.ok) {
       document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('confirmMsg').innerHTML = '<div class="confirm-msg">Merci ! Votre demande a bien été envoyée. Je vous recontacte rapidement.</div>';
+      document.getElementById('confirmMsg').innerHTML = `<div class="confirm-msg">Merci ! Votre demande a bien été envoyée. Je vous recontacte rapidement.</div>`;
     } else {
       throw new Error();
     }

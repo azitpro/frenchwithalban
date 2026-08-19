@@ -5,13 +5,15 @@ const redis = Redis.fromEnv();
 
 type Lead = {
   id: string;
-  name: string;
+  firstName: string;
   email: string;
-  schedulePref: string;
+  timezone: string;
+  availability: string[];
   level: string;
   goals: string;
   priorities: string;
   lessonsPerWeek: string;
+  other: string;
   submittedAt: string;
 };
 
@@ -33,16 +35,29 @@ export async function POST(req: NextRequest) {
   const leads: Lead[] = (await redis.get('leads')) || [];
   const newLead: Lead = {
     id: uid(),
-    name: data.name || '',
+    firstName: data.firstName || '',
     email: data.email || '',
-    schedulePref: data.schedulePref || '',
+    timezone: data.timezone || '',
+    availability: data.availability || [],
     level: data.level || '',
     goals: data.goals || '',
     priorities: data.priorities || '',
     lessonsPerWeek: data.lessonsPerWeek || '',
+    other: data.other || '',
     submittedAt: new Date().toISOString(),
   };
   leads.push(newLead);
   await redis.set('leads', leads);
+  return NextResponse.json({ success: true });
+}
+
+export async function DELETE(req: NextRequest) {
+  const { password, id } = await req.json();
+  if (password !== process.env.ADMIN_PASSWORD) {
+    return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+  }
+  const leads: Lead[] = (await redis.get('leads')) || [];
+  const updated = leads.filter((l) => l.id !== id);
+  await redis.set('leads', updated);
   return NextResponse.json({ success: true });
 }

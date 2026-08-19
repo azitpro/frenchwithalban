@@ -3,13 +3,15 @@ import { useState } from 'react';
 
 type Lead = {
   id: string;
-  name: string;
+  firstName: string;
   email: string;
-  schedulePref: string;
+  timezone: string;
+  availability: string[];
   level: string;
   goals: string;
   priorities: string;
   lessonsPerWeek: string;
+  other: string;
   submittedAt: string;
 };
 
@@ -40,8 +42,22 @@ export default function LeadsAdmin() {
     setLoading(false);
   }
 
+  async function deleteLead(id: string) {
+    const res = await fetch('/api/leads', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, id }),
+    });
+    if (res.ok) {
+      setLeads(leads.filter((l) => l.id !== id));
+    } else {
+      setError('Erreur lors de la suppression.');
+    }
+  }
+
   const inputStyle = { padding: 10, border: '1.5px solid #ddd8ce', fontFamily: 'Inter, sans-serif' };
   const btnStyle = { padding: '10px 18px', background: '#0d2b45', color: '#faf7f2', border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif' };
+  const dangerStyle = { padding: '6px 12px', cursor: 'pointer', color: '#c0392b', background: 'none', border: '1px solid #c0392b', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem' };
 
   if (!authenticated) {
     return (
@@ -68,19 +84,23 @@ export default function LeadsAdmin() {
       <h1 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', marginBottom: 24 }}>
         Demandes de contact ({leads.length})
       </h1>
+      {error && <p style={{ color: '#c0392b' }}>{error}</p>}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {leads.map((l) => (
           <div key={l.id} style={{ padding: 18, background: '#f0ece4', border: '1px solid #ddd8ce' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <strong style={{ color: '#0d2b45' }}>{l.name}</strong>
+              <strong style={{ color: '#0d2b45' }}>{l.firstName}</strong>
               <span style={{ fontSize: '0.78rem', color: '#666' }}>{new Date(l.submittedAt).toLocaleString('fr-FR')}</span>
             </div>
             <p style={{ fontSize: '0.85rem', marginBottom: 4 }}><b>Email :</b> {l.email}</p>
-            <p style={{ fontSize: '0.85rem', marginBottom: 4 }}><b>Créneaux préférés :</b> {l.schedulePref}</p>
+            <p style={{ fontSize: '0.85rem', marginBottom: 4 }}><b>Fuseau horaire :</b> {l.timezone}</p>
+            <p style={{ fontSize: '0.85rem', marginBottom: 4 }}><b>Disponibilités :</b> {(l.availability || []).join(', ')}</p>
             <p style={{ fontSize: '0.85rem', marginBottom: 4 }}><b>Niveau :</b> {l.level}</p>
             <p style={{ fontSize: '0.85rem', marginBottom: 4 }}><b>Objectifs :</b> {l.goals}</p>
             <p style={{ fontSize: '0.85rem', marginBottom: 4 }}><b>Priorités :</b> {l.priorities}</p>
-            <p style={{ fontSize: '0.85rem' }}><b>Cours/semaine souhaités :</b> {l.lessonsPerWeek}</p>
+            <p style={{ fontSize: '0.85rem', marginBottom: l.other ? 4 : 12 }}><b>Cours/semaine souhaités :</b> {l.lessonsPerWeek}</p>
+            {l.other && <p style={{ fontSize: '0.85rem', marginBottom: 12 }}><b>Autre :</b> {l.other}</p>}
+            <button onClick={() => deleteLead(l.id)} style={dangerStyle}>Supprimer</button>
           </div>
         ))}
         {leads.length === 0 && <p style={{ color: '#999', fontStyle: 'italic' }}>Aucune demande pour le moment.</p>}
