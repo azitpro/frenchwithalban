@@ -121,7 +121,7 @@ footer {
     <div class="option-title">Réserver sur Preply</div>
     <div class="option-desc">Plateforme sécurisée avec paiement intégré et système d'avis.</div>
     <div class="fee-note">Des frais de service Preply s'appliquent, y compris pour l'élève.</div>
-    <a href="https://preply.com/fr/tuteur/3727337" target="_blank" class="option-btn">Voir mon profil Preply →</a>
+    <a href="https://preply.com/fr/tuteur/3727337" target="_blankgit" class="option-btn">Voir mon profil Preply →</a>
   </div>
 
   <div class="option-card">
@@ -221,7 +221,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
   } catch (err) {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Envoyer';
-    document.getElementById('confirmMsg').innerHTML = '<div class="confirm-msg" style="background:#fbeae8;border-color:#c0392b;color:#c0392b;">Erreur d\\'envoi. Réessayez plus tard.</div>';
+    document.getElementById('confirmMsg').innerHTML = `<div class="confirm-msg" style="background:#fbeae8;border-color:#c0392b;color:#c0392b;">Erreur d'envoi. Réessayez plus tard.</div>`;
   }
 });
 </script>
