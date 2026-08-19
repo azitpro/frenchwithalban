@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réserver — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+  --green: #2e7d4f;
+  --green-soft: #e8f4ed;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+
+header {
+  padding: 28px 48px; border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream); width: 100%; box-sizing: border-box;
+}
+h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 8px; }
+.subtitle { font-size: 0.9rem; color: var(--text-soft); margin-bottom: 32px; }
+
+.option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 40px; }
+.option-card {
+  background: var(--cream-dark); border: 1px solid var(--border); border-top: 3px solid var(--navy);
+  padding: 24px; display: flex; flex-direction: column; gap: 10px;
+}
+.option-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.option-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); }
+.option-desc { font-size: 0.85rem; color: var(--text-soft); line-height: 1.6; flex: 1; }
+.option-btn {
+  display: inline-block; text-align: center; padding: 11px 20px;
+  background: var(--navy); color: var(--cream); text-decoration: none;
+  font-size: 0.84rem; font-weight: 600; box-shadow: 3px 3px 0 var(--red);
+  transition: all 0.15s; cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+}
+.option-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--red); }
+
+.fee-note {
+  font-size: 0.76rem; color: var(--red); font-style: italic; margin-top: 4px;
+}
+.price-tag {
+  font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--navy);
+}
+.price-tag span { font-size: 0.9rem; color: var(--text-soft); font-family: 'Inter', sans-serif; }
+
+.form-section { display: none; padding-top: 24px; border-top: 2px solid var(--border); }
+.form-section.visible { display: block; }
+.form-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 20px; }
+
+.form-field { margin-bottom: 16px; }
+.form-field label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.form-field input, .form-field select, .form-field textarea {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+  background: var(--cream); font-family: 'Inter', sans-serif; font-size: 0.9rem;
+  color: var(--navy); outline: none;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--navy); }
+.form-field textarea { resize: vertical; min-height: 70px; }
+
+.submit-btn {
+  padding: 13px; background: var(--navy); color: var(--cream); border: none;
+  font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer;
+  box-shadow: 3px 3px 0 var(--red); width: 100%; transition: all 0.15s;
+}
+.submit-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--red); }
+
+.confirm-msg {
+  background: var(--green-soft); border: 1px solid var(--green); padding: 16px;
+  color: var(--green); font-size: 0.9rem; text-align: center; margin-top: 16px;
+}
+
+footer {
+  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-nav { display: flex; gap: 20px; }
+.footer-btn {
+  font-size: 0.8rem; font-weight: 500; color: var(--cream);
+  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
+}
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; color: rgba(250,247,242,0.4); }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <svg width="30" height="35" viewBox="0 0 24 28">
+      <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hHeader)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hHeader)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span style="font-family:'Fraunces',serif; font-size:1.7rem; font-weight:700; color:var(--navy); letter-spacing:-0.01em;">French with <span style="color:var(--red)">Alban</span></span>
+  </div>
+  <nav style="display: flex; gap: 44px; align-items: center;">
+    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">Accueil</a>
+  </nav>
+</header>
+
+<div class="wrap">
+<h1>Réserver un cours</h1>
+<div class="subtitle">Deux façons de commencer, selon ce qui vous convient.</div>
+
+<div class="option-grid">
+  <div class="option-card">
+    <div class="option-tag">Via Preply</div>
+    <div class="option-title">Réserver sur Preply</div>
+    <div class="option-desc">Plateforme sécurisée avec paiement intégré et système d'avis.</div>
+    <div class="fee-note">Des frais de service Preply s'appliquent, y compris pour l'élève.</div>
+    <a https://preply.com/fr/tuteur/3727337 target="_blank" class="option-btn">Voir mon profil Preply →</a>
+  </div>
+
+  <div class="option-card">
+    <div class="option-tag">Contact direct</div>
+    <div class="option-title">Me contacter</div>
+    <div class="option-desc">Sans frais de plateforme, tarif direct.</div>
+    <div class="price-tag">$34 <span>/ 50 min</span></div>
+    <button class="option-btn" id="showFormBtn">Remplir le formulaire</button>
+  </div>
+</div>
+
+<div class="form-section" id="formSection">
+  <div class="form-title">Parlez-moi de vous</div>
+  <form id="contactForm">
+    <div class="form-field">
+      <label for="name">Nom</label>
+      <input type="text" id="name" required>
+    </div>
+    <div class="form-field">
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="form-field">
+      <label for="schedulePref">Créneaux horaires préférés</label>
+      <input type="text" id="schedulePref" placeholder="Ex : lundi et mercredi soir">
+    </div>
+    <div class="form-field">
+      <label for="level">Niveau actuel estimé</label>
+      <select id="level">
+        <option value="Débutant complet">Débutant complet</option>
+        <option value="Débutant">Débutant</option>
+        <option value="Intermédiaire">Intermédiaire</option>
+        <option value="Avancé">Avancé</option>
+        <option value="Je ne sais pas">Je ne sais pas</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="goals">Objectifs</label>
+      <textarea id="goals" placeholder="Ex : voyage, travail, examen, conversation courante..."></textarea>
+    </div>
+    <div class="form-field">
+      <label for="priorities">Priorités</label>
+      <textarea id="priorities" placeholder="Ex : grammaire, prononciation, vocabulaire..."></textarea>
+    </div>
+    <div class="form-field">
+      <label for="lessonsPerWeek">Nombre de cours par semaine souhaité</label>
+      <select id="lessonsPerWeek">
+        <option value="1">1 cours / semaine</option>
+        <option value="2">2 cours / semaine</option>
+        <option value="3">3 cours / semaine</option>
+      </select>
+    </div>
+    <button type="submit" class="submit-btn">Envoyer</button>
+  </form>
+  <div id="confirmMsg"></div>
+</div>
+</div>
+
+<footer>
+  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+</footer>
+
+<script>
+document.getElementById('showFormBtn').addEventListener('click', () => {
+  document.getElementById('formSection').classList.add('visible');
+  document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+});
+
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    schedulePref: document.getElementById('schedulePref').value,
+    level: document.getElementById('level').value,
+    goals: document.getElementById('goals').value,
+    priorities: document.getElementById('priorities').value,
+    lessonsPerWeek: document.getElementById('lessonsPerWeek').value,
+  };
+  const submitBtn = e.target.querySelector('.submit-btn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Envoi...';
+  try {
+    const res = await fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('confirmMsg').innerHTML = '<div class="confirm-msg">Merci ! Votre demande a bien été envoyée. Je vous recontacte rapidement.</div>';
+    } else {
+      throw new Error();
+    }
+  } catch (err) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Envoyer';
+    document.getElementById('confirmMsg').innerHTML = '<div class="confirm-msg" style="background:#fbeae8;border-color:#c0392b;color:#c0392b;">Erreur d\\'envoi. Réessayez plus tard.</div>';
+  }
+});
+</script>
+</body>
+</html>
