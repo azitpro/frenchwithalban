@@ -13,7 +13,7 @@ export default function Home() {
         }
         body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
         header { padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); width: 100%; box-sizing: border-box; }
-        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         nav { display: flex; gap: 44px; align-items: center; }
         nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
         nav a:hover { opacity: 1; }
@@ -89,7 +89,8 @@ export default function Home() {
           <a href="#">À propos</a>
           <a href="/reserver.html" className="nav-cta">Réserver</a>
         </nav>
-      </header>
+            </header>
+      <div className="gold-line"></div>
 
       <div className="hero">
         <div className="hero-left">
