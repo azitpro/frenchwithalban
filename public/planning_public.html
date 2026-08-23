@@ -117,52 +117,43 @@ footer {
 
 <div class="tz-row">
   <span class="tz-label">Fuseau horaire :</span>
-  <select class="tz-select" id="tzSelect">
-        <optgroup label="Amérique">
-      <option value="Pacific/Honolulu">Honolulu</option>
-      <option value="America/Anchorage">Anchorage</option>
-      <option value="America/Los_Angeles">Los Angeles</option>
-      <option value="America/Denver">Denver</option>
-      <option value="America/Mexico_City">Mexico</option>
-      <option value="America/Chicago">Chicago</option>
-      <option value="America/New_York">New York</option>
-      <option value="America/Bogota">Bogota / Lima</option>
-      <option value="America/Santiago">Santiago</option>
-      <option value="America/Sao_Paulo">São Paulo</option>
-    </optgroup>
-    <optgroup label="Europe / Afrique">
-      <option value="Atlantic/Azores">Açores</option>
-      <option value="UTC">UTC</option>
-      <option value="Europe/London">Londres / Lisbonne</option>
-      <option value="Europe/Paris" selected>Paris / Bruxelles / Genève</option>
-      <option value="Europe/Berlin">Berlin / Madrid / Rome</option>
-      <option value="Europe/Warsaw">Varsovie / Prague</option>
-      <option value="Africa/Lagos">Lagos / Alger</option>
-      <option value="Europe/Athens">Athènes / Helsinki</option>
-      <option value="Africa/Cairo">Le Caire</option>
-      <option value="Africa/Johannesburg">Johannesburg</option>
-    </optgroup>
-    <optgroup label="Moyen-Orient / Asie">
-      <option value="Europe/Istanbul">Istanbul</option>
-      <option value="Europe/Moscow">Moscou</option>
-      <option value="Asia/Riyadh">Riyad / Nairobi</option>
-      <option value="Asia/Dubai">Dubaï</option>
-      <option value="Asia/Karachi">Karachi / Tachkent</option>
-      <option value="Asia/Dhaka">Dacca / Almaty</option>
-      <option value="Asia/Bangkok">Bangkok / Jakarta</option>
-      <option value="Asia/Shanghai">Pékin / Shanghai</option>
-      <option value="Asia/Singapore">Singapour / Hong Kong</option>
-      <option value="Asia/Seoul">Séoul</option>
-      <option value="Asia/Tokyo">Tokyo</option>
-    </optgroup>
-    <optgroup label="Océanie">
-      <option value="Australia/Perth">Perth</option>
-      <option value="Australia/Brisbane">Brisbane</option>
-      <option value="Australia/Sydney">Sydney / Melbourne</option>
-      <option value="Pacific/Noumea">Nouméa</option>
-      <option value="Pacific/Auckland">Auckland</option>
-      <option value="Pacific/Fiji">Fidji</option>
-    </optgroup>
+    <option value="Pacific/Midway">UTC−11 · Midway</option>
+    <option value="Pacific/Honolulu">UTC−10 · Honolulu</option>
+    <option value="Pacific/Marquesas">UTC−9:30 · Marquises</option>
+    <option value="America/Anchorage">UTC−9 · Anchorage</option>
+    <option value="America/Los_Angeles">UTC−8 · Los Angeles, Vancouver</option>
+    <option value="America/Denver">UTC−7 · Denver, Phoenix</option>
+    <option value="America/Mexico_City">UTC−6 · Mexico, Chicago</option>
+    <option value="America/New_York">UTC−5 · New York, Toronto</option>
+    <option value="America/Caracas">UTC−4 · Caracas, Santiago</option>
+    <option value="America/St_Johns">UTC−3:30 · Terre-Neuve</option>
+    <option value="America/Sao_Paulo">UTC−3 · São Paulo, Buenos Aires</option>
+    <option value="Atlantic/South_Georgia">UTC−2 · Géorgie du Sud</option>
+    <option value="Atlantic/Azores">UTC−1 · Açores, Cap-Vert</option>
+    <option value="UTC">UTC±0 · Londres (hiver), Reykjavik</option>
+    <option value="Europe/London">UTC+1 (été) · Londres, Lisbonne</option>
+    <option value="Europe/Paris" selected>UTC+2 (été) · Paris, Berlin</option>
+    <option value="Europe/Athens">UTC+3 (été) · Athènes, Le Caire</option>
+    <option value="Europe/Moscow">UTC+3 · Moscou, Nairobi</option>
+    <option value="Asia/Tehran">UTC+3:30 · Téhéran</option>
+    <option value="Asia/Dubai">UTC+4 · Dubaï, Bakou</option>
+    <option value="Asia/Kabul">UTC+4:30 · Kaboul</option>
+    <option value="Asia/Karachi">UTC+5 · Karachi, Tachkent</option>
+    <option value="Asia/Kolkata">UTC+5:30 · New Delhi, Colombo</option>
+    <option value="Asia/Kathmandu">UTC+5:45 · Katmandou</option>
+    <option value="Asia/Dhaka">UTC+6 · Dacca, Almaty</option>
+    <option value="Asia/Yangon">UTC+6:30 · Rangoun</option>
+    <option value="Asia/Bangkok">UTC+7 · Bangkok, Jakarta</option>
+    <option value="Asia/Shanghai">UTC+8 · Shanghai, Singapour</option>
+    <option value="Australia/Eucla">UTC+8:45 · Eucla</option>
+    <option value="Asia/Tokyo">UTC+9 · Tokyo, Séoul</option>
+    <option value="Australia/Darwin">UTC+9:30 · Darwin, Adélaïde</option>
+    <option value="Australia/Brisbane">UTC+10 · Brisbane, Sydney</option>
+    <option value="Australia/Lord_Howe">UTC+10:30 · Lord Howe</option>
+    <option value="Pacific/Noumea">UTC+11 · Nouméa</option>
+    <option value="Pacific/Auckland">UTC+12 · Auckland, Fidji</option>
+    <option value="Pacific/Chatham">UTC+12:45 · Chatham</option>
+    <option value="Pacific/Apia">UTC+13 · Apia, Tonga</option>
   </select>
 </div>
 
@@ -205,8 +196,8 @@ function zoneHourOffset(zone, date) {
 function refreshTzOffset() {
   const ref = new Date(Date.now() + currentWeek * 7 * 86400000);
   tzOffset = Math.round(
-    (zoneHourOffset(selectedZone, ref) - zoneHourOffset('Europe/Paris', ref)) * 2
-  ) / 2;
+        (zoneHourOffset(selectedZone, ref) - zoneHourOffset('Europe/Paris', ref))
+    * 4) / 4;
 }
 
 function formatHourWithTz(h) {
