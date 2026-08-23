@@ -11,7 +11,8 @@ export default function Home() {
           --border: #ddd8ce;
           --text-soft: #666;
         }
-        body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
+                body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
+        .gold-line { height: 2px; background: var(--gold); width: 100%; }
         header { padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); width: 100%; box-sizing: border-box; }
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         nav { display: flex; gap: 44px; align-items: center; }
