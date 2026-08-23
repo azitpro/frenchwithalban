@@ -40,7 +40,7 @@ body {
 header {
   width: 100%;
   padding: 28px 48px;
-  border-bottom: 1px solid var(--border);
+    border-bottom: 3px solid var(--navy);
   display: flex; justify-content: space-between; align-items: center;
   background: #ffffff;
   position: sticky; top: 0; z-index: 100;
@@ -57,6 +57,8 @@ nav a {
   color: var(--navy); text-decoration: none; transition: color 0.2s;
 }
 nav a:hover { color: var(--red); }
+
+.gold-line { height: 2px; background: var(--gold); }
 
 /* MAIN */
 main {
@@ -324,6 +326,7 @@ footer {
     <a href="/">Accueil</a>
   </nav>
 </header>
+<div class="gold-line"></div>
 
 <main>
 <div class="app">
