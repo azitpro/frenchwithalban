@@ -392,10 +392,13 @@ function autoSelectZone() {
   }
 
   // 2. Sinon, l'option dont le décalage actuel est identique
-  const now = new Date();
-  const target = zoneHourOffset(zone, now);
+  const y = new Date().getFullYear();
+  const jan = new Date(Date.UTC(y, 0, 15));
+  const jul = new Date(Date.UTC(y, 6, 15));
+  const tJan = zoneHourOffset(zone, jan), tJul = zoneHourOffset(zone, jul);
   for (const o of sel.options) {
-    if (Math.abs(zoneHourOffset(o.value, now) - target) < 0.01) {
+    if (Math.abs(zoneHourOffset(o.value, jan) - tJan) < 0.01 &&
+        Math.abs(zoneHourOffset(o.value, jul) - tJul) < 0.01) {
       sel.value = o.value;
       selectedZone = o.value;
       return;
