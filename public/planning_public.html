@@ -131,10 +131,10 @@ footer {
     <option value="America/Sao_Paulo">UTC−3 · São Paulo, Buenos Aires</option>
     <option value="Atlantic/South_Georgia">UTC−2 · Géorgie du Sud</option>
     <option value="Atlantic/Azores">UTC−1 · Açores, Cap-Vert</option>
-    <option value="UTC">UTC±0 · Londres (hiver), Reykjavik</option>
-    <option value="Europe/London">UTC+1 (été) · Londres, Lisbonne</option>
-    <option value="Europe/Paris" selected>UTC+2 (été) · Paris, Berlin</option>
-    <option value="Europe/Athens">UTC+3 (été) · Athènes, Le Caire</option>
+    <option value="UTC">UTC±0 · Reykjavik, Accra</option>
+    <option value="Europe/London">Londres, Lisbonne</option>
+    <option value="Europe/Paris" selected>Paris, Berlin</option>
+    <option value="Europe/Athens">Athènes, Le Caire</option>
     <option value="Europe/Moscow">UTC+3 · Moscou, Nairobi</option>
     <option value="Asia/Tehran">UTC+3:30 · Téhéran</option>
     <option value="Asia/Dubai">UTC+4 · Dubaï, Bakou</option>
@@ -362,6 +362,32 @@ document.getElementById('tzSelect').addEventListener('change', (e) => {
   render();
 });
 
+function autoSelectZone() {
+  const sel = document.getElementById('tzSelect');
+  let zone;
+  try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) { return; }
+  if (!zone) return;
+
+  // 1. Correspondance exacte avec une option de la liste
+  if ([...sel.options].some(o => o.value === zone)) {
+    sel.value = zone;
+    selectedZone = zone;
+    return;
+  }
+
+  // 2. Sinon, l'option dont le décalage actuel est identique
+  const now = new Date();
+  const target = zoneHourOffset(zone, now);
+  for (const o of sel.options) {
+    if (Math.abs(zoneHourOffset(o.value, now) - target) < 0.01) {
+      sel.value = o.value;
+      selectedZone = o.value;
+      return;
+    }
+  }
+}
+
+autoSelectZone();
 loadSchedule();
 </script>
 </body>
