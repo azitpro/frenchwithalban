@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les 50 adjectifs essentiels — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d2b45;
+    --rouge:#c0392b;
+    --or:#c9972a;
+    --creme:#faf7f2;
+    --bleu-fr:#002395;
+    --rouge-fr:#ED2939;
+    --gris-texte:#4a5568;
+    --bordure:#e6e0d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--navy);
+    background:#ffffff;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- HEADER (pleine largeur, identique à l'accueil) ---------- */
+  header{
+    width:100%;
+    background:#ffffff;
+    border-bottom:1px solid var(--bordure);
+    padding:28px 48px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:100;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family:'Fraunces',serif;
+    font-size:1.7rem;
+    font-weight:600;
+    white-space:nowrap;
+    text-decoration:none;
+  }
+  .logo .fw{color:var(--navy);}
+  .logo .al{color:var(--rouge);}
+  nav{display:flex;gap:44px;}
+  nav a{
+    font-size:1.05rem;
+    font-weight:500;
+    color:var(--navy);
+    text-decoration:none;
+    transition:color .2s;
+  }
+  nav a:hover{color:var(--rouge);}
+
+  /* ---------- STRUCTURE ---------- */
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  .hero{
+    background:var(--creme);
+    width:100%;
+    padding:64px 24px 56px;
+    text-align:center;
+    border-bottom:1px solid var(--bordure);
+  }
+  .hero h1{
+    font-family:'DM Serif Display',serif;
+    font-size:3rem;
+    font-weight:400;
+    line-height:1.15;
+    margin-bottom:16px;
+  }
+  .hero p{
+    max-width:640px;
+    margin:0 auto;
+    font-size:1.1rem;
+    color:var(--gris-texte);
+  }
+  .hero .compteur{
+    display:inline-block;
+    margin-top:24px;
+    font-family:'Fraunces',serif;
+    font-size:.95rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--or);
+  }
+
+  section{padding:56px 0;border-bottom:1px solid var(--bordure);}
+  section:last-of-type{border-bottom:none;}
+
+  h2{
+    font-family:'Fraunces',serif;
+    font-size:1.85rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:20px;
+  }
+  h3{
+    font-family:'Fraunces',serif;
+    font-size:1.25rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:32px 0 14px;
+  }
+  .hex{flex-shrink:0;}
+  h2 .hex{width:26px;height:30px;}
+  h3 .hex{width:20px;height:23px;}
+
+  p+p{margin-top:14px;}
+  .intro{color:var(--gris-texte);margin-bottom:20px;}
+
+  /* ---------- EXEMPLES AVEC COQ ---------- */
+  .exemples{list-style:none;margin:18px 0;}
+  .exemples li{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:7px 0;
+  }
+  .exemples li img{
+    width:20px;
+    height:20px;
+    margin-top:5px;
+    flex-shrink:0;
+  }
+  .exemples b{color:var(--rouge);font-weight:600;}
+
+  /* ---------- ENCADRÉS INFO / AVERTISSEMENT ---------- */
+  .bulle{
+    display:flex;
+    gap:16px;
+    padding:20px 22px;
+    margin:26px 0;
+    background:var(--creme);
+    border-radius:18px 18px 18px 4px;
+  }
+  .bulle.warn{background:#fdf1ef;}
+  .bulle .marque{flex-shrink:0;width:28px;height:32px;}
+  .bulle .contenu{font-size:.98rem;}
+  .bulle .contenu strong{font-family:'Fraunces',serif;display:block;margin-bottom:4px;}
+
+  /* ---------- TABLEAUX DE RÈGLES ---------- */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+    margin:18px 0;
+    font-size:.98rem;
+  }
+  th{
+    background:var(--navy);
+    color:#fff;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    text-align:left;
+    padding:12px 14px;
+  }
+  td{
+    padding:11px 14px;
+    border-bottom:1px solid var(--bordure);
+    vertical-align:top;
+    word-wrap:break-word;
+  }
+  tbody tr:nth-child(even){background:var(--creme);}
+  .phon{color:var(--rouge);font-size:.92rem;white-space:nowrap;}
+  .fem{color:var(--or);font-weight:600;}
+
+  /* ---------- TOGGLE LANGUE ---------- */
+  .toggle{
+    display:inline-flex;
+    border:1px solid var(--navy);
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:18px;
+  }
+  .toggle button{
+    font-family:'Inter',sans-serif;
+    font-size:.9rem;
+    font-weight:500;
+    padding:8px 20px;
+    border:none;
+    background:#fff;
+    color:var(--navy);
+    cursor:pointer;
+    transition:background .2s,color .2s;
+  }
+  .toggle button.on{background:var(--navy);color:#fff;}
+  .toggle button:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+  .col-cachee{display:none;}
+
+  .recherche{
+    width:100%;
+    max-width:320px;
+    padding:10px 14px;
+    margin-bottom:18px;
+    border:1px solid var(--bordure);
+    border-radius:8px;
+    font-family:'Inter',sans-serif;
+    font-size:.95rem;
+    display:block;
+  }
+
+  /* ---------- EXERCICES ---------- */
+  .exo{
+    background:var(--creme);
+    border-radius:14px;
+    padding:26px 28px;
+    margin:22px 0;
+  }
+  .consigne{font-size:.95rem;color:var(--gris-texte);margin-bottom:18px;}
+  .q{margin-bottom:20px;}
+  .q .enonce{font-weight:500;margin-bottom:10px;}
+  .q .enonce .num{
+    font-family:'Fraunces',serif;
+    color:var(--or);
+    margin-right:8px;
+  }
+  .opts{display:flex;flex-wrap:wrap;gap:10px;}
+  .opts button{
+    font-family:'Inter',sans-serif;
+    font-size:.95rem;
+    padding:9px 18px;
+    border:1px solid var(--bordure);
+    border-radius:999px;
+    background:#fff;
+    color:var(--navy);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .opts button:hover:not(:disabled){border-color:var(--navy);}
+  .opts button:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+  .opts button.juste{background:#e8f4ec;border-color:#2f7d51;color:#2f7d51;font-weight:600;}
+  .opts button.faux{background:#fdeceb;border-color:var(--rouge);color:var(--rouge);}
+  .opts button:disabled{cursor:default;}
+
+  .saisie{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .saisie input{
+    padding:9px 14px;
+    border:1px solid var(--bordure);
+    border-radius:8px;
+    font-family:'Inter',sans-serif;
+    font-size:.95rem;
+    width:180px;
+  }
+  .saisie input:focus{outline:2px solid var(--or);outline-offset:1px;}
+  .saisie input.juste{border-color:#2f7d51;background:#e8f4ec;}
+  .saisie input.faux{border-color:var(--rouge);background:#fdeceb;}
+  .solution{font-size:.9rem;color:#2f7d51;font-weight:600;}
+
+  .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px;}
+  .btn{
+    font-family:'Inter',sans-serif;
+    font-size:.95rem;
+    font-weight:600;
+    padding:11px 24px;
+    border:none;
+    border-radius:8px;
+    background:var(--navy);
+    color:#fff;
+    cursor:pointer;
+    transition:background .2s;
+  }
+  .btn:hover{background:#164066;}
+  .btn.secondaire{background:#fff;color:var(--navy);border:1px solid var(--navy);}
+  .btn:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+  .score{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;}
+
+  /* ---------- FOOTER (pleine largeur) ---------- */
+  footer{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    padding:36px 48px;
+    text-align:center;
+    font-size:.92rem;
+  }
+  footer a{color:#fff;text-decoration:underline;}
+
+  @media (max-width:720px){
+    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
+    .logo{font-size:1.3rem;}
+    nav{gap:24px;}
+    .hero h1{font-size:2.1rem;}
+    .exo{padding:20px 18px;}
+    footer{padding:28px 20px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Symboles réutilisables -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex-tri" viewBox="0 0 30 35">
+    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
+    <g clip-path="url(#clip-hex)">
+      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+    </g>
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+  </symbol>
+  <symbol id="hex-warn" viewBox="0 0 30 35">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#c0392b"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="19" font-weight="700" fill="#fff">!</text>
+  </symbol>
+  <symbol id="hex-info" viewBox="0 0 30 35">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#0d2b45"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="18" font-weight="700" fill="#fff">i</text>
+  </symbol>
+</svg>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
+    <span><span class="fw">French with</span> <span class="al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/ressources.html">Retour</a>
+    <a href="/">Accueil</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Les adjectifs essentiels</h1>
+  <p>Décrire une personne, un objet, une situation. Les 50 adjectifs les plus utiles en français, avec leur accord, leur place dans la phrase et leur prononciation.</p>
+  <div class="compteur">50 adjectifs · 5 exercices</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== ACCORD ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>L'accord des adjectifs</h2>
+    <p class="intro">En français, l'adjectif s'accorde avec le nom qu'il décrit : il change de forme au féminin et au pluriel.</p>
+
+    <table>
+      <thead>
+        <tr><th style="width:34%">Règle</th><th style="width:33%">Masculin</th><th style="width:33%">Féminin</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Cas général : on ajoute <b>-e</b></td><td>grand</td><td class="fem">grande</td></tr>
+        <tr><td>Déjà terminé par <b>-e</b> : aucun changement</td><td>calme</td><td class="fem">calme</td></tr>
+        <tr><td><b>-eux</b> → <b>-euse</b></td><td>heureux</td><td class="fem">heureuse</td></tr>
+        <tr><td><b>-f</b> → <b>-ve</b></td><td>neuf</td><td class="fem">neuve</td></tr>
+        <tr><td><b>-er</b> → <b>-ère</b></td><td>cher</td><td class="fem">chère</td></tr>
+        <tr><td>Consonne doublée + <b>-e</b></td><td>bon, gentil</td><td class="fem">bonne, gentille</td></tr>
+        <tr><td>Irréguliers à mémoriser</td><td>beau, nouveau, vieux</td><td class="fem">belle, nouvelle, vieille</td></tr>
+      </tbody>
+    </table>
+
+    <p class="intro">Au pluriel, on ajoute <b>-s</b> : <i>des livres intéressants</i>, <i>des maisons propres</i>. Les adjectifs en <b>-eux</b> ne changent pas au masculin pluriel : <i>des étudiants sérieux</i>.</p>
+
+    <ul class="exemples">
+      <li><img src="/coq.png" alt=""><span>Mon frère est <b>grand</b> et ma sœur est <b>grande</b>.</span></li>
+      <li><img src="/coq.png" alt=""><span>Elle est très <b>heureuse</b> aujourd'hui.</span></li>
+      <li><img src="/coq.png" alt=""><span>Ce sont des voisins <b>gentils</b>.</span></li>
+    </ul>
+
+    <div class="bulle warn">
+      <svg class="marque" aria-hidden="true"><use href="#hex-warn"/></svg>
+      <div class="contenu">
+        <strong>Neuf ou nouveau ?</strong>
+        Les deux se traduisent par <i>new</i>, mais <b>neuf</b> veut dire « jamais utilisé, qui sort de l'usine » : <i>une voiture neuve</i>. <b>Nouveau</b> veut dire « nouveau pour moi » : <i>ma nouvelle voiture</i> (achetée d'occasion la semaine dernière).
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PLACE ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>La place de l'adjectif</h2>
+    <p class="intro">Contrairement à l'anglais, l'adjectif français se place normalement <b>après</b> le nom : <i>une voiture rapide</i>, <i>un film intéressant</i>.</p>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les exceptions : avant le nom</h3>
+    <p class="intro">Un petit groupe d'adjectifs très courants se place <b>avant</b> le nom. Ils concernent la beauté, l'âge, la qualité et la taille.</p>
+
+    <table>
+      <thead>
+        <tr><th style="width:33%">Catégorie</th><th style="width:34%">Adjectifs</th><th style="width:33%">Exemple</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Beauté</td><td>beau, joli</td><td><i>un <b>beau</b> jardin</i></td></tr>
+        <tr><td>Âge</td><td>jeune, vieux, nouveau</td><td><i>une <b>vieille</b> maison</i></td></tr>
+        <tr><td>Qualité</td><td>bon, mauvais</td><td><i>un <b>bon</b> café</i></td></tr>
+        <tr><td>Taille</td><td>grand, petit, long, court</td><td><i>un <b>petit</b> problème</i></td></tr>
+      </tbody>
+    </table>
+
+    <div class="bulle">
+      <svg class="marque" aria-hidden="true"><use href="#hex-info"/></svg>
+      <div class="contenu">
+        <strong>Astuce de mémorisation</strong>
+        Retenez les quatre catégories : <b>B</b>eauté, <b>Â</b>ge, <b>Q</b>ualité, <b>T</b>aille. Tous les autres adjectifs de cette page se placent après le nom.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TABLEAU DES 50 ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les 50 adjectifs</h2>
+    <p class="intro">La forme féminine apparaît en or quand elle est différente. La prononciation est donnée en alphabet phonétique international.</p>
+
+    <div class="toggle" role="group" aria-label="Choix de la langue affichée">
+      <button type="button" data-vue="fr">Français</button>
+      <button type="button" data-vue="en">Anglais</button>
+      <button type="button" data-vue="deux" class="on">Les deux</button>
+    </div>
+
+    <input type="search" id="recherche" class="recherche" placeholder="Chercher un adjectif…" aria-label="Chercher un adjectif">
+
+    <table id="tableau-vocab">
+      <thead>
+        <tr>
+          <th class="c-fr" style="width:34%">Français</th>
+          <th class="c-fr" style="width:33%">Prononciation</th>
+          <th class="c-en" style="width:33%">Anglais</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="c-fr">beau / <span class="fem">belle</span></td><td class="c-fr phon">/bo/ · /bɛl/</td><td class="c-en">beautiful</td></tr>
+        <tr><td class="c-fr">bon / <span class="fem">bonne</span></td><td class="c-fr phon">/bɔ̃/ · /bɔn/</td><td class="c-en">good</td></tr>
+        <tr><td class="c-fr">calme</td><td class="c-fr phon">/kalm/</td><td class="c-en">calm</td></tr>
+        <tr><td class="c-fr">cher / <span class="fem">chère</span></td><td class="c-fr phon">/ʃɛʁ/</td><td class="c-en">expensive</td></tr>
+        <tr><td class="c-fr">clair / <span class="fem">claire</span></td><td class="c-fr phon">/klɛʁ/</td><td class="c-en">clear, light</td></tr>
+        <tr><td class="c-fr">content / <span class="fem">contente</span></td><td class="c-fr phon">/kɔ̃tɑ̃/ · /kɔ̃tɑ̃t/</td><td class="c-en">happy, pleased</td></tr>
+        <tr><td class="c-fr">court / <span class="fem">courte</span></td><td class="c-fr phon">/kuʁ/ · /kuʁt/</td><td class="c-en">short</td></tr>
+        <tr><td class="c-fr">désolé / <span class="fem">désolée</span></td><td class="c-fr phon">/dezɔle/</td><td class="c-en">sorry</td></tr>
+        <tr><td class="c-fr">difficile</td><td class="c-fr phon">/difisil/</td><td class="c-en">difficult</td></tr>
+        <tr><td class="c-fr">drôle</td><td class="c-fr phon">/dʁol/</td><td class="c-en">funny</td></tr>
+        <tr><td class="c-fr">égoïste</td><td class="c-fr phon">/eɡɔist/</td><td class="c-en">selfish</td></tr>
+        <tr><td class="c-fr">facile</td><td class="c-fr phon">/fasil/</td><td class="c-en">easy</td></tr>
+        <tr><td class="c-fr">faible</td><td class="c-fr phon">/fɛbl/</td><td class="c-en">weak</td></tr>
+        <tr><td class="c-fr">fier / <span class="fem">fière</span></td><td class="c-fr phon">/fjɛʁ/</td><td class="c-en">proud</td></tr>
+        <tr><td class="c-fr">fort / <span class="fem">forte</span></td><td class="c-fr phon">/fɔʁ/ · /fɔʁt/</td><td class="c-en">strong</td></tr>
+        <tr><td class="c-fr">froid / <span class="fem">froide</span></td><td class="c-fr phon">/fʁwa/ · /fʁwad/</td><td class="c-en">cold</td></tr>
+        <tr><td class="c-fr">génial / <span class="fem">géniale</span></td><td class="c-fr phon">/ʒenjal/</td><td class="c-en">great, awesome</td></tr>
+        <tr><td class="c-fr">gentil / <span class="fem">gentille</span></td><td class="c-fr phon">/ʒɑ̃ti/ · /ʒɑ̃tij/</td><td class="c-en">kind</td></tr>
+        <tr><td class="c-fr">grand / <span class="fem">grande</span></td><td class="c-fr phon">/ɡʁɑ̃/ · /ɡʁɑ̃d/</td><td class="c-en">tall, big</td></tr>
+        <tr><td class="c-fr">heureux / <span class="fem">heureuse</span></td><td class="c-fr phon">/øʁø/ · /øʁøz/</td><td class="c-en">happy</td></tr>
+        <tr><td class="c-fr">important / <span class="fem">importante</span></td><td class="c-fr phon">/ɛ̃pɔʁtɑ̃/ · /ɛ̃pɔʁtɑ̃t/</td><td class="c-en">important</td></tr>
+        <tr><td class="c-fr">inquiet / <span class="fem">inquiète</span></td><td class="c-fr phon">/ɛ̃kjɛ/ · /ɛ̃kjɛt/</td><td class="c-en">worried</td></tr>
+        <tr><td class="c-fr">intelligent / <span class="fem">intelligente</span></td><td class="c-fr phon">/ɛ̃teliʒɑ̃/ · /ɛ̃teliʒɑ̃t/</td><td class="c-en">smart</td></tr>
+        <tr><td class="c-fr">intéressant / <span class="fem">intéressante</span></td><td class="c-fr phon">/ɛ̃teʁesɑ̃/ · /ɛ̃teʁesɑ̃t/</td><td class="c-en">interesting</td></tr>
+        <tr><td class="c-fr">jeune</td><td class="c-fr phon">/ʒœn/</td><td class="c-en">young</td></tr>
+        <tr><td class="c-fr">joli / <span class="fem">jolie</span></td><td class="c-fr phon">/ʒɔli/</td><td class="c-en">pretty</td></tr>
+        <tr><td class="c-fr">lent / <span class="fem">lente</span></td><td class="c-fr phon">/lɑ̃/ · /lɑ̃t/</td><td class="c-en">slow</td></tr>
+        <tr><td class="c-fr">libre</td><td class="c-fr phon">/libʁ/</td><td class="c-en">free, available</td></tr>
+        <tr><td class="c-fr">long / <span class="fem">longue</span></td><td class="c-fr phon">/lɔ̃/ · /lɔ̃ɡ/</td><td class="c-en">long</td></tr>
+        <tr><td class="c-fr">malade</td><td class="c-fr phon">/malad/</td><td class="c-en">sick</td></tr>
+        <tr><td class="c-fr">mauvais / <span class="fem">mauvaise</span></td><td class="c-fr phon">/movɛ/ · /movɛz/</td><td class="c-en">bad</td></tr>
+        <tr><td class="c-fr">méchant / <span class="fem">méchante</span></td><td class="c-fr phon">/meʃɑ̃/ · /meʃɑ̃t/</td><td class="c-en">mean</td></tr>
+        <tr><td class="c-fr">neuf / <span class="fem">neuve</span></td><td class="c-fr phon">/nœf/ · /nœv/</td><td class="c-en">brand new</td></tr>
+        <tr><td class="c-fr">normal / <span class="fem">normale</span></td><td class="c-fr phon">/nɔʁmal/</td><td class="c-en">normal</td></tr>
+        <tr><td class="c-fr">nouveau / <span class="fem">nouvelle</span></td><td class="c-fr phon">/nuvo/ · /nuvɛl/</td><td class="c-en">new</td></tr>
+        <tr><td class="c-fr">occupé / <span class="fem">occupée</span></td><td class="c-fr phon">/ɔkype/</td><td class="c-en">busy</td></tr>
+        <tr><td class="c-fr">ouvert / <span class="fem">ouverte</span></td><td class="c-fr phon">/uvɛʁ/ · /uvɛʁt/</td><td class="c-en">open</td></tr>
+        <tr><td class="c-fr">parfait / <span class="fem">parfaite</span></td><td class="c-fr phon">/paʁfɛ/ · /paʁfɛt/</td><td class="c-en">perfect</td></tr>
+        <tr><td class="c-fr">pauvre</td><td class="c-fr phon">/povʁ/</td><td class="c-en">poor</td></tr>
+        <tr><td class="c-fr">petit / <span class="fem">petite</span></td><td class="c-fr phon">/pəti/ · /pətit/</td><td class="c-en">small</td></tr>
+        <tr><td class="c-fr">possible</td><td class="c-fr phon">/pɔsibl/</td><td class="c-en">possible</td></tr>
+        <tr><td class="c-fr">prêt / <span class="fem">prête</span></td><td class="c-fr phon">/pʁɛ/ · /pʁɛt/</td><td class="c-en">ready</td></tr>
+        <tr><td class="c-fr">propre</td><td class="c-fr phon">/pʁɔpʁ/</td><td class="c-en">clean</td></tr>
+        <tr><td class="c-fr">rapide</td><td class="c-fr phon">/ʁapid/</td><td class="c-en">fast</td></tr>
+        <tr><td class="c-fr">riche</td><td class="c-fr phon">/ʁiʃ/</td><td class="c-en">rich</td></tr>
+        <tr><td class="c-fr">sale</td><td class="c-fr phon">/sal/</td><td class="c-en">dirty</td></tr>
+        <tr><td class="c-fr">sérieux / <span class="fem">sérieuse</span></td><td class="c-fr phon">/seʁjø/ · /seʁjøz/</td><td class="c-en">serious</td></tr>
+        <tr><td class="c-fr">simple</td><td class="c-fr phon">/sɛ̃pl/</td><td class="c-en">simple</td></tr>
+        <tr><td class="c-fr">triste</td><td class="c-fr phon">/tʁist/</td><td class="c-en">sad</td></tr>
+        <tr><td class="c-fr">vieux / <span class="fem">vieille</span></td><td class="c-fr phon">/vjø/ · /vjɛj/</td><td class="c-en">old</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===================== EXERCICE 1 ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 1 — Choisir le bon adjectif</h2>
+    <div class="exo">
+      <p class="consigne">Cliquez sur l'adjectif qui convient au sens de la phrase.</p>
+      <div id="exo1"></div>
+      <div class="actions">
+        <button class="btn secondaire" type="button" onclick="reinit(1)">Recommencer</button>
+        <span class="score" id="score1"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXERCICE 2 ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 2 — Écrire le féminin</h2>
+    <div class="exo">
+      <p class="consigne">Écrivez la forme féminine de chaque adjectif, puis vérifiez vos réponses.</p>
+      <div id="exo2"></div>
+      <div class="actions">
+        <button class="btn" type="button" onclick="corrige2()">Vérifier</button>
+        <button class="btn secondaire" type="button" onclick="reinit(2)">Recommencer</button>
+        <span class="score" id="score2"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXERCICE 3 ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 3 — Avant ou après le nom ?</h2>
+    <div class="exo">
+      <p class="consigne">Pour chaque adjectif, indiquez sa place par rapport au nom.</p>
+      <div id="exo3"></div>
+      <div class="actions">
+        <button class="btn secondaire" type="button" onclick="reinit(3)">Recommencer</button>
+        <span class="score" id="score3"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXERCICE 4 ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 4 — Le sens des adjectifs</h2>
+    <div class="exo">
+      <p class="consigne">Lisez la définition et cliquez sur l'adjectif qui correspond.</p>
+      <div id="exo4"></div>
+      <div class="actions">
+        <button class="btn secondaire" type="button" onclick="reinit(4)">Recommencer</button>
+        <span class="score" id="score4"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXERCICE 5 ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 5 — De l'anglais au français</h2>
+    <div class="exo">
+      <p class="consigne">Écrivez l'adjectif français correspondant. La forme masculine ou féminine est acceptée.</p>
+      <div id="exo5"></div>
+      <div class="actions">
+        <button class="btn" type="button" onclick="corrige5()">Vérifier</button>
+        <button class="btn secondaire" type="button" onclick="reinit(5)">Recommencer</button>
+        <span class="score" id="score5"></span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
+</footer>
+
+<script>
+/* ---------- TOGGLE LANGUE ---------- */
+document.querySelectorAll('.toggle button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.toggle button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    var vue = b.dataset.vue;
+    document.querySelectorAll('#tableau-vocab .c-fr').forEach(function(c){
+      c.classList.toggle('col-cachee', vue === 'en');
+    });
+    document.querySelectorAll('#tableau-vocab .c-en').forEach(function(c){
+      c.classList.toggle('col-cachee', vue === 'fr');
+    });
+  });
+});
+
+/* ---------- RECHERCHE ---------- */
+document.getElementById('recherche').addEventListener('input', function(e){
+  var t = e.target.value.toLowerCase().trim();
+  document.querySelectorAll('#tableau-vocab tbody tr').forEach(function(tr){
+    tr.style.display = tr.textContent.toLowerCase().includes(t) ? '' : 'none';
+  });
+});
+
+/* ---------- DONNÉES DES EXERCICES ---------- */
+var qcm = [
+  {p:"Ce roman est passionnant, il est vraiment ___.", o:["intéressant","sale","lent"], r:0},
+  {p:"Elle est ___ : elle a réussi son examen.", o:["contente","triste","méchante"], r:0},
+  {p:"Je ne peux pas acheter ce manteau, il est trop ___.", o:["cher","pauvre","libre"], r:0},
+  {p:"Mon grand-père a 92 ans, il est très ___.", o:["vieux","jeune","neuf"], r:0},
+  {p:"Le TGV va à 300 km/h : il est très ___.", o:["rapide","lent","faible"], r:0},
+  {p:"Je suis ___, mon train avait du retard.", o:["désolé","fier","occupé"], r:0},
+  {p:"Cette question est ___, je ne trouve pas la réponse.", o:["difficile","drôle","propre"], r:0},
+  {p:"Il reste à la maison aujourd'hui, il est ___.", o:["malade","riche","ouvert"], r:0},
+  {p:"La boulangerie est ___ jusqu'à 20 heures.", o:["ouverte","occupée","courte"], r:0},
+  {p:"Il a acheté une voiture ___ : elle sort de l'usine.", o:["neuve","jeune","propre"], r:0}
+];
+
+var feminins = [
+  ["beau","belle"],["bon","bonne"],["heureux","heureuse"],["gentil","gentille"],["long","longue"],
+  ["neuf","neuve"],["vieux","vieille"],["fier","fière"],["inquiet","inquiète"],["nouveau","nouvelle"]
+];
+
+var places = [
+  {a:"petit", n:"une ___ maison", r:"avant"},
+  {a:"propre", n:"une chemise ___", r:"après"},
+  {a:"beau", n:"un ___ jardin", r:"avant"},
+  {a:"intéressant", n:"un livre ___", r:"après"},
+  {a:"jeune", n:"un ___ homme", r:"avant"},
+  {a:"malade", n:"un enfant ___", r:"après"},
+  {a:"bon", n:"un ___ restaurant", r:"avant"},
+  {a:"difficile", n:"un exercice ___", r:"après"}
+];
+
+var sens = [
+  {d:"Qui coûte beaucoup d'argent.", o:["cher","pauvre","riche"], r:0},
+  {d:"Qui ne pense qu'à soi et jamais aux autres.", o:["égoïste","gentil","drôle"], r:0},
+  {d:"Qui fait rire les autres.", o:["drôle","triste","sérieux"], r:0},
+  {d:"Qui n'est pas sale.", o:["propre","neuf","clair"], r:0},
+  {d:"Qui a beaucoup de force.", o:["fort","faible","rapide"], r:0},
+  {d:"Qui ne va pas vite.", o:["lent","rapide","court"], r:0},
+  {d:"Qui n'a pas d'argent.", o:["pauvre","riche","malade"], r:0},
+  {d:"Qui a beaucoup de choses à faire et pas de temps.", o:["occupé","libre","prêt"], r:0},
+  {d:"Qui n'est pas gentil et qui fait du mal aux autres.", o:["méchant","inquiet","triste"], r:0},
+  {d:"Qui a peur qu'un problème arrive.", o:["inquiet","content","fier"], r:0}
+];
+
+var traductions = [
+  {en:"beautiful", ok:["beau","belle"], aff:"beau / belle"},
+  {en:"kind", ok:["gentil","gentille"], aff:"gentil / gentille"},
+  {en:"expensive", ok:["cher","chere"], aff:"cher / chère"},
+  {en:"fast", ok:["rapide"], aff:"rapide"},
+  {en:"dirty", ok:["sale"], aff:"sale"},
+  {en:"sick", ok:["malade"], aff:"malade"},
+  {en:"worried", ok:["inquiet","inquiete"], aff:"inquiet / inquiète"},
+  {en:"ready", ok:["pret","prete"], aff:"prêt / prête"},
+  {en:"old", ok:["vieux","vieille"], aff:"vieux / vieille"},
+  {en:"funny", ok:["drole"], aff:"drôle"},
+  {en:"strong", ok:["fort","forte"], aff:"fort / forte"},
+  {en:"slow", ok:["lent","lente"], aff:"lent / lente"}
+];
+
+var scores = {1:0, 2:0, 3:0, 4:0};
+
+/* ---------- MÉLANGE ---------- */
+function melange(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+/* ---------- EXERCICE 1 ---------- */
+function construit1(){
+  var c = document.getElementById('exo1');
+  c.innerHTML = '';
+  scores[1] = 0;
+  document.getElementById('score1').textContent = '';
+  qcm.forEach(function(q, i){
+    var bonne = q.o[q.r];
+    var opts = melange(q.o);
+    var d = document.createElement('div');
+    d.className = 'q';
+    var e = document.createElement('div');
+    e.className = 'enonce';
+    e.innerHTML = '<span class="num">' + (i + 1) + '.</span>' + q.p;
+    d.appendChild(e);
+    var box = document.createElement('div');
+    box.className = 'opts';
+    opts.forEach(function(mot){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = mot;
+      b.addEventListener('click', function(){
+        box.querySelectorAll('button').forEach(function(x){x.disabled = true;});
+        if (mot === bonne){
+          b.classList.add('juste');
+          scores[1]++;
+        } else {
+          b.classList.add('faux');
+          box.querySelectorAll('button').forEach(function(x){
+            if (x.textContent === bonne) x.classList.add('juste');
+          });
+        }
+        document.getElementById('score1').textContent = scores[1] + ' / ' + qcm.length;
+      });
+      box.appendChild(b);
+    });
+    d.appendChild(box);
+    c.appendChild(d);
+  });
+}
+
+/* ---------- EXERCICE 2 ---------- */
+function construit2(){
+  var c = document.getElementById('exo2');
+  c.innerHTML = '';
+  document.getElementById('score2').textContent = '';
+  feminins.forEach(function(paire, i){
+    var d = document.createElement('div');
+    d.className = 'q';
+    d.innerHTML =
+      '<div class="saisie">' +
+      '<span class="num" style="font-family:Fraunces,serif;color:#c9972a">' + (i + 1) + '.</span>' +
+      '<span style="min-width:120px;font-weight:500">' + paire[0] + ' →</span>' +
+      '<input type="text" data-rep="' + paire[1] + '" aria-label="Féminin de ' + paire[0] + '" autocomplete="off">' +
+      '<span class="solution"></span>' +
+      '</div>';
+    c.appendChild(d);
+  });
+}
+
+function corrige2(){
+  var n = 0;
+  var champs = document.querySelectorAll('#exo2 input');
+  champs.forEach(function(inp){
+    var att = inp.dataset.rep;
+    var val = inp.value.trim().toLowerCase();
+    var sol = inp.parentNode.querySelector('.solution');
+    inp.classList.remove('juste','faux');
+    if (val === att){
+      inp.classList.add('juste');
+      sol.textContent = '✓';
+      n++;
+    } else {
+      inp.classList.add('faux');
+      sol.textContent = att;
+    }
+  });
+  document.getElementById('score2').textContent = n + ' / ' + champs.length;
+}
+
+/* ---------- EXERCICE 3 ---------- */
+function construit3(){
+  var c = document.getElementById('exo3');
+  c.innerHTML = '';
+  scores[3] = 0;
+  document.getElementById('score3').textContent = '';
+  places.forEach(function(q, i){
+    var d = document.createElement('div');
+    d.className = 'q';
+    var e = document.createElement('div');
+    e.className = 'enonce';
+    e.innerHTML = '<span class="num">' + (i + 1) + '.</span><b style="color:#c0392b">' + q.a + '</b> — ' + q.n;
+    d.appendChild(e);
+    var box = document.createElement('div');
+    box.className = 'opts';
+    ['avant','après'].forEach(function(choix){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = choix + ' le nom';
+      b.addEventListener('click', function(){
+        box.querySelectorAll('button').forEach(function(x){x.disabled = true;});
+        if (choix === q.r){
+          b.classList.add('juste');
+          scores[3]++;
+        } else {
+          b.classList.add('faux');
+          box.querySelectorAll('button').forEach(function(x){
+            if (x.textContent.indexOf(q.r) === 0) x.classList.add('juste');
+          });
+        }
+        document.getElementById('score3').textContent = scores[3] + ' / ' + places.length;
+      });
+      box.appendChild(b);
+    });
+    d.appendChild(box);
+    c.appendChild(d);
+  });
+}
+
+/* ---------- EXERCICE 4 ---------- */
+function construit4(){
+  var c = document.getElementById('exo4');
+  c.innerHTML = '';
+  scores[4] = 0;
+  document.getElementById('score4').textContent = '';
+  sens.forEach(function(q, i){
+    var bonne = q.o[q.r];
+    var opts = melange(q.o);
+    var d = document.createElement('div');
+    d.className = 'q';
+    var e = document.createElement('div');
+    e.className = 'enonce';
+    e.innerHTML = '<span class="num">' + (i + 1) + '.</span>' + q.d;
+    d.appendChild(e);
+    var box = document.createElement('div');
+    box.className = 'opts';
+    opts.forEach(function(mot){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = mot;
+      b.addEventListener('click', function(){
+        box.querySelectorAll('button').forEach(function(x){x.disabled = true;});
+        if (mot === bonne){
+          b.classList.add('juste');
+          scores[4]++;
+        } else {
+          b.classList.add('faux');
+          box.querySelectorAll('button').forEach(function(x){
+            if (x.textContent === bonne) x.classList.add('juste');
+          });
+        }
+        document.getElementById('score4').textContent = scores[4] + ' / ' + sens.length;
+      });
+      box.appendChild(b);
+    });
+    d.appendChild(box);
+    c.appendChild(d);
+  });
+}
+
+/* ---------- EXERCICE 5 ---------- */
+function sansAccents(s){
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function construit5(){
+  var c = document.getElementById('exo5');
+  c.innerHTML = '';
+  document.getElementById('score5').textContent = '';
+  traductions.forEach(function(q, i){
+    var d = document.createElement('div');
+    d.className = 'q';
+    d.innerHTML =
+      '<div class="saisie">' +
+      '<span class="num" style="font-family:Fraunces,serif;color:#c9972a">' + (i + 1) + '.</span>' +
+      '<span style="min-width:120px;font-weight:500">' + q.en + ' →</span>' +
+      '<input type="text" data-i="' + i + '" aria-label="Adjectif français pour ' + q.en + '" autocomplete="off" spellcheck="false">' +
+      '<span class="solution"></span>' +
+      '</div>';
+    c.appendChild(d);
+  });
+}
+
+function corrige5(){
+  var n = 0;
+  var champs = document.querySelectorAll('#exo5 input');
+  champs.forEach(function(inp){
+    var q = traductions[parseInt(inp.dataset.i, 10)];
+    var val = sansAccents(inp.value.trim().toLowerCase());
+    var sol = inp.parentNode.querySelector('.solution');
+    inp.classList.remove('juste','faux');
+    if (q.ok.indexOf(val) !== -1){
+      inp.classList.add('juste');
+      sol.textContent = '✓ ' + q.aff;
+      sol.style.color = '#2f7d51';
+      n++;
+    } else {
+      inp.classList.add('faux');
+      sol.textContent = q.aff;
+      sol.style.color = '#c9972a';
+    }
+  });
+  document.getElementById('score5').textContent = n + ' / ' + champs.length;
+}
+
+function reinit(n){
+  if (n === 1) construit1();
+  if (n === 2) construit2();
+  if (n === 3) construit3();
+  if (n === 4) construit4();
+  if (n === 5) construit5();
+}
+
+construit1();
+construit2();
+construit3();
+construit4();
+construit5();
+</script>
+
+</body>
+</html>
