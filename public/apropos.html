@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À propos — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
+
+header {
+  padding: 28px 48px;
+  border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream); width: 100%;
+}
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-text { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+.logo-text .red { color: var(--red); }
+nav { display: flex; gap: 44px; align-items: center; }
+nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
+nav a:hover { opacity: 1; }
+nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 2px; }
+.nav-cta { padding: 11px 26px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); }
+.gold-line { height: 2px; background: var(--gold); width: 100%; }
+
+.page-header { padding: 56px 64px 40px; border-bottom: 1px solid var(--border); }
+.page-header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 3.5rem; font-weight: 400; color: var(--navy); margin-bottom: 12px;
+}
+.page-header p {
+  font-size: 1rem; font-weight: 300; color: var(--text-soft);
+  line-height: 1.7; max-width: 560px;
+}
+
+.stats { background: var(--red); padding: 28px 64px; display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat { padding: 0 32px; border-right: 1px solid rgba(250,247,242,0.2); display: flex; align-items: center; gap: 14px; }
+.stat:first-child { padding-left: 0; }
+.stat:last-child { border-right: none; }
+.stat-n { font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 300; color: var(--cream); line-height: 1; }
+.stat-n span { color: var(--gold); }
+.stat-l { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,247,242,0.7); }
+
+.content { padding: 64px 64px 80px; max-width: 900px; }
+section { margin-bottom: 56px; }
+h2 {
+  font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 600;
+  display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+}
+h2 .hex { width: 24px; height: 28px; flex-shrink: 0; }
+p { font-size: 0.98rem; font-weight: 300; line-height: 1.85; color: var(--text-soft); }
+p + p { margin-top: 14px; }
+p strong { font-weight: 600; color: var(--navy); }
+
+.lang-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+.lang-card {
+  background: var(--cream-dark); border: 1px solid var(--border);
+  border-top: 2px solid var(--gold); padding: 18px 20px;
+}
+.lang-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); }
+.lang-level { font-size: 0.76rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-soft); margin-top: 4px; }
+
+.spec-list { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+.spec-card {
+  background: var(--cream-dark); border: 1px solid var(--border);
+  border-left: 3px solid var(--red); padding: 20px 24px;
+}
+.spec-title { font-family: 'Fraunces', serif; font-size: 1.02rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.spec-desc { font-size: 0.85rem; font-weight: 300; color: var(--text-soft); line-height: 1.65; }
+
+.quote-list { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+.quote {
+  background: var(--cream-dark); border: 1px solid var(--border);
+  padding: 20px 24px; border-left: 3px solid var(--gold);
+}
+.quote-text { font-size: 0.9rem; font-weight: 300; line-height: 1.7; color: var(--navy); font-style: italic; }
+.quote-author { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; color: var(--text-soft); margin-top: 8px; }
+
+.cta-band {
+  background: var(--navy); padding: 48px 64px;
+  display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap;
+}
+.cta-text { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--cream); line-height: 1.25; }
+.cta-btn {
+  display: inline-block; padding: 13px 30px; background: var(--red); color: var(--cream);
+  text-decoration: none; font-size: 0.84rem; font-weight: 600; letter-spacing: 0.06em;
+  box-shadow: 4px 4px 0 var(--gold); transition: all 0.15s; white-space: nowrap;
+}
+.cta-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--gold); }
+
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
+
+@media (max-width: 860px) {
+  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
+  nav { gap: 20px; }
+  .page-header, .content, .stats, .cta-band { padding-left: 20px; padding-right: 20px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .stat { padding: 0; border-right: none; }
+  .page-header h1 { font-size: 2.2rem; }
+  .lang-grid, .spec-list { grid-template-columns: 1fr 1fr; }
+  footer { padding: 22px 20px; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex-tri" viewBox="0 0 24 28">
+    <clipPath id="clipHexA"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath>
+    <g clip-path="url(#clipHexA)">
+      <rect x="0" y="0" width="8" height="28" fill="#002395"/>
+      <rect x="8" y="0" width="8" height="28" fill="#ffffff"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939"/>
+    </g>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+  </symbol>
+</svg>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
+    <span class="logo-text">French with <span class="red">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/planning_public.html">Créneaux</a>
+    <a href="/ressources.html">Ressources</a>
+    <a href="/apropos.html" class="active">À propos</a>
+    <a href="/reserver.html" class="nav-cta">Réserver</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="page-header">
+  <h1>À propos</h1>
+  <p>Professeur de français natif, originaire de Normandie. J'accompagne des élèves du monde entier, du grand débutant au niveau avancé, avec une méthode construite autour de leurs objectifs.</p>
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-n">3 670</div>
+    <div class="stat-l">Cours donnés</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n">20<span>+</span></div>
+    <div class="stat-l">Étudiants actifs</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n">11</div>
+    <div class="stat-l">Nationalités</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n">A1<span>→</span>C1</div>
+    <div class="stat-l">Tous niveaux</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Qui je suis</h2>
+    <p>Je m'appelle Alban, je suis né en <strong>Normandie</strong> et j'enseigne le français en ligne depuis plus de deux ans. J'ai obtenu le <strong>Preply Language Teaching Certificate</strong> et je prépare actuellement le <strong>DAEFLE</strong>, le diplôme d'aptitude à l'enseignement du français langue étrangère.</p>
+    <p>Au-delà de la langue, j'ai des centres d'intérêt que mes élèves finissent souvent par partager : l'économie et la finance, la géopolitique, les voyages et les langues étrangères. C'est ce qui fait qu'un cours dérive vers une vraie conversation — et que la conversation devient le cours.</p>
+  </section>
+
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Ma méthode</h2>
+    <p>Pas de programme tout fait. Le premier cours sert à comprendre où vous en êtes, ce que vous visez et à quel rythme vous pouvez travailler. Tout le reste en découle.</p>
+    <p>La grammaire, la conjugaison et le vocabulaire restent la base, mais je les accroche à des supports vivants : articles d'actualité, podcasts, vidéos, ou simplement les sujets qui vous intéressent — tourisme, travail, société française. Et si le français académique ne vous suffit pas, je vous familiarise avec le <strong>français réellement parlé</strong> et la culture francophone d'aujourd'hui.</p>
+    <p>Se fixer des objectifs atteignables, avancer à son rythme, et ne jamais s'ennuyer : c'est ce qui fait qu'on continue.</p>
+  </section>
+
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Ce que je peux enseigner</h2>
+    <div class="spec-list">
+      <div class="spec-card">
+        <div class="spec-title">Français conversationnel</div>
+        <div class="spec-desc">Du français écrit formel au français parlé du quotidien, avec ses codes et ses raccourcis.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-title">Français pour débutants</div>
+        <div class="spec-desc">Expérience de l'enseignement à des élèves partant réellement de zéro.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-title">Français intensif</div>
+        <div class="spec-desc">Plusieurs cours par semaine, jusqu'au rythme quotidien si votre échéance l'exige.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-title">Français des affaires</div>
+        <div class="spec-desc">Vocabulaire de la finance, du commerce et de l'économie — mon domaine d'études.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les langues que je parle</h2>
+    <p>Apprendre une langue m'occupe autant que d'en enseigner une. Je sais donc à quoi ressemble le blocage de l'autre côté du micro.</p>
+    <div class="lang-grid">
+      <div class="lang-card"><div class="lang-name">Français</div><div class="lang-level">Langue maternelle</div></div>
+      <div class="lang-card"><div class="lang-name">Anglais</div><div class="lang-level">Avancé · C1</div></div>
+      <div class="lang-card"><div class="lang-name">Espagnol</div><div class="lang-level">Intermédiaire · B1</div></div>
+      <div class="lang-card"><div class="lang-name">Russe</div><div class="lang-level">Débutant · A1</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Ce qu'en disent mes élèves</h2>
+    <div class="quote-list">
+      <div class="quote">
+        <div class="quote-text">Deux cours par semaine depuis deux ans et demi, et toujours pas envie d'arrêter. Alban sait relancer une conversation, poser les bonnes questions, et transformer un échange ordinaire en leçon.</div>
+        <div class="quote-author">Omri · plus de 200 cours</div>
+      </div>
+      <div class="quote">
+        <div class="quote-text">Plus de deux ans de cours ensemble. Il est attentif, patient, et il a nettement accéléré mon apprentissage.</div>
+        <div class="quote-author">Ola · plus de 150 cours</div>
+      </div>
+      <div class="quote">
+        <div class="quote-text">Un professeur fiable et bienveillant, d'une grande patience avec ma fille adolescente. Nous sommes très contents des progrès.</div>
+        <div class="quote-author">Susanne · 39 cours</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="cta-band">
+  <div class="cta-text">On commence par discuter<br>de vos objectifs ?</div>
+  <a href="/reserver.html" class="cta-btn">Réserver un cours</a>
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <svg width="18" height="22" viewBox="0 0 24 28">
+      <defs><clipPath id="hf"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hf)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hf)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hf)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#faf7f2" stroke-width="1.5"/>
+    </svg>
+    French with Alban
+  </div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+</footer>
+
+</body>
+</html>
