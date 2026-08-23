@@ -118,14 +118,51 @@ footer {
 <div class="tz-row">
   <span class="tz-label">Fuseau horaire :</span>
   <select class="tz-select" id="tzSelect">
-    <option value="-9">Los Angeles (UTC-8)</option>
-    <option value="-6">New York (UTC-5)</option>
-    <option value="-1">Londres (UTC+0)</option>
-    <option value="0" selected>Paris (CET, UTC+1)</option>
-    <option value="-2">Le Caire (UTC+2)</option>
-    <option value="-3">Moscou (UTC+3)</option>
-    <option value="-4">Dubaï (UTC+4)</option>
-    <option value="8">Tokyo (UTC+9)</option>
+        <optgroup label="Amérique">
+      <option value="Pacific/Honolulu">Honolulu</option>
+      <option value="America/Anchorage">Anchorage</option>
+      <option value="America/Los_Angeles">Los Angeles</option>
+      <option value="America/Denver">Denver</option>
+      <option value="America/Mexico_City">Mexico</option>
+      <option value="America/Chicago">Chicago</option>
+      <option value="America/New_York">New York</option>
+      <option value="America/Bogota">Bogota / Lima</option>
+      <option value="America/Santiago">Santiago</option>
+      <option value="America/Sao_Paulo">São Paulo</option>
+    </optgroup>
+    <optgroup label="Europe / Afrique">
+      <option value="Atlantic/Azores">Açores</option>
+      <option value="UTC">UTC</option>
+      <option value="Europe/London">Londres / Lisbonne</option>
+      <option value="Europe/Paris" selected>Paris / Bruxelles / Genève</option>
+      <option value="Europe/Berlin">Berlin / Madrid / Rome</option>
+      <option value="Europe/Warsaw">Varsovie / Prague</option>
+      <option value="Africa/Lagos">Lagos / Alger</option>
+      <option value="Europe/Athens">Athènes / Helsinki</option>
+      <option value="Africa/Cairo">Le Caire</option>
+      <option value="Africa/Johannesburg">Johannesburg</option>
+    </optgroup>
+    <optgroup label="Moyen-Orient / Asie">
+      <option value="Europe/Istanbul">Istanbul</option>
+      <option value="Europe/Moscow">Moscou</option>
+      <option value="Asia/Riyadh">Riyad / Nairobi</option>
+      <option value="Asia/Dubai">Dubaï</option>
+      <option value="Asia/Karachi">Karachi / Tachkent</option>
+      <option value="Asia/Dhaka">Dacca / Almaty</option>
+      <option value="Asia/Bangkok">Bangkok / Jakarta</option>
+      <option value="Asia/Shanghai">Pékin / Shanghai</option>
+      <option value="Asia/Singapore">Singapour / Hong Kong</option>
+      <option value="Asia/Seoul">Séoul</option>
+      <option value="Asia/Tokyo">Tokyo</option>
+    </optgroup>
+    <optgroup label="Océanie">
+      <option value="Australia/Perth">Perth</option>
+      <option value="Australia/Brisbane">Brisbane</option>
+      <option value="Australia/Sydney">Sydney / Melbourne</option>
+      <option value="Pacific/Noumea">Nouméa</option>
+      <option value="Pacific/Auckland">Auckland</option>
+      <option value="Pacific/Fiji">Fidji</option>
+    </optgroup>
   </select>
 </div>
 
@@ -148,8 +185,32 @@ let preplyBusy = [];
 let currentWeek = 0;
 let currentDuration = 50;
 let tzOffset = 0;
+let selectedZone = 'Europe/Paris';
+
+function zoneHourOffset(zone, date) {
+  const dtf = new Intl.DateTimeFormat('en-US', {
+    timeZone: zone, hour12: false,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit'
+  });
+  const p = {};
+  for (const part of dtf.formatToParts(date)) {
+    if (part.type !== 'literal') p[part.type] = part.value;
+  }
+  const h = p.hour === '24' ? 0 : parseInt(p.hour, 10);
+  const asUTC = Date.UTC(+p.year, p.month - 1, +p.day, h, +p.minute);
+  return (asUTC - date.getTime() + date.getTime() % 60000) / 3600000;
+}
+
+function refreshTzOffset() {
+  const ref = new Date(Date.now() + currentWeek * 7 * 86400000);
+  tzOffset = Math.round(
+    (zoneHourOffset(selectedZone, ref) - zoneHourOffset('Europe/Paris', ref)) * 2
+  ) / 2;
+}
 
 function formatHourWithTz(h) {
+    refreshTzOffset();
   let adjusted = h + tzOffset;
   let dayTag = '';
   if (adjusted < 0) { adjusted += 24; dayTag = ' (j-1)'; }
@@ -305,7 +366,7 @@ document.getElementById('nextWeek').addEventListener('click', () => {
   if (currentWeek < 3) { currentWeek++; render(); }
 });
 document.getElementById('tzSelect').addEventListener('change', (e) => {
-  tzOffset = parseFloat(e.target.value);
+    selectedZone = e.target.value;
   render();
 });
 
