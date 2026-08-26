@@ -51,15 +51,15 @@
   .intro{color:var(--gris-texte);margin-bottom:20px;}
 
   /* ---------- ILLUSTRATIONS ---------- */
-  .illus-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    .illus-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);
     gap:36px 32px;margin:28px 0;justify-items:center;
   }
   .illus{display:inline-block;padding:10px;background:var(--creme);border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);line-height:0;}
   .illus img{display:block;width:100%;max-width:320px;}
   .illus-label{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;color:var(--navy);text-align:center;margin-top:14px;line-height:1.4;}
   .illus-label .fem{color:var(--rose-fem);}
-  .mois-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:28px 0;}
+  .mois-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:28px 0;}
   .mois{background:var(--creme);border:1px solid var(--bordure);border-top:2px solid var(--navy);padding:16px 18px;text-align:center;}
   .mois .nom{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--navy);}
   .mois .phon{display:block;font-size:.85rem;margin-top:4px;}
@@ -73,7 +73,8 @@
     .logo{font-size:1.3rem;}
     nav{gap:24px;}
     .hero h1{font-size:2.1rem;}
-    .illus-grid{grid-template-columns:1fr;gap:28px;}
+        .illus-grid{grid-template-columns:1fr;gap:28px;}
+    .mois-grid{grid-template-columns:repeat(2,1fr);}
     .illus{box-shadow:4px 4px 0 var(--navy);padding:7px;}
     footer{padding:28px 20px;}
   }
