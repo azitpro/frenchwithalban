@@ -64,6 +64,32 @@ export default function Home() {
         footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
         .footer-logo { display: flex; align-items: center; gap: 8px; }
         .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
+                @media (max-width: 860px) {
+          header { padding: 18px 20px; flex-wrap: wrap; gap: 14px; }
+          nav { gap: 18px; flex-wrap: wrap; }
+          nav a { font-size: 0.92rem; }
+          .nav-cta { padding: 9px 20px; }
+
+          .hero { grid-template-columns: 1fr; padding: 40px 20px 48px; gap: 32px; }
+          .hero-left { padding-right: 0; }
+          h1 { font-size: 2.6rem; margin-bottom: 20px; }
+          .hero-body { font-size: 0.95rem; margin-bottom: 28px; max-width: none; }
+          .hero-actions { flex-wrap: wrap; gap: 14px; }
+          .conj-card { padding: 28px 24px; }
+          .conj-card-desc { max-height: 100px; opacity: 1; }
+
+          .stats { grid-template-columns: 1fr 1fr; gap: 22px; padding: 24px 20px; }
+          .stat { padding: 0; border-right: none; }
+          .stat-n { font-size: 1.8rem; }
+
+          .intro { grid-template-columns: 1fr; gap: 36px; padding: 48px 20px; }
+          .intro-title { font-size: 1.7rem; }
+
+          .features { grid-template-columns: 1fr; padding: 0 20px 48px; }
+          .feature-card { padding: 24px 22px; }
+
+          footer { padding: 22px 20px; flex-direction: column; gap: 12px; text-align: center; }
+        }
       `}</style>
 
       <header>
