@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les saisons et les mois — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d2b45;
+    --rouge:#c0392b;
+    --or:#c9972a;
+    --creme:#faf7f2;
+    --gris-texte:#4a5568;
+    --bordure:#e6e0d6;
+    --rose-fem:#c2185b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--navy);background:#ffffff;line-height:1.7;-webkit-font-smoothing:antialiased;}
+
+  header{
+    width:100%;background:#ffffff;border-bottom:3px solid var(--navy);
+    padding:28px 48px;display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:100;
+  }
+  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
+  .logo .fw{color:var(--navy);}
+  .logo .al{color:var(--rouge);}
+  nav{display:flex;gap:44px;}
+  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
+  nav a:hover{color:var(--rouge);}
+  .gold-line{height:2px;background:var(--or);width:100%;}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  .hero{background:var(--creme);width:100%;padding:64px 24px 56px;text-align:center;border-bottom:1px solid var(--bordure);}
+  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;margin-bottom:16px;}
+  .hero p{max-width:640px;margin:0 auto;font-size:1.1rem;color:var(--gris-texte);}
+  .hero .compteur{display:inline-block;margin-top:24px;font-family:'Fraunces',serif;font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;color:var(--or);}
+
+  section{padding:56px 0;border-bottom:1px solid var(--bordure);}
+  section:last-of-type{border-bottom:none;}
+
+  h2{font-family:'Fraunces',serif;font-size:1.85rem;font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  h3{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;display:flex;align-items:center;gap:12px;margin:32px 0 14px;}
+  .hex{flex-shrink:0;}
+  h2 .hex{width:26px;height:30px;}
+  h3 .hex{width:20px;height:23px;}
+  .intro{color:var(--gris-texte);margin-bottom:20px;}
+
+  /* ---------- ILLUSTRATIONS ---------- */
+  .illus-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:36px 32px;margin:28px 0;justify-items:center;
+  }
+  .illus{display:inline-block;padding:10px;background:var(--creme);border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);line-height:0;}
+  .illus img{display:block;width:100%;max-width:320px;}
+  .illus-label{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;color:var(--navy);text-align:center;margin-top:14px;line-height:1.4;}
+  .illus-label .fem{color:var(--rose-fem);}
+  .mois-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:28px 0;}
+  .mois{background:var(--creme);border:1px solid var(--bordure);border-top:2px solid var(--navy);padding:16px 18px;text-align:center;}
+  .mois .nom{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--navy);}
+  .mois .phon{display:block;font-size:.85rem;margin-top:4px;}
+  .illus-label .phon{display:block;color:var(--rouge);font-family:'Inter',sans-serif;font-size:.82rem;font-weight:400;margin-top:2px;}
+
+  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
+  footer a{color:#fff;text-decoration:underline;}
+
+  @media (max-width:720px){
+    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
+    .logo{font-size:1.3rem;}
+    nav{gap:24px;}
+    .hero h1{font-size:2.1rem;}
+    .illus-grid{grid-template-columns:1fr;gap:28px;}
+    .illus{box-shadow:4px 4px 0 var(--navy);padding:7px;}
+    footer{padding:28px 20px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex-tri" viewBox="-1 -1 32 37">
+    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
+    <g clip-path="url(#clip-hex)">
+      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+    </g>
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+  </symbol>
+  <symbol id="hex-warn" viewBox="0 0 30 35">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#c0392b"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="19" font-weight="700" fill="#fff">!</text>
+  </symbol>
+  <symbol id="hex-info" viewBox="0 0 30 35">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#0d2b45"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="18" font-weight="700" fill="#fff">i</text>
+  </symbol>
+</svg>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
+    <span><span class="fw">French with</span> <span class="al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/ressources.html">Retour</a>
+    <a href="/">Accueil</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="hero">
+  <h1>Les saisons et les mois</h1>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== LES COULEURS ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les quatre saisons</h2>
+
+    <div class="illus-grid">
+      <figure>
+        <div class="illus"><img src="/img/printemps.png" alt="Paysage de campagne au printemps, arbre en fleurs"></div>
+        <figcaption class="illus-label">le printemps<span class="phon">/lə pʁɛ̃tɑ̃/</span></figcaption>
+      </figure>
+      <figure>
+        <div class="illus"><img src="/img/ete.png" alt="Bord de mer méditerranéen en été"></div>
+        <figcaption class="illus-label">l'été<span class="phon">/lete/</span></figcaption>
+      </figure>
+      <figure>
+        <div class="illus"><img src="/img/automne.png" alt="Village au bord d'une rivière en automne"></div>
+        <figcaption class="illus-label">l'automne<span class="phon">/lotɔn/</span></figcaption>
+      </figure>
+      <figure>
+        <div class="illus"><img src="/img/hiver.png" alt="Paysage de montagne enneigé en hiver"></div>
+        <figcaption class="illus-label">l'hiver<span class="phon">/livɛʁ/</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les mois de l'année</h2>
+    <div class="mois-grid">
+      <div class="mois"><span class="nom">janvier</span><span class="phon">/ʒɑ̃vje/</span></div>
+      <div class="mois"><span class="nom">février</span><span class="phon">/fevʁije/</span></div>
+      <div class="mois"><span class="nom">mars</span><span class="phon">/maʁs/</span></div>
+      <div class="mois"><span class="nom">avril</span><span class="phon">/avʁil/</span></div>
+      <div class="mois"><span class="nom">mai</span><span class="phon">/mɛ/</span></div>
+      <div class="mois"><span class="nom">juin</span><span class="phon">/ʒɥɛ̃/</span></div>
+      <div class="mois"><span class="nom">juillet</span><span class="phon">/ʒɥijɛ/</span></div>
+      <div class="mois"><span class="nom">août</span><span class="phon">/ut/</span></div>
+      <div class="mois"><span class="nom">septembre</span><span class="phon">/sɛptɑ̃bʁ/</span></div>
+      <div class="mois"><span class="nom">octobre</span><span class="phon">/ɔktɔbʁ/</span></div>
+      <div class="mois"><span class="nom">novembre</span><span class="phon">/nɔvɑ̃bʁ/</span></div>
+      <div class="mois"><span class="nom">décembre</span><span class="phon">/desɑ̃bʁ/</span></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
+</footer>
+
+
+</body>
+</html>
