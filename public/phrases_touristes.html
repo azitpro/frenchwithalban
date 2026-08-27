@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phrases utiles pour touristes — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d2b45;
+    --rouge:#c0392b;
+    --or:#c9972a;
+    --creme:#faf7f2;
+    --gris-texte:#4a5568;
+    --bordure:#e6e0d6;
+    --rose-fem:#c2185b;
+    --vert:#2f7d51;
+    --vert-doux:#e8f4ec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--navy);background:#ffffff;line-height:1.7;-webkit-font-smoothing:antialiased;}
+
+  header{
+    width:100%;background:#ffffff;border-bottom:3px solid var(--navy);
+    padding:28px 48px;display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:100;
+  }
+  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
+  .logo .fw{color:var(--navy);}
+  .logo .al{color:var(--rouge);}
+  nav{display:flex;gap:44px;}
+  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
+  nav a:hover{color:var(--rouge);}
+  .gold-line{height:2px;background:var(--or);width:100%;}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  .hero{background:var(--creme);width:100%;padding:64px 24px 56px;text-align:center;border-bottom:1px solid var(--bordure);}
+  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;margin-bottom:16px;}
+  .hero p{max-width:640px;margin:0 auto;font-size:1.1rem;color:var(--gris-texte);}
+
+  section{padding:48px 0;border-bottom:1px solid var(--bordure);}
+  section:last-of-type{border-bottom:none;}
+
+  h2{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .hex{flex-shrink:0;width:24px;height:28px;}
+  .intro{color:var(--gris-texte);margin-bottom:20px;}
+
+  /* ---------- TOGGLE ---------- */
+  .toggle{display:inline-flex;border:1px solid var(--navy);border-radius:999px;overflow:hidden;margin-bottom:8px;}
+  .toggle button{font-family:'Inter',sans-serif;font-size:.9rem;font-weight:500;padding:8px 20px;border:none;background:#fff;color:var(--navy);cursor:pointer;transition:background .2s,color .2s;}
+  .toggle button.on{background:var(--navy);color:#fff;}
+  .toggle button:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+  .col-cachee{display:none;}
+
+  /* ---------- TABLEAUX ---------- */
+  table{width:100%;border-collapse:collapse;table-layout:fixed;margin:14px 0 4px;font-size:.98rem;}
+  th{background:var(--navy);color:#fff;font-family:'Fraunces',serif;font-weight:600;text-align:left;padding:11px 14px;}
+  td{padding:9px 14px;border-bottom:1px solid var(--bordure);vertical-align:top;word-wrap:break-word;}
+  tr.q td{font-weight:600;background:var(--creme);}
+  tr.r td{color:var(--gris-texte);padding-left:26px;}
+  tr.r td::before{content:"→ ";color:var(--or);font-weight:600;}
+
+  /* ---------- EXERCICE ---------- */
+  .carte{
+    background:var(--creme);border:2px solid var(--navy);box-shadow:8px 8px 0 var(--navy);
+    padding:32px 28px;margin:22px 0;text-align:center;
+  }
+  .compteur{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris-texte);margin-bottom:18px;}
+  .piste{height:3px;background:var(--bordure);margin-bottom:24px;overflow:hidden;}
+  .piste span{display:block;height:100%;background:var(--rouge);transition:width .25s ease;}
+  .en{font-size:1.35rem;font-weight:500;line-height:1.45;color:var(--navy);}
+  .fr{
+    font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--rouge);
+    margin-top:18px;padding-top:18px;border-top:1px dashed var(--bordure);
+  }
+  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;}
+  .btn{font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;padding:12px 26px;border:none;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;transition:background .2s;}
+  .btn:hover{background:#164066;}
+  .btn.secondaire{background:#fff;color:var(--navy);border:1px solid var(--navy);}
+  .btn.secondaire:hover{background:var(--creme);}
+  .btn.oui{background:var(--vert);}
+  .btn.oui:hover{background:#256641;}
+  .btn.non{background:var(--rouge);}
+  .btn.non:hover{background:#9c2f22;}
+  .btn:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+
+  .bilan .score{font-family:'DM Serif Display',serif;font-size:3rem;color:var(--navy);line-height:1.1;}
+  .bilan .score small{font-size:1.2rem;color:var(--gris-texte);}
+  .bilan .detail{font-size:.95rem;color:var(--gris-texte);margin-top:8px;}
+
+  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
+  footer a{color:#fff;text-decoration:underline;}
+
+  @media (max-width:720px){
+    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
+    .logo{font-size:1.3rem;}
+    nav{gap:24px;}
+    .hero h1{font-size:2.1rem;}
+    .carte{padding:24px 18px;box-shadow:5px 5px 0 var(--navy);}
+    .en{font-size:1.15rem;}
+    .fr{font-size:1.25rem;}
+    footer{padding:28px 20px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex-tri" viewBox="-1 -1 32 37">
+    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
+    <g clip-path="url(#clip-hex)">
+      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+    </g>
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+  </symbol>
+</svg>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
+    <span><span class="fw">French with</span> <span class="al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/ressources.html">Retour</a>
+    <a href="/">Accueil</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="hero">
+  <h1>Phrases utiles pour touristes</h1>
+  <p>Les questions qu'un voyageur pose en France, et les réponses qu'il peut entendre.</p>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="toggle" role="group" aria-label="Choix de la langue affichée">
+      <button type="button" data-vue="fr">Français</button>
+      <button type="button" data-vue="en">Anglais</button>
+      <button type="button" data-vue="deux" class="on">Les deux</button>
+    </div>
+
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Se présenter</h2>
+    <table>
+      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <tbody>
+        <tr class="q"><td class="c-fr">Comment vous appelez-vous ?</td><td class="c-en">What's your name?</td></tr>
+        <tr class="r"><td class="c-fr">Je m'appelle Sarah.</td><td class="c-en">My name is Sarah.</td></tr>
+        <tr class="r"><td class="c-fr">Je m'appelle Tom.</td><td class="c-en">My name is Tom.</td></tr>
+        <tr class="q"><td class="c-fr">D'où venez-vous ?</td><td class="c-en">Where are you from?</td></tr>
+        <tr class="r"><td class="c-fr">Je viens des États-Unis.</td><td class="c-en">I'm from the United States.</td></tr>
+        <tr class="r"><td class="c-fr">Je viens du Japon.</td><td class="c-en">I'm from Japan.</td></tr>
+        <tr class="q"><td class="c-fr">Vous parlez français ?</td><td class="c-en">Do you speak French?</td></tr>
+        <tr class="r"><td class="c-fr">Un peu.</td><td class="c-en">A little.</td></tr>
+        <tr class="r"><td class="c-fr">Non, pas très bien.</td><td class="c-en">No, not very well.</td></tr>
+        <tr class="r"><td class="c-fr">Oui, un petit peu.</td><td class="c-en">Yes, a little bit.</td></tr>
+        <tr class="q"><td class="c-fr">Vous êtes en vacances ?</td><td class="c-en">Are you on holiday?</td></tr>
+        <tr class="r"><td class="c-fr">Oui, je suis en vacances.</td><td class="c-en">Yes, I'm on holiday.</td></tr>
+        <tr class="r"><td class="c-fr">Oui, pour une semaine.</td><td class="c-en">Yes, for a week.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Demander son chemin</h2>
+    <table>
+      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <tbody>
+        <tr class="q"><td class="c-fr">Excusez-moi, où est la gare ?</td><td class="c-en">Excuse me, where is the station?</td></tr>
+        <tr class="r"><td class="c-fr">C'est tout droit.</td><td class="c-en">It's straight ahead.</td></tr>
+        <tr class="r"><td class="c-fr">C'est à gauche, après le feu.</td><td class="c-en">It's on the left, after the traffic light.</td></tr>
+        <tr class="q"><td class="c-fr">C'est loin d'ici ?</td><td class="c-en">Is it far from here?</td></tr>
+        <tr class="r"><td class="c-fr">Non, c'est à cinq minutes à pied.</td><td class="c-en">No, it's five minutes on foot.</td></tr>
+        <tr class="r"><td class="c-fr">Oui, il faut prendre le bus.</td><td class="c-en">Yes, you need to take the bus.</td></tr>
+        <tr class="q"><td class="c-fr">Où sont les toilettes, s'il vous plaît ?</td><td class="c-en">Where are the toilets, please?</td></tr>
+        <tr class="r"><td class="c-fr">Au fond, à droite.</td><td class="c-en">At the back, on the right.</td></tr>
+        <tr class="r"><td class="c-fr">En bas de l'escalier.</td><td class="c-en">Down the stairs.</td></tr>
+        <tr class="q"><td class="c-fr">Comment aller au musée ?</td><td class="c-en">How do I get to the museum?</td></tr>
+        <tr class="r"><td class="c-fr">Prenez la ligne 4.</td><td class="c-en">Take line 4.</td></tr>
+        <tr class="r"><td class="c-fr">C'est juste en face.</td><td class="c-en">It's right opposite.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Au restaurant et au café</h2>
+    <table>
+      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <tbody>
+        <tr class="q"><td class="c-fr">Une table pour deux, s'il vous plaît ?</td><td class="c-en">A table for two, please?</td></tr>
+        <tr class="r"><td class="c-fr">Oui, suivez-moi.</td><td class="c-en">Yes, follow me.</td></tr>
+        <tr class="r"><td class="c-fr">Un instant, s'il vous plaît.</td><td class="c-en">One moment, please.</td></tr>
+        <tr class="q"><td class="c-fr">Qu'est-ce que vous recommandez ?</td><td class="c-en">What do you recommend?</td></tr>
+        <tr class="r"><td class="c-fr">Le poulet rôti est très bon.</td><td class="c-en">The roast chicken is very good.</td></tr>
+        <tr class="r"><td class="c-fr">Essayez la tarte du jour.</td><td class="c-en">Try the tart of the day.</td></tr>
+        <tr class="q"><td class="c-fr">L'addition, s'il vous plaît ?</td><td class="c-en">The bill, please?</td></tr>
+        <tr class="r"><td class="c-fr">Voilà, ça fait vingt-cinq euros.</td><td class="c-en">Here you are, that's twenty-five euros.</td></tr>
+        <tr class="r"><td class="c-fr">Bien sûr, tout de suite.</td><td class="c-en">Of course, right away.</td></tr>
+        <tr class="q"><td class="c-fr">Avez-vous un menu en anglais ?</td><td class="c-en">Do you have a menu in English?</td></tr>
+        <tr class="r"><td class="c-fr">Oui, voici.</td><td class="c-en">Yes, here it is.</td></tr>
+        <tr class="r"><td class="c-fr">Désolé, seulement en français.</td><td class="c-en">Sorry, only in French.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>À l'hôtel</h2>
+    <table>
+      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <tbody>
+        <tr class="q"><td class="c-fr">J'ai une réservation au nom de Martin.</td><td class="c-en">I have a reservation under the name Martin.</td></tr>
+        <tr class="r"><td class="c-fr">Un instant, je vérifie.</td><td class="c-en">One moment, I'll check.</td></tr>
+        <tr class="r"><td class="c-fr">Oui, chambre 12, voici la clé.</td><td class="c-en">Yes, room 12, here's the key.</td></tr>
+        <tr class="q"><td class="c-fr">À quelle heure est le petit-déjeuner ?</td><td class="c-en">What time is breakfast?</td></tr>
+        <tr class="r"><td class="c-fr">De 7h à 10h.</td><td class="c-en">From 7 to 10.</td></tr>
+        <tr class="r"><td class="c-fr">Il est servi au rez-de-chaussée.</td><td class="c-en">It's served on the ground floor.</td></tr>
+        <tr class="q"><td class="c-fr">Le Wi-Fi est-il gratuit ?</td><td class="c-en">Is the Wi-Fi free?</td></tr>
+        <tr class="r"><td class="c-fr">Oui, le code est sur la clé.</td><td class="c-en">Yes, the code is on the key.</td></tr>
+        <tr class="r"><td class="c-fr">Oui, il est gratuit dans tout l'hôtel.</td><td class="c-en">Yes, it's free throughout the hotel.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Achats et marché</h2>
+    <table>
+      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <tbody>
+        <tr class="q"><td class="c-fr">Combien ça coûte ?</td><td class="c-en">How much does it cost?</td></tr>
+        <tr class="r"><td class="c-fr">Ça coûte dix euros.</td><td class="c-en">It costs ten euros.</td></tr>
+        <tr class="r"><td class="c-fr">C'est quinze euros cinquante.</td><td class="c-en">It's fifteen euros fifty.</td></tr>
+        <tr class="q"><td class="c-fr">Vous acceptez la carte bancaire ?</td><td class="c-en">Do you accept cards?</td></tr>
+        <tr class="r"><td class="c-fr">Oui, sans problème.</td><td class="c-en">Yes, no problem.</td></tr>
+        <tr class="r"><td class="c-fr">Non, seulement en espèces.</td><td class="c-en">No, cash only.</td></tr>
+        <tr class="q"><td class="c-fr">Je peux essayer ça ?</td><td class="c-en">Can I try this on?</td></tr>
+        <tr class="r"><td class="c-fr">Oui, la cabine est là-bas.</td><td class="c-en">Yes, the fitting room is over there.</td></tr>
+        <tr class="r"><td class="c-fr">Bien sûr, allez-y.</td><td class="c-en">Of course, go ahead.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Transports</h2>
+    <table>
+      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <tbody>
+        <tr class="q"><td class="c-fr">Un billet pour Lyon, s'il vous plaît.</td><td class="c-en">A ticket to Lyon, please.</td></tr>
+        <tr class="r"><td class="c-fr">Aller simple ou aller-retour ?</td><td class="c-en">One way or return?</td></tr>
+        <tr class="r"><td class="c-fr">Ça fait trente euros.</td><td class="c-en">That's thirty euros.</td></tr>
+        <tr class="q"><td class="c-fr">À quelle heure part le train ?</td><td class="c-en">What time does the train leave?</td></tr>
+        <tr class="r"><td class="c-fr">Il part à 14h20.</td><td class="c-en">It leaves at 2:20 pm.</td></tr>
+        <tr class="r"><td class="c-fr">Dans dix minutes, quai 3.</td><td class="c-en">In ten minutes, platform 3.</td></tr>
+        <tr class="q"><td class="c-fr">Ce bus va au centre-ville ?</td><td class="c-en">Does this bus go to the town centre?</td></tr>
+        <tr class="r"><td class="c-fr">Oui, c'est le bon.</td><td class="c-en">Yes, that's the right one.</td></tr>
+        <tr class="r"><td class="c-fr">Non, prenez le 12.</td><td class="c-en">No, take the 12.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===================== EXERCICE ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice — Cartes de révision</h2>
+    <p class="intro">Une phrase en anglais apparaît. Dites-la en français, puis affichez la réponse et indiquez si vous la connaissiez.</p>
+    <div id="exercice"></div>
+  </section>
+
+</div>
+
+<footer>
+  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
+</footer>
+
+<script>
+/* ---------- TOGGLE LANGUE ---------- */
+document.querySelectorAll('.toggle button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.toggle button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    var vue = b.dataset.vue;
+    document.querySelectorAll('.c-fr').forEach(function(c){ c.classList.toggle('col-cachee', vue === 'en'); });
+    document.querySelectorAll('.c-en').forEach(function(c){ c.classList.toggle('col-cachee', vue === 'fr'); });
+  });
+});
+
+/* ---------- DONNÉES : construites depuis les tableaux ---------- */
+var TOUTES = [];
+document.querySelectorAll('tbody tr').forEach(function(tr){
+  var fr = tr.querySelector('.c-fr'), en = tr.querySelector('.c-en');
+  if (fr && en) TOUTES.push({fr: fr.textContent.trim(), en: en.textContent.trim()});
+});
+
+var paquet = [], idx = 0, revelee = false, erreurs = [], reussies = 0;
+
+function melange(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function demarrer(liste){
+  paquet = melange(liste);
+  idx = 0; revelee = false; erreurs = []; reussies = 0;
+  afficher();
+}
+
+function afficher(){
+  var c = document.getElementById('exercice');
+
+  if (idx >= paquet.length){ bilan(); return; }
+
+  var carte = paquet[idx];
+  var pct = Math.round(idx / paquet.length * 100);
+  c.innerHTML =
+    '<div class="carte">' +
+      '<div class="compteur">Carte ' + (idx + 1) + ' sur ' + paquet.length + '</div>' +
+      '<div class="piste"><span style="width:' + pct + '%"></span></div>' +
+      '<div class="en">' + carte.en + '</div>' +
+      (revelee ? '<div class="fr">' + carte.fr + '</div>' : '') +
+      '<div class="actions">' +
+        (revelee
+          ? '<button class="btn oui" id="btnOui">&#10003;&nbsp; Je savais</button>' +
+            '<button class="btn non" id="btnNon">&#10007;&nbsp; Je ne savais pas</button>'
+          : '<button class="btn" id="btnVoir">Afficher la réponse</button>') +
+      '</div>' +
+    '</div>' +
+    '<div class="actions"><button class="btn secondaire" id="btnStop">Arrêter</button></div>';
+
+  if (revelee){
+    document.getElementById('btnOui').addEventListener('click', function(){ reussies++; suivante(); });
+    document.getElementById('btnNon').addEventListener('click', function(){ erreurs.push(carte); suivante(); });
+  } else {
+    document.getElementById('btnVoir').addEventListener('click', function(){ revelee = true; afficher(); });
+  }
+  document.getElementById('btnStop').addEventListener('click', accueil);
+}
+
+function suivante(){ idx++; revelee = false; afficher(); }
+
+function bilan(){
+  var c = document.getElementById('exercice');
+  var total = paquet.length;
+  c.innerHTML =
+    '<div class="carte bilan">' +
+      '<div class="score">' + reussies + ' <small>/ ' + total + '</small></div>' +
+      '<div class="detail">' + (erreurs.length === 0
+        ? 'Toutes les phrases sont acquises.'
+        : erreurs.length + (erreurs.length > 1 ? ' phrases à revoir.' : ' phrase à revoir.')) + '</div>' +
+      '<div class="actions">' +
+        (erreurs.length > 0 ? '<button class="btn" id="btnErreurs">Réviser les erreurs</button>' : '') +
+        '<button class="btn secondaire" id="btnRecommencer">Recommencer</button>' +
+        '<button class="btn secondaire" id="btnStop2">Arrêter</button>' +
+      '</div>' +
+    '</div>';
+
+  if (erreurs.length > 0){
+    var aRevoir = erreurs.slice();
+    document.getElementById('btnErreurs').addEventListener('click', function(){ demarrer(aRevoir); });
+  }
+  document.getElementById('btnRecommencer').addEventListener('click', function(){ demarrer(TOUTES); });
+  document.getElementById('btnStop2').addEventListener('click', accueil);
+}
+
+function accueil(){
+  var c = document.getElementById('exercice');
+  c.innerHTML =
+    '<div class="carte">' +
+      '<div class="en">' + TOUTES.length + ' phrases à réviser</div>' +
+      '<div class="actions"><button class="btn" id="btnDemarrer">Commencer</button></div>' +
+    '</div>';
+  document.getElementById('btnDemarrer').addEventListener('click', function(){ demarrer(TOUTES); });
+}
+
+accueil();
+</script>
+
+</body>
+</html>
