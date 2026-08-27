@@ -31,11 +31,15 @@ header {
 h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 8px; }
 .subtitle { font-size: 0.9rem; color: var(--text-soft); margin-bottom: 32px; }
 
-.option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 40px; }
+.option-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 16px; margin-bottom: 40px; align-items: stretch; }
 .option-card {
   background: var(--cream-dark); border: 1px solid var(--border); border-top: 3px solid var(--navy);
   padding: 24px; display: flex; flex-direction: column; gap: 10px;
 }
+.option-card.principal { border-top-color: var(--red); border-top-width: 4px; padding: 34px 32px; }
+.option-card.principal .option-title { font-size: 1.5rem; }
+.option-card.principal .option-desc { font-size: 0.95rem; }
+.option-card.principal .option-btn { padding: 14px 24px; font-size: 0.92rem; }
 .option-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
 .option-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); }
 .option-desc { font-size: 0.85rem; color: var(--text-soft); line-height: 1.6; flex: 1; }
@@ -48,8 +52,16 @@ h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--nav
 .option-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--red); }
 
 .fee-note { font-size: 0.76rem; color: var(--red); font-style: italic; margin-top: 4px; }
-.price-tag { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--navy); }
-.price-tag span { font-size: 0.9rem; color: var(--text-soft); font-family: 'Inter', sans-serif; }
+
+.price-block { margin: 6px 0 4px; }
+.price-old { font-size: 1.15rem; color: var(--text-soft); text-decoration: line-through; margin-right: 10px; }
+.price-new { font-family: 'DM Serif Display', serif; font-size: 2.4rem; color: var(--navy); }
+.price-off {
+  display: inline-block; margin-left: 10px; background: var(--red); color: var(--cream);
+  font-size: 0.8rem; font-weight: 700; padding: 4px 10px; letter-spacing: 0.04em; vertical-align: middle;
+}
+.price-unit { font-size: 0.9rem; color: var(--text-soft); }
+.price-promo { font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-top: 6px; }
 
 .form-section { display: none; padding-top: 24px; border-top: 2px solid var(--border); }
 .form-section.visible { display: block; }
@@ -100,13 +112,21 @@ footer {
 }
 .footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; color: rgba(250,247,242,0.4); }
+
+@media (max-width: 720px) {
+  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
+  .option-grid { grid-template-columns: 1fr; }
+  .option-card.principal { padding: 26px 22px; }
+  .price-new { font-size: 2rem; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
 </style>
 </head>
 <body>
 
 <header>
   <div style="display: flex; align-items: center; gap: 10px;">
-    <svg width="30" height="35" viewBox="0 0 24 28">
+    <svg width="30" height="35" viewBox="-1 -1 26 30">
       <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
       <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
       <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hHeader)"/>
@@ -134,11 +154,17 @@ footer {
     <a href="https://preply.com/fr/tuteur/3727337" target="_blank" class="option-btn">Voir mon profil Preply →</a>
   </div>
 
-  <div class="option-card">
+  <div class="option-card principal">
     <div class="option-tag">Contact direct</div>
     <div class="option-title">Me contacter</div>
-    <div class="option-desc">Sans frais de plateforme, tarif direct.</div>
-    <div class="price-tag">$34 <span>/ 50 min</span></div>
+    <div class="option-desc">Sans frais de plateforme, tarif direct, et un échange avec moi avant le premier cours.</div>
+    <div class="price-block">
+      <span class="price-old" id="priceOld"></span>
+      <span class="price-new" id="priceNew"></span>
+      <span class="price-off" id="priceOff"></span>
+      <div class="price-unit" id="priceUnit"></div>
+      <div class="price-promo">Offre du moment</div>
+    </div>
     <button class="option-btn" id="showFormBtn">Remplir le formulaire</button>
   </div>
 </div>
@@ -156,37 +182,7 @@ footer {
     </div>
     <div class="form-field">
       <label for="timezone">Fuseau horaire</label>
-      <select id="timezone" required>
-  <option value="UTC-12">UTC-12</option>
-  <option value="UTC-11">UTC-11</option>
-  <option value="UTC-10">UTC-10 (Hawaï)</option>
-  <option value="UTC-9">UTC-9 (Alaska)</option>
-  <option value="UTC-8">UTC-8 (Los Angeles)</option>
-  <option value="UTC-7">UTC-7 (Denver)</option>
-  <option value="UTC-6">UTC-6 (Chicago, Mexico)</option>
-  <option value="UTC-5">UTC-5 (New York, Toronto)</option>
-  <option value="UTC-4">UTC-4 (Santiago, Halifax)</option>
-  <option value="UTC-3">UTC-3 (Buenos Aires, São Paulo)</option>
-  <option value="UTC-2">UTC-2</option>
-  <option value="UTC-1">UTC-1 (Açores)</option>
-  <option value="UTC+0">UTC+0 (Londres, Lisbonne)</option>
-  <option value="UTC+1" selected>UTC+1 (Paris, Berlin, Madrid)</option>
-  <option value="UTC+2">UTC+2 (Le Caire, Athènes, Kiev)</option>
-  <option value="UTC+3">UTC+3 (Moscou, Istanbul)</option>
-  <option value="UTC+4">UTC+4 (Dubaï, Bakou)</option>
-  <option value="UTC+5">UTC+5 (Karachi, Tachkent)</option>
-  <option value="UTC+5:30">UTC+5:30 (Inde)</option>
-  <option value="UTC+6">UTC+6 (Dacca, Almaty)</option>
-  <option value="UTC+7">UTC+7 (Bangkok, Jakarta)</option>
-  <option value="UTC+8">UTC+8 (Pékin, Singapour)</option>
-  <option value="UTC+9">UTC+9 (Tokyo, Séoul)</option>
-  <option value="UTC+9:30">UTC+9:30 (Adélaïde)</option>
-  <option value="UTC+10">UTC+10 (Sydney)</option>
-  <option value="UTC+11">UTC+11</option>
-  <option value="UTC+12">UTC+12 (Auckland)</option>
-  <option value="UTC+13">UTC+13</option>
-  <option value="UTC+14">UTC+14</option>
-</select>
+      <select id="timezone" required></select>
     </div>
     <div class="form-field">
       <label>Disponibilités</label>
@@ -199,7 +195,6 @@ footer {
           <div class="avail-cell">Jeu</div>
           <div class="avail-cell">Ven</div>
         </div>
-        <!-- rows generated by JS -->
       </div>
       <div class="avail-error" id="availError">Veuillez cocher au moins une disponibilité.</div>
     </div>
@@ -246,6 +241,90 @@ footer {
 </footer>
 
 <script>
+/* ---------- TARIFS ---------- */
+fetch('/api/pricing').then(function(r){ return r.json(); }).then(function(p){
+  var pct = Math.ceil((p.realPrice - p.discountPrice) / p.realPrice * 100);
+  document.getElementById('priceOld').textContent = p.currency + p.realPrice;
+  document.getElementById('priceNew').textContent = p.currency + p.discountPrice;
+  document.getElementById('priceUnit').textContent = '/ ' + p.duration;
+  var off = document.getElementById('priceOff');
+  if (pct > 0) {
+    off.textContent = '\u2212' + pct + '%';
+  } else {
+    off.style.display = 'none';
+    document.getElementById('priceOld').style.display = 'none';
+    document.querySelector('.price-promo').style.display = 'none';
+  }
+}).catch(function(){});
+
+/* ---------- FUSEAUX HORAIRES ---------- */
+var ZONES = [
+  ['Pacific/Midway','Midway'], ['Pacific/Honolulu','Honolulu'], ['Pacific/Marquesas','Marquises'],
+  ['America/Anchorage','Anchorage'], ['America/Los_Angeles','Los Angeles, Vancouver'],
+  ['America/Denver','Denver'], ['America/Phoenix','Phoenix'], ['America/Mexico_City','Mexico'],
+  ['America/Chicago','Chicago, Winnipeg'], ['America/New_York','New York, Toronto'],
+  ['America/Bogota','Bogota, Lima'], ['America/Caracas','Caracas'], ['America/Santiago','Santiago'],
+  ['America/St_Johns','Terre-Neuve'], ['America/Sao_Paulo','São Paulo'],
+  ['America/Argentina/Buenos_Aires','Buenos Aires'], ['Atlantic/South_Georgia','Géorgie du Sud'],
+  ['Atlantic/Azores','Açores'], ['Atlantic/Cape_Verde','Cap-Vert'], ['UTC','UTC'],
+  ['Africa/Accra','Accra, Dakar'], ['Europe/London','Londres, Lisbonne'], ['Europe/Paris','Paris, Berlin'],
+  ['Africa/Lagos','Lagos, Alger'], ['Europe/Athens','Athènes, Helsinki'], ['Africa/Cairo','Le Caire'],
+  ['Africa/Johannesburg','Johannesburg'], ['Europe/Istanbul','Istanbul'], ['Europe/Moscow','Moscou'],
+  ['Africa/Nairobi','Nairobi, Riyad'], ['Asia/Tehran','Téhéran'], ['Asia/Dubai','Dubaï, Bakou'],
+  ['Asia/Kabul','Kaboul'], ['Asia/Karachi','Karachi, Tachkent'], ['Asia/Kolkata','New Delhi, Colombo'],
+  ['Asia/Kathmandu','Katmandou'], ['Asia/Dhaka','Dacca, Almaty'], ['Asia/Yangon','Rangoun'],
+  ['Asia/Bangkok','Bangkok, Jakarta'], ['Asia/Shanghai','Shanghai, Singapour'], ['Australia/Eucla','Eucla'],
+  ['Asia/Tokyo','Tokyo, Séoul'], ['Australia/Darwin','Darwin'], ['Australia/Adelaide','Adélaïde'],
+  ['Australia/Brisbane','Brisbane'], ['Australia/Sydney','Sydney, Melbourne'],
+  ['Australia/Lord_Howe','Lord Howe'], ['Pacific/Noumea','Nouméa'], ['Pacific/Auckland','Auckland'],
+  ['Pacific/Fiji','Fidji'], ['Pacific/Chatham','Chatham'], ['Pacific/Apia','Apia, Tonga']
+];
+
+function zoneHourOffset(zone, date) {
+  var dtf = new Intl.DateTimeFormat('en-US', {
+    timeZone: zone, hour12: false,
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+  });
+  var p = {};
+  dtf.formatToParts(date).forEach(function(part){ if (part.type !== 'literal') p[part.type] = part.value; });
+  var h = p.hour === '24' ? 0 : parseInt(p.hour, 10);
+  var asUTC = Date.UTC(+p.year, p.month - 1, +p.day, h, +p.minute);
+  return (asUTC - date.getTime() + date.getTime() % 60000) / 3600000;
+}
+
+(function buildTz(){
+  var sel = document.getElementById('timezone');
+  var now = new Date();
+  var items = ZONES.map(function(z){
+    var off = zoneHourOffset(z[0], now);
+    var sign = off < 0 ? '\u2212' : '+';
+    var abs = Math.abs(off), h = Math.floor(abs), m = Math.round((abs - h) * 60);
+    var utc = off === 0 ? 'UTC\u00B10' : 'UTC' + sign + h + (m ? ':' + String(m).padStart(2,'0') : '');
+    return { value: z[0], label: utc + ' \u00B7 ' + z[1], off: off };
+  });
+  items.sort(function(a,b){ return a.off - b.off; });
+  items.forEach(function(it){
+    var o = document.createElement('option');
+    o.value = it.value; o.textContent = it.label;
+    sel.appendChild(o);
+  });
+
+  var zone;
+  try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
+  if (zone && items.some(function(i){ return i.value === zone; })) { sel.value = zone; return; }
+  if (zone) {
+    var y = now.getFullYear();
+    var jan = new Date(Date.UTC(y, 0, 15)), jul = new Date(Date.UTC(y, 6, 15));
+    var tJan = zoneHourOffset(zone, jan), tJul = zoneHourOffset(zone, jul);
+    for (var i = 0; i < items.length; i++) {
+      if (Math.abs(zoneHourOffset(items[i].value, jan) - tJan) < 0.01 &&
+          Math.abs(zoneHourOffset(items[i].value, jul) - tJul) < 0.01) { sel.value = items[i].value; return; }
+    }
+  }
+  sel.value = 'Europe/Paris';
+})();
+
+/* ---------- DISPONIBILITÉS ---------- */
 const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 const PERIODS = ['Matin', 'Midi', 'Après-midi', 'Soir'];
 

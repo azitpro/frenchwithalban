@@ -45,6 +45,11 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
   line-height: 1.7; max-width: 560px;
 }
 
+.portrait-band { padding: 56px 64px; display: grid; grid-template-columns: 300px 1fr; gap: 48px; align-items: center; border-bottom: 1px solid var(--border); }
+.portrait-frame { position: relative; }
+.portrait-frame img { width: 100%; display: block; border: 1px solid var(--border); box-shadow: 10px 10px 0 var(--gold); }
+.portrait-caption { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; }
+.portrait-text { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 400; line-height: 1.45; color: var(--navy); }
 .stats { background: var(--red); padding: 28px 64px; display: grid; grid-template-columns: repeat(4, 1fr); }
 .stat { padding: 0 32px; border-right: 1px solid rgba(250,247,242,0.2); display: flex; align-items: center; gap: 14px; }
 .stat:first-child { padding-left: 0; }
@@ -111,7 +116,10 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   .stats { grid-template-columns: 1fr 1fr; gap: 20px; }
   .stat { padding: 0; border-right: none; }
   .page-header h1 { font-size: 2.2rem; }
-  .lang-grid, .spec-list { grid-template-columns: 1fr 1fr; }
+    .lang-grid, .spec-list { grid-template-columns: 1fr 1fr; }
+  .portrait-band { grid-template-columns: 1fr; gap: 28px; padding: 32px 20px; }
+  .portrait-frame img { box-shadow: 6px 6px 0 var(--gold); }
+  .portrait-text { font-size: 1.2rem; }
   footer { padding: 22px 20px; }
 }
 </style>
@@ -148,6 +156,16 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
 <div class="page-header">
   <h1>À propos</h1>
   <p>Professeur de français natif, originaire de Normandie. J'accompagne des élèves du monde entier, du grand débutant au niveau avancé, avec une méthode construite autour de leurs objectifs.</p>
+</div>
+
+<div class="portrait-band">
+  <div class="portrait-frame">
+    <img src="/alban.jpg" alt="Alban, professeur de français">
+  </div>
+  <div>
+    <div class="portrait-caption">Enchanté</div>
+    <div class="portrait-text">Un vrai professeur en face de vous, pas une application. C'est toute la différence.</div>
+  </div>
 </div>
 
 <div class="stats">
