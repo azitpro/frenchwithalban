@@ -8,7 +8,12 @@ export default function AdminHub() {
     {
       title: 'Demandes de contact',
       desc: 'Formulaires envoyés depuis la page Réserver.',
-      href: '/admin/leads',
+            href: '/admin/leads',
+    },
+    {
+      title: 'Tarifs',
+      desc: 'Prix réel et prix remisé affichés sur la page Réserver.',
+      href: '/admin/pricing',
     },
   ];
 
