@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les jours et l'heure — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d2b45;
+    --rouge:#c0392b;
+    --or:#c9972a;
+    --creme:#faf7f2;
+    --gris-texte:#4a5568;
+    --bordure:#e6e0d6;
+    --rose-fem:#c2185b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--navy);background:#ffffff;line-height:1.7;-webkit-font-smoothing:antialiased;}
+
+  header{
+    width:100%;background:#ffffff;border-bottom:3px solid var(--navy);
+    padding:28px 48px;display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:100;
+  }
+  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
+  .logo .fw{color:var(--navy);}
+  .logo .al{color:var(--rouge);}
+  nav{display:flex;gap:44px;}
+  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
+  nav a:hover{color:var(--rouge);}
+  .gold-line{height:2px;background:var(--or);width:100%;}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  .hero{background:var(--creme);width:100%;padding:64px 24px 56px;text-align:center;border-bottom:1px solid var(--bordure);}
+  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;}
+
+  section{padding:52px 0;border-bottom:1px solid var(--bordure);}
+  section:last-of-type{border-bottom:none;}
+
+  h2{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+  h3{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;display:flex;align-items:center;gap:12px;margin:34px 0 12px;}
+  .hex{flex-shrink:0;}
+  h2 .hex{width:24px;height:28px;}
+  h3 .hex{width:19px;height:22px;}
+  .intro{color:var(--gris-texte);margin-bottom:18px;}
+
+  /* ---------- JOURS ---------- */
+  .jours-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0;}
+  .jour{background:var(--creme);border:1px solid var(--bordure);border-top:2px solid var(--navy);padding:16px 18px;text-align:center;}
+  .jour.we{border-top-color:var(--rouge);}
+  .jour .nom{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--navy);}
+  .jour .phon{display:block;font-size:.85rem;color:var(--rouge);margin-top:4px;}
+
+  /* ---------- HORLOGES ---------- */
+  .horloges{display:grid;grid-template-columns:repeat(4,1fr);gap:26px 20px;margin:26px 0;}
+  .horloge{text-align:center;}
+  .horloge svg{width:100%;max-width:130px;height:auto;}
+  .horloge .fr{font-family:'Fraunces',serif;font-size:1rem;font-weight:600;color:var(--navy);margin-top:10px;line-height:1.4;}
+  .horloge .alt{display:block;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:400;color:var(--gris-texte);margin-top:2px;}
+
+  table{width:100%;border-collapse:collapse;table-layout:fixed;margin:16px 0;font-size:.98rem;}
+  th{background:var(--navy);color:#fff;font-family:'Fraunces',serif;font-weight:600;text-align:left;padding:11px 14px;}
+  td{padding:10px 14px;border-bottom:1px solid var(--bordure);vertical-align:top;word-wrap:break-word;}
+  tbody tr:nth-child(even){background:var(--creme);}
+
+  .exemples{list-style:none;margin:16px 0;}
+  .exemples li{display:flex;align-items:flex-start;gap:12px;padding:6px 0;}
+  .exemples li img{width:20px;height:20px;margin-top:5px;flex-shrink:0;}
+  .exemples b{color:var(--rouge);font-weight:600;}
+
+  .bulle{display:flex;gap:16px;padding:20px 22px;margin:24px 0;background:var(--creme);border-radius:18px 18px 18px 4px;}
+  .bulle.warn{background:#fdf1ef;}
+  .bulle .marque{flex-shrink:0;width:28px;height:32px;}
+  .bulle .contenu{font-size:.98rem;}
+  .bulle .contenu strong{font-family:'Fraunces',serif;display:block;margin-bottom:4px;}
+
+  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
+  footer a{color:#fff;text-decoration:underline;}
+
+  @media (max-width:720px){
+    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
+    .logo{font-size:1.3rem;}
+    nav{gap:24px;}
+    .hero h1{font-size:2.1rem;}
+    .jours-grid{grid-template-columns:repeat(2,1fr);}
+    .horloges{grid-template-columns:repeat(2,1fr);gap:22px 16px;}
+    footer{padding:28px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex-tri" viewBox="-1 -1 32 37">
+    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
+    <g clip-path="url(#clip-hex)">
+      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+    </g>
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+  </symbol>
+  <symbol id="hex-warn" viewBox="-1 -1 32 37">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#c0392b"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="19" font-weight="700" fill="#fff">!</text>
+  </symbol>
+  <symbol id="hex-info" viewBox="-1 -1 32 37">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#0d2b45"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="18" font-weight="700" fill="#fff">i</text>
+  </symbol>
+</svg>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
+    <span><span class="fw">French with</span> <span class="al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/ressources.html">Retour</a>
+    <a href="/">Accueil</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="hero">
+  <h1>Les jours et l'heure</h1>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== JOURS ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les jours de la semaine</h2>
+    <p class="intro">En français, la semaine commence le lundi. Les jours s'écrivent toujours en minuscules.</p>
+
+    <div class="jours-grid">
+      <div class="jour"><span class="nom">lundi</span><span class="phon">/lœ̃di/</span></div>
+      <div class="jour"><span class="nom">mardi</span><span class="phon">/maʁdi/</span></div>
+      <div class="jour"><span class="nom">mercredi</span><span class="phon">/mɛʁkʁədi/</span></div>
+      <div class="jour"><span class="nom">jeudi</span><span class="phon">/ʒødi/</span></div>
+      <div class="jour"><span class="nom">vendredi</span><span class="phon">/vɑ̃dʁədi/</span></div>
+      <div class="jour we"><span class="nom">samedi</span><span class="phon">/samdi/</span></div>
+      <div class="jour we"><span class="nom">dimanche</span><span class="phon">/dimɑ̃ʃ/</span></div>
+      <div class="jour we"><span class="nom">le week-end</span><span class="phon">/wikɛnd/</span></div>
+    </div>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Avec ou sans article</h3>
+    <p class="intro">C'est la difficulté principale : l'article change complètement le sens.</p>
+
+    <table>
+      <thead><tr><th style="width:50%">Sans article — une seule fois</th><th style="width:50%">Avec « le » — chaque semaine</th></tr></thead>
+      <tbody>
+        <tr><td>Je travaille <b>lundi</b>.<br><span style="color:#4a5568;font-size:.88rem">Ce lundi précis.</span></td><td>Je travaille <b>le lundi</b>.<br><span style="color:#4a5568;font-size:.88rem">Tous les lundis.</span></td></tr>
+        <tr><td><b>Samedi</b>, je vais à Paris.</td><td><b>Le samedi</b>, je fais du sport.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="bulle warn">
+      <svg class="marque" aria-hidden="true"><use href="#hex-warn"/></svg>
+      <div class="contenu">
+        <strong>Pas de préposition</strong>
+        On ne dit pas « <s>sur lundi</s> » ni « <s>à lundi</s> » pour situer une action. On dit simplement <b>lundi</b> ou <b>le lundi</b>. Attention : « à lundi ! » existe, mais c'est une formule pour se dire au revoir.
+      </div>
+    </div>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Situer dans le temps</h3>
+    <table>
+      <thead><tr><th style="width:34%">Passé</th><th style="width:33%">Présent</th><th style="width:33%">Futur</th></tr></thead>
+      <tbody>
+        <tr><td>avant-hier</td><td>aujourd'hui</td><td>demain</td></tr>
+        <tr><td>hier</td><td>ce matin</td><td>après-demain</td></tr>
+        <tr><td>la semaine dernière</td><td>cette semaine</td><td>la semaine prochaine</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===================== HEURE ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Quelle heure est-il ?</h2>
+    <p class="intro">Deux façons de dire l'heure coexistent : la forme officielle, de 0 à 24 heures, et la forme courante, de 1 à 12 heures. Sous chaque horloge, la forme courante est indiquée en second.</p>
+
+    <div class="horloges" id="horloges"></div>
+
+    <div class="bulle">
+      <svg class="marque" aria-hidden="true"><use href="#hex-info"/></svg>
+      <div class="contenu">
+        <strong>Officiel ou courant ?</strong>
+        La forme officielle sert pour les horaires : trains, rendez-vous, télévision. La forme courante s'emploie dans la conversation, avec <b>du matin</b>, <b>de l'après-midi</b> ou <b>du soir</b> pour lever l'ambiguïté.
+      </div>
+    </div>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les cas particuliers</h3>
+    <table>
+      <thead><tr><th style="width:34%">On dit</th><th style="width:66%">Explication</th></tr></thead>
+      <tbody>
+        <tr><td><b>midi</b></td><td>12h00 — jamais « douze heures » dans la conversation.</td></tr>
+        <tr><td><b>minuit</b></td><td>00h00 — jamais « zéro heure » dans la conversation.</td></tr>
+        <tr><td><b>et demie</b></td><td>Après une heure : <i>trois heures et demie</i>. Mais après midi et minuit, on écrit <b>et demi</b> sans « e » : <i>midi et demi</i>.</td></tr>
+        <tr><td><b>et quart</b></td><td><i>trois heures et quart</i> — sans article devant « quart ».</td></tr>
+        <tr><td><b>moins le quart</b></td><td><i>quatre heures moins le quart</i> — avec l'article, contrairement à « et quart ».</td></tr>
+      </tbody>
+    </table>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Poser la question</h3>
+    <ul class="exemples">
+      <li><img src="/coq.png" alt=""><span><b>Quelle heure est-il ?</b> — Il est trois heures.</span></li>
+      <li><img src="/coq.png" alt=""><span><b>Vous avez l'heure ?</b> — Oui, il est huit heures et quart.</span></li>
+      <li><img src="/coq.png" alt=""><span><b>À quelle heure commence le cours ?</b> — À dix heures.</span></li>
+    </ul>
+
+    <div class="bulle warn">
+      <svg class="marque" aria-hidden="true"><use href="#hex-warn"/></svg>
+      <div class="contenu">
+        <strong>« Il est » et « à »</strong>
+        Pour dire l'heure qu'il est : <b>il est</b> trois heures. Pour situer un événement : <b>à</b> trois heures. Ne mélangez pas les deux.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
+</footer>
+
+<script>
+/* ---------- HORLOGES SVG ---------- */
+var HEURES = [
+  { h: 3,  m: 0,  fr: "trois heures",                    alt: "15h00 · trois heures de l'après-midi" },
+  { h: 3,  m: 15, fr: "trois heures et quart",           alt: "15h15 · trois heures quinze" },
+  { h: 3,  m: 30, fr: "trois heures et demie",           alt: "15h30 · trois heures trente" },
+  { h: 3,  m: 45, fr: "quatre heures moins le quart",    alt: "15h45 · trois heures quarante-cinq" },
+  { h: 7,  m: 10, fr: "sept heures dix",                 alt: "7h10 · sept heures du matin" },
+  { h: 8,  m: 50, fr: "neuf heures moins dix",           alt: "8h50 · huit heures cinquante" },
+  { h: 12, m: 0,  fr: "midi",                            alt: "12h00 · jamais « douze heures »" },
+  { h: 0,  m: 30, fr: "minuit et demi",                  alt: "00h30 · sans « e » après minuit" }
+];
+
+function horlogeSVG(h, m) {
+  var NS = 'http://www.w3.org/2000/svg';
+  var parts = [];
+  parts.push('<svg viewBox="0 0 120 120" xmlns="' + NS + '" role="img" aria-label="Horloge indiquant ' + h + ' heures ' + m + '">');
+  parts.push('<circle cx="60" cy="60" r="55" fill="#faf7f2" stroke="#0d2b45" stroke-width="3"/>');
+
+  for (var i = 0; i < 12; i++) {
+    var a = (i * 30 - 90) * Math.PI / 180;
+    var r1 = 46, r2 = 51;
+    var x1 = 60 + r1 * Math.cos(a), y1 = 60 + r1 * Math.sin(a);
+    var x2 = 60 + r2 * Math.cos(a), y2 = 60 + r2 * Math.sin(a);
+    parts.push('<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) +
+               '" y2="' + y2.toFixed(1) + '" stroke="#0d2b45" stroke-width="' + (i % 3 === 0 ? 3 : 1.5) + '" stroke-linecap="round"/>');
+  }
+
+  var ah = ((h % 12) + m / 60) * 30 - 90;
+  var am = m * 6 - 90;
+  var ahr = ah * Math.PI / 180, amr = am * Math.PI / 180;
+
+  parts.push('<line x1="60" y1="60" x2="' + (60 + 28 * Math.cos(ahr)).toFixed(1) + '" y2="' +
+             (60 + 28 * Math.sin(ahr)).toFixed(1) + '" stroke="#0d2b45" stroke-width="5" stroke-linecap="round"/>');
+  parts.push('<line x1="60" y1="60" x2="' + (60 + 40 * Math.cos(amr)).toFixed(1) + '" y2="' +
+             (60 + 40 * Math.sin(amr)).toFixed(1) + '" stroke="#c0392b" stroke-width="3" stroke-linecap="round"/>');
+  parts.push('<circle cx="60" cy="60" r="4" fill="#c9972a"/>');
+  parts.push('</svg>');
+  return parts.join('');
+}
+
+var conteneur = document.getElementById('horloges');
+HEURES.forEach(function(e){
+  var d = document.createElement('div');
+  d.className = 'horloge';
+  d.innerHTML = horlogeSVG(e.h, e.m) +
+    '<div class="fr">' + e.fr + '<span class="alt">' + e.alt + '</span></div>';
+  conteneur.appendChild(d);
+});
+</script>
+
+</body>
+</html>
