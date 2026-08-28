@@ -21,10 +21,16 @@ export default function Home() {
         .nav-cta { padding: 11px 26px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); transition: all 0.15s !important; }
         .nav-cta:hover { transform: translate(-1px, -1px) !important; box-shadow: 4px 4px 0 var(--navy) !important; }
                 .hero { padding: 88px 64px 72px; display: grid; grid-template-columns: 1fr 380px 300px; gap: 0; align-items: stretch; border-bottom: 1px solid var(--border); }
-        .hero-portrait { align-self: center; padding: 0 40px; }
-        .hero-portrait .cadre { border: 2px solid var(--navy); box-shadow: 10px 10px 0 var(--gold); line-height: 0; transform: rotate(-2deg); transition: transform 0.25s; }
-        .hero-portrait:hover .cadre { transform: rotate(0deg); }
-        .hero-portrait img { width: 100%; display: block; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 15%; }
+                .hero-photos { align-self: center; padding: 0 30px; position: relative; }
+        .photo { border: 2px solid var(--navy); line-height: 0; position: relative; transition: transform 0.25s; }
+        .photo img { width: 100%; display: block; object-fit: cover; }
+        .photo-1 { width: 78%; margin-left: 0; transform: rotate(-3deg); box-shadow: 9px 9px 0 var(--gold); z-index: 3; }
+        .photo-1 img { aspect-ratio: 3 / 4; object-position: center 25%; }
+        .photo-2 { width: 62%; margin: -14% 0 0 auto; transform: rotate(2.5deg); box-shadow: 8px 8px 0 var(--red); z-index: 2; }
+        .photo-2 img { aspect-ratio: 4 / 3; }
+        .photo-3 { width: 52%; margin: -10% auto 0 6%; transform: rotate(-1.5deg); box-shadow: 8px 8px 0 var(--navy); z-index: 1; }
+        .photo-3 img { aspect-ratio: 3 / 4; }
+        .photo:hover { transform: rotate(0deg) scale(1.03); z-index: 5; }
         .hero-left { padding-right: 64px; display: flex; flex-direction: column; justify-content: center; }
         .hero-overline { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
         .hero-overline-line { width: 28px; height: 2px; background: var(--red); }
@@ -48,7 +54,7 @@ export default function Home() {
         .res-card-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--navy); text-decoration: none; line-height: 1.2; }
         .res-card-btn { display: inline-block; padding: 9px 20px; background: var(--navy); color: var(--cream); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; box-shadow: 3px 3px 0 var(--gold); width: fit-content; transition: all 0.15s; }
         .res-card-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--gold); }
-                .hero-portrait { border: 2px solid var(--navy); box-shadow: 8px 8px 0 var(--gold); margin: 0 0 22px 0; line-height: 0; transform: rotate(-2deg); transition: transform 0.25s; }
+        .hero-photos { padding: 0; max-width: 320px; margin: 0 auto; }
         .hero-portrait:hover { transform: rotate(0deg); }
         .hero-portrait img { width: 100%; display: block; aspect-ratio: 1 / 1; object-fit: cover; object-position: center 20%; }
         .hero-right { display: flex; flex-direction: column; }
@@ -140,10 +146,10 @@ export default function Home() {
             <a href="/conjugaison.html" className="btn-ghost">Voir les ressources</a>
           </div>
         </div>
-                        <div className="hero-portrait">
-          <div className="cadre">
-            <img src="/alban.jpg" alt="Alban, professeur de français" />
-          </div>
+          <div className="hero-photos">
+          <div className="photo photo-1"><img src="/img/alban-paris.jpg" alt="Alban devant la Fondation Louis Vuitton à Paris" /></div>
+          <div className="photo photo-2"><img src="/img/nice.jpg" alt="La promenade des Anglais à Nice au coucher du soleil" /></div>
+          <div className="photo photo-3"><img src="/img/tour-eiffel.jpg" alt="La tour Eiffel vue d'en dessous" /></div>
         </div>
         <div className="hero-right">
           <div className="hero-portrait">
