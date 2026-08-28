@@ -20,7 +20,11 @@ export default function Home() {
         nav a:hover { opacity: 1; }
         .nav-cta { padding: 11px 26px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); transition: all 0.15s !important; }
         .nav-cta:hover { transform: translate(-1px, -1px) !important; box-shadow: 4px 4px 0 var(--navy) !important; }
-        .hero { padding: 88px 64px 72px; display: grid; grid-template-columns: 1fr 300px; gap: 0; align-items: stretch; border-bottom: 1px solid var(--border); }
+                .hero { padding: 88px 64px 72px; display: grid; grid-template-columns: 1fr 380px 300px; gap: 0; align-items: stretch; border-bottom: 1px solid var(--border); }
+        .hero-portrait { align-self: center; padding: 0 40px; }
+        .hero-portrait .cadre { border: 2px solid var(--navy); box-shadow: 10px 10px 0 var(--gold); line-height: 0; transform: rotate(-2deg); transition: transform 0.25s; }
+        .hero-portrait:hover .cadre { transform: rotate(0deg); }
+        .hero-portrait img { width: 100%; display: block; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 15%; }
         .hero-left { padding-right: 64px; display: flex; flex-direction: column; justify-content: center; }
         .hero-overline { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
         .hero-overline-line { width: 28px; height: 2px; background: var(--red); }
@@ -73,7 +77,8 @@ export default function Home() {
           nav a { font-size: 0.92rem; }
           .nav-cta { padding: 9px 20px; }
 
-          .hero { grid-template-columns: 1fr; padding: 40px 20px 48px; gap: 32px; }
+                    .hero { grid-template-columns: 1fr; padding: 40px 20px 48px; gap: 32px; }
+          .hero-portrait { padding: 0; max-width: 300px; margin: 0 auto; }
           .hero-left { padding-right: 0; }
           h1 { font-size: 2.6rem; margin-bottom: 20px; }
           .hero-body { font-size: 0.95rem; margin-bottom: 28px; max-width: none; }
@@ -135,7 +140,12 @@ export default function Home() {
             <a href="/conjugaison.html" className="btn-ghost">Voir les ressources</a>
           </div>
         </div>
-                <div className="hero-right">
+                        <div className="hero-portrait">
+          <div className="cadre">
+            <img src="/alban.jpg" alt="Alban, professeur de français" />
+          </div>
+        </div>
+        <div className="hero-right">
           <div className="hero-portrait">
             <img src="/alban.jpg" alt="Alban, professeur de français" />
           </div>
