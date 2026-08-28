@@ -44,6 +44,9 @@ export default function Home() {
         .res-card-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--navy); text-decoration: none; line-height: 1.2; }
         .res-card-btn { display: inline-block; padding: 9px 20px; background: var(--navy); color: var(--cream); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; box-shadow: 3px 3px 0 var(--gold); width: fit-content; transition: all 0.15s; }
         .res-card-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--gold); }
+                .hero-portrait { border: 2px solid var(--navy); box-shadow: 8px 8px 0 var(--gold); margin: 0 0 22px 0; line-height: 0; transform: rotate(-2deg); transition: transform 0.25s; }
+        .hero-portrait:hover { transform: rotate(0deg); }
+        .hero-portrait img { width: 100%; display: block; aspect-ratio: 1 / 1; object-fit: cover; object-position: center 20%; }
         .hero-right { display: flex; flex-direction: column; }
         .stats { background: var(--red); padding: 28px 64px; display: grid; grid-template-columns: repeat(4, 1fr); }
         .stat { padding: 0 32px; border-right: 1px solid rgba(250,247,242,0.2); display: flex; align-items: center; gap: 14px; }
@@ -132,7 +135,10 @@ export default function Home() {
             <a href="/conjugaison.html" className="btn-ghost">Voir les ressources</a>
           </div>
         </div>
-        <div className="hero-right">
+                <div className="hero-right">
+          <div className="hero-portrait">
+            <img src="/alban.jpg" alt="Alban, professeur de français" />
+          </div>
           <div className="conj-card">
             <div className="conj-card-tag">Exercice interactif</div>
             <a href="/conjugaison.html" className="conj-card-title">Test de conjugaison</a>
