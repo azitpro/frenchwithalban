@@ -317,6 +317,11 @@ function render() {
       });
     });
 
+        (scheduleData.forced || []).forEach(function(f) {
+      if (f.date === dateStr && slots.indexOf(f.hour) === -1) slots.push(f.hour);
+    });
+    slots.sort(function(a, b) { return a - b; });
+
     if (slots.length > 0) {
       html += `
         <div class="day-block">
@@ -342,7 +347,8 @@ async function loadSchedule() {
       exceptions: data.exceptions || [],
       oneOff: data.oneOff || [],
       availability: data.availability || [],
-      unavailability: data.unavailability || [],
+            unavailability: data.unavailability || [],
+      forced: data.forced || [],
     };
 
     if (preplyRes && preplyRes.ok) {

@@ -35,12 +35,19 @@ type Unavailability = {
   end?: number;
 };
 
+type Forced = {
+  id: string;
+  date: string;
+  hour: number;
+};
+
 type Schedule = {
   recurring: RecurringSlot[];
   exceptions: Exception[];
   oneOff: OneOff[];
   availability: AvailabilityWindow[];
-  unavailability: Unavailability[];
+    unavailability: Unavailability[];
+  forced: Forced[];
 };
 
 const WEEKDAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
@@ -76,7 +83,9 @@ export default function ScheduleAdmin() {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
-  const [schedule, setSchedule] = useState<Schedule>({ recurring: [], exceptions: [], oneOff: [], availability: [], unavailability: [] });
+    const [schedule, setSchedule] = useState<Schedule>({ recurring: [], exceptions: [], oneOff: [], availability: [], unavailability: [], forced: [] });
+  const [forcedDate, setForcedDate] = useState('');
+  const [forcedHour, setForcedHour] = useState(10);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -112,7 +121,8 @@ export default function ScheduleAdmin() {
         exceptions: current.exceptions || [],
         oneOff: current.oneOff || [],
         availability: current.availability || [],
-        unavailability: current.unavailability || [],
+                unavailability: current.unavailability || [],
+        forced: current.forced || [],
       };
 
       const verifyRes = await fetch('/api/schedule', {
@@ -204,8 +214,19 @@ export default function ScheduleAdmin() {
     setUnavDate('');
   }
 
-  function removeUnavailability(id: string) {
+    function removeUnavailability(id: string) {
     save({ ...schedule, unavailability: schedule.unavailability.filter((u) => u.id !== id) });
+  }
+
+  function addForced() {
+    if (!forcedDate) return;
+    const item: Forced = { id: uid(), date: forcedDate, hour: forcedHour };
+    save({ ...schedule, forced: [...(schedule.forced || []), item] });
+    setForcedDate('');
+  }
+
+  function removeForced(id: string) {
+    save({ ...schedule, forced: (schedule.forced || []).filter((f) => f.id !== id) });
   }
 
   const inputStyle = { padding: 10, border: '1.5px solid #ddd8ce', fontFamily: 'Inter, sans-serif' };
@@ -306,6 +327,30 @@ export default function ScheduleAdmin() {
           ))}
           {schedule.unavailability.length === 0 && (
             <p style={{ fontSize: '0.82rem', color: '#999', fontStyle: 'italic' }}>Aucune indisponibilité définie.</p>
+          )}
+        </div>
+      </section>
+
+      {/* FORCED SLOTS */}
+      <section style={{ marginBottom: 40 }}>
+        <h2 style={{ fontFamily: 'Fraunces, serif', color: '#0d2b45', fontSize: '1.2rem', marginBottom: 6 }}>Créneaux forcés</h2>
+        <p style={{ fontSize: '0.82rem', color: '#666', marginBottom: 12 }}>
+          Affiche un créneau comme disponible même s&apos;il est occupé (Preply, cours récurrent, indisponibilité). À utiliser exceptionnellement.
+        </p>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+          <input type="date" value={forcedDate} onChange={(e) => setForcedDate(e.target.value)} style={inputStyle} />
+          <HourSelect value={forcedHour} onChange={setForcedHour} style={inputStyle} />
+          <button onClick={addForced} style={btnStyle}>Ajouter</button>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {(schedule.forced || []).map((f) => (
+            <div key={f.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 10, background: '#fdf3e3', border: '1px solid #c9972a' }}>
+              <span style={{ flex: 1, color: '#8a5a10' }}><strong>{f.date}</strong> — {fmtHour(f.hour)}</span>
+              <button onClick={() => removeForced(f.id)} style={dangerStyle}>Supprimer</button>
+            </div>
+          ))}
+          {(schedule.forced || []).length === 0 && (
+            <p style={{ fontSize: '0.82rem', color: '#999', fontStyle: 'italic' }}>Aucun créneau forcé.</p>
           )}
         </div>
       </section>
