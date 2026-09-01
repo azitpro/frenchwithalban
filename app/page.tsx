@@ -11,7 +11,7 @@ export default function Home() {
           --border: #ddd8ce;
           --text-soft: #666;
         }
-                body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
+        body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
         .gold-line { height: 2px; background: var(--gold); width: 100%; }
         header { padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); width: 100%; box-sizing: border-box; }
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
@@ -20,18 +20,21 @@ export default function Home() {
         nav a:hover { opacity: 1; }
         .nav-cta { padding: 11px 26px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); transition: all 0.15s !important; }
         .nav-cta:hover { transform: translate(-1px, -1px) !important; box-shadow: 4px 4px 0 var(--navy) !important; }
-                .hero { padding: 88px 64px 72px; display: grid; grid-template-columns: 1fr 380px 300px; gap: 0; align-items: stretch; border-bottom: 1px solid var(--border); }
-                .hero-photos { align-self: center; padding: 0 30px; position: relative; }
+
+        .hero { padding: 88px 64px 72px; display: grid; grid-template-columns: 460px 1fr 300px; gap: 0; align-items: stretch; border-bottom: 1px solid var(--border); }
+
+        .hero-photos { align-self: center; justify-self: center; width: 100%; max-width: 460px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; align-items: start; }
         .photo { border: 2px solid var(--navy); line-height: 0; position: relative; transition: transform 0.25s; }
         .photo img { width: 100%; display: block; object-fit: cover; }
-        .photo-1 { width: 78%; margin-left: 0; transform: rotate(-3deg); box-shadow: 9px 9px 0 var(--gold); z-index: 3; }
+        .photo-1 { grid-column: 1; grid-row: 1; width: 120%; margin-left: -16%; transform: rotate(-6deg); box-shadow: 5px 5px 0 var(--gold); z-index: 2; }
         .photo-1 img { aspect-ratio: 3 / 4; object-position: center 25%; }
-        .photo-2 { width: 62%; margin: -14% 0 0 auto; transform: rotate(2.5deg); box-shadow: 8px 8px 0 var(--red); z-index: 2; }
-        .photo-2 img { aspect-ratio: 4 / 3; }
-        .photo-3 { width: 52%; margin: -10% auto 0 6%; transform: rotate(-1.5deg); box-shadow: 8px 8px 0 var(--navy); z-index: 1; }
+        .photo-2 { grid-column: 2; grid-row: 1 / span 2; align-self: center; width: 110%; margin-left: 0; transform: rotate(5deg); box-shadow: 5px 5px 0 var(--red); z-index: 1; }
+        .photo-2 img { aspect-ratio: 3 / 4; object-position: center 30%; }
+        .photo-3 { grid-column: 1; grid-row: 2; margin-left: -8%; box-shadow: 5px 5px 0 var(--navy); z-index: 3; }
         .photo-3 img { aspect-ratio: 3 / 4; }
         .photo:hover { transform: rotate(0deg) scale(1.03); z-index: 5; }
-        .hero-left { padding-right: 64px; display: flex; flex-direction: column; justify-content: center; }
+
+        .hero-left { padding-right: 64px; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 8px; }
         .hero-overline { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
         .hero-overline-line { width: 28px; height: 2px; background: var(--red); }
         .hero-overline-text { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); }
@@ -54,9 +57,6 @@ export default function Home() {
         .res-card-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--navy); text-decoration: none; line-height: 1.2; }
         .res-card-btn { display: inline-block; padding: 9px 20px; background: var(--navy); color: var(--cream); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; box-shadow: 3px 3px 0 var(--gold); width: fit-content; transition: all 0.15s; }
         .res-card-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--gold); }
-        .hero-photos { padding: 0; max-width: 320px; margin: 0 auto; }
-        .hero-portrait:hover { transform: rotate(0deg); }
-        .hero-portrait img { width: 100%; display: block; aspect-ratio: 1 / 1; object-fit: cover; object-position: center 20%; }
         .hero-right { display: flex; flex-direction: column; }
         .stats { background: var(--red); padding: 28px 64px; display: grid; grid-template-columns: repeat(4, 1fr); }
         .stat { padding: 0 32px; border-right: 1px solid rgba(250,247,242,0.2); display: flex; align-items: center; gap: 14px; }
@@ -65,11 +65,11 @@ export default function Home() {
         .stat-n { font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 300; color: var(--cream); line-height: 1; }
         .stat-n span { color: var(--gold); }
         .stat-l { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,247,242,0.7); }
-        .intro { padding: 80px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+        .intro { padding: 80px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; max-width: 1240px; margin: 0 auto; }
         .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-bottom: 18px; }
         .intro-title { font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 400; line-height: 1.2; color: var(--navy); margin-bottom: 18px; }
         .intro-body { font-size: 0.95rem; font-weight: 300; line-height: 1.8; color: var(--text-soft); }
-        .features { padding: 0 64px 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .features { padding: 0 64px 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1240px; margin: 0 auto; }
         .feature-card { background: var(--cream-dark); padding: 32px 28px; border: 1px solid var(--border); border-top: 2px solid var(--red); transition: box-shadow 0.2s; }
         .feature-card:hover { box-shadow: 4px 4px 0 var(--navy); }
         .feature-title { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
@@ -77,14 +77,22 @@ export default function Home() {
         footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
         .footer-logo { display: flex; align-items: center; gap: 8px; }
         .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
-                @media (max-width: 860px) {
+
+        @media (max-width: 1200px) {
+          .hero { grid-template-columns: 1fr 1fr; padding: 64px 40px 56px; gap: 40px; }
+          .hero-photos { grid-column: 1 / -1; order: 3; max-width: 460px; margin: 0 auto; }
+          .hero-left { padding-right: 24px; }
+          h1 { font-size: 3.6rem; }
+        }
+
+        @media (max-width: 860px) {
           header { padding: 18px 20px; flex-wrap: wrap; gap: 14px; }
           nav { gap: 18px; flex-wrap: wrap; }
           nav a { font-size: 0.92rem; }
           .nav-cta { padding: 9px 20px; }
 
-                    .hero { grid-template-columns: 1fr; padding: 40px 20px 48px; gap: 32px; }
-          .hero-portrait { padding: 0; max-width: 300px; margin: 0 auto; }
+          .hero { grid-template-columns: 1fr; padding: 40px 20px 48px; gap: 32px; }
+          .hero-photos { max-width: 340px; margin: 0 auto; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
           .hero-left { padding-right: 0; }
           h1 { font-size: 2.6rem; margin-bottom: 20px; }
           .hero-body { font-size: 0.95rem; margin-bottom: 28px; max-width: none; }
@@ -108,7 +116,7 @@ export default function Home() {
 
       <header>
         <a href="/" className="logo">
-          <svg width="30" height="35" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="30" height="35" viewBox="-1 -1 26 30" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <clipPath id="hxHeader">
                 <polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/>
@@ -127,10 +135,10 @@ export default function Home() {
           <a href="#">Cours</a>
           <a href="/planning_public.html">Créneaux</a>
           <a href="/ressources.html">Ressources</a>
-                    <a href="/apropos.html">À propos</a>
+          <a href="/apropos.html">À propos</a>
           <a href="/reserver.html" className="nav-cta">Réserver</a>
         </nav>
-            </header>
+      </header>
       <div className="gold-line"></div>
 
       <div className="hero">
@@ -143,18 +151,17 @@ export default function Home() {
           <p className="hero-body">Des cours particuliers avec un enseignant français natif. Approche personnalisée, progression mesurable, horaires adaptés à votre vie.</p>
           <div className="hero-actions">
             <a href="/reserver.html" className="btn-primary">Réserver un cours</a>
-            <a href="/conjugaison.html" className="btn-ghost">Voir les ressources</a>
+            <a href="/ressources.html" className="btn-ghost">Voir les ressources</a>
           </div>
         </div>
-          <div className="hero-photos">
+
+        <div className="hero-photos">
           <div className="photo photo-1"><img src="/img/alban-paris.jpg" alt="Alban devant la Fondation Louis Vuitton à Paris" /></div>
           <div className="photo photo-2"><img src="/img/nice.jpg" alt="La promenade des Anglais à Nice au coucher du soleil" /></div>
           <div className="photo photo-3"><img src="/img/tour-eiffel.jpg" alt="La tour Eiffel vue d'en dessous" /></div>
         </div>
+
         <div className="hero-right">
-          <div className="hero-portrait">
-            <img src="/alban.jpg" alt="Alban, professeur de français" />
-          </div>
           <div className="conj-card">
             <div className="conj-card-tag">Exercice interactif</div>
             <a href="/conjugaison.html" className="conj-card-title">Test de conjugaison</a>
@@ -218,7 +225,7 @@ export default function Home() {
 
       <footer>
         <div className="footer-logo">
-          <svg width="18" height="22" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="18" height="22" viewBox="-1 -1 26 30" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <clipPath id="hxFooter">
                 <polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/>
