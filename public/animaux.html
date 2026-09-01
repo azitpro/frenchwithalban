@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les animaux — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d2b45; --rouge:#c0392b; --or:#c9972a; --creme:#faf7f2;
+    --gris-texte:#4a5568; --bordure:#e6e0d6; --rose-fem:#c2185b;
+    --vert:#2f7d51; --vert-doux:#e8f4ec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--navy);background:#fff;line-height:1.7;-webkit-font-smoothing:antialiased;}
+
+  header{width:100%;background:#fff;border-bottom:3px solid var(--navy);padding:28px 48px;
+    display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
+  .logo .fw{color:var(--navy);} .logo .al{color:var(--rouge);}
+  nav{display:flex;gap:44px;}
+  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
+  nav a:hover{color:var(--rouge);}
+  .gold-line{height:2px;background:var(--or);width:100%;}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+  .hero{background:var(--creme);width:100%;padding:56px 24px 48px;text-align:center;border-bottom:1px solid var(--bordure);}
+  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;}
+
+  /* onglets */
+  .onglets{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:32px 0 8px;}
+  .onglet{font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;padding:11px 22px;
+    border:1.5px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;transition:all .15s;}
+  .onglet.on{background:var(--navy);color:#fff;box-shadow:3px 3px 0 var(--rouge);}
+  .onglet:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+
+  section{padding:32px 0 56px;}
+  h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;display:flex;align-items:center;gap:13px;margin:28px 0 14px;}
+  .hex{flex-shrink:0;width:22px;height:26px;}
+  .intro{color:var(--gris-texte);margin-bottom:16px;}
+
+  .mots{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:8px;}
+  .mot{background:var(--creme);border:1px solid var(--bordure);border-top:2px solid var(--navy);
+    padding:12px 10px;text-align:center;font-family:'Fraunces',serif;font-size:1rem;font-weight:600;}
+  .mot small{display:block;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:400;color:var(--rouge);margin-top:2px;}
+
+  .carte{background:var(--creme);border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);
+    padding:30px 26px;margin:20px 0;text-align:center;}
+  .compteur{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris-texte);margin-bottom:16px;}
+  .piste{height:3px;background:var(--bordure);margin-bottom:22px;overflow:hidden;}
+  .piste span{display:block;height:100%;background:var(--rouge);transition:width .25s;}
+  .question{font-size:1.3rem;font-weight:500;line-height:1.4;margin-bottom:6px;}
+  .question b{font-family:'Fraunces',serif;color:var(--rouge);}
+  .opts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px;}
+  .opts button{font-family:'Inter',sans-serif;font-size:.95rem;padding:10px 20px;border:1px solid var(--bordure);
+    border-radius:999px;background:#fff;color:var(--navy);cursor:pointer;transition:all .15s;}
+  .opts button:hover:not(:disabled){border-color:var(--navy);}
+  .opts button.juste{background:var(--vert-doux);border-color:var(--vert);color:var(--vert);font-weight:600;}
+  .opts button.faux{background:#fdeceb;border-color:var(--rouge);color:var(--rouge);}
+  .opts button:disabled{cursor:default;}
+  .explication{margin-top:16px;font-size:.92rem;color:var(--gris-texte);min-height:1.4em;}
+  .en{font-size:1.5rem;font-weight:500;line-height:1.4;color:var(--navy);}
+  .fr{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;color:var(--rouge);
+      margin-top:18px;padding-top:18px;border-top:1px dashed var(--bordure);}
+  .btn.oui{background:var(--vert);} .btn.oui:hover{background:#256641;}
+  .btn.non{background:var(--rouge);} .btn.non:hover{background:#9c2f22;}
+
+  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+  .btn{font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;padding:12px 26px;border:none;
+    border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;transition:background .2s;}
+  .btn:hover{background:#164066;}
+  .btn.secondaire{background:#fff;color:var(--navy);border:1px solid var(--navy);}
+  .btn:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+  .score{font-family:'DM Serif Display',serif;font-size:3rem;color:var(--navy);line-height:1.1;}
+  .score small{font-size:1.2rem;color:var(--gris-texte);}
+
+  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
+  footer a{color:#fff;text-decoration:underline;}
+
+  @media (max-width:720px){
+    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
+    .logo{font-size:1.3rem;} nav{gap:24px;}
+    .hero h1{font-size:2.1rem;}
+    .mots{grid-template-columns:repeat(2,1fr);}
+    .carte{padding:22px 16px;box-shadow:4px 4px 0 var(--navy);}
+    .question{font-size:1.1rem;}
+    footer{padding:28px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex-tri" viewBox="-1 -1 32 37">
+    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
+    <g clip-path="url(#clip-hex)">
+      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+    </g>
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+  </symbol>
+</svg>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
+    <span><span class="fw">French with</span> <span class="al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/ressources.html">Retour</a>
+    <a href="/">Accueil</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="hero"><h1>Les animaux</h1></div>
+
+<div class="wrap">
+  <div class="onglets" id="onglets"></div>
+  <section id="contenu"></section>
+</div>
+
+<footer>
+  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
+</footer>
+
+<script>
+/* ================= DONNÉES ================= */
+var CATS = {
+  "domestiques": {
+    titre: "Animaux domestiques et de la ferme",
+    mots: [["l'âne","/ɑn/"],["le canard","/kanaʁ/"],["le chat","/ʃa/"],["le cheval","/ʃəval/"],["la chèvre","/ʃɛvʁ/"],
+           ["le coq","/kɔk/"],["le chien","/ʃjɛ̃/"],["le cochon","/kɔʃɔ̃/"],["le hamster","/amstɛʁ/"],["le lapin","/lapɛ̃/"],
+           ["le mouton","/mutɔ̃/"],["l'oie","/wa/"],["l'oiseau","/wazo/"],["le poisson","/pwasɔ̃/"],["la poule","/pul/"],
+           ["la tortue","/tɔʁty/"],["la vache","/vaʃ/"],["la souris","/suʁi/"],["le dindon","/dɛ̃dɔ̃/"],["le cygne","/siɲ/"]]
+  },
+  "foret": {
+    titre: "Animaux de la forêt",
+    mots: [["la biche","/biʃ/"],["le cerf","/sɛʁ/"],["la chouette","/ʃwɛt/"],["l'écureuil","/ekyʁœj/"],["le hérisson","/eʁisɔ̃/"],
+           ["le loup","/lu/"],["le renard","/ʁənaʁ/"],["la taupe","/top/"],["le hibou","/ibu/"],["le sanglier","/sɑ̃ɡlije/"]]
+  },
+  "sauvages": {
+    titre: "Animaux sauvages",
+    mots: [["l'autruche","/otʁyʃ/"],["le castor","/kastɔʁ/"],["le chameau","/ʃamo/"],["la cigogne","/siɡɔɲ/"],["le crocodile","/kʁɔkɔdil/"],
+           ["le dromadaire","/dʁɔmadɛʁ/"],["l'éléphant","/elefɑ̃/"],["la girafe","/ʒiʁaf/"],["le gorille","/ɡɔʁij/"],["le guépard","/ɡepaʁ/"],
+           ["l'hippopotame","/ipɔpɔtam/"],["le kangourou","/kɑ̃ɡuʁu/"],["le lion","/ljɔ̃/"],["l'ours","/uʁs/"],["la panthère","/pɑ̃tɛʁ/"],
+           ["le perroquet","/peʁɔkɛ/"],["le serpent","/sɛʁpɑ̃/"],["le singe","/sɛ̃ʒ/"],["le tigre","/tiɡʁ/"],["le zèbre","/zɛbʁ/"]]
+  },
+  "insectes": {
+    titre: "Insectes et petits animaux",
+    mots: [["l'abeille","/abɛj/"],["l'araignée","/aʁɛɲe/"],["la chenille","/ʃənij/"],["la coccinelle","/kɔksinɛl/"],["le crapaud","/kʁapo/"],
+           ["l'escargot","/ɛskaʁɡo/"],["la fourmi","/fuʁmi/"],["la grenouille","/ɡʁənuj/"],["le lézard","/lezaʁ/"],["le mille-pattes","/milpat/"],
+           ["la mouche","/muʃ/"],["le papillon","/papijɔ̃/"],["la sauterelle","/sotʁɛl/"],["le scarabée","/skaʁabe/"],["le ver de terre","/vɛʁdətɛʁ/"]]
+  },
+  "marins": {
+    titre: "Animaux marins",
+    mots: [["la baleine","/balɛn/"],["le bernard-l'ermite","/bɛʁnaʁlɛʁmit/"],["le crabe","/kʁab/"],["le dauphin","/dofɛ̃/"],["l'étoile de mer","/etwaldəmɛʁ/"],
+           ["l'hippocampe","/ipɔkɑ̃p/"],["la méduse","/medyz/"],["la mouette","/mwɛt/"],["l'otarie","/ɔtaʁi/"],["le pélican","/pelikɑ̃/"],
+           ["la pieuvre","/pjœvʁ/"],["le requin","/ʁəkɛ̃/"],["le phoque","/fɔk/"],["la tortue de mer","/tɔʁtydəmɛʁ/"]]
+  }
+};
+
+var PETITS = [
+  ["le chat","le chaton"],["le chien","le chiot"],["le cheval","le poulain"],["la poule","le poussin"],
+  ["la vache","le veau"],["le mouton","l'agneau"],["le cochon","le porcelet"],["la chèvre","le chevreau"],
+  ["le lapin","le lapereau"],["le canard","le caneton"],["l'oie","l'oison"],["le lion","le lionceau"],
+  ["l'ours","l'ourson"],["le loup","le louveteau"],["l'éléphant","l'éléphanteau"]
+];
+
+var PIEGES = [
+  {q:"Quelle forme est correcte ?", o:["le hibou","l'hibou","la hibou"], r:0,
+   e:"« Hibou » commence par un h aspiré : pas d'élision, on ne dit jamais « l'hibou »."},
+  {q:"Quelle forme est correcte ?", o:["une souris","un souris","un sourie"], r:0,
+   e:"« Souris » est un mot féminin, malgré sa terminaison en -is."},
+  {q:"Quel est le pluriel de « un cheval » ?", o:["des chevaux","des chevals","des chevales"], r:0,
+   e:"Les mots en -al font leur pluriel en -aux : un cheval, des chevaux ; un animal, des animaux."},
+  {q:"Quel est le pluriel de « un hibou » ?", o:["des hiboux","des hibous","des hibous"], r:0,
+   e:"Sept mots en -ou prennent un -x : bijou, caillou, chou, genou, hibou, joujou, pou."},
+  {q:"Quel animal a une seule bosse ?", o:["le dromadaire","le chameau","le lama"], r:0,
+   e:"Le dromadaire a une bosse, le chameau en a deux."},
+  {q:"En quoi se transforme la chenille ?", o:["en papillon","en sauterelle","en scarabée"], r:0,
+   e:"C'est la métamorphose : la chenille devient un papillon."},
+  {q:"Quel insecte fait le miel ?", o:["l'abeille","la guêpe","la mouche"], r:0,
+   e:"L'abeille produit le miel. La guêpe, elle, n'en fait pas."},
+  {q:"Quel animal marin a huit bras ?", o:["la pieuvre","le crabe","la méduse"], r:0,
+   e:"La pieuvre, aussi appelée poulpe, a huit bras."},
+  {q:"Comment appelle-t-on la femelle du cerf ?", o:["la biche","la chèvre","la truie"], r:0,
+   e:"La biche est la femelle du cerf ; leur petit est le faon."},
+  {q:"Dans les expressions, quel animal est « rusé » ?", o:["le renard","le loup","la taupe"], r:0,
+   e:"« Rusé comme un renard » est une expression courante."},
+  {q:"Quel animal est « têtu » dans les expressions ?", o:["l'âne","le chat","l'oie"], r:0,
+   e:"« Têtu comme un âne » — on dit aussi « têtu comme une mule »."},
+  {q:"Que dit-on quand il pleut très fort ?", o:["Il pleut des cordes","Il pleut des chats","Il pleut des grenouilles"], r:0,
+   e:"« Il pleut des cordes » ou « il pleut à verse ». L'anglais dit « cats and dogs », pas le français."}
+];
+
+var EN = {"l'âne": "the donkey", "le canard": "the duck", "le chat": "the cat", "le cheval": "the horse", "la chèvre": "the goat", "le coq": "the rooster", "le chien": "the dog", "le cochon": "the pig", "le hamster": "the hamster", "le lapin": "the rabbit", "le mouton": "the sheep", "l'oie": "the goose", "l'oiseau": "the bird", "le poisson": "the fish", "la poule": "the hen", "la tortue": "the tortoise", "la vache": "the cow", "la souris": "the mouse", "le dindon": "the turkey", "le cygne": "the swan", "la biche": "the doe", "le cerf": "the deer, the stag", "la chouette": "the owl", "l'écureuil": "the squirrel", "le hérisson": "the hedgehog", "le loup": "the wolf", "le renard": "the fox", "la taupe": "the mole", "le hibou": "the owl (horned)", "le sanglier": "the wild boar", "l'autruche": "the ostrich", "le castor": "the beaver", "le chameau": "the camel", "la cigogne": "the stork", "le crocodile": "the crocodile", "le dromadaire": "the dromedary", "l'éléphant": "the elephant", "la girafe": "the giraffe", "le gorille": "the gorilla", "le guépard": "the cheetah", "l'hippopotame": "the hippopotamus", "le kangourou": "the kangaroo", "le lion": "the lion", "l'ours": "the bear", "la panthère": "the panther", "le perroquet": "the parrot", "le serpent": "the snake", "le singe": "the monkey", "le tigre": "the tiger", "le zèbre": "the zebra", "l'abeille": "the bee", "l'araignée": "the spider", "la chenille": "the caterpillar", "la coccinelle": "the ladybird", "le crapaud": "the toad", "l'escargot": "the snail", "la fourmi": "the ant", "la grenouille": "the frog", "le lézard": "the lizard", "le mille-pattes": "the centipede", "la mouche": "the fly", "le papillon": "the butterfly", "la sauterelle": "the grasshopper", "le scarabée": "the beetle", "le ver de terre": "the earthworm", "la baleine": "the whale", "le bernard-l'ermite": "the hermit crab", "le crabe": "the crab", "le dauphin": "the dolphin", "l'étoile de mer": "the starfish", "l'hippocampe": "the seahorse", "la méduse": "the jellyfish", "la mouette": "the seagull", "l'otarie": "the sea lion", "le pélican": "the pelican", "la pieuvre": "the octopus", "le requin": "the shark", "le phoque": "the seal", "la tortue de mer": "the sea turtle"};
+
+/* ================= OUTILS ================= */
+function melange(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function el(h){var d=document.createElement('div');d.innerHTML=h;return d;}
+var contenu=document.getElementById('contenu');
+
+/* ================= ONGLETS ================= */
+var ONGLETS=[["liste","Le vocabulaire"],["cartes","Cartes de révision"],["cat","Trouve la catégorie"],["petits","Les petits"],["pieges","Les pièges"]];
+var boite=document.getElementById('onglets');
+ONGLETS.forEach(function(o){
+  var b=document.createElement('button');
+  b.className='onglet'; b.textContent=o[1]; b.dataset.vue=o[0];
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.onglet').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on'); afficher(o[0]);
+  });
+  boite.appendChild(b);
+});
+
+function afficher(vue){
+  contenu.innerHTML='';
+  if(vue==='liste') vueListe();
+  if(vue==='cartes') exoCartes();
+  if(vue==='cat') exoCategorie();
+  if(vue==='petits') exoPetits();
+  if(vue==='pieges') exoPieges();
+}
+
+/* ================= VUE LISTE ================= */
+function vueListe(){
+  Object.keys(CATS).forEach(function(k){
+    var c=CATS[k];
+    var h='<h2><svg class="hex"><use href="#hex-tri"/></svg>'+c.titre+'</h2><div class="mots">';
+    c.mots.forEach(function(m){ h+='<div class="mot">'+m[0]+'<small>'+m[1]+'</small></div>'; });
+    h+='</div>';
+    contenu.appendChild(el(h));
+  });
+  var h='<h2><svg class="hex"><use href="#hex-tri"/></svg>Les noms des petits</h2><div class="mots">';
+  PETITS.forEach(function(p){ h+='<div class="mot">'+p[1]+'<small>'+p[0]+'</small></div>'; });
+  h+='</div>';
+  contenu.appendChild(el(h));
+}
+
+/* ================= MOTEUR D'EXERCICE ================= */
+function lancer(items, rendu){
+  var paquet=melange(items), i=0, bons=0, erreurs=[];
+  function etape(){
+    if(i>=paquet.length) return bilan();
+    contenu.innerHTML='';
+    var q=rendu(paquet[i]);
+    var pct=Math.round(i/paquet.length*100);
+    var carte=el('<div class="carte">'+
+      '<div class="compteur">Question '+(i+1)+' sur '+paquet.length+'</div>'+
+      '<div class="piste"><span style="width:'+pct+'%"></span></div>'+
+      '<div class="question">'+q.texte+'</div>'+
+      '<div class="opts"></div><div class="explication"></div></div>').firstChild;
+    var opts=carte.querySelector('.opts'), expl=carte.querySelector('.explication');
+    melange(q.options).forEach(function(o){
+      var b=document.createElement('button'); b.type='button'; b.textContent=o;
+      b.addEventListener('click',function(){
+        opts.querySelectorAll('button').forEach(function(x){x.disabled=true;});
+        if(o===q.bonne){ b.classList.add('juste'); bons++; }
+        else { b.classList.add('faux'); erreurs.push(paquet[i]);
+          opts.querySelectorAll('button').forEach(function(x){ if(x.textContent===q.bonne) x.classList.add('juste'); }); }
+        expl.textContent=q.explication||'';
+        var suite=document.createElement('div'); suite.className='actions';
+        var n=document.createElement('button'); n.className='btn';
+        n.textContent=(i+1===paquet.length)?'Voir le résultat':'Suivant';
+        n.addEventListener('click',function(){ i++; etape(); });
+        suite.appendChild(n); carte.appendChild(suite); n.focus();
+      });
+      opts.appendChild(b);
+    });
+    contenu.appendChild(carte);
+  }
+  function bilan(){
+    contenu.innerHTML='';
+    var c=el('<div class="carte">'+
+      '<div class="score">'+bons+' <small>/ '+paquet.length+'</small></div>'+
+      '<div class="explication">'+(erreurs.length?erreurs.length+' à revoir.':'Tout est acquis.')+'</div>'+
+      '<div class="actions"></div></div>').firstChild;
+    var a=c.querySelector('.actions');
+    if(erreurs.length){
+      var r=document.createElement('button'); r.className='btn'; r.textContent='Réviser les erreurs';
+      var copie=erreurs.slice();
+      r.addEventListener('click',function(){ lancer(copie,rendu); });
+      a.appendChild(r);
+    }
+    var re=document.createElement('button'); re.className='btn secondaire'; re.textContent='Recommencer';
+    re.addEventListener('click',function(){ lancer(items,rendu); });
+    a.appendChild(re);
+    contenu.appendChild(c);
+  }
+  etape();
+}
+
+/* ================= EXERCICE : CATÉGORIE ================= */
+var LIBELLES={domestiques:"Domestique",foret:"Forêt",sauvages:"Sauvage",insectes:"Insecte",marins:"Marin"};
+function exoCategorie(){
+  var items=[];
+  Object.keys(CATS).forEach(function(k){
+    CATS[k].mots.forEach(function(m){ items.push({mot:m[0],cat:k}); });
+  });
+  items=melange(items).slice(0,20);
+  lancer(items,function(it){
+    return {
+      texte:'À quelle catégorie appartient <b>'+it.mot+'</b> ?',
+      options:Object.keys(LIBELLES).map(function(k){return LIBELLES[k];}),
+      bonne:LIBELLES[it.cat],
+      explication:''
+    };
+  });
+}
+
+/* ================= EXERCICE : LES PETITS ================= */
+function exoPetits(){
+  lancer(PETITS.slice(),function(p){
+    var faux=melange(PETITS.filter(function(x){return x[1]!==p[1];})).slice(0,2).map(function(x){return x[1];});
+    return {
+      texte:'Comment s\'appelle le petit de <b>'+p[0]+'</b> ?',
+      options:[p[1]].concat(faux),
+      bonne:p[1],
+      explication:'Le petit de '+p[0]+' est '+p[1]+'.'
+    };
+  });
+}
+
+/* ================= EXERCICE : LES PIÈGES ================= */
+function exoPieges(){
+  lancer(PIEGES.slice(),function(q){
+    return { texte:q.q, options:q.o.slice(), bonne:q.o[q.r], explication:q.e };
+  });
+}
+
+/* ================= EXERCICE : CARTES DE RÉVISION ================= */
+function exoCartes(){
+  var tous=[];
+  Object.keys(CATS).forEach(function(k){
+    CATS[k].mots.forEach(function(m){ if(EN[m[0]]) tous.push({fr:m[0], en:EN[m[0]]}); });
+  });
+  accueilCartes(tous);
+}
+
+function accueilCartes(liste){
+  contenu.innerHTML='';
+  var c=el('<div class="carte"><div class="en">'+liste.length+' animaux à réviser</div>'+
+           '<div class="explication">Une traduction anglaise apparaît. Dites l\'animal en français, puis vérifiez.</div>'+
+           '<div class="actions"></div></div>').firstChild;
+  var b=document.createElement('button'); b.className='btn'; b.textContent='Commencer';
+  b.addEventListener('click',function(){ jouerCartes(melange(liste), liste); });
+  c.querySelector('.actions').appendChild(b);
+  contenu.appendChild(c);
+}
+
+function jouerCartes(paquet, source){
+  var i=0, revelee=false, bons=0, erreurs=[];
+
+  function etape(){
+    if(i>=paquet.length) return bilanCartes();
+    contenu.innerHTML='';
+    var carte=paquet[i];
+    var pct=Math.round(i/paquet.length*100);
+    var c=el('<div class="carte">'+
+      '<div class="compteur">Carte '+(i+1)+' sur '+paquet.length+'</div>'+
+      '<div class="piste"><span style="width:'+pct+'%"></span></div>'+
+      '<div class="en">'+carte.en+'</div>'+
+      (revelee?'<div class="fr">'+carte.fr+'</div>':'')+
+      '<div class="actions"></div></div>').firstChild;
+    var a=c.querySelector('.actions');
+
+    if(revelee){
+      var oui=document.createElement('button'); oui.className='btn oui'; oui.innerHTML='\u2713&nbsp; Je savais';
+      oui.addEventListener('click',function(){ bons++; i++; revelee=false; etape(); });
+      var non=document.createElement('button'); non.className='btn non'; non.innerHTML='\u2717&nbsp; Je ne savais pas';
+      non.addEventListener('click',function(){ erreurs.push(carte); i++; revelee=false; etape(); });
+      a.appendChild(oui); a.appendChild(non);
+    } else {
+      var v=document.createElement('button'); v.className='btn'; v.textContent='Afficher la réponse';
+      v.addEventListener('click',function(){ revelee=true; etape(); });
+      a.appendChild(v);
+    }
+
+    contenu.appendChild(c);
+    var stop=el('<div class="actions"></div>').firstChild;
+    var s=document.createElement('button'); s.className='btn secondaire'; s.textContent='Arrêter';
+    s.addEventListener('click',function(){ accueilCartes(source); });
+    stop.appendChild(s); contenu.appendChild(stop);
+  }
+
+  function bilanCartes(){
+    contenu.innerHTML='';
+    var c=el('<div class="carte">'+
+      '<div class="score">'+bons+' <small>/ '+paquet.length+'</small></div>'+
+      '<div class="explication">'+(erreurs.length?erreurs.length+' animal(aux) à revoir.':'Tout est acquis.')+'</div>'+
+      '<div class="actions"></div></div>').firstChild;
+    var a=c.querySelector('.actions');
+    if(erreurs.length){
+      var copie=erreurs.slice();
+      var r=document.createElement('button'); r.className='btn'; r.textContent='Réviser les erreurs';
+      r.addEventListener('click',function(){ jouerCartes(melange(copie), source); });
+      a.appendChild(r);
+    }
+    var re=document.createElement('button'); re.className='btn secondaire'; re.textContent='Recommencer';
+    re.addEventListener('click',function(){ jouerCartes(melange(source), source); });
+    a.appendChild(re);
+    var st=document.createElement('button'); st.className='btn secondaire'; st.textContent='Arrêter';
+    st.addEventListener('click',function(){ accueilCartes(source); });
+    a.appendChild(st);
+    contenu.appendChild(c);
+  }
+
+  etape();
+}
+
+/* démarrage */
+document.querySelector('.onglet').classList.add('on');
+afficher('liste');
+</script>
+
+</body>
+</html>
