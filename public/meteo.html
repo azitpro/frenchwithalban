@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La météo — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d2b45; --rouge:#c0392b; --or:#c9972a; --creme:#faf7f2;
+    --gris-texte:#4a5568; --bordure:#e6e0d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--navy);background:#fff;line-height:1.7;-webkit-font-smoothing:antialiased;}
+
+  header{width:100%;background:#fff;border-bottom:3px solid var(--navy);padding:28px 48px;
+    display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
+  .logo .fw{color:var(--navy);} .logo .al{color:var(--rouge);}
+  nav{display:flex;gap:44px;}
+  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
+  nav a:hover{color:var(--rouge);}
+  .gold-line{height:2px;background:var(--or);width:100%;}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+  .hero{background:var(--creme);width:100%;padding:56px 24px 48px;text-align:center;border-bottom:1px solid var(--bordure);}
+  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;}
+
+  section{padding:48px 0;border-bottom:1px solid var(--bordure);}
+  section:last-of-type{border-bottom:none;}
+  h2{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;display:flex;align-items:center;gap:13px;margin-bottom:16px;}
+  h3{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;display:flex;align-items:center;gap:12px;margin:34px 0 12px;}
+  .hex{flex-shrink:0;} h2 .hex{width:24px;height:28px;} h3 .hex{width:19px;height:22px;}
+  .intro{color:var(--gris-texte);margin-bottom:18px;}
+
+  .grille{display:grid;gap:26px 20px;margin:24px 0;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .vignette{text-align:center;}
+  .vignette .cadre{border:2px solid var(--navy);box-shadow:5px 5px 0 var(--navy);line-height:0;}
+  .vignette img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;}
+  .vignette .mot{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;margin-top:12px;}
+  .vignette .phon{display:block;font-family:'Inter',sans-serif;font-size:.84rem;font-weight:400;color:var(--rouge);margin-top:2px;}
+  .vignette .expr{display:block;font-family:'Inter',sans-serif;font-size:.86rem;font-weight:400;color:var(--gris-texte);margin-top:4px;font-style:italic;}
+
+  .bulletin{margin:26px 0;}
+  .bulletin .cadre{border:2px solid var(--navy);box-shadow:6px 6px 0 var(--rouge);line-height:0;max-width:440px;margin:0 auto;}
+  .bulletin img{width:100%;display:block;}
+  .bulletin .legende{text-align:center;font-size:.88rem;color:var(--gris-texte);margin-top:12px;font-style:italic;}
+
+  table{width:100%;border-collapse:collapse;table-layout:fixed;margin:16px 0;font-size:.98rem;}
+  th{background:var(--navy);color:#fff;font-family:'Fraunces',serif;font-weight:600;text-align:left;padding:11px 14px;}
+  td{padding:10px 14px;border-bottom:1px solid var(--bordure);vertical-align:top;word-wrap:break-word;}
+  tbody tr:nth-child(even){background:var(--creme);}
+  td b{color:var(--rouge);}
+
+  .exemples{list-style:none;margin:16px 0;}
+  .exemples li{display:flex;align-items:flex-start;gap:12px;padding:6px 0;}
+  .exemples li img{width:20px;height:20px;margin-top:5px;flex-shrink:0;}
+  .exemples b{color:var(--rouge);font-weight:600;}
+
+  .bulle{display:flex;gap:16px;padding:20px 22px;margin:24px 0;background:var(--creme);border-radius:18px 18px 18px 4px;}
+  .bulle.warn{background:#fdf1ef;}
+  .bulle .marque{flex-shrink:0;width:28px;height:32px;}
+  .bulle .contenu{font-size:.98rem;}
+  .bulle .contenu strong{font-family:'Fraunces',serif;display:block;margin-bottom:4px;}
+
+  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
+  footer a{color:#fff;text-decoration:underline;}
+
+  @media (max-width:720px){
+    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
+    .logo{font-size:1.3rem;} nav{gap:24px;}
+    .hero h1{font-size:2.1rem;}
+    .g3{grid-template-columns:repeat(2,1fr);}
+    .g2{grid-template-columns:1fr;}
+    .grille{gap:20px 14px;}
+    footer{padding:28px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex-tri" viewBox="-1 -1 32 37">
+    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
+    <g clip-path="url(#clip-hex)">
+      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+    </g>
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+  </symbol>
+  <symbol id="hex-warn" viewBox="-1 -1 32 37">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#c0392b"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="19" font-weight="700" fill="#fff">!</text>
+  </symbol>
+  <symbol id="hex-info" viewBox="-1 -1 32 37">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#0d2b45"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="18" font-weight="700" fill="#fff">i</text>
+  </symbol>
+</svg>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
+    <span><span class="fw">French with</span> <span class="al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/ressources.html">Retour</a>
+    <a href="/">Accueil</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="hero"><h1>La météo</h1></div>
+
+<div class="wrap">
+
+  <!-- ================= VOCABULAIRE ================= -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Vocabulaire</h2>
+    <p class="intro">Les noms des phénomènes, avec leur prononciation.</p>
+
+    <div class="grille g3">
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/soleil.png" alt="Un soleil"></div>
+        <figcaption class="mot">le soleil<span class="phon">/sɔlɛj/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/nuage.png" alt="Un nuage blanc"></div>
+        <figcaption class="mot">le nuage<span class="phon">/nɥaʒ/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/pluie.png" alt="Un nuage et des gouttes de pluie"></div>
+        <figcaption class="mot">la pluie<span class="phon">/plɥi/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/neige.png" alt="Des flocons de neige"></div>
+        <figcaption class="mot">la neige<span class="phon">/nɛʒ/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/vent.png" alt="Des volutes de vent"></div>
+        <figcaption class="mot">le vent<span class="phon">/vɑ̃/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/orage.png" alt="Un nuage d'orage et un éclair"></div>
+        <figcaption class="mot">l'orage<span class="phon">/ɔʁaʒ/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/brouillard.png" alt="Quais de Paris dans le brouillard"></div>
+        <figcaption class="mot">le brouillard<span class="phon">/bʁujaʁ/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/tempete.png" alt="Côte bretonne pendant une tempête"></div>
+        <figcaption class="mot">la tempête<span class="phon">/tɑ̃pɛt/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/arc-en-ciel.png" alt="Un arc-en-ciel au-dessus d'un village"></div>
+        <figcaption class="mot">l'arc-en-ciel<span class="phon">/aʁkɑ̃sjɛl/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/ciel.png" alt="Un ciel bleu avec quelques nuages au-dessus de la campagne"></div>
+        <figcaption class="mot">le ciel<span class="phon">/sjɛl/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/grele.png" alt="Des grêlons qui rebondissent dans une rue parisienne"></div>
+        <figcaption class="mot">la grêle<span class="phon">/ɡʁɛl/</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/bulletin.png" alt="Une présentatrice météo devant une carte de France"></div>
+        <figcaption class="mot">la météo<span class="phon">/meteo/</span></figcaption>
+      </figure>
+    </div>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les autres mots utiles</h3>
+    <table>
+      <thead><tr><th style="width:34%">Mot</th><th style="width:33%">Prononciation</th><th style="width:33%">Mot</th></tr></thead>
+      <tbody>
+        <tr><td>l'éclair</td><td class="phon" style="color:#c0392b">/eklɛʁ/</td><td>le gel /ʒɛl/</td></tr>
+        <tr><td>le tonnerre</td><td class="phon" style="color:#c0392b">/tɔnɛʁ/</td><td>la canicule /kanikyl/</td></tr>
+        <tr><td>l'averse</td><td class="phon" style="color:#c0392b">/avɛʁs/</td><td>la prévision /pʁevizjɔ̃/</td></tr>
+        <tr><td>la température</td><td class="phon" style="color:#c0392b">/tɑ̃peʁatyʁ/</td><td>le degré /dəɡʁe/</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= IL FAIT ================= -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Quel temps fait-il ?</h2>
+    <p class="intro">C'est la question à connaître. Pour y répondre, le français utilise trois structures différentes selon le mot employé.</p>
+
+    <table>
+      <thead>
+        <tr><th style="width:26%">Structure</th><th style="width:36%">Exemples</th><th style="width:38%">Quand l'utiliser</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>il fait</b> + adjectif</td><td>il fait beau<br>il fait froid</td><td>Pour la sensation générale et la température.</td></tr>
+        <tr><td><b>il</b> + verbe</td><td>il pleut<br>il neige<br>il gèle</td><td>Quand un verbe existe. Ces verbes n'ont que la forme « il ».</td></tr>
+        <tr><td><b>il y a</b> + nom</td><td>il y a du vent<br>il y a du brouillard</td><td>Quand le phénomène n'a pas de verbe.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="bulle warn">
+      <svg class="marque" aria-hidden="true"><use href="#hex-warn"/></svg>
+      <div class="contenu">
+        <strong>L'erreur la plus fréquente</strong>
+        On ne dit pas « <s>il est pluie</s> » ni « <s>c'est froid</s> » pour parler du temps. La météo utilise toujours <b>il</b> impersonnel.
+      </div>
+    </div>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Il fait…</h3>
+
+    <div class="grille g2">
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/beau-temps.png" alt="Campagne sous un ciel bleu"></div>
+        <figcaption class="mot">Il fait beau.<span class="expr">le ciel est dégagé</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/mauvais.png" alt="Quai parisien sous un ciel gris et la pluie"></div>
+        <figcaption class="mot">Il fait mauvais.<span class="expr">le ciel est couvert</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/chaud.png" alt="Terrasse méditerranéenne, thermomètre à 40 degrés"></div>
+        <figcaption class="mot">Il fait chaud.<span class="phon">40 °C</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/doux.png" alt="Jardin fleuri, thermomètre à 23 degrés"></div>
+        <figcaption class="mot">Il fait doux.<span class="phon">23 °C</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/frais.png" alt="Jardin d'automne, thermomètre à 10 degrés"></div>
+        <figcaption class="mot">Il fait frais.<span class="phon">10 °C</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/froid.png" alt="Jardin sous la neige, thermomètre à moins 25 degrés"></div>
+        <figcaption class="mot">Il fait froid.<span class="phon">−25 °C</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/sec.png" alt="Paysage désertique et terre craquelée"></div>
+        <figcaption class="mot">Il fait sec.<span class="expr">l'air est très sec</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/humide.png" alt="Forêt tropicale humide avec une grenouille"></div>
+        <figcaption class="mot">Il fait humide.<span class="expr">l'air est chargé d'eau</span></figcaption>
+      </figure>
+    </div>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les adjectifs par paires</h3>
+    <table>
+      <thead><tr><th style="width:50%">Positif</th><th style="width:50%">Négatif</th></tr></thead>
+      <tbody>
+        <tr><td>il fait <b>beau</b></td><td>il fait <b>mauvais</b></td></tr>
+        <tr><td>il fait <b>chaud</b></td><td>il fait <b>froid</b></td></tr>
+        <tr><td>il fait <b>doux</b></td><td>il fait <b>frais</b></td></tr>
+        <tr><td>il fait <b>sec</b></td><td>il fait <b>humide</b></td></tr>
+        <tr><td>il fait <b>clair</b></td><td>il fait <b>gris</b>, il fait <b>lourd</b></td></tr>
+      </tbody>
+    </table>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>La température</h3>
+
+    <div class="grille g2">
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/degres-plus.png" alt="Trente degrés en lettres de glace qui fondent au soleil"></div>
+        <figcaption class="mot">Il fait trente.<span class="expr">30 °C</span></figcaption>
+      </figure>
+      <figure class="vignette">
+        <div class="cadre"><img src="/img/meteo/degres-moins.png" alt="Moins cinq degrés en lettres de glace dans un paysage de montagne"></div>
+        <figcaption class="mot">Il fait moins cinq.<span class="expr">−5 °C</span></figcaption>
+      </figure>
+    </div>
+
+    <table>
+      <thead><tr><th style="width:42%">On demande</th><th style="width:58%">On répond</th></tr></thead>
+      <tbody>
+        <tr><td>Quelle température fait-il ?</td><td>Il fait <b>vingt degrés</b>.</td></tr>
+        <tr><td>Il fait combien ?</td><td>Il fait <b>vingt</b>.</td></tr>
+        <tr><td>Et en hiver ?</td><td>Il fait <b>moins cinq</b>.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="bulle">
+      <svg class="marque" aria-hidden="true"><use href="#hex-info"/></svg>
+      <div class="contenu">
+        <strong>Dans la conversation</strong>
+        On dit simplement <i>il fait vingt</i> ou <i>il fait moins cinq</i>, sans répéter « degrés ».
+      </div>
+    </div>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Quelques phrases</h3>
+    <ul class="exemples">
+      <li><img src="/coq.png" alt=""><span><b>Quel temps fait-il ?</b> — Il pleut.</span></li>
+      <li><img src="/coq.png" alt=""><span><b>Quel temps fait-il chez vous ?</b> — Il fait beau, mais il y a du vent.</span></li>
+      <li><img src="/coq.png" alt=""><span><b>Il va faire beau demain ?</b> — Oui, le ciel va se dégager.</span></li>
+    </ul>
+
+    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Quelques expressions</h3>
+    <table>
+      <thead><tr><th style="width:42%">Expression</th><th style="width:58%">Sens</th></tr></thead>
+      <tbody>
+        <tr><td><b>Il pleut des cordes.</b></td><td>Il pleut très fort.</td></tr>
+        <tr><td><b>Il fait un temps de chien.</b></td><td>Le temps est très mauvais.</td></tr>
+        <tr><td><b>Il fait un froid de canard.</b></td><td>Il fait extrêmement froid.</td></tr>
+        <tr><td><b>Un soleil de plomb.</b></td><td>Un soleil écrasant, très chaud.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
+</footer>
+
+</body>
+</html>
