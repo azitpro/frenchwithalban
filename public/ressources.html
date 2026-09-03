@@ -115,6 +115,21 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
 footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
 .footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
+.soutien {
+  background: var(--cream-dark); border: 1px solid var(--border);
+  border-left: 3px solid var(--gold); padding: 18px 24px;
+  margin: 0 64px; display: flex; align-items: center;
+  justify-content: space-between; gap: 24px; flex-wrap: wrap;
+}
+.soutien-texte { font-size: 0.88rem; font-weight: 300; color: var(--text-soft); line-height: 1.6; max-width: 620px; }
+.soutien-texte strong { font-family: 'Fraunces', serif; font-weight: 600; color: var(--navy); }
+.soutien-btn {
+  display: inline-block; padding: 10px 22px; background: var(--navy); color: var(--cream);
+  text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
+  box-shadow: 3px 3px 0 var(--gold); transition: all 0.15s; white-space: nowrap;
+}
+.soutien-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--gold); }
+@media (max-width: 720px) { .soutien { margin: 0 20px; padding: 16px 18px; } }
 </style>
 </head>
 <body>
@@ -142,6 +157,13 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
 <div class="page-header">
   <h1>Ressources</h1>
   <p>Fiches, exercices et outils pour progresser en français. Toutes les ressources sont gratuites.</p>
+</div>
+
+<div class="soutien">
+  <div class="soutien-texte">
+    <strong>Toutes ces ressources sont gratuites.</strong> Elles demandent du temps à concevoir : rédaction, illustrations, exercices interactifs. Si elles vous sont utiles, vous pouvez contribuer à leur développement — chaque soutien finance les prochains chapitres.
+  </div>
+  <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" class="soutien-btn">Soutenir le site</a>
 </div>
 
 <div class="content">
