@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui ou que ? — French with Alban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d2b45; --rouge:#c0392b; --or:#c9972a; --creme:#faf7f2;
+    --gris-texte:#4a5568; --bordure:#e6e0d6; --vert:#2f7d51; --vert-doux:#e8f4ec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--navy);background:#fff;line-height:1.7;-webkit-font-smoothing:antialiased;}
+
+  header{width:100%;background:#fff;border-bottom:3px solid var(--navy);padding:28px 48px;
+    display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
+  .logo .fw{color:var(--navy);} .logo .al{color:var(--rouge);}
+  nav{display:flex;gap:44px;}
+  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
+  nav a:hover{color:var(--rouge);}
+  .gold-line{height:2px;background:var(--or);width:100%;}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+  .hero{background:var(--creme);width:100%;padding:56px 24px 48px;text-align:center;border-bottom:1px solid var(--bordure);}
+  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;}
+
+  section{padding:48px 0;border-bottom:1px solid var(--bordure);}
+  section:last-of-type{border-bottom:none;}
+  h2{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;display:flex;align-items:center;gap:13px;margin-bottom:16px;}
+  h3{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;display:flex;align-items:center;gap:12px;margin:32px 0 12px;}
+  .hex{flex-shrink:0;} h2 .hex{width:23px;height:27px;} h3 .hex{width:19px;height:22px;}
+  .intro{color:var(--gris-texte);margin-bottom:18px;}
+
+  table{width:100%;border-collapse:collapse;table-layout:fixed;margin:16px 0;font-size:.98rem;}
+  th{background:var(--navy);color:#fff;font-family:'Fraunces',serif;font-weight:600;text-align:left;padding:11px 14px;}
+  td{padding:11px 14px;border-bottom:1px solid var(--bordure);vertical-align:top;word-wrap:break-word;}
+  tbody tr:nth-child(even){background:var(--creme);}
+  td b{color:var(--rouge);}
+  .sujet{color:var(--rouge);font-weight:600;}
+  .verbe{color:var(--or);font-weight:600;}
+
+  .exemples{list-style:none;margin:16px 0;}
+  .exemples li{display:flex;align-items:flex-start;gap:12px;padding:6px 0;}
+  .exemples li img{width:20px;height:20px;margin-top:5px;flex-shrink:0;}
+  .exemples b{color:var(--rouge);font-weight:600;}
+
+  .bulle{display:flex;gap:16px;padding:20px 22px;margin:24px 0;background:var(--creme);border-radius:18px 18px 18px 4px;}
+  .bulle.warn{background:#fdf1ef;}
+  .bulle .marque{flex-shrink:0;width:28px;height:32px;}
+  .bulle .contenu{font-size:.98rem;}
+  .bulle .contenu strong{font-family:'Fraunces',serif;display:block;margin-bottom:4px;}
+
+  .exo{background:var(--creme);border-radius:14px;padding:26px 28px;margin:22px 0;}
+  .consigne{font-size:.95rem;color:var(--gris-texte);margin-bottom:18px;}
+  .q{margin-bottom:20px;}
+  .q .enonce{font-weight:500;margin-bottom:10px;font-size:1.02rem;}
+  .q .enonce .num{font-family:'Fraunces',serif;color:var(--or);margin-right:8px;}
+  .q .enonce .trou{display:inline-block;min-width:52px;border-bottom:2px solid var(--navy);text-align:center;font-weight:600;}
+  .opts{display:flex;flex-wrap:wrap;gap:10px;}
+  .opts button{font-family:'Inter',sans-serif;font-size:.98rem;font-weight:500;padding:9px 22px;
+    border:1px solid var(--bordure);border-radius:999px;background:#fff;color:var(--navy);cursor:pointer;transition:all .15s;}
+  .opts button:hover:not(:disabled){border-color:var(--navy);}
+  .opts button.juste{background:var(--vert-doux);border-color:var(--vert);color:var(--vert);font-weight:600;}
+  .opts button.faux{background:#fdeceb;border-color:var(--rouge);color:var(--rouge);}
+  .opts button:disabled{cursor:default;}
+  .expl{font-size:.88rem;color:var(--gris-texte);margin-top:8px;min-height:1.2em;font-style:italic;}
+  .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px;}
+  .btn{font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;padding:11px 24px;border:none;
+    border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;transition:background .2s;}
+  .btn:hover{background:#164066;}
+  .btn.secondaire{background:#fff;color:var(--navy);border:1px solid var(--navy);}
+  .score{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;}
+
+  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
+  footer a{color:#fff;text-decoration:underline;}
+
+  @media (max-width:720px){
+    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
+    .logo{font-size:1.3rem;} nav{gap:24px;}
+    .hero h1{font-size:2.1rem;}
+    .exo{padding:20px 18px;}
+    footer{padding:28px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hex-tri" viewBox="-1 -1 32 37">
+    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
+    <g clip-path="url(#clip-hex)">
+      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+    </g>
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+  </symbol>
+  <symbol id="hex-warn" viewBox="-1 -1 32 37">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#c0392b"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="19" font-weight="700" fill="#fff">!</text>
+  </symbol>
+  <symbol id="hex-info" viewBox="-1 -1 32 37">
+    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#0d2b45"/>
+    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="18" font-weight="700" fill="#fff">i</text>
+  </symbol>
+</svg>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
+    <span><span class="fw">French with</span> <span class="al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/ressources.html">Retour</a>
+    <a href="/">Accueil</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="hero"><h1>Qui ou que ?</h1></div>
+
+<div class="wrap">
+
+  <!-- ================= EXERCICE 1 ================= -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 1 — Qui ou que ?</h2>
+    <div class="exo">
+      <p class="consigne">Choisissez le pronom qui convient. <span style="font-style:italic">Choose the correct pronoun.</span></p>
+      <div id="exo1"></div>
+      <div class="actions">
+        <button class="btn secondaire" type="button" onclick="reinit(1)">Recommencer</button>
+        <span class="score" id="score1"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXERCICE 2 ================= -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 2 — Qui, que ou qu' ?</h2>
+    <div class="exo">
+      <p class="consigne">Attention à l'élision : « que » devient « qu' » devant une voyelle. <span style="font-style:italic">Watch out for elision: « que » becomes « qu' » before a vowel.</span></p>
+      <div id="exo2"></div>
+      <div class="actions">
+        <button class="btn secondaire" type="button" onclick="reinit(2)">Recommencer</button>
+        <span class="score" id="score2"></span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
+  <p style="margin-top:10px;font-size:.82rem;opacity:.7;">Ces ressources sont gratuites. <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener">Soutenir le site</a></p>
+</footer>
+
+<script>
+var EXO1 = [
+  ["Quel est le type de fromage ___ vous préférez ?", "que", "\u00ab vous \u00bb is a subject \u2192 que."],
+  ["Je voudrais acheter la voiture ___ coûte le moins cher.", "qui", "\u00ab co\u00fbte \u00bb is a verb \u2192 qui."],
+  ["Est-ce que tu aimes la chanson ___ passe à la radio ?", "qui", "\u00ab passe \u00bb is a verb \u2192 qui."],
+  ["Le film ___ je préfère s'appelle Le Grand Bleu.", "que", "\u00ab je \u00bb is a subject \u2192 que."],
+  ["Pouvez-vous me donner le livre ___ est sur la table ?", "qui", "\u00ab est \u00bb is a verb \u2192 qui."],
+  ["Le cadeau ___ j'ai reçu pour mon anniversaire est dans ma chambre.", "que", "\u00ab j' \u00bb is a subject \u2192 que, written \u00ab que j'ai \u00bb."],
+  ["Le magasin ___ a fermé employait des dizaines de salariés.", "qui", "\u00ab a ferm\u00e9 \u00bb is a verb \u2192 qui."],
+  ["Qui est la personne ___ m'a envoyé un message ?", "qui", "\u00ab a envoy\u00e9 \u00bb is a verb \u2192 qui."],
+  ["Voici le restaurant ___ nous vous recommandons.", "que", "\u00ab nous \u00bb is a subject \u2192 que."],
+  ["Il y a un chat ___ nous observe de l'autre côté de la rue.", "qui", "Here \u00ab nous \u00bb is an object, not a subject. The cat is watching us."]
+];
+
+var EXO2 = [
+  ["Le Maroc est un pays ___ elle adore.", "qu'", "\u00ab elle \u00bb is a subject \u2192 que, elided to qu' before a vowel."],
+  ["Fais ce ___ tu veux, ce n'est pas mon probl\u00e8me.", "que", "\u00ab tu \u00bb is a subject \u2192 que. No elision before a consonant."],
+  ["C'est une politique ___ a cr\u00e9\u00e9 de fortes divisions.", "qui", "\u00ab a cr\u00e9\u00e9 \u00bb is a verb \u2192 qui."],
+  ["Je suis d'accord avec ce ___ il a dit.", "qu'", "\u00ab il \u00bb is a subject \u2192 que, elided to qu'."],
+  ["L'homme ___ arrive est probablement notre h\u00f4te.", "qui", "\u00ab arrive \u00bb is a verb \u2192 qui. Qui is never elided."],
+  ["Je ne sais pas ce ___ se passe ici.", "qui", "\u00ab se passe \u00bb is a verb \u2192 ce qui."],
+  ["Dans la vie, je fais toujours ce ___ me pla\u00eet !", "qui", "\u00ab pla\u00eet \u00bb is a verb \u2192 ce qui. Here \u00ab me \u00bb is an object: something pleases me."],
+  ["Le rouge est la couleur ___ vous va le mieux !", "qui", "Here \u00ab vous \u00bb is an object, not a subject. The colour suits you."],
+  ["C'est la robe ___ Aur\u00e9lie a choisie pour son mariage.", "qu'", "\u00ab Aur\u00e9lie \u00bb is a subject \u2192 que, elided to qu' before a vowel \u2014 even before a name."],
+  ["Monsieur Fournier est le professeur ___ nous enseigne le fran\u00e7ais.", "qui", "\u00ab enseigne \u00bb is a verb \u2192 qui. Here \u00ab nous \u00bb is an object: he teaches us."]
+];
+
+
+var scores = {1:0, 2:0};
+
+function construit(n, data, options){
+  var c = document.getElementById('exo' + n);
+  c.innerHTML = '';
+  scores[n] = 0;
+  document.getElementById('score' + n).textContent = '';
+
+  data.forEach(function(item, i){
+    var phrase = item[0], bonne = item[1], expl = item[2];
+    var d = document.createElement('div');
+    d.className = 'q';
+
+    var e = document.createElement('div');
+    e.className = 'enonce';
+    e.innerHTML = '<span class="num">' + (i + 1) + '.</span>' +
+      phrase.replace('___', '<span class="trou" id="trou' + n + '-' + i + '">&nbsp;</span>');
+    d.appendChild(e);
+
+    var box = document.createElement('div');
+    box.className = 'opts';
+    var ex = document.createElement('div');
+    ex.className = 'expl';
+
+    options.forEach(function(mot){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = mot;
+      b.addEventListener('click', function(){
+        box.querySelectorAll('button').forEach(function(x){ x.disabled = true; });
+        var trou = document.getElementById('trou' + n + '-' + i);
+        if (mot === bonne){
+          b.classList.add('juste');
+          scores[n]++;
+          trou.textContent = bonne;
+          trou.style.color = '#2f7d51';
+        } else {
+          b.classList.add('faux');
+          box.querySelectorAll('button').forEach(function(x){
+            if (x.textContent === bonne) x.classList.add('juste');
+          });
+          trou.textContent = bonne;
+          trou.style.color = '#c0392b';
+        }
+        ex.textContent = expl;
+        document.getElementById('score' + n).textContent = scores[n] + ' / ' + data.length;
+      });
+      box.appendChild(b);
+    });
+
+    d.appendChild(box);
+    d.appendChild(ex);
+    c.appendChild(d);
+  });
+}
+
+function reinit(n){
+  if (n === 1) construit(1, EXO1, ['qui', 'que']);
+  if (n === 2) construit(2, EXO2, ['qui', 'que', "qu'"]);
+}
+
+reinit(1);
+reinit(2);
+</script>
+
+</body>
+</html>
