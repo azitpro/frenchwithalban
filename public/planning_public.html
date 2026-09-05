@@ -26,7 +26,8 @@ body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--
 header {
   padding: 28px 48px; border-bottom: 3px solid var(--navy);
   display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%; box-sizing: border-box;
+  background: rgba(250, 247, 242, 0.85);
+  backdrop-filter: blur(3px);
 }
 h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 8px; }
 .subtitle { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 20px; }
@@ -453,24 +454,17 @@ function labelZones() {
 labelZones();
 autoSelectZone();
 loadSchedule();
-</script>
 <script>
 (function(){
   var voile = document.getElementById('chargement');
-  var racine = document.getElementById('scheduleRoot');
-  if (!voile || !racine) return;
-
+  if (!voile) return;
   function fermer(){
     voile.classList.add('parti');
     setTimeout(function(){ voile.remove(); }, 400);
   }
-
-  var obs = new MutationObserver(function(){
-    if (!racine.querySelector('.loading')) { obs.disconnect(); fermer(); }
-  });
-  obs.observe(racine, { childList: true, subtree: true });
-
-  setTimeout(function(){ obs.disconnect(); fermer(); }, 8000);
+  if (document.readyState === 'complete') { setTimeout(fermer, 600); }
+  else { window.addEventListener('load', function(){ setTimeout(fermer, 600); }); }
+  setTimeout(fermer, 5000);
 })();
 </script>
 </body>
