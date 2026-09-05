@@ -7,7 +7,6 @@
 <meta name="description" content="Fiches, exercices et outils gratuits pour apprendre le français : conjugaison, grammaire, vocabulaire. Par un professeur natif.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
 :root {
   --cream: #faf7f2;
@@ -35,7 +34,7 @@ header {
 .logo-text { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); }
 .logo-text .red { color: var(--red); }
 nav { display: flex; gap: 44px; align-items: center; }
-nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.06em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
+nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
 nav a:hover { opacity: 1; }
 nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 2px; }
 .nav-cta { padding: 9px 22px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); }
@@ -44,6 +43,7 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
 .page-header {
   padding: 56px 64px 40px;
   border-bottom: 1px solid var(--border);
+  max-width: 1100px; margin: 0 auto; width: 100%;
 }
 .page-header h1 {
   font-family: 'DM Serif Display', serif;
@@ -55,23 +55,33 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
   line-height: 1.7; max-width: 520px;
 }
 
-.content { padding: 48px 64px 80px; display: flex; flex-direction: column; gap: 48px; }
+.soutien {
+  background: var(--cream-dark); border: 1px solid var(--border);
+  border-left: 3px solid var(--gold); padding: 18px 24px;
+  margin: 0 64px; display: flex; align-items: center;
+  justify-content: space-between; gap: 24px; flex-wrap: wrap;
+}
+.soutien-texte { font-size: 0.88rem; font-weight: 300; color: var(--text-soft); line-height: 1.6; max-width: 620px; }
+.soutien-texte strong { font-family: 'Fraunces', serif; font-weight: 600; color: var(--navy); }
+.soutien-btn {
+  display: inline-block; padding: 10px 22px; background: var(--navy); color: var(--cream);
+  text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
+  box-shadow: 3px 3px 0 var(--gold); transition: all 0.15s; white-space: nowrap;
+}
+.soutien-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--gold); }
 
-.category {}
+.content { padding: 48px 64px 80px; display: flex; flex-direction: column; gap: 48px; max-width: 1100px; margin: 0 auto; }
+
 .category-header {
   display: flex; align-items: center; gap: 10px;
   margin-bottom: 20px; padding-bottom: 10px;
   border-bottom: 2px solid var(--border);
 }
 .category-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
-.category-title {
-  font-family: 'Fraunces', serif; font-size: 1.1rem;
-  font-weight: 600; color: var(--navy);
-}
+.category-title { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); }
 .category-count {
   font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--text-soft);
-  margin-left: auto;
+  text-transform: uppercase; color: var(--text-soft); margin-left: auto;
 }
 
 .resource-list { display: flex; flex-direction: column; gap: 12px; }
@@ -92,18 +102,9 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
   color: white;
 }
 .resource-info { flex: 1; }
-.resource-name {
-  font-family: 'Fraunces', serif; font-size: 1.05rem;
-  font-weight: 600; color: var(--navy); margin-bottom: 4px;
-}
-.resource-desc {
-  font-size: 0.82rem; font-weight: 300;
-  color: var(--text-soft); line-height: 1.5;
-}
-.resource-arrow {
-  font-size: 1.1rem; color: var(--text-soft); flex-shrink: 0;
-  transition: transform 0.15s;
-}
+.resource-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.resource-desc { font-size: 0.82rem; font-weight: 300; color: var(--text-soft); line-height: 1.5; }
+.resource-arrow { font-size: 1.1rem; color: var(--text-soft); flex-shrink: 0; transition: transform 0.15s; }
 .resource-card:hover .resource-arrow { transform: translateX(4px); }
 
 .coming-soon {
@@ -114,44 +115,22 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
   text-align: center;
 }
 
-footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
 .footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
-.soutien {
-  background: var(--cream-dark); border: 1px solid var(--border);
-  border-left: 3px solid var(--gold); padding: 18px 24px;
-  margin: 0 64px; display: flex; align-items: center;
-  justify-content: space-between; gap: 24px; flex-wrap: wrap;
-}
-.soutien-texte { font-size: 0.88rem; font-weight: 300; color: var(--text-soft); line-height: 1.6; max-width: 620px; }
-.soutien-texte strong { font-family: 'Fraunces', serif; font-weight: 600; color: var(--navy); }
-.soutien-btn {
-  display: inline-block; padding: 10px 22px; background: var(--navy); color: var(--cream);
-  text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
-  box-shadow: 3px 3px 0 var(--gold); transition: all 0.15s; white-space: nowrap;
-}
-.soutien-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--gold); }
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ressources — French with Alban</title>
-<meta name="description" content="Fiches, exercices et outils gratuits pour apprendre le français : conjugaison, grammaire, vocabulaire. Par un professeur natif.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+.footer-copy a { color: rgba(250,247,242,0.6); }
 
 @media (max-width: 720px) {
   html, body { overflow-x: hidden; max-width: 100%; }
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 14px; }
+
+  header { padding: 18px 20px; flex-direction: column; align-items: flex-start; gap: 14px; }
   .logo-text { font-size: 1.25rem; }
-  header { flex-direction: column; align-items: flex-start; }
   nav { gap: 14px 16px; flex-wrap: wrap; width: 100%; }
-  nav a { font-size: 0.88rem; }
+  nav a { font-size: 0.88rem; letter-spacing: 0.02em; }
   .nav-cta { padding: 8px 16px; margin-left: auto; }
 
-  .page-header { padding: 36px 20px 28px; }
-  .page-header h1 { font-size: 2.2rem; }
+  .page-header { padding: 32px 20px 24px; }
+  .page-header h1 { font-size: 2.2rem; margin-bottom: 8px; }
   .page-header p { font-size: 0.92rem; }
 
   .soutien { margin: 0 20px; padding: 16px 18px; flex-direction: column; align-items: flex-start; gap: 14px; }
@@ -172,28 +151,13 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
 
   footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-
-<style>
-:root {
-  --cream: #faf7f2;
-  --cream-dark: #f0ece4;
-  --navy: #0d2b45;
-  --red: #c0392b;
-  --gold: #c9972a;
-  --border: #ddd8ce;
-  --text-soft: #666;
-  --conj-color: #1a56a0;
-  --gram-color: #b8860b;
-  --orth-color: #c0392b;
-  --vocab-color: #2e7d4f;
-}
 </style>
 </head>
 <body>
 
 <header>
   <a href="/" class="logo">
-        <svg width="30" height="35" viewBox="0 0 24 28">
+    <svg width="22" height="26" viewBox="-1 -1 26 30">
       <defs><clipPath id="h1"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
       <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h1)"/>
       <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h1)"/>
@@ -205,8 +169,8 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
   <nav>
     <a href="/">Accueil</a>
     <a href="/ressources.html" class="active">Ressources</a>
-        <a href="/apropos.html">À propos</a>
-        <a href="/reserver.html" class="nav-cta">Réserver</a>
+    <a href="/apropos.html">À propos</a>
+    <a href="/reserver.html" class="nav-cta">Réserver</a>
   </nav>
 </header>
 <div class="gold-line"></div>
@@ -265,9 +229,17 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
     <div class="category-header">
       <div class="category-dot" style="background:var(--gram-color)"></div>
       <div class="category-title">Grammaire</div>
-      <div class="category-count">1 ressource</div>
+      <div class="category-count">2 ressources</div>
     </div>
     <div class="resource-list">
+      <a href="/qui_que.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--gram-color)">2 Exercices</div>
+        <div class="resource-info">
+          <div class="resource-name">Qui ou que ?</div>
+          <div class="resource-desc">20 phrases à compléter, avec correction expliquée à chaque réponse.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
       <a href="/mots_interrogatifs_page.html" class="resource-card">
         <div class="resource-tag" style="background:var(--gram-color)">Fiche + Exercices</div>
         <div class="resource-info">
@@ -294,58 +266,10 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
     <div class="category-header">
       <div class="category-dot" style="background:var(--vocab-color)"></div>
       <div class="category-title">Vocabulaire</div>
-            <div class="category-count">10 ressources</div>
+      <div class="category-count">10 ressources</div>
     </div>
     <div class="resource-list">
-          <a href="/salutations.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercices</div>
-        <div class="resource-info">
-          <div class="resource-name">Salutations et politesse</div>
-          <div class="resource-desc">Vocabulaire essentiel avec phonétique, plus 3 exercices interactifs (QCM, lettres mélangées, traduction écrite).</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/phrases_essentielles.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercice</div>
-        <div class="resource-info">
-          <div class="resource-name">Phrases essentielles</div>
-          <div class="resource-desc">12 phrases indispensables pour voyager — se faire comprendre, demander son chemin, réserver une table.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/les_nombres.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + 2 Exercices</div>
-        <div class="resource-info">
-          <div class="resource-name">Les nombres</div>
-          <div class="resource-desc">De 1 à 1 milliard, avec le détail complet de 60 à 99. Deux exercices : chiffres → lettres et lettres → chiffres.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-                        <a href="/phrases_touristes.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercice</div>
-        <div class="resource-info">
-          <div class="resource-name">Phrases utiles pour touristes</div>
-          <div class="resource-desc">Se présenter, demander son chemin, commander, réserver, acheter, prendre le train — avec cartes de révision.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-            <a href="/jours_heure.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
-        <div class="resource-info">
-          <div class="resource-name">Les jours et l'heure</div>
-          <div class="resource-desc">Les sept jours, l'usage de l'article, et la lecture de l'heure illustrée par des horloges.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/saisons.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
-        <div class="resource-info">
-          <div class="resource-name">Les saisons et les mois</div>
-          <div class="resource-desc">Les quatre saisons illustrées et les douze mois de l'année, avec leur prononciation.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-            <a href="/meteo.html" class="resource-card">
+      <a href="/meteo.html" class="resource-card">
         <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
         <div class="resource-info">
           <div class="resource-name">La météo</div>
@@ -354,7 +278,6 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
         <div class="resource-arrow">→</div>
       </a>
       <a href="/animaux.html" class="resource-card">
-            <a href="/animaux.html" class="resource-card">
         <div class="resource-tag" style="background:var(--vocab-color)">Fiche + 4 Exercices</div>
         <div class="resource-info">
           <div class="resource-name">Les animaux</div>
@@ -378,6 +301,54 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
         </div>
         <div class="resource-arrow">→</div>
       </a>
+      <a href="/jours_heure.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
+        <div class="resource-info">
+          <div class="resource-name">Les jours et l'heure</div>
+          <div class="resource-desc">Les sept jours, l'usage de l'article, et la lecture de l'heure illustrée par des horloges.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a href="/saisons.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
+        <div class="resource-info">
+          <div class="resource-name">Les saisons et les mois</div>
+          <div class="resource-desc">Les quatre saisons illustrées et les douze mois de l'année, avec leur prononciation.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a href="/phrases_touristes.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercice</div>
+        <div class="resource-info">
+          <div class="resource-name">Phrases utiles pour touristes</div>
+          <div class="resource-desc">Se présenter, demander son chemin, commander, réserver, acheter, prendre le train — avec cartes de révision.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a href="/salutations.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercices</div>
+        <div class="resource-info">
+          <div class="resource-name">Salutations et politesse</div>
+          <div class="resource-desc">Vocabulaire essentiel avec phonétique, plus 3 exercices interactifs (QCM, lettres mélangées, traduction écrite).</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a href="/phrases_essentielles.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercice</div>
+        <div class="resource-info">
+          <div class="resource-name">Phrases essentielles</div>
+          <div class="resource-desc">12 phrases indispensables pour voyager — se faire comprendre, demander son chemin, réserver une table.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a href="/les_nombres.html" class="resource-card">
+        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + 2 Exercices</div>
+        <div class="resource-info">
+          <div class="resource-name">Les nombres</div>
+          <div class="resource-desc">De 1 à 1 milliard, avec le détail complet de 60 à 99. Deux exercices : chiffres → lettres et lettres → chiffres.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
     </div>
   </div>
 
@@ -385,7 +356,7 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
 
 <footer>
   <div class="footer-logo">
-    <svg width="18" height="22" viewBox="0 0 24 28">
+    <svg width="18" height="22" viewBox="-1 -1 26 30">
       <defs><clipPath id="hf"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
       <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hf)"/>
       <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hf)"/>
@@ -394,7 +365,7 @@ footer { background: var(--navy); padding: 28px 64px; border-top: 4px solid var(
     </svg>
     French with Alban
   </div>
-    <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" style="color:rgba(250,247,242,0.6)">Soutenir le site</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener">Soutenir le site</a></div>
 </footer>
 
 </body>
