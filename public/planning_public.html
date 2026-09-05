@@ -466,18 +466,34 @@ loadSchedule();
   else { window.addEventListener('load', function(){ setTimeout(fermer, 600); }); }
   setTimeout(fermer, 5000);
 })();
+<script>
+(function(){
+  var v = document.createElement('div');
+  v.id = 'chargement';
+  v.innerHTML =
+    '<svg width="54" height="63" viewBox="-1 -1 32 37" xmlns="http://www.w3.org/2000/svg">' +
+    '<clipPath id="clipChg"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>' +
+    '<g clip-path="url(#clipChg)">' +
+    '<rect x="0" y="0" width="10" height="35" fill="#002395"/>' +
+    '<rect x="10" y="0" width="10" height="35" fill="#ffffff"/>' +
+    '<rect x="20" y="0" width="10" height="35" fill="#ED2939"/>' +
+    '</g>' +
+    '<polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>' +
+    '</svg><div class="txt">Chargement</div>';
+  document.body.appendChild(v);
+
+  function fermer(){
+    v.classList.add('parti');
+    setTimeout(function(){ if (v.parentNode) v.remove(); }, 400);
+  }
+
+  var racine = document.getElementById('scheduleRoot');
+  var t = setInterval(function(){
+    if (racine && !racine.querySelector('.loading')) { clearInterval(t); fermer(); }
+  }, 200);
+
+  setTimeout(function(){ clearInterval(t); fermer(); }, 8000);
+})();
 </script>
 </body>
-<div id="chargement">
-  <svg width="54" height="63" viewBox="-1 -1 32 37" xmlns="http://www.w3.org/2000/svg">
-    <clipPath id="clipChg"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
-    <g clip-path="url(#clipChg)">
-      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-    </g>
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
-  </svg>
-  <div class="txt">Chargement</div>
-</div>
 </html>
