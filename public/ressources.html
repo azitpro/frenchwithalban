@@ -7,6 +7,37 @@
 <meta name="description" content="Fiches, exercices et outils gratuits pour apprendre le français : conjugaison, grammaire, vocabulaire. Par un professeur natif.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+@media (max-width: 720px) {
+  header { padding: 18px 20px; flex-wrap: wrap; gap: 14px; }
+  .logo-text { font-size: 1.25rem; }
+  nav { gap: 18px; flex-wrap: wrap; }
+  nav a { font-size: 0.92rem; }
+  .nav-cta { padding: 9px 18px; }
+
+  .page-header { padding: 36px 20px 28px; }
+  .page-header h1 { font-size: 2.2rem; }
+  .page-header p { font-size: 0.92rem; }
+
+  .soutien { margin: 0 20px; padding: 16px 18px; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .soutien-texte { font-size: 0.85rem; }
+
+  .content { padding: 32px 20px 56px; gap: 36px; }
+
+  .resource-card { flex-wrap: wrap; padding: 16px 18px; gap: 12px; }
+  .resource-tag { order: 1; }
+  .resource-arrow { order: 2; margin-left: auto; }
+  .resource-info { order: 3; flex-basis: 100%; }
+  .resource-name { font-size: 1rem; }
+  .resource-desc { font-size: 0.8rem; }
+  .resource-card:hover { transform: none; box-shadow: 2px 2px 0 var(--navy); }
+
+  .category-title { font-size: 1rem; }
+  .category-count { font-size: 0.66rem; }
+
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+
 <style>
 :root {
   --cream: #faf7f2;
