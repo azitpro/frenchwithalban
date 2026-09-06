@@ -19,6 +19,8 @@
   --conj-color: #1a56a0;
   --gram-color: #b8860b;
   --vocab-color: #2e7d4f;
+  --test-color: #c0392b;
+  --orth-color: #7b3f9d;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
@@ -71,7 +73,7 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
 
 .resource-card { display: flex; align-items: center; padding: 16px 20px; background: var(--cream); border: 1px solid var(--border); text-decoration: none; color: var(--navy); transition: box-shadow .15s, transform .15s; gap: 18px; }
 .resource-card:hover { box-shadow: 4px 4px 0 var(--navy); transform: translate(-2px,-2px); }
-.resource-tag { font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 4px 9px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; color: #fff; }
+.resource-tag { font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 4px 9px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; color: #fff; width: 118px; text-align: center; }
 .resource-info { flex: 1; }
 .resource-name { font-family: 'Fraunces', serif; font-size: 1.02rem; font-weight: 600; margin-bottom: 3px; }
 .resource-desc { font-size: .8rem; font-weight: 300; color: var(--text-soft); line-height: 1.5; }
@@ -326,7 +328,7 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
       </a>
 
       <a href="/conjugaison.html" class="resource-card">
-        <div class="resource-tag t" style="background:var(--conj-color)" data-fr="Test" data-en="Test">Test</div>
+        <div class="resource-tag t" style="background:var(--test-color)" data-fr="Test" data-en="Test">Test</div>
         <div class="resource-info">
           <div class="resource-name t" data-fr="Test de conjugaison" data-en="Conjugation test">Test de conjugaison</div>
           <div class="resource-desc t" data-fr="28 verbes irréguliers — présent, imparfait, passé composé. Noté sur 10 ou 20."
