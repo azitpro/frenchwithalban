@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ressources — French with Alban</title>
-<meta name="description" content="Fiches, exercices et outils gratuits pour apprendre le français : conjugaison, grammaire, vocabulaire. Par un professeur natif.">
+<meta name="description" content="Fiches, exercices et outils gratuits pour apprendre le français, classés par niveau : débutant complet, faux débutant, intermédiaire, avancé.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -18,18 +18,12 @@
   --text-soft: #666;
   --conj-color: #1a56a0;
   --gram-color: #b8860b;
-  --orth-color: #c0392b;
   --vocab-color: #2e7d4f;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
 
-header {
-  padding: 28px 48px;
-  border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream);
-}
+header { padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .logo-text { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); }
 .logo-text .red { color: var(--red); }
@@ -40,120 +34,117 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
 .nav-cta { padding: 9px 22px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); }
 .gold-line { height: 2px; background: var(--gold); }
 
-.page-header {
-  padding: 56px 64px 40px;
-  border-bottom: 1px solid var(--border);
-  max-width: 1100px; margin: 0 auto; width: 100%;
-}
-.page-header h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 3.5rem; font-weight: 400; color: var(--navy);
-  margin-bottom: 12px;
-}
-.page-header p {
-  font-size: 1rem; font-weight: 300; color: var(--text-soft);
-  line-height: 1.7; max-width: 520px;
-}
+/* ---------- SÉLECTEUR DE LANGUE ---------- */
+.langues { position: fixed; right: 22px; bottom: 22px; z-index: 500; display: flex; flex-direction: column; gap: 10px; }
+.lang-btn { width: 46px; height: 54px; padding: 0; border: none; background: none; cursor: pointer; line-height: 0; opacity: .45; transition: opacity .2s, transform .2s; filter: drop-shadow(2px 2px 0 rgba(13,43,69,.25)); }
+.lang-btn:hover { opacity: .85; transform: translateY(-2px); }
+.lang-btn.actif { opacity: 1; filter: none; }
+.lang-btn svg { width: 100%; height: 100%; display: block; }
+.lang-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-.soutien {
-  background: var(--cream-dark); border: 1px solid var(--border);
-  border-left: 3px solid var(--gold); padding: 18px 24px;
-  margin: 0 64px; display: flex; align-items: center;
-  justify-content: space-between; gap: 24px; flex-wrap: wrap;
-}
-.soutien-texte { font-size: 0.88rem; font-weight: 300; color: var(--text-soft); line-height: 1.6; max-width: 620px; }
+.page-header { padding: 56px 64px 40px; border-bottom: 1px solid var(--border); max-width: 1100px; margin: 0 auto; width: 100%; }
+.page-header h1 { font-family: 'DM Serif Display', serif; font-size: 3.5rem; font-weight: 400; margin-bottom: 12px; }
+.page-header p { font-size: 1rem; font-weight: 300; color: var(--text-soft); line-height: 1.7; max-width: 560px; }
+
+.soutien { background: var(--cream-dark); border: 1px solid var(--border); border-left: 3px solid var(--gold); padding: 18px 24px; margin: 0 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.soutien-texte { font-size: .88rem; font-weight: 300; color: var(--text-soft); line-height: 1.6; max-width: 620px; }
 .soutien-texte strong { font-family: 'Fraunces', serif; font-weight: 600; color: var(--navy); }
-.soutien-btn {
-  display: inline-block; padding: 10px 22px; background: var(--navy); color: var(--cream);
-  text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
-  box-shadow: 3px 3px 0 var(--gold); transition: all 0.15s; white-space: nowrap;
-}
-.soutien-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--gold); }
+.soutien-btn { display: inline-block; padding: 10px 22px; background: var(--navy); color: var(--cream); text-decoration: none; font-size: .8rem; font-weight: 600; letter-spacing: .06em; box-shadow: 3px 3px 0 var(--gold); transition: all .15s; white-space: nowrap; }
+.soutien-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--gold); }
 
-.content { padding: 48px 64px 80px; display: flex; flex-direction: column; gap: 48px; max-width: 1100px; margin: 0 auto; }
+.content { padding: 48px 64px 80px; display: flex; flex-direction: column; gap: 18px; max-width: 1100px; margin: 0 auto; }
 
-.category-header {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 20px; padding-bottom: 10px;
-  border-bottom: 2px solid var(--border);
-}
-.category-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
-.category-title { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); }
-.category-count {
-  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--text-soft); margin-left: auto;
-}
+/* ---------- NIVEAUX ---------- */
+.niveau { border: 1px solid var(--border); background: var(--cream-dark); }
+.niveau-tete { display: flex; align-items: center; gap: 22px; padding: 20px 26px; cursor: pointer; user-select: none; background: none; border: none; width: 100%; text-align: left; font-family: 'Inter', sans-serif; }
+.niveau-tete:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
+.niveau-img { width: 74px; height: 74px; flex-shrink: 0; object-fit: contain; }
+.niveau-txt { flex: 1; }
+.niveau-nom { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 600; color: var(--navy); }
+.niveau-code { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
+.niveau-desc { font-size: .85rem; font-weight: 300; color: var(--text-soft); margin-top: 6px; line-height: 1.5; }
+.niveau-compte { font-size: .72rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--text-soft); white-space: nowrap; }
+.chevron { font-size: 1.1rem; color: var(--navy); transition: transform .25s; flex-shrink: 0; }
+.niveau.ouvert .chevron { transform: rotate(180deg); }
+.niveau-corps { display: none; padding: 0 26px 24px; }
+.niveau.ouvert .niveau-corps { display: flex; flex-direction: column; gap: 10px; }
 
-.resource-list { display: flex; flex-direction: column; gap: 12px; }
-.resource-card {
-  display: flex; align-items: center;
-  padding: 18px 24px;
-  background: var(--cream-dark);
-  border: 1px solid var(--border);
-  text-decoration: none; color: var(--navy);
-  transition: box-shadow 0.15s, transform 0.15s;
-  gap: 20px;
-}
-.resource-card:hover { box-shadow: 4px 4px 0 var(--navy); transform: translate(-2px, -2px); }
-.resource-tag {
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; padding: 4px 9px;
-  border-radius: 2px; white-space: nowrap; flex-shrink: 0;
-  color: white;
-}
+.resource-card { display: flex; align-items: center; padding: 16px 20px; background: var(--cream); border: 1px solid var(--border); text-decoration: none; color: var(--navy); transition: box-shadow .15s, transform .15s; gap: 18px; }
+.resource-card:hover { box-shadow: 4px 4px 0 var(--navy); transform: translate(-2px,-2px); }
+.resource-tag { font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 4px 9px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; color: #fff; }
 .resource-info { flex: 1; }
-.resource-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
-.resource-desc { font-size: 0.82rem; font-weight: 300; color: var(--text-soft); line-height: 1.5; }
-.resource-arrow { font-size: 1.1rem; color: var(--text-soft); flex-shrink: 0; transition: transform 0.15s; }
+.resource-name { font-family: 'Fraunces', serif; font-size: 1.02rem; font-weight: 600; margin-bottom: 3px; }
+.resource-desc { font-size: .8rem; font-weight: 300; color: var(--text-soft); line-height: 1.5; }
+.resource-arrow { font-size: 1.1rem; color: var(--text-soft); flex-shrink: 0; transition: transform .15s; }
 .resource-card:hover .resource-arrow { transform: translateX(4px); }
-
-.coming-soon {
-  padding: 20px 24px;
-  border: 1px dashed var(--border);
-  font-size: 0.82rem; font-weight: 300;
-  color: var(--text-soft); font-style: italic;
-  text-align: center;
-}
+.vide { padding: 18px 20px; border: 1px dashed var(--border); font-size: .82rem; font-weight: 300; color: var(--text-soft); font-style: italic; text-align: center; }
 
 footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
-.footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
-.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
-.footer-copy a { color: rgba(250,247,242,0.6); }
+.footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
+.footer-copy { font-size: .72rem; font-weight: 300; color: rgba(250,247,242,.4); letter-spacing: .04em; }
+.footer-copy a { color: rgba(250,247,242,.6); }
 
 @media (max-width: 720px) {
   html, body { overflow-x: hidden; max-width: 100%; }
-
   header { padding: 18px 20px; flex-direction: column; align-items: flex-start; gap: 14px; }
   .logo-text { font-size: 1.25rem; }
   nav { gap: 14px 16px; flex-wrap: wrap; width: 100%; }
-  nav a { font-size: 0.88rem; letter-spacing: 0.02em; }
+  nav a { font-size: .88rem; }
   .nav-cta { padding: 8px 16px; margin-left: auto; }
-
   .page-header { padding: 32px 20px 24px; }
-  .page-header h1 { font-size: 2.2rem; margin-bottom: 8px; }
-  .page-header p { font-size: 0.92rem; }
-
+  .page-header h1 { font-size: 2.2rem; }
+  .page-header p { font-size: .92rem; }
   .soutien { margin: 0 20px; padding: 16px 18px; flex-direction: column; align-items: flex-start; gap: 14px; }
-  .soutien-texte { font-size: 0.85rem; }
-
-  .content { padding: 32px 20px 56px; gap: 36px; }
-
-  .resource-card { flex-direction: column; align-items: flex-start; padding: 16px 18px; gap: 10px; }
-  .resource-tag { align-self: flex-start; }
+  .content { padding: 28px 20px 56px; }
+  .niveau-tete { padding: 16px 16px; gap: 14px; }
+  .niveau-img { width: 56px; height: 56px; }
+  .niveau-nom { font-size: 1.05rem; }
+  .niveau-compte { display: none; }
+  .niveau-corps { padding: 0 16px 20px; }
+  .resource-card { flex-direction: column; align-items: flex-start; gap: 9px; padding: 14px 16px; }
   .resource-arrow { display: none; }
-  .resource-info { width: 100%; }
-  .resource-name { font-size: 1rem; }
-  .resource-desc { font-size: 0.8rem; }
   .resource-card:hover { transform: none; box-shadow: 2px 2px 0 var(--navy); }
-
-  .category-title { font-size: 1rem; }
-  .category-count { font-size: 0.66rem; }
-
   footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+  .langues { right: 14px; bottom: 14px; flex-direction: row; }
+  .lang-btn { width: 38px; height: 45px; }
 }
 </style>
 </head>
 <body>
+
+<!-- ---------- SÉLECTEUR DE LANGUE ---------- -->
+<div class="langues" role="group" aria-label="Langue">
+  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxFR)">
+        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button type="button" class="lang-btn" id="btn-en" title="English">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxEN)">
+        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
+        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
+        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
+        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
+        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
 
 <header>
   <a href="/" class="logo">
@@ -167,188 +158,251 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
     <span class="logo-text">French with <span class="red">Alban</span></span>
   </a>
   <nav>
-    <a href="/">Accueil</a>
-    <a href="/ressources.html" class="active">Ressources</a>
-    <a href="/apropos.html">À propos</a>
-    <a href="/reserver.html" class="nav-cta">Réserver</a>
+    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
+    <a href="/ressources.html" class="active t" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="nav-cta t" data-fr="Réserver" data-en="Book">Réserver</a>
   </nav>
 </header>
 <div class="gold-line"></div>
 
 <div class="page-header">
-  <h1>Ressources</h1>
-  <p>Fiches, exercices et outils pour progresser en français. Toutes les ressources sont gratuites.</p>
+  <h1 class="t" data-fr="Ressources" data-en="Resources">Ressources</h1>
+  <p class="t" data-fr="Fiches, exercices et outils pour progresser en français, classés par niveau. Cliquez sur un niveau pour voir les ressources. Tout est gratuit."
+     data-en="Sheets, exercises and tools to improve your French, sorted by level. Click a level to see what's inside. Everything is free.">Fiches, exercices et outils pour progresser en français, classés par niveau. Cliquez sur un niveau pour voir les ressources. Tout est gratuit.</p>
 </div>
 
 <div class="soutien">
-  <div class="soutien-texte">
-    <strong>Toutes ces ressources sont gratuites.</strong> Elles demandent du temps à concevoir : rédaction, illustrations, exercices interactifs. Si elles vous sont utiles, vous pouvez contribuer à leur développement — chaque soutien finance les prochains chapitres.
-  </div>
-  <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" class="soutien-btn">Soutenir le site</a>
+  <div class="soutien-texte t"
+       data-fr="&lt;strong&gt;Toutes ces ressources sont gratuites.&lt;/strong&gt; Elles demandent du temps à concevoir : rédaction, illustrations, exercices interactifs. Si elles vous sont utiles, vous pouvez contribuer à leur développement — chaque soutien finance les prochains chapitres."
+       data-en="&lt;strong&gt;All these resources are free.&lt;/strong&gt; They take time to design: writing, illustrations, interactive exercises. If you find them useful, you can help them grow — every contribution funds the next chapters."
+       data-html="1"><strong>Toutes ces ressources sont gratuites.</strong> Elles demandent du temps à concevoir : rédaction, illustrations, exercices interactifs. Si elles vous sont utiles, vous pouvez contribuer à leur développement — chaque soutien finance les prochains chapitres.</div>
+  <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" class="soutien-btn t" data-fr="Soutenir le site" data-en="Support the site">Soutenir le site</a>
 </div>
 
 <div class="content">
 
-  <!-- CONJUGAISON -->
-  <div class="category">
-    <div class="category-header">
-      <div class="category-dot" style="background:var(--conj-color)"></div>
-      <div class="category-title">Conjugaison</div>
-      <div class="category-count">3 ressources</div>
-    </div>
-    <div class="resource-list">
-      <a href="/conjugaison.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--conj-color)">Test</div>
-        <div class="resource-info">
-          <div class="resource-name">Les verbes irréguliers</div>
-          <div class="resource-desc">28 verbes essentiels — présent, imparfait, passé composé. Exercice interactif noté sur 10 ou 20, avec bonus de traduction.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/verbes_er.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--conj-color)">Fiche</div>
-        <div class="resource-info">
-          <div class="resource-name">Les verbes en -ER au présent</div>
-          <div class="resource-desc">Conjugaison standard et cas particuliers (commencer, manger, appeler, acheter) avec code couleur.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/verbes_irreguliers.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--conj-color)">Fiche</div>
-        <div class="resource-info">
-          <div class="resource-name">Les verbes irréguliers au présent</div>
-          <div class="resource-desc">24 verbes essentiels (être, avoir, aller, faire...) avec code couleur pour repérer les vraies irrégularités.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-    </div>
-  </div>
+  <!-- ================= A0 ================= -->
+  <div class="niveau ouvert">
+    <button class="niveau-tete" type="button">
+      <img class="niveau-img" src="/img/niveaux/oeuf.png" alt="">
+      <div class="niveau-txt">
+        <div class="niveau-nom t" data-fr="Débutant complet" data-en="Complete beginner">Débutant complet</div>
+        <div class="niveau-code">A0</div>
+        <div class="niveau-desc t" data-fr="Vous partez de zéro : premiers mots, premières phrases, prononciation."
+             data-en="Starting from scratch: first words, first sentences, pronunciation.">Vous partez de zéro : premiers mots, premières phrases, prononciation.</div>
+      </div>
+      <div class="niveau-compte"><span class="t" data-fr="9 ressources" data-en="9 resources">9 ressources</span></div>
+      <div class="chevron">▾</div>
+    </button>
+    <div class="niveau-corps">
 
-  <!-- GRAMMAIRE -->
-  <div class="category">
-    <div class="category-header">
-      <div class="category-dot" style="background:var(--gram-color)"></div>
-      <div class="category-title">Grammaire</div>
-      <div class="category-count">2 ressources</div>
-    </div>
-    <div class="resource-list">
-      <a href="/qui_que.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--gram-color)">2 Exercices</div>
-        <div class="resource-info">
-          <div class="resource-name">Qui ou que ?</div>
-          <div class="resource-desc">20 phrases à compléter, avec correction expliquée à chaque réponse.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/mots_interrogatifs_page.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--gram-color)">Fiche + Exercices</div>
-        <div class="resource-info">
-          <div class="resource-name">Mots interrogatifs</div>
-          <div class="resource-desc">Combien, comment, pourquoi, qui, quand, où, que/quoi, quel(s)/quelle(s) — avec 2 exercices interactifs.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- ORTHOGRAPHE -->
-  <div class="category">
-    <div class="category-header">
-      <div class="category-dot" style="background:var(--orth-color)"></div>
-      <div class="category-title">Orthographe</div>
-      <div class="category-count">À venir</div>
-    </div>
-    <div class="coming-soon">Prochaines ressources en cours de préparation…</div>
-  </div>
-
-  <!-- VOCABULAIRE -->
-  <div class="category">
-    <div class="category-header">
-      <div class="category-dot" style="background:var(--vocab-color)"></div>
-      <div class="category-title">Vocabulaire</div>
-      <div class="category-count">10 ressources</div>
-    </div>
-    <div class="resource-list">
-      <a href="/meteo.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
-        <div class="resource-info">
-          <div class="resource-name">La météo</div>
-          <div class="resource-desc">Le vocabulaire illustré, les trois structures « il fait / il pleut / il y a du », les températures et quelques expressions.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/animaux.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + 4 Exercices</div>
-        <div class="resource-info">
-          <div class="resource-name">Les animaux</div>
-          <div class="resource-desc">79 animaux classés par catégorie, avec cartes de révision anglais-français et exercices interactifs.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/couleurs.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
-        <div class="resource-info">
-          <div class="resource-name">Les couleurs</div>
-          <div class="resource-desc">Les couleurs de base illustrées, avec leur prononciation et leur forme au féminin.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/adjectifs.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + 5 Exercices</div>
-        <div class="resource-info">
-          <div class="resource-name">Les 50 adjectifs essentiels</div>
-          <div class="resource-desc">Accord au féminin et au pluriel, place avant ou après le nom, phonétique — avec 5 exercices interactifs.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/jours_heure.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
-        <div class="resource-info">
-          <div class="resource-name">Les jours et l'heure</div>
-          <div class="resource-desc">Les sept jours, l'usage de l'article, et la lecture de l'heure illustrée par des horloges.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/saisons.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche</div>
-        <div class="resource-info">
-          <div class="resource-name">Les saisons et les mois</div>
-          <div class="resource-desc">Les quatre saisons illustrées et les douze mois de l'année, avec leur prononciation.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
-      <a href="/phrases_touristes.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercice</div>
-        <div class="resource-info">
-          <div class="resource-name">Phrases utiles pour touristes</div>
-          <div class="resource-desc">Se présenter, demander son chemin, commander, réserver, acheter, prendre le train — avec cartes de révision.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
       <a href="/salutations.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercices</div>
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
         <div class="resource-info">
-          <div class="resource-name">Salutations et politesse</div>
-          <div class="resource-desc">Vocabulaire essentiel avec phonétique, plus 3 exercices interactifs (QCM, lettres mélangées, traduction écrite).</div>
+          <div class="resource-name t" data-fr="Salutations et politesse" data-en="Greetings and politeness">Salutations et politesse</div>
+          <div class="resource-desc t" data-fr="Le vocabulaire essentiel avec phonétique, plus 3 exercices interactifs."
+               data-en="Essential vocabulary with pronunciation, plus 3 interactive exercises.">Le vocabulaire essentiel avec phonétique, plus 3 exercices interactifs.</div>
         </div>
         <div class="resource-arrow">→</div>
       </a>
-      <a href="/phrases_essentielles.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + Exercice</div>
-        <div class="resource-info">
-          <div class="resource-name">Phrases essentielles</div>
-          <div class="resource-desc">12 phrases indispensables pour voyager — se faire comprendre, demander son chemin, réserver une table.</div>
-        </div>
-        <div class="resource-arrow">→</div>
-      </a>
+
       <a href="/les_nombres.html" class="resource-card">
-        <div class="resource-tag" style="background:var(--vocab-color)">Fiche + 2 Exercices</div>
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
         <div class="resource-info">
-          <div class="resource-name">Les nombres</div>
-          <div class="resource-desc">De 1 à 1 milliard, avec le détail complet de 60 à 99. Deux exercices : chiffres → lettres et lettres → chiffres.</div>
+          <div class="resource-name t" data-fr="Les nombres" data-en="Numbers">Les nombres</div>
+          <div class="resource-desc t" data-fr="De 1 à 1 milliard, avec le détail de 60 à 99 et deux exercices."
+               data-en="From 1 to a billion, with the tricky 60 to 99 explained, plus two exercises.">De 1 à 1 milliard, avec le détail de 60 à 99 et deux exercices.</div>
         </div>
         <div class="resource-arrow">→</div>
       </a>
+
+      <a href="/couleurs.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Les couleurs" data-en="Colours">Les couleurs</div>
+          <div class="resource-desc t" data-fr="Les couleurs de base illustrées, avec leur prononciation et leur forme au féminin."
+               data-en="The basic colours illustrated, with pronunciation and feminine forms.">Les couleurs de base illustrées, avec leur prononciation et leur forme au féminin.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/jours_heure.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Les jours et l'heure" data-en="Days and time">Les jours et l'heure</div>
+          <div class="resource-desc t" data-fr="Les sept jours, l'usage de l'article, et la lecture de l'heure illustrée."
+               data-en="The seven days, when to use the article, and telling the time.">Les sept jours, l'usage de l'article, et la lecture de l'heure illustrée.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/saisons.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Les saisons et les mois" data-en="Seasons and months">Les saisons et les mois</div>
+          <div class="resource-desc t" data-fr="Les quatre saisons illustrées et les douze mois, avec leur prononciation."
+               data-en="The four seasons illustrated and the twelve months, with pronunciation.">Les quatre saisons illustrées et les douze mois, avec leur prononciation.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/meteo.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="La météo" data-en="The weather">La météo</div>
+          <div class="resource-desc t" data-fr="Le vocabulaire illustré, les structures « il fait / il pleut / il y a du » et les températures."
+               data-en="Illustrated vocabulary, the three weather structures, and temperatures.">Le vocabulaire illustré, les structures « il fait / il pleut / il y a du » et les températures.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/animaux.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Les animaux" data-en="Animals">Les animaux</div>
+          <div class="resource-desc t" data-fr="79 animaux classés par catégorie, avec cartes de révision et exercices."
+               data-en="79 animals sorted by category, with flashcards and interactive exercises.">79 animaux classés par catégorie, avec cartes de révision et exercices.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/phrases_essentielles.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Phrases essentielles" data-en="Essential phrases">Phrases essentielles</div>
+          <div class="resource-desc t" data-fr="12 phrases indispensables pour voyager et se faire comprendre."
+               data-en="12 must-know phrases for travelling and making yourself understood.">12 phrases indispensables pour voyager et se faire comprendre.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/phrases_touristes.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Phrases utiles pour touristes" data-en="Useful phrases for travellers">Phrases utiles pour touristes</div>
+          <div class="resource-desc t" data-fr="Se présenter, demander son chemin, commander, réserver — avec cartes de révision."
+               data-en="Introducing yourself, asking directions, ordering, booking — with flashcards.">Se présenter, demander son chemin, commander, réserver — avec cartes de révision.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ================= A1-A2 ================= -->
+  <div class="niveau">
+    <button class="niveau-tete" type="button">
+      <img class="niveau-img" src="/img/niveaux/poussin.png" alt="">
+      <div class="niveau-txt">
+        <div class="niveau-nom t" data-fr="Faux débutant" data-en="Elementary">Faux débutant</div>
+        <div class="niveau-code">A1 – A2</div>
+        <div class="niveau-desc t" data-fr="Vous connaissez les bases : il s'agit maintenant de construire des phrases justes."
+             data-en="You know the basics — now it's about building correct sentences.">Vous connaissez les bases : il s'agit maintenant de construire des phrases justes.</div>
+      </div>
+      <div class="niveau-compte"><span class="t" data-fr="6 ressources" data-en="6 resources">6 ressources</span></div>
+      <div class="chevron">▾</div>
+    </button>
+    <div class="niveau-corps">
+
+      <a href="/verbes_er.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--conj-color)" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Les verbes en -ER au présent" data-en="-ER verbs in the present tense">Les verbes en -ER au présent</div>
+          <div class="resource-desc t" data-fr="Conjugaison standard et cas particuliers, avec code couleur."
+               data-en="The standard pattern and the special cases, with colour coding.">Conjugaison standard et cas particuliers, avec code couleur.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/verbes_irreguliers.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--conj-color)" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Les verbes irréguliers au présent" data-en="Irregular verbs in the present tense">Les verbes irréguliers au présent</div>
+          <div class="resource-desc t" data-fr="24 verbes essentiels avec code couleur pour repérer les vraies irrégularités."
+               data-en="24 essential verbs, colour-coded to show what is really irregular.">24 verbes essentiels avec code couleur pour repérer les vraies irrégularités.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/conjugaison.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--conj-color)" data-fr="Test" data-en="Test">Test</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Test de conjugaison" data-en="Conjugation test">Test de conjugaison</div>
+          <div class="resource-desc t" data-fr="28 verbes irréguliers — présent, imparfait, passé composé. Noté sur 10 ou 20."
+               data-en="28 irregular verbs — present, imperfect and perfect. Scored out of 10 or 20.">28 verbes irréguliers — présent, imparfait, passé composé. Noté sur 10 ou 20.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/adjectifs.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--vocab-color)" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Les 50 adjectifs essentiels" data-en="The 50 essential adjectives">Les 50 adjectifs essentiels</div>
+          <div class="resource-desc t" data-fr="Accord au féminin et au pluriel, place avant ou après le nom — 5 exercices."
+               data-en="Feminine and plural agreement, position before or after the noun — 5 exercises.">Accord au féminin et au pluriel, place avant ou après le nom — 5 exercices.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/mots_interrogatifs_page.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--gram-color)" data-fr="Grammaire" data-en="Grammar">Grammaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Les mots interrogatifs" data-en="Question words">Les mots interrogatifs</div>
+          <div class="resource-desc t" data-fr="Combien, comment, pourquoi, quand, où, quel — avec 2 exercices interactifs."
+               data-en="How much, how, why, when, where, which — with 2 interactive exercises.">Combien, comment, pourquoi, quand, où, quel — avec 2 exercices interactifs.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+      <a href="/qui_que.html" class="resource-card">
+        <div class="resource-tag t" style="background:var(--gram-color)" data-fr="Grammaire" data-en="Grammar">Grammaire</div>
+        <div class="resource-info">
+          <div class="resource-name t" data-fr="Qui ou que ?" data-en="Qui or que?">Qui ou que ?</div>
+          <div class="resource-desc t" data-fr="20 phrases à compléter, avec correction expliquée à chaque réponse."
+               data-en="20 sentences to complete, with an explanation after every answer.">20 phrases à compléter, avec correction expliquée à chaque réponse.</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ================= B1-B2 ================= -->
+  <div class="niveau">
+    <button class="niveau-tete" type="button">
+      <img class="niveau-img" src="/img/niveaux/coquelet.png" alt="">
+      <div class="niveau-txt">
+        <div class="niveau-nom t" data-fr="Intermédiaire" data-en="Intermediate">Intermédiaire</div>
+        <div class="niveau-code">B1 – B2</div>
+        <div class="niveau-desc t" data-fr="Vous vous exprimez sans difficulté majeure et cherchez à gagner en précision."
+             data-en="You speak without major difficulty and want to gain precision.">Vous vous exprimez sans difficulté majeure et cherchez à gagner en précision.</div>
+      </div>
+      <div class="niveau-compte"><span class="t" data-fr="À venir" data-en="Coming soon">À venir</span></div>
+      <div class="chevron">▾</div>
+    </button>
+    <div class="niveau-corps">
+      <div class="vide t" data-fr="Les premières ressources de ce niveau arrivent bientôt."
+           data-en="The first resources for this level are on their way.">Les premières ressources de ce niveau arrivent bientôt.</div>
+    </div>
+  </div>
+
+  <!-- ================= C1+ ================= -->
+  <div class="niveau">
+    <button class="niveau-tete" type="button">
+      <img class="niveau-img" src="/img/niveaux/coq-drapeau.png" alt="">
+      <div class="niveau-txt">
+        <div class="niveau-nom t" data-fr="Avancé" data-en="Advanced">Avancé</div>
+        <div class="niveau-code">C1+</div>
+        <div class="niveau-desc t" data-fr="Vous visez la nuance, le registre et le français réellement parlé."
+             data-en="You're after nuance, register and the French people actually speak.">Vous visez la nuance, le registre et le français réellement parlé.</div>
+      </div>
+      <div class="niveau-compte"><span class="t" data-fr="À venir" data-en="Coming soon">À venir</span></div>
+      <div class="chevron">▾</div>
+    </button>
+    <div class="niveau-corps">
+      <div class="vide t" data-fr="Les premières ressources de ce niveau arrivent bientôt."
+           data-en="The first resources for this level are on their way.">Les premières ressources de ce niveau arrivent bientôt.</div>
     </div>
   </div>
 
@@ -365,8 +419,44 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
     </svg>
     French with Alban
   </div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener">Soutenir le site</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" class="t" data-fr="Soutenir le site" data-en="Support the site">Soutenir le site</a></div>
 </footer>
+
+<script>
+/* ---------- MENUS DÉROULANTS ---------- */
+document.querySelectorAll('.niveau-tete').forEach(function(t){
+  t.addEventListener('click', function(){ t.parentElement.classList.toggle('ouvert'); });
+});
+
+/* ---------- LANGUE ---------- */
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+function appliquer(lang){
+  document.querySelectorAll('.t').forEach(function(el){
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  btnFr.classList.toggle('actif', lang === 'fr');
+  btnEn.classList.toggle('actif', lang === 'en');
+  btnFr.querySelector('.cadre').setAttribute('stroke', lang === 'fr' ? '#c9972a' : '#0d2b45');
+  btnEn.querySelector('.cadre').setAttribute('stroke', lang === 'en' ? '#c9972a' : '#0d2b45');
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+
+btnFr.addEventListener('click', function(){ appliquer('fr'); });
+btnEn.addEventListener('click', function(){ appliquer('en'); });
+</script>
 
 </body>
 </html>
