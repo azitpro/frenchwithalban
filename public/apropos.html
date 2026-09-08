@@ -20,12 +20,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
 
-header {
-  padding: 28px 48px;
-  border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%;
-}
+header { padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); width: 100%; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .logo-text { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
 .logo-text .red { color: var(--red); }
@@ -36,21 +31,22 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
 .nav-cta { padding: 11px 26px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); }
 .gold-line { height: 2px; background: var(--gold); width: 100%; }
 
+.langues { position: fixed; right: 22px; bottom: 22px; z-index: 500; display: flex; flex-direction: column; gap: 10px; }
+.lang-btn { width: 46px; height: 54px; padding: 0; border: none; background: none; cursor: pointer; line-height: 0; opacity: .45; transition: opacity .2s, transform .2s; filter: drop-shadow(2px 2px 0 rgba(13,43,69,.25)); }
+.lang-btn:hover { opacity: .85; transform: translateY(-2px); }
+.lang-btn.actif { opacity: 1; filter: none; }
+.lang-btn svg { width: 100%; height: 100%; display: block; }
+.lang-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
 .page-header { padding: 56px 64px 40px; border-bottom: 1px solid var(--border); }
-.page-header h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 3.5rem; font-weight: 400; color: var(--navy); margin-bottom: 12px;
-}
-.page-header p {
-  font-size: 1rem; font-weight: 300; color: var(--text-soft);
-  line-height: 1.7; max-width: 560px;
-}
+.page-header h1 { font-family: 'DM Serif Display', serif; font-size: 3.5rem; font-weight: 400; color: var(--navy); margin-bottom: 12px; }
+.page-header p { font-size: 1rem; font-weight: 300; color: var(--text-soft); line-height: 1.7; max-width: 560px; }
 
 .portrait-band { padding: 56px 64px; display: grid; grid-template-columns: 300px 1fr; gap: 48px; align-items: center; border-bottom: 1px solid var(--border); }
-.portrait-frame { position: relative; }
 .portrait-frame img { width: 100%; display: block; border: 1px solid var(--border); box-shadow: 10px 10px 0 var(--gold); }
 .portrait-caption { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; }
 .portrait-text { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 400; line-height: 1.45; color: var(--navy); }
+
 .stats { background: var(--red); padding: 28px 64px; display: grid; grid-template-columns: repeat(4, 1fr); }
 .stat { padding: 0 32px; border-right: 1px solid rgba(250,247,242,0.2); display: flex; align-items: center; gap: 14px; }
 .stat:first-child { padding-left: 0; }
@@ -61,67 +57,57 @@ nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 
 
 .content { padding: 64px 64px 80px; max-width: 900px; }
 section { margin-bottom: 56px; }
-h2 {
-  font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 600;
-  display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
-}
+h2 { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 600; display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
 h2 .hex { width: 24px; height: 28px; flex-shrink: 0; }
 p { font-size: 0.98rem; font-weight: 300; line-height: 1.85; color: var(--text-soft); }
 p + p { margin-top: 14px; }
 p strong { font-weight: 600; color: var(--navy); }
 
 .lang-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
-.lang-card {
-  background: var(--cream-dark); border: 1px solid var(--border);
-  border-top: 2px solid var(--gold); padding: 18px 20px;
-}
+.lang-card { background: var(--cream-dark); border: 1px solid var(--border); border-top: 2px solid var(--gold); padding: 18px 20px; }
 .lang-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); }
 .lang-level { font-size: 0.76rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-soft); margin-top: 4px; }
 
 .spec-list { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
-.spec-card {
-  background: var(--cream-dark); border: 1px solid var(--border);
-  border-left: 3px solid var(--red); padding: 20px 24px;
-}
+.spec-card { background: var(--cream-dark); border: 1px solid var(--border); border-left: 3px solid var(--red); padding: 20px 24px; }
 .spec-title { font-family: 'Fraunces', serif; font-size: 1.02rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
 .spec-desc { font-size: 0.85rem; font-weight: 300; color: var(--text-soft); line-height: 1.65; }
 
 .quote-list { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
-.quote {
-  background: var(--cream-dark); border: 1px solid var(--border);
-  padding: 20px 24px; border-left: 3px solid var(--gold);
-}
+.quote { background: var(--cream-dark); border: 1px solid var(--border); padding: 20px 24px; border-left: 3px solid var(--gold); }
 .quote-text { font-size: 0.9rem; font-weight: 300; line-height: 1.7; color: var(--navy); font-style: italic; }
 .quote-author { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; color: var(--text-soft); margin-top: 8px; }
 
-.cta-band {
-  background: var(--navy); padding: 48px 64px;
-  display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap;
-}
+.cta-band { background: var(--navy); padding: 48px 64px; display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
 .cta-text { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--cream); line-height: 1.25; }
-.cta-btn {
-  display: inline-block; padding: 13px 30px; background: var(--red); color: var(--cream);
-  text-decoration: none; font-size: 0.84rem; font-weight: 600; letter-spacing: 0.06em;
-  box-shadow: 4px 4px 0 var(--gold); transition: all 0.15s; white-space: nowrap;
-}
+.cta-btn { display: inline-block; padding: 13px 30px; background: var(--red); color: var(--cream); text-decoration: none; font-size: 0.84rem; font-weight: 600; letter-spacing: 0.06em; box-shadow: 4px 4px 0 var(--gold); transition: all 0.15s; white-space: nowrap; }
 .cta-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--gold); }
 
 footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
 .footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); letter-spacing: 0.04em; }
+.footer-copy a { color: rgba(250,247,242,0.6); }
 
 @media (max-width: 860px) {
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
-  nav { gap: 20px; }
-  .page-header, .content, .stats, .cta-band { padding-left: 20px; padding-right: 20px; }
+  html, body { overflow-x: hidden; max-width: 100%; }
+  header { padding: 18px 20px; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .logo-text { font-size: 1.25rem; }
+  nav { gap: 14px 16px; flex-wrap: wrap; width: 100%; }
+  nav a { font-size: 0.88rem; }
+  .nav-cta { padding: 8px 16px; margin-left: auto; }
+  .page-header, .stats, .cta-band { padding-left: 20px; padding-right: 20px; }
   .stats { grid-template-columns: 1fr 1fr; gap: 20px; }
   .stat { padding: 0; border-right: none; }
   .page-header h1 { font-size: 2.2rem; }
-    .lang-grid, .spec-list { grid-template-columns: 1fr 1fr; }
+  .lang-grid, .spec-list { grid-template-columns: 1fr 1fr; }
   .portrait-band { grid-template-columns: 1fr; gap: 28px; padding: 32px 20px; }
   .portrait-frame img { box-shadow: 6px 6px 0 var(--gold); }
   .portrait-text { font-size: 1.2rem; }
-  footer { padding: 22px 20px; }
+  .content { padding: 40px 20px 56px; }
+  .cta-text { font-size: 1.4rem; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+  .langues { right: 14px; bottom: 14px; flex-direction: row; }
+  .lang-btn { width: 38px; height: 45px; }
 }
 </style>
 </head>
@@ -139,24 +125,59 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   </symbol>
 </svg>
 
+<div class="langues" role="group" aria-label="Langue">
+  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxFR)">
+        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button type="button" class="lang-btn" id="btn-en" title="English">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxEN)">
+        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
+        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
+        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
+        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
+        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
 <header>
   <a href="/" class="logo">
     <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
     <span class="logo-text">French with <span class="red">Alban</span></span>
   </a>
   <nav>
-    <a href="/">Accueil</a>
-    <a href="/planning_public.html">Créneaux</a>
-    <a href="/ressources.html">Ressources</a>
-    <a href="/apropos.html" class="active">À propos</a>
-    <a href="/reserver.html" class="nav-cta">Réserver</a>
+    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="active t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="nav-cta t" data-fr="Réserver" data-en="Book">Réserver</a>
   </nav>
 </header>
 <div class="gold-line"></div>
 
 <div class="page-header">
-  <h1>À propos</h1>
-  <p>Professeur de français natif, originaire de Normandie. J'accompagne des élèves du monde entier, du grand débutant au niveau avancé, avec une méthode construite autour de leurs objectifs.</p>
+  <h1 class="t" data-fr="À propos" data-en="About me">À propos</h1>
+  <p class="t"
+     data-fr="Professeur de français natif, originaire de Normandie. J'accompagne des élèves du monde entier, du grand débutant au niveau avancé, avec une méthode construite autour de leurs objectifs."
+     data-en="Native French teacher from Normandy. I work with students all over the world, from complete beginners to advanced learners, with a method built around their own goals.">Professeur de français natif, originaire de Normandie. J'accompagne des élèves du monde entier, du grand débutant au niveau avancé, avec une méthode construite autour de leurs objectifs.</p>
 </div>
 
 <div class="portrait-band">
@@ -164,92 +185,132 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
     <img src="/alban.jpg" alt="Alban, professeur de français">
   </div>
   <div>
-    <div class="portrait-caption">Enchanté</div>
-    <div class="portrait-text">Un vrai professeur en face de vous, pas une application. C'est toute la différence.</div>
+    <div class="portrait-caption t" data-fr="Enchanté" data-en="Nice to meet you">Enchanté</div>
+    <div class="portrait-text t"
+         data-fr="Un vrai professeur en face de vous, pas une application. C'est toute la différence."
+         data-en="A real teacher in front of you, not an app. That's the whole difference.">Un vrai professeur en face de vous, pas une application. C'est toute la différence.</div>
   </div>
 </div>
 
 <div class="stats">
   <div class="stat">
     <div class="stat-n">3 670</div>
-    <div class="stat-l">Cours donnés</div>
+    <div class="stat-l t" data-fr="Cours donnés" data-en="Lessons taught">Cours donnés</div>
   </div>
   <div class="stat">
     <div class="stat-n">20<span>+</span></div>
-    <div class="stat-l">Étudiants actifs</div>
+    <div class="stat-l t" data-fr="Étudiants actifs" data-en="Active students">Étudiants actifs</div>
   </div>
   <div class="stat">
     <div class="stat-n">11</div>
-    <div class="stat-l">Nationalités</div>
+    <div class="stat-l t" data-fr="Nationalités" data-en="Nationalities">Nationalités</div>
   </div>
   <div class="stat">
     <div class="stat-n">A1<span>→</span>C1</div>
-    <div class="stat-l">Tous niveaux</div>
+    <div class="stat-l t" data-fr="Tous niveaux" data-en="All levels">Tous niveaux</div>
   </div>
 </div>
 
 <div class="content">
 
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Qui je suis</h2>
-    <p>Je m'appelle Alban, je suis né en <strong>Normandie</strong> et j'enseigne le français en ligne depuis plus de deux ans. J'ai obtenu le <strong>Preply Language Teaching Certificate</strong> et je prépare actuellement le <strong>DAEFLE</strong>, le diplôme d'aptitude à l'enseignement du français langue étrangère.</p>
-    <p>Au-delà de la langue, j'ai des centres d'intérêt que mes élèves finissent souvent par partager : l'économie et la finance, la géopolitique, les voyages et les langues étrangères. C'est ce qui fait qu'un cours dérive vers une vraie conversation — et que la conversation devient le cours.</p>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Qui je suis" data-en="Who I am">Qui je suis</span></h2>
+    <p class="t" data-html="1"
+       data-fr="Je m'appelle Alban, je suis né en &lt;strong&gt;Normandie&lt;/strong&gt; et j'enseigne le français en ligne depuis plus de deux ans. J'ai obtenu le &lt;strong&gt;Preply Language Teaching Certificate&lt;/strong&gt; et je prépare actuellement le &lt;strong&gt;DAEFLE&lt;/strong&gt;, le diplôme d'aptitude à l'enseignement du français langue étrangère."
+       data-en="My name is Alban. I was born in &lt;strong&gt;Normandy&lt;/strong&gt; and I have been teaching French online for over two years. I hold the &lt;strong&gt;Preply Language Teaching Certificate&lt;/strong&gt; and I am currently preparing the &lt;strong&gt;DAEFLE&lt;/strong&gt;, the French qualification for teaching French as a foreign language.">Je m'appelle Alban, je suis né en <strong>Normandie</strong> et j'enseigne le français en ligne depuis plus de deux ans. J'ai obtenu le <strong>Preply Language Teaching Certificate</strong> et je prépare actuellement le <strong>DAEFLE</strong>, le diplôme d'aptitude à l'enseignement du français langue étrangère.</p>
+    <p class="t"
+       data-fr="Au-delà de la langue, j'ai des centres d'intérêt que mes élèves finissent souvent par partager : l'économie et la finance, la géopolitique, les voyages et les langues étrangères. C'est ce qui fait qu'un cours dérive vers une vraie conversation — et que la conversation devient le cours."
+       data-en="Beyond the language itself, I have interests my students often end up sharing: economics and finance, geopolitics, travel and foreign languages. That's how a lesson drifts into a real conversation — and how the conversation becomes the lesson.">Au-delà de la langue, j'ai des centres d'intérêt que mes élèves finissent souvent par partager : l'économie et la finance, la géopolitique, les voyages et les langues étrangères. C'est ce qui fait qu'un cours dérive vers une vraie conversation — et que la conversation devient le cours.</p>
   </section>
 
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Ma méthode</h2>
-    <p>Pas de programme tout fait. Le premier cours sert à comprendre où vous en êtes, ce que vous visez et à quel rythme vous pouvez travailler. Tout le reste en découle.</p>
-    <p>La grammaire, la conjugaison et le vocabulaire restent la base, mais je les accroche à des supports vivants : articles d'actualité, podcasts, vidéos, ou simplement les sujets qui vous intéressent — tourisme, travail, société française. Et si le français académique ne vous suffit pas, je vous familiarise avec le <strong>français réellement parlé</strong> et la culture francophone d'aujourd'hui.</p>
-    <p>Se fixer des objectifs atteignables, avancer à son rythme, et ne jamais s'ennuyer : c'est ce qui fait qu'on continue.</p>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Ma méthode" data-en="My method">Ma méthode</span></h2>
+    <p class="t"
+       data-fr="Pas de programme tout fait. Le premier cours sert à comprendre où vous en êtes, ce que vous visez et à quel rythme vous pouvez travailler. Tout le reste en découle."
+       data-en="No ready-made programme. The first lesson is there to work out where you stand, what you're aiming for and how fast you can go. Everything else follows from that.">Pas de programme tout fait. Le premier cours sert à comprendre où vous en êtes, ce que vous visez et à quel rythme vous pouvez travailler. Tout le reste en découle.</p>
+    <p class="t" data-html="1"
+       data-fr="La grammaire, la conjugaison et le vocabulaire restent la base, mais je les accroche à des supports vivants : articles d'actualité, podcasts, vidéos, ou simplement les sujets qui vous intéressent — tourisme, travail, société française. Et si le français académique ne vous suffit pas, je vous familiarise avec le &lt;strong&gt;français réellement parlé&lt;/strong&gt; et la culture francophone d'aujourd'hui."
+       data-en="Grammar, conjugation and vocabulary remain the foundation, but I anchor them to living material: news articles, podcasts, videos, or simply the topics you care about — travel, work, French society. And if textbook French isn't enough for you, I'll get you used to &lt;strong&gt;the French people actually speak&lt;/strong&gt; and to today's French-speaking culture.">La grammaire, la conjugaison et le vocabulaire restent la base, mais je les accroche à des supports vivants : articles d'actualité, podcasts, vidéos, ou simplement les sujets qui vous intéressent — tourisme, travail, société française. Et si le français académique ne vous suffit pas, je vous familiarise avec le <strong>français réellement parlé</strong> et la culture francophone d'aujourd'hui.</p>
+    <p class="t"
+       data-fr="Se fixer des objectifs atteignables, avancer à son rythme, et ne jamais s'ennuyer : c'est ce qui fait qu'on continue."
+       data-en="Setting reachable goals, moving at your own pace, and never getting bored — that's what makes people keep going.">Se fixer des objectifs atteignables, avancer à son rythme, et ne jamais s'ennuyer : c'est ce qui fait qu'on continue.</p>
   </section>
 
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Ce que je peux enseigner</h2>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Ce que je peux enseigner" data-en="What I can teach">Ce que je peux enseigner</span></h2>
     <div class="spec-list">
       <div class="spec-card">
-        <div class="spec-title">Français conversationnel</div>
-        <div class="spec-desc">Du français écrit formel au français parlé du quotidien, avec ses codes et ses raccourcis.</div>
+        <div class="spec-title t" data-fr="Français conversationnel" data-en="Conversational French">Français conversationnel</div>
+        <div class="spec-desc t"
+             data-fr="Du français écrit formel au français parlé du quotidien, avec ses codes et ses raccourcis."
+             data-en="From formal written French to everyday spoken French, with its codes and shortcuts.">Du français écrit formel au français parlé du quotidien, avec ses codes et ses raccourcis.</div>
       </div>
       <div class="spec-card">
-        <div class="spec-title">Français pour débutants</div>
-        <div class="spec-desc">Expérience de l'enseignement à des élèves partant réellement de zéro.</div>
+        <div class="spec-title t" data-fr="Français pour débutants" data-en="French for beginners">Français pour débutants</div>
+        <div class="spec-desc t"
+             data-fr="Expérience de l'enseignement à des élèves partant réellement de zéro."
+             data-en="Experience teaching students who are genuinely starting from scratch.">Expérience de l'enseignement à des élèves partant réellement de zéro.</div>
       </div>
       <div class="spec-card">
-        <div class="spec-title">Français intensif</div>
-        <div class="spec-desc">Plusieurs cours par semaine, jusqu'au rythme quotidien si votre échéance l'exige.</div>
+        <div class="spec-title t" data-fr="Français intensif" data-en="Intensive French">Français intensif</div>
+        <div class="spec-desc t"
+             data-fr="Plusieurs cours par semaine, jusqu'au rythme quotidien si votre échéance l'exige."
+             data-en="Several lessons a week, up to daily if your deadline calls for it.">Plusieurs cours par semaine, jusqu'au rythme quotidien si votre échéance l'exige.</div>
       </div>
       <div class="spec-card">
-        <div class="spec-title">Français des affaires</div>
-        <div class="spec-desc">Vocabulaire de la finance, du commerce et de l'économie — mon domaine d'études.</div>
+        <div class="spec-title t" data-fr="Français des affaires" data-en="Business French">Français des affaires</div>
+        <div class="spec-desc t"
+             data-fr="Vocabulaire de la finance, du commerce et de l'économie — mon domaine d'études."
+             data-en="Vocabulary of finance, trade and economics — my own field of study.">Vocabulaire de la finance, du commerce et de l'économie — mon domaine d'études.</div>
       </div>
     </div>
   </section>
 
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les langues que je parle</h2>
-    <p>Apprendre une langue m'occupe autant que d'en enseigner une. Je sais donc à quoi ressemble le blocage de l'autre côté du micro.</p>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Les langues que je parle" data-en="The languages I speak">Les langues que je parle</span></h2>
+    <p class="t"
+       data-fr="Apprendre une langue m'occupe autant que d'en enseigner une. Je sais donc à quoi ressemble le blocage de l'autre côté du micro."
+       data-en="Learning a language keeps me as busy as teaching one. So I know exactly what being stuck feels like on the other side of the microphone.">Apprendre une langue m'occupe autant que d'en enseigner une. Je sais donc à quoi ressemble le blocage de l'autre côté du micro.</p>
     <div class="lang-grid">
-      <div class="lang-card"><div class="lang-name">Français</div><div class="lang-level">Langue maternelle</div></div>
-      <div class="lang-card"><div class="lang-name">Anglais</div><div class="lang-level">Avancé · C1</div></div>
-      <div class="lang-card"><div class="lang-name">Espagnol</div><div class="lang-level">Intermédiaire · B1</div></div>
-      <div class="lang-card"><div class="lang-name">Russe</div><div class="lang-level">Débutant · A1</div></div>
+      <div class="lang-card">
+        <div class="lang-name t" data-fr="Français" data-en="French">Français</div>
+        <div class="lang-level t" data-fr="Langue maternelle" data-en="Native">Langue maternelle</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name t" data-fr="Anglais" data-en="English">Anglais</div>
+        <div class="lang-level t" data-fr="Avancé · C1" data-en="Advanced · C1">Avancé · C1</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name t" data-fr="Espagnol" data-en="Spanish">Espagnol</div>
+        <div class="lang-level t" data-fr="Intermédiaire · B1" data-en="Intermediate · B1">Intermédiaire · B1</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name t" data-fr="Russe" data-en="Russian">Russe</div>
+        <div class="lang-level t" data-fr="Débutant · A1" data-en="Beginner · A1">Débutant · A1</div>
+      </div>
     </div>
   </section>
 
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Ce qu'en disent mes élèves</h2>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Ce qu'en disent mes élèves" data-en="What my students say">Ce qu'en disent mes élèves</span></h2>
     <div class="quote-list">
       <div class="quote">
-        <div class="quote-text">Deux cours par semaine depuis deux ans et demi, et toujours pas envie d'arrêter. Alban sait relancer une conversation, poser les bonnes questions, et transformer un échange ordinaire en leçon.</div>
-        <div class="quote-author">Omri · plus de 200 cours</div>
+        <div class="quote-text t"
+             data-fr="Deux cours par semaine depuis deux ans et demi, et toujours pas envie d'arrêter. Alban sait relancer une conversation, poser les bonnes questions, et transformer un échange ordinaire en leçon."
+             data-en="Two lessons a week for two and a half years, and still no wish to stop. Alban knows how to keep a conversation going, ask the right questions, and turn an ordinary exchange into a lesson.">Deux cours par semaine depuis deux ans et demi, et toujours pas envie d'arrêter. Alban sait relancer une conversation, poser les bonnes questions, et transformer un échange ordinaire en leçon.</div>
+        <div class="quote-author t" data-fr="Omri · plus de 200 cours" data-en="Omri · 200+ lessons">Omri · plus de 200 cours</div>
       </div>
       <div class="quote">
-        <div class="quote-text">Plus de deux ans de cours ensemble. Il est attentif, patient, et il a nettement accéléré mon apprentissage.</div>
-        <div class="quote-author">Ola · plus de 150 cours</div>
+        <div class="quote-text t"
+             data-fr="Plus de deux ans de cours ensemble. Il est attentif, patient, et il a nettement accéléré mon apprentissage."
+             data-en="More than two years of lessons together. He is attentive, patient, and he has clearly sped up my learning.">Plus de deux ans de cours ensemble. Il est attentif, patient, et il a nettement accéléré mon apprentissage.</div>
+        <div class="quote-author t" data-fr="Ola · plus de 150 cours" data-en="Ola · 150+ lessons">Ola · plus de 150 cours</div>
       </div>
       <div class="quote">
-        <div class="quote-text">Un professeur fiable et bienveillant, d'une grande patience avec ma fille adolescente. Nous sommes très contents des progrès.</div>
-        <div class="quote-author">Susanne · 39 cours</div>
+        <div class="quote-text t"
+             data-fr="Un professeur fiable et bienveillant, d'une grande patience avec ma fille adolescente. Nous sommes très contents des progrès."
+             data-en="A reliable and kind teacher, extremely patient with my teenage daughter. We are very happy with her progress.">Un professeur fiable et bienveillant, d'une grande patience avec ma fille adolescente. Nous sommes très contents des progrès.</div>
+        <div class="quote-author t" data-fr="Susanne · 39 cours" data-en="Susanne · 39 lessons">Susanne · 39 cours</div>
       </div>
     </div>
   </section>
@@ -257,8 +318,10 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
 </div>
 
 <div class="cta-band">
-  <div class="cta-text">On commence par discuter<br>de vos objectifs ?</div>
-  <a href="/reserver.html" class="cta-btn">Réserver un cours</a>
+  <div class="cta-text t" data-html="1"
+       data-fr="On commence par discuter&lt;br&gt;de vos objectifs ?"
+       data-en="Shall we start by talking&lt;br&gt;about your goals?">On commence par discuter<br>de vos objectifs ?</div>
+  <a href="/reserver.html" class="cta-btn t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
 </div>
 
 <footer>
@@ -272,8 +335,38 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
     </svg>
     French with Alban
   </div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" class="t" data-fr="Soutenir le site" data-en="Support the site">Soutenir le site</a></div>
 </footer>
+
+<script>
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+function appliquer(lang){
+  document.querySelectorAll('.t').forEach(function(el){
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  btnFr.classList.toggle('actif', lang === 'fr');
+  btnEn.classList.toggle('actif', lang === 'en');
+  btnFr.querySelector('.cadre').setAttribute('stroke', lang === 'fr' ? '#c9972a' : '#0d2b45');
+  btnEn.querySelector('.cadre').setAttribute('stroke', lang === 'en' ? '#c9972a' : '#0d2b45');
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+
+btnFr.addEventListener('click', function(){ appliquer('fr'); });
+btnEn.addEventListener('click', function(){ appliquer('en'); });
+</script>
 
 </body>
 </html>
