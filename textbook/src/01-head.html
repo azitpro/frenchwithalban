@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Le français avec Alban — Manuel A0–A2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d2b45;
+  --rouge:#c0392b;
+  --or:#c9972a;
+  --creme:#faf7f2;
+  --creme-fonce:#f0ece4;
+  --bleu-fr:#002395;
+  --rouge-fr:#ED2939;
+  --gris-texte:#4a5568;
+  --bordure:#e6e0d6;
+}
+
+@page{
+  size: A4;
+  margin: 17mm 16mm 16mm 16mm;
+}
+
+*{ box-sizing:border-box; }
+
+html{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+body{
+  font-family:'Inter', -apple-system, 'Segoe UI', sans-serif;
+  font-size:9.6pt;
+  line-height:1.55;
+  color:var(--navy);
+  margin:0;
+  background:#fff;
+}
+
+/* ---------- generic blocks ---------- */
+p{ margin:0 0 7pt; }
+strong{ font-weight:600; }
+em{ font-style:italic; }
+
+.fr{ font-weight:600; color:var(--navy); }
+.pho{ font-family:'DejaVu Sans','Segoe UI',sans-serif; color:var(--rouge); font-size:8.4pt; white-space:nowrap; }
+.en{ color:var(--gris-texte); font-weight:300; }
+.fem{ color:var(--or); font-weight:700; }
+
+/* ---------- cover ---------- */
+.cover{
+  page-break-after:always;
+  height:264mm;
+  background:var(--creme);
+  margin:-17mm -16mm 0 -16mm;
+  padding:34mm 22mm 20mm;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+.cover-rule{ height:3pt; background:linear-gradient(to right,var(--bleu-fr) 0 33.3%,#fff 33.3% 66.6%,var(--rouge-fr) 66.6% 100%); width:62mm; margin-bottom:16mm; }
+.cover h1{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:40pt;
+  line-height:1.06;
+  font-weight:600;
+  margin:0 0 9mm;
+  letter-spacing:-0.5pt;
+}
+.cover h1 .accent{ color:var(--rouge); }
+.cover .sub{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:14pt;
+  font-weight:400;
+  color:var(--gris-texte);
+  margin:0 0 4mm;
+  line-height:1.4;
+}
+.cover .kicker{
+  font-size:8.2pt; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--or); margin-bottom:5mm;
+}
+.cover-meta{
+  margin-top:auto;
+  border-top:1px solid var(--bordure);
+  padding-top:6mm;
+  display:flex; align-items:flex-end; justify-content:space-between;
+}
+.cover-meta .site{ font-family:'Fraunces',Georgia,serif; font-size:12pt; font-weight:600; }
+.cover-meta .note{ font-size:8pt; color:var(--gris-texte); font-weight:300; margin-top:2mm; }
+.cover-coq{ width:38mm; opacity:.95; }
+
+/* ---------- front matter ---------- */
+.front h2{
+  font-family:'Fraunces',Georgia,serif; font-size:19pt; font-weight:600;
+  margin:0 0 5mm; padding-bottom:3mm; border-bottom:2px solid var(--or);
+}
+.front .lead{ font-size:10.4pt; line-height:1.65; color:var(--gris-texte); font-weight:300; margin-bottom:6mm; }
+
+/* ---------- table of contents ---------- */
+.toc-part{
+  font-family:'Fraunces',Georgia,serif; font-size:12.5pt; font-weight:600;
+  color:var(--rouge); margin:7mm 0 3mm;
+}
+.toc-part:first-of-type{ margin-top:2mm; }
+.toc-row{ display:flex; align-items:baseline; gap:3mm; padding:1.6mm 0; border-bottom:1px dotted var(--bordure); }
+.toc-num{ font-family:'Fraunces',Georgia,serif; font-weight:700; color:var(--or); width:9mm; flex:none; font-size:10pt; }
+.toc-title{ font-weight:500; }
+.toc-desc{ color:var(--gris-texte); font-weight:300; font-size:8.6pt; margin-left:auto; text-align:right; }
+
+/* ---------- part opener ---------- */
+.part{
+  page-break-before:always; page-break-after:always;
+  height:250mm; display:flex; flex-direction:column; justify-content:center;
+  text-align:center;
+}
+.part img{ width:44mm; margin:0 auto 10mm; }
+.part .lbl{ font-size:8.4pt; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--or); margin-bottom:5mm; }
+.part h2{ font-family:'Fraunces',Georgia,serif; font-size:30pt; font-weight:600; margin:0 0 5mm; }
+.part .code{ font-family:'Fraunces',Georgia,serif; font-size:13pt; color:var(--rouge); margin-bottom:7mm; }
+.part p{ max-width:112mm; margin:0 auto; color:var(--gris-texte); font-weight:300; font-size:10pt; line-height:1.65; }
+
+/* ---------- chapters ---------- */
+.chap{ page-break-before:always; }
+.chap-head{ border-bottom:2px solid var(--navy); padding-bottom:3.5mm; margin-bottom:6mm; }
+.chap-num{ font-size:8pt; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--or); }
+.chap h2{ font-family:'Fraunces',Georgia,serif; font-size:22pt; font-weight:600; margin:1.5mm 0 0; line-height:1.15; }
+.chap-sub{ color:var(--gris-texte); font-weight:300; font-size:9.4pt; margin-top:2mm; }
+
+h3{
+  font-family:'Fraunces',Georgia,serif; font-size:13pt; font-weight:600;
+  margin:8mm 0 3.5mm; padding-left:4mm; border-left:3px solid var(--or);
+  page-break-after:avoid;
+}
+h4{
+  font-family:'Inter',sans-serif; font-size:9.4pt; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--rouge);
+  margin:6mm 0 2.5mm; page-break-after:avoid;
+}
+
+/* ---------- tables ---------- */
+table{ width:100%; border-collapse:collapse; margin:0 0 5mm; font-size:9.2pt; page-break-inside:avoid; }
+th{
+  background:var(--navy); color:#fff; text-align:left; padding:2.2mm 3mm;
+  font-size:8pt; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+}
+td{ padding:1.9mm 3mm; border-bottom:1px solid var(--bordure); vertical-align:top; }
+tbody tr:nth-child(even){ background:var(--creme); }
+table.tight td{ padding:1.5mm 3mm; }
+
+/* ---------- callouts ---------- */
+.box{
+  background:var(--creme); border-left:3px solid var(--navy);
+  padding:3.5mm 4.5mm; margin:0 0 5mm; font-size:9pt; page-break-inside:avoid;
+}
+.box .t{ font-weight:700; display:block; margin-bottom:1.5mm; font-size:8.4pt; letter-spacing:.05em; text-transform:uppercase; }
+.box.warn{ border-left-color:var(--rouge); background:#fdf3f1; }
+.box.warn .t{ color:var(--rouge); }
+.box.tip{ border-left-color:var(--or); background:#fdf9ef; }
+.box.tip .t{ color:#8a6614; }
+
+/* ---------- vocabulary grid ---------- */
+.vgrid{ display:grid; grid-template-columns:1fr 1fr; gap:0 8mm; margin-bottom:5mm; }
+.vgrid.three{ grid-template-columns:1fr 1fr 1fr; gap:0 6mm; }
+.vrow{ display:flex; align-items:baseline; gap:2mm; padding:1.5mm 0; border-bottom:1px solid var(--bordure); font-size:9pt; }
+.vrow .w{ font-weight:600; }
+.vrow .p{ font-family:'DejaVu Sans',sans-serif; color:var(--rouge); font-size:7.8pt; }
+.vrow .g{ color:var(--gris-texte); font-weight:300; margin-left:auto; font-size:8.4pt; text-align:right; }
+
+/* ---------- picture strips ---------- */
+.pics{ display:grid; grid-template-columns:repeat(6,1fr); gap:4mm; margin-bottom:5mm; page-break-inside:avoid; }
+.pics.four{ grid-template-columns:repeat(4,1fr); }
+.pics figure{ margin:0; text-align:center; }
+.pics img{ width:100%; height:auto; border-radius:2mm; display:block; margin-bottom:1.5mm; }
+.pics figcaption{ font-size:8.2pt; font-weight:600; line-height:1.3; }
+.pics figcaption .p{ display:block; font-family:'DejaVu Sans',sans-serif; font-weight:400; color:var(--rouge); font-size:7.2pt; }
+
+/* ---------- conjugation cards ---------- */
+.conj-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:4mm; margin-bottom:5mm; }
+.conj-grid.two{ grid-template-columns:1fr 1fr; gap:5mm; }
+.conj{ border:1px solid var(--bordure); background:var(--creme); padding:3mm 3.5mm; page-break-inside:avoid; }
+.conj .inf{
+  font-family:'Fraunces',Georgia,serif; font-weight:700; font-size:10.5pt;
+  color:var(--navy); text-transform:uppercase; letter-spacing:.03em;
+  border-bottom:1px solid var(--or); padding-bottom:1.5mm; margin-bottom:2mm;
+}
+.conj .inf span{ font-family:'Inter',sans-serif; font-size:7.6pt; font-weight:400; text-transform:none; color:var(--gris-texte); letter-spacing:0; float:right; padding-top:2pt; }
+.conj dl{ margin:0; font-size:8.8pt; }
+.conj dl div{ display:flex; gap:2mm; padding:.7mm 0; }
+.conj dt{ color:var(--gris-texte); font-weight:300; width:17mm; flex:none; }
+.conj dd{ margin:0; font-weight:600; }
+.conj dd.mute{ color:var(--gris-texte); font-weight:500; }
+
+/* ---------- dialogue ---------- */
+.dial{ margin:0 0 5mm; }
+.dial div{ display:flex; gap:4mm; padding:1.8mm 0; border-bottom:1px solid var(--bordure); font-size:9.2pt; }
+.dial .q{ flex:1; font-weight:500; }
+.dial .a{ flex:1; color:var(--gris-texte); font-weight:300; }
+
+/* ---------- exercises ---------- */
+.exo{ background:var(--creme-fonce); border:1px solid var(--bordure); padding:4mm 5mm; margin:6mm 0 0; page-break-inside:avoid; }
+.exo h4{ margin-top:0; color:var(--navy); }
+.exo ol{ margin:0; padding-left:6mm; font-size:9.2pt; }
+.exo ol li{ padding:1.1mm 0; }
+.exo .hint{ font-size:8.4pt; color:var(--gris-texte); font-weight:300; margin-bottom:2.5mm; }
+.gap{ display:inline-block; min-width:16mm; border-bottom:1px solid var(--navy); }
+
+/* ---------- answer key ---------- */
+.key{ font-size:8.6pt; }
+.key h3{ margin-top:6mm; }
+.key ol{ padding-left:6mm; margin:0 0 4mm; column-count:2; column-gap:8mm; }
+.key li{ padding:.6mm 0; break-inside:avoid; }
+.key .why{ color:var(--gris-texte); font-weight:300; }
+
+/* ---------- back ---------- */
+.back{ page-break-before:always; height:250mm; display:flex; flex-direction:column; justify-content:center; text-align:center; }
+.back img{ width:30mm; margin:0 auto 8mm; }
+.back h2{ font-family:'Fraunces',Georgia,serif; font-size:20pt; font-weight:600; margin:0 0 4mm; }
+.back p{ color:var(--gris-texte); font-weight:300; max-width:110mm; margin:0 auto 3mm; }
+.back .site{ font-family:'Fraunces',Georgia,serif; font-size:13pt; font-weight:600; color:var(--rouge); margin-top:6mm; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="kicker">Manuel de français</div>
+  <h1>Le français<br>avec <span class="accent">Alban</span></h1>
+  <div class="sub">Du débutant complet au niveau A2 —<br>vocabulaire, grammaire, prononciation et exercices.</div>
+  <div class="cover-meta">
+    <div>
+      <div class="site">frenchwithalban.com</div>
+      <div class="note">15 chapitres · 2 niveaux · corrigés inclus</div>
+    </div>
+    <img class="cover-coq" src="../public/coq.png" alt="">
+  </div>
+</div>
+
+<!-- ============ AVANT-PROPOS ============ -->
+<div class="front">
+  <h2>Avant-propos</h2>
+  <p class="lead">Ce manuel rassemble, sous forme imprimable, l'ensemble des ressources publiées gratuitement sur
+  <strong>frenchwithalban.com</strong>. Il suit exactement la progression du site : d'abord les bases indispensables
+  du débutant complet, puis la grammaire du faux débutant.</p>
+
+  <h3>Comment lire ce livre</h3>
+  <p>Chaque mot et chaque phrase sont donnés avec leur <strong>prononciation en alphabet phonétique international</strong>,
+  écrite <span class="pho">/ɑ̃tʁə dø baʁ/</span> entre deux barres obliques. Les traductions anglaises apparaissent
+  <span class="en">en gris clair</span> : cachez-les avec la main pour vous tester.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:32mm">Signe</th><th>Signification</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pho">/bɔ̃.ʒuʁ/</span></td><td>Prononciation. Le point sépare les syllabes, le signe ‿ indique une liaison.</td></tr>
+      <tr><td>bleu / bleu<span class="fem">e</span></td><td>Les lettres <span class="fem">en or</span> sont celles qui s'ajoutent au féminin.</td></tr>
+      <tr><td><strong>Encadré bleu</strong></td><td>Un point de règle à retenir.</td></tr>
+      <tr><td><strong style="color:var(--rouge)">Encadré rouge</strong></td><td>Une erreur fréquente à éviter.</td></tr>
+      <tr><td><strong style="color:#8a6614">Encadré or</strong></td><td>Une astuce de mémorisation.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Les deux niveaux</h3>
+  <p>La <strong>Partie I</strong> ne demande aucune connaissance préalable : on y apprend à saluer, à compter, à dire
+  l'heure et le temps qu'il fait, et à se débrouiller en voyage. La <strong>Partie II</strong> aborde la mécanique de
+  la langue : la conjugaison au présent, à l'imparfait et au passé composé, l'accord et la place des adjectifs,
+  et les mots pour poser des questions.</p>
+
+  <p>Les exercices se trouvent à la fin de chaque chapitre ; <strong>tous les corrigés sont regroupés en fin
+  d'ouvrage</strong>. Les versions interactives et auto-corrigées de ces exercices restent disponibles gratuitement
+  sur le site.</p>
+
+  <div class="box tip">
+    <span class="t">Un conseil pour travailler seul</span>
+    Lisez toujours à voix haute. Le français s'écrit beaucoup plus qu'il ne se prononce : les terminaisons
+    <em>-e</em>, <em>-es</em> et <em>-ent</em> des verbes sont muettes, et c'est en les entendant qu'on finit
+    par les oublier à l'oral — ce qui est exactement le but.
+  </div>
+</div>
+
+<!-- ============ TABLE DES MATIÈRES ============ -->
+<div class="front" style="page-break-before:always">
+  <h2>Table des matières</h2>
+
+  <div class="toc-part">Partie I — Débutant complet</div>
+  <div class="toc-row"><span class="toc-num">1</span><span class="toc-title">Salutations et politesse</span><span class="toc-desc">14 formules · tutoiement et vouvoiement</span></div>
+  <div class="toc-row"><span class="toc-num">2</span><span class="toc-title">Les nombres</span><span class="toc-desc">de 0 à un milliard</span></div>
+  <div class="toc-row"><span class="toc-num">3</span><span class="toc-title">Les couleurs</span><span class="toc-desc">12 couleurs · le féminin</span></div>
+  <div class="toc-row"><span class="toc-num">4</span><span class="toc-title">Les jours et l'heure</span><span class="toc-desc">l'article · l'heure officielle et courante</span></div>
+  <div class="toc-row"><span class="toc-num">5</span><span class="toc-title">Les saisons et les mois</span><span class="toc-desc">4 saisons · 12 mois</span></div>
+  <div class="toc-row"><span class="toc-num">6</span><span class="toc-title">La météo</span><span class="toc-desc">il fait · il pleut · il y a</span></div>
+  <div class="toc-row"><span class="toc-num">7</span><span class="toc-title">Les animaux</span><span class="toc-desc">79 animaux · les petits · les pièges</span></div>
+  <div class="toc-row"><span class="toc-num">8</span><span class="toc-title">Phrases essentielles</span><span class="toc-desc">12 phrases de survie</span></div>
+  <div class="toc-row"><span class="toc-num">9</span><span class="toc-title">Phrases utiles pour touristes</span><span class="toc-desc">6 situations · questions et réponses</span></div>
+
+  <div class="toc-part">Partie II — Faux débutant (A1–A2)</div>
+  <div class="toc-row"><span class="toc-num">10</span><span class="toc-title">Les verbes en -ER au présent</span><span class="toc-desc">22 verbes · les cas particuliers</span></div>
+  <div class="toc-row"><span class="toc-num">11</span><span class="toc-title">Les verbes irréguliers au présent</span><span class="toc-desc">24 verbes essentiels</span></div>
+  <div class="toc-row"><span class="toc-num">12</span><span class="toc-title">Imparfait et passé composé</span><span class="toc-desc">28 verbes · auxiliaires et participes</span></div>
+  <div class="toc-row"><span class="toc-num">13</span><span class="toc-title">Les adjectifs essentiels</span><span class="toc-desc">50 adjectifs · accord et place</span></div>
+  <div class="toc-row"><span class="toc-num">14</span><span class="toc-title">Les mots interrogatifs</span><span class="toc-desc">que · qu'est-ce que · quoi · quel</span></div>
+  <div class="toc-row"><span class="toc-num">15</span><span class="toc-title">Qui ou que ?</span><span class="toc-desc">le pronom relatif · 20 phrases</span></div>
+
+  <div class="toc-part">Annexes</div>
+  <div class="toc-row"><span class="toc-num">—</span><span class="toc-title">Corrigés des exercices</span><span class="toc-desc">tous les chapitres</span></div>
+</div>
+
+<!-- ============ PARTIE I ============ -->
+<div class="part">
+  <img src="../public/img/niveaux/oeuf.png" alt="">
+  <div class="lbl">Partie I</div>
+  <h2>Débutant complet</h2>
+  <div class="code">Aucun prérequis</div>
+  <p>Vous n'avez jamais appris le français, ou vous repartez de zéro. Ces neuf chapitres couvrent
+  ce qu'il faut pour saluer quelqu'un, compter, donner un rendez-vous, parler du temps qu'il fait
+  et voyager en France sans être bloqué.</p>
+</div>

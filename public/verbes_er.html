@@ -74,12 +74,16 @@ header {
 .vocab-table .fr { font-weight: 600; color: var(--navy); }
 .vocab-table .en { color: #444; font-weight: 300; }
 
-.verb-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-.verb-table tr:nth-child(even) td { background: var(--cream-dark); }
-.verb-table td { padding: 6px 6px; white-space: nowrap; }
-.verb-table .num { color: #bbb; font-size: 0.75rem; font-weight: 300; width: 18px; text-align: right; padding-right: 5px; }
-.verb-table .vfr { font-weight: 600; color: var(--navy); width: 95px; }
-.verb-table .ven { color: #444; font-weight: 300; }
+.verb-list { column-count: 2; column-gap: 36px; }
+.verb-item {
+  display: grid; grid-template-columns: 20px 100px 1fr; align-items: baseline; gap: 6px;
+  padding: 6px 6px; font-size: 0.88rem;
+  break-inside: avoid; -webkit-column-break-inside: avoid;
+}
+.verb-item:nth-child(even) { background: var(--cream-dark); }
+.verb-item .num { color: #bbb; font-size: 0.75rem; font-weight: 300; text-align: right; }
+.verb-item .vfr { font-weight: 600; color: var(--navy); }
+.verb-item .ven { color: #444; font-weight: 300; }
 
 /* SEPARATOR */
 .sep { margin: 20px 36px; border: none; border-top: 1px solid var(--border); }
@@ -180,6 +184,21 @@ header {
   color: var(--navy);
 }
 .ex-line { display: block; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 860px) {
+  .vocab-grid { grid-template-columns: 1fr; gap: 26px; }
+  .parler-block { grid-template-columns: 1fr; gap: 22px; }
+  .conj-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  header { padding: 16px 20px; flex-wrap: wrap; gap: 10px; }
+  .verb-list { column-count: 1; }
+  .verb-item { grid-template-columns: 20px 92px 1fr; }
+  .parler-rows { font-size: 1.05rem; line-height: 2; }
+  .parler-right { justify-content: flex-start; }
+  .parler-rule br, .parler-note br { display: none; }
+}
 </style>
 </head>
 <body>
@@ -221,19 +240,30 @@ header {
     <tr><td class="fr">vous</td><td class="en"><em>You (formal)</em></td></tr>
     <tr><td class="fr">ils / elles</td><td class="en"><em>They</em></td></tr>
   </table>
-  <table class="verb-table">
-    <tr><td class="num">1</td><td class="vfr">Acheter</td><td class="ven"><em>To buy</em></td><td class="num">12</td><td class="vfr">Habiter</td><td class="ven"><em>To live</em></td></tr>
-    <tr><td class="num">2</td><td class="vfr">Aider</td><td class="ven"><em>To help</em></td><td class="num">13</td><td class="vfr">Jouer</td><td class="ven"><em>To play</em></td></tr>
-    <tr><td class="num">3</td><td class="vfr">Aimer</td><td class="ven"><em>To like / love</em></td><td class="num">14</td><td class="vfr">Manger</td><td class="ven"><em>To eat</em></td></tr>
-    <tr><td class="num">4</td><td class="vfr">Appeler</td><td class="ven"><em>To call</em></td><td class="num">15</td><td class="vfr">Montrer</td><td class="ven"><em>To show</em></td></tr>
-    <tr><td class="num">5</td><td class="vfr">Arrêter</td><td class="ven"><em>To stop</em></td><td class="num">16</td><td class="vfr">Oublier</td><td class="ven"><em>To forget</em></td></tr>
-    <tr><td class="num">6</td><td class="vfr">Chercher</td><td class="ven"><em>To look for</em></td><td class="num">17</td><td class="vfr">Parler</td><td class="ven"><em>To speak</em></td></tr>
-    <tr><td class="num">7</td><td class="vfr">Commander</td><td class="ven"><em>To order</em></td><td class="num">18</td><td class="vfr">Payer</td><td class="ven"><em>To pay</em></td></tr>
-    <tr><td class="num">8</td><td class="vfr">Commencer</td><td class="ven"><em>To start</em></td><td class="num">19</td><td class="vfr">Penser</td><td class="ven"><em>To think</em></td></tr>
-    <tr><td class="num">9</td><td class="vfr">Demander</td><td class="ven"><em>To ask</em></td><td class="num">20</td><td class="vfr">Regarder</td><td class="ven"><em>To look</em></td></tr>
-    <tr><td class="num">10</td><td class="vfr">Donner</td><td class="ven"><em>To give</em></td><td class="num">21</td><td class="vfr">Trouver</td><td class="ven"><em>To find</em></td></tr>
-    <tr><td class="num">11</td><td class="vfr">Écouter</td><td class="ven"><em>To listen</em></td><td class="num">22</td><td class="vfr">Étudier</td><td class="ven"><em>To study</em></td></tr>
-  </table>
+  <div class="verb-list">
+    <div class="verb-item"><span class="num">1</span><span class="vfr">Acheter</span><span class="ven"><em>To buy</em></span></div>
+    <div class="verb-item"><span class="num">2</span><span class="vfr">Aider</span><span class="ven"><em>To help</em></span></div>
+    <div class="verb-item"><span class="num">3</span><span class="vfr">Aimer</span><span class="ven"><em>To like / love</em></span></div>
+    <div class="verb-item"><span class="num">4</span><span class="vfr">Appeler</span><span class="ven"><em>To call</em></span></div>
+    <div class="verb-item"><span class="num">5</span><span class="vfr">Arrêter</span><span class="ven"><em>To stop</em></span></div>
+    <div class="verb-item"><span class="num">6</span><span class="vfr">Chercher</span><span class="ven"><em>To look for</em></span></div>
+    <div class="verb-item"><span class="num">7</span><span class="vfr">Commander</span><span class="ven"><em>To order</em></span></div>
+    <div class="verb-item"><span class="num">8</span><span class="vfr">Commencer</span><span class="ven"><em>To start</em></span></div>
+    <div class="verb-item"><span class="num">9</span><span class="vfr">Demander</span><span class="ven"><em>To ask</em></span></div>
+    <div class="verb-item"><span class="num">10</span><span class="vfr">Donner</span><span class="ven"><em>To give</em></span></div>
+    <div class="verb-item"><span class="num">11</span><span class="vfr">Écouter</span><span class="ven"><em>To listen</em></span></div>
+    <div class="verb-item"><span class="num">12</span><span class="vfr">Habiter</span><span class="ven"><em>To live</em></span></div>
+    <div class="verb-item"><span class="num">13</span><span class="vfr">Jouer</span><span class="ven"><em>To play</em></span></div>
+    <div class="verb-item"><span class="num">14</span><span class="vfr">Manger</span><span class="ven"><em>To eat</em></span></div>
+    <div class="verb-item"><span class="num">15</span><span class="vfr">Montrer</span><span class="ven"><em>To show</em></span></div>
+    <div class="verb-item"><span class="num">16</span><span class="vfr">Oublier</span><span class="ven"><em>To forget</em></span></div>
+    <div class="verb-item"><span class="num">17</span><span class="vfr">Parler</span><span class="ven"><em>To speak</em></span></div>
+    <div class="verb-item"><span class="num">18</span><span class="vfr">Payer</span><span class="ven"><em>To pay</em></span></div>
+    <div class="verb-item"><span class="num">19</span><span class="vfr">Penser</span><span class="ven"><em>To think</em></span></div>
+    <div class="verb-item"><span class="num">20</span><span class="vfr">Regarder</span><span class="ven"><em>To look</em></span></div>
+    <div class="verb-item"><span class="num">21</span><span class="vfr">Trouver</span><span class="ven"><em>To find</em></span></div>
+    <div class="verb-item"><span class="num">22</span><span class="vfr">Étudier</span><span class="ven"><em>To study</em></span></div>
+  </div>
 </div>
 
 <hr class="sep">

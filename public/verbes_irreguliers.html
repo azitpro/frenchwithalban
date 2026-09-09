@@ -119,6 +119,35 @@ footer {
 }
 .footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+
+/* le lien d'en-tête n'avait aucune règle : il s'affichait en lien brut bleu souligné */
+.nav-btn {
+  font-size: 0.95rem; font-weight: 500; letter-spacing: 0.03em;
+  color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s;
+}
+.nav-btn:hover { opacity: 1; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 1040px) { .verb-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px)  { .verb-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px) {
+  .header-inner {
+    flex-direction: column; align-items: flex-start; gap: 10px;
+    padding: 18px 16px;
+  }
+  .logo { font-size: 1.2rem; }
+  .logo svg { width: 22px; height: 26px; }
+  .header-right {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+    width: 100%;
+  }
+  .page-title { font-size: 1.45rem; line-height: 1.2; }
+  .verb-block { padding: 14px 12px 12px; }
+  .conj-table { font-size: 0.8rem; }
+  .conj-table .pr { width: 38%; font-size: 0.74rem; }
+  .also-note { font-size: 0.82rem; }
+}
+@media (max-width: 430px) { .verb-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>

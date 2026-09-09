@@ -1,0 +1,2766 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Le français avec Alban — Manuel A0–A2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d2b45;
+  --rouge:#c0392b;
+  --or:#c9972a;
+  --creme:#faf7f2;
+  --creme-fonce:#f0ece4;
+  --bleu-fr:#002395;
+  --rouge-fr:#ED2939;
+  --gris-texte:#4a5568;
+  --bordure:#e6e0d6;
+}
+
+@page{
+  size: A4;
+  margin: 17mm 16mm 16mm 16mm;
+}
+
+*{ box-sizing:border-box; }
+
+html{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+body{
+  font-family:'Inter', -apple-system, 'Segoe UI', sans-serif;
+  font-size:9.6pt;
+  line-height:1.55;
+  color:var(--navy);
+  margin:0;
+  background:#fff;
+}
+
+/* ---------- generic blocks ---------- */
+p{ margin:0 0 7pt; }
+strong{ font-weight:600; }
+em{ font-style:italic; }
+
+.fr{ font-weight:600; color:var(--navy); }
+.pho{ font-family:'DejaVu Sans','Segoe UI',sans-serif; color:var(--rouge); font-size:8.4pt; white-space:nowrap; }
+.en{ color:var(--gris-texte); font-weight:300; }
+.fem{ color:var(--or); font-weight:700; }
+
+/* ---------- cover ---------- */
+.cover{
+  page-break-after:always;
+  height:264mm;
+  background:var(--creme);
+  margin:-17mm -16mm 0 -16mm;
+  padding:34mm 22mm 20mm;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+.cover-rule{ height:3pt; background:linear-gradient(to right,var(--bleu-fr) 0 33.3%,#fff 33.3% 66.6%,var(--rouge-fr) 66.6% 100%); width:62mm; margin-bottom:16mm; }
+.cover h1{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:40pt;
+  line-height:1.06;
+  font-weight:600;
+  margin:0 0 9mm;
+  letter-spacing:-0.5pt;
+}
+.cover h1 .accent{ color:var(--rouge); }
+.cover .sub{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:14pt;
+  font-weight:400;
+  color:var(--gris-texte);
+  margin:0 0 4mm;
+  line-height:1.4;
+}
+.cover .kicker{
+  font-size:8.2pt; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--or); margin-bottom:5mm;
+}
+.cover-meta{
+  margin-top:auto;
+  border-top:1px solid var(--bordure);
+  padding-top:6mm;
+  display:flex; align-items:flex-end; justify-content:space-between;
+}
+.cover-meta .site{ font-family:'Fraunces',Georgia,serif; font-size:12pt; font-weight:600; }
+.cover-meta .note{ font-size:8pt; color:var(--gris-texte); font-weight:300; margin-top:2mm; }
+.cover-coq{ width:38mm; opacity:.95; }
+
+/* ---------- front matter ---------- */
+.front h2{
+  font-family:'Fraunces',Georgia,serif; font-size:19pt; font-weight:600;
+  margin:0 0 5mm; padding-bottom:3mm; border-bottom:2px solid var(--or);
+}
+.front .lead{ font-size:10.4pt; line-height:1.65; color:var(--gris-texte); font-weight:300; margin-bottom:6mm; }
+
+/* ---------- table of contents ---------- */
+.toc-part{
+  font-family:'Fraunces',Georgia,serif; font-size:12.5pt; font-weight:600;
+  color:var(--rouge); margin:7mm 0 3mm;
+}
+.toc-part:first-of-type{ margin-top:2mm; }
+.toc-row{ display:flex; align-items:baseline; gap:3mm; padding:1.6mm 0; border-bottom:1px dotted var(--bordure); }
+.toc-num{ font-family:'Fraunces',Georgia,serif; font-weight:700; color:var(--or); width:9mm; flex:none; font-size:10pt; }
+.toc-title{ font-weight:500; }
+.toc-desc{ color:var(--gris-texte); font-weight:300; font-size:8.6pt; margin-left:auto; text-align:right; }
+
+/* ---------- part opener ---------- */
+.part{
+  page-break-before:always; page-break-after:always;
+  height:250mm; display:flex; flex-direction:column; justify-content:center;
+  text-align:center;
+}
+.part img{ width:44mm; margin:0 auto 10mm; }
+.part .lbl{ font-size:8.4pt; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--or); margin-bottom:5mm; }
+.part h2{ font-family:'Fraunces',Georgia,serif; font-size:30pt; font-weight:600; margin:0 0 5mm; }
+.part .code{ font-family:'Fraunces',Georgia,serif; font-size:13pt; color:var(--rouge); margin-bottom:7mm; }
+.part p{ max-width:112mm; margin:0 auto; color:var(--gris-texte); font-weight:300; font-size:10pt; line-height:1.65; }
+
+/* ---------- chapters ---------- */
+.chap{ page-break-before:always; }
+.chap-head{ border-bottom:2px solid var(--navy); padding-bottom:3.5mm; margin-bottom:6mm; }
+.chap-num{ font-size:8pt; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--or); }
+.chap h2{ font-family:'Fraunces',Georgia,serif; font-size:22pt; font-weight:600; margin:1.5mm 0 0; line-height:1.15; }
+.chap-sub{ color:var(--gris-texte); font-weight:300; font-size:9.4pt; margin-top:2mm; }
+
+h3{
+  font-family:'Fraunces',Georgia,serif; font-size:13pt; font-weight:600;
+  margin:8mm 0 3.5mm; padding-left:4mm; border-left:3px solid var(--or);
+  page-break-after:avoid;
+}
+h4{
+  font-family:'Inter',sans-serif; font-size:9.4pt; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--rouge);
+  margin:6mm 0 2.5mm; page-break-after:avoid;
+}
+
+/* ---------- tables ---------- */
+table{ width:100%; border-collapse:collapse; margin:0 0 5mm; font-size:9.2pt; page-break-inside:avoid; }
+th{
+  background:var(--navy); color:#fff; text-align:left; padding:2.2mm 3mm;
+  font-size:8pt; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+}
+td{ padding:1.9mm 3mm; border-bottom:1px solid var(--bordure); vertical-align:top; }
+tbody tr:nth-child(even){ background:var(--creme); }
+table.tight td{ padding:1.5mm 3mm; }
+
+/* ---------- callouts ---------- */
+.box{
+  background:var(--creme); border-left:3px solid var(--navy);
+  padding:3.5mm 4.5mm; margin:0 0 5mm; font-size:9pt; page-break-inside:avoid;
+}
+.box .t{ font-weight:700; display:block; margin-bottom:1.5mm; font-size:8.4pt; letter-spacing:.05em; text-transform:uppercase; }
+.box.warn{ border-left-color:var(--rouge); background:#fdf3f1; }
+.box.warn .t{ color:var(--rouge); }
+.box.tip{ border-left-color:var(--or); background:#fdf9ef; }
+.box.tip .t{ color:#8a6614; }
+
+/* ---------- vocabulary grid ---------- */
+.vgrid{ display:grid; grid-template-columns:1fr 1fr; gap:0 8mm; margin-bottom:5mm; }
+.vgrid.three{ grid-template-columns:1fr 1fr 1fr; gap:0 6mm; }
+.vrow{ display:flex; align-items:baseline; gap:2mm; padding:1.5mm 0; border-bottom:1px solid var(--bordure); font-size:9pt; }
+.vrow .w{ font-weight:600; }
+.vrow .p{ font-family:'DejaVu Sans',sans-serif; color:var(--rouge); font-size:7.8pt; }
+.vrow .g{ color:var(--gris-texte); font-weight:300; margin-left:auto; font-size:8.4pt; text-align:right; }
+
+/* ---------- picture strips ---------- */
+.pics{ display:grid; grid-template-columns:repeat(6,1fr); gap:4mm; margin-bottom:5mm; page-break-inside:avoid; }
+.pics.four{ grid-template-columns:repeat(4,1fr); }
+.pics figure{ margin:0; text-align:center; }
+.pics img{ width:100%; height:auto; border-radius:2mm; display:block; margin-bottom:1.5mm; }
+.pics figcaption{ font-size:8.2pt; font-weight:600; line-height:1.3; }
+.pics figcaption .p{ display:block; font-family:'DejaVu Sans',sans-serif; font-weight:400; color:var(--rouge); font-size:7.2pt; }
+
+/* ---------- conjugation cards ---------- */
+.conj-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:4mm; margin-bottom:5mm; }
+.conj-grid.two{ grid-template-columns:1fr 1fr; gap:5mm; }
+.conj{ border:1px solid var(--bordure); background:var(--creme); padding:3mm 3.5mm; page-break-inside:avoid; }
+.conj .inf{
+  font-family:'Fraunces',Georgia,serif; font-weight:700; font-size:10.5pt;
+  color:var(--navy); text-transform:uppercase; letter-spacing:.03em;
+  border-bottom:1px solid var(--or); padding-bottom:1.5mm; margin-bottom:2mm;
+}
+.conj .inf span{ font-family:'Inter',sans-serif; font-size:7.6pt; font-weight:400; text-transform:none; color:var(--gris-texte); letter-spacing:0; float:right; padding-top:2pt; }
+.conj dl{ margin:0; font-size:8.8pt; }
+.conj dl div{ display:flex; gap:2mm; padding:.7mm 0; }
+.conj dt{ color:var(--gris-texte); font-weight:300; width:17mm; flex:none; }
+.conj dd{ margin:0; font-weight:600; }
+.conj dd.mute{ color:var(--gris-texte); font-weight:500; }
+
+/* ---------- dialogue ---------- */
+.dial{ margin:0 0 5mm; }
+.dial div{ display:flex; gap:4mm; padding:1.8mm 0; border-bottom:1px solid var(--bordure); font-size:9.2pt; }
+.dial .q{ flex:1; font-weight:500; }
+.dial .a{ flex:1; color:var(--gris-texte); font-weight:300; }
+
+/* ---------- exercises ---------- */
+.exo{ background:var(--creme-fonce); border:1px solid var(--bordure); padding:4mm 5mm; margin:6mm 0 0; page-break-inside:avoid; }
+.exo h4{ margin-top:0; color:var(--navy); }
+.exo ol{ margin:0; padding-left:6mm; font-size:9.2pt; }
+.exo ol li{ padding:1.1mm 0; }
+.exo .hint{ font-size:8.4pt; color:var(--gris-texte); font-weight:300; margin-bottom:2.5mm; }
+.gap{ display:inline-block; min-width:16mm; border-bottom:1px solid var(--navy); }
+
+/* ---------- answer key ---------- */
+.key{ font-size:8.6pt; }
+.key h3{ margin-top:6mm; }
+.key ol{ padding-left:6mm; margin:0 0 4mm; column-count:2; column-gap:8mm; }
+.key li{ padding:.6mm 0; break-inside:avoid; }
+.key .why{ color:var(--gris-texte); font-weight:300; }
+
+/* ---------- back ---------- */
+.back{ page-break-before:always; height:250mm; display:flex; flex-direction:column; justify-content:center; text-align:center; }
+.back img{ width:30mm; margin:0 auto 8mm; }
+.back h2{ font-family:'Fraunces',Georgia,serif; font-size:20pt; font-weight:600; margin:0 0 4mm; }
+.back p{ color:var(--gris-texte); font-weight:300; max-width:110mm; margin:0 auto 3mm; }
+.back .site{ font-family:'Fraunces',Georgia,serif; font-size:13pt; font-weight:600; color:var(--rouge); margin-top:6mm; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="kicker">Manuel de français</div>
+  <h1>Le français<br>avec <span class="accent">Alban</span></h1>
+  <div class="sub">Du débutant complet au niveau A2 —<br>vocabulaire, grammaire, prononciation et exercices.</div>
+  <div class="cover-meta">
+    <div>
+      <div class="site">frenchwithalban.com</div>
+      <div class="note">15 chapitres · 2 niveaux · corrigés inclus</div>
+    </div>
+    <img class="cover-coq" src="../public/coq.png" alt="">
+  </div>
+</div>
+
+<!-- ============ AVANT-PROPOS ============ -->
+<div class="front">
+  <h2>Avant-propos</h2>
+  <p class="lead">Ce manuel rassemble, sous forme imprimable, l'ensemble des ressources publiées gratuitement sur
+  <strong>frenchwithalban.com</strong>. Il suit exactement la progression du site : d'abord les bases indispensables
+  du débutant complet, puis la grammaire du faux débutant.</p>
+
+  <h3>Comment lire ce livre</h3>
+  <p>Chaque mot et chaque phrase sont donnés avec leur <strong>prononciation en alphabet phonétique international</strong>,
+  écrite <span class="pho">/ɑ̃tʁə dø baʁ/</span> entre deux barres obliques. Les traductions anglaises apparaissent
+  <span class="en">en gris clair</span> : cachez-les avec la main pour vous tester.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:32mm">Signe</th><th>Signification</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pho">/bɔ̃.ʒuʁ/</span></td><td>Prononciation. Le point sépare les syllabes, le signe ‿ indique une liaison.</td></tr>
+      <tr><td>bleu / bleu<span class="fem">e</span></td><td>Les lettres <span class="fem">en or</span> sont celles qui s'ajoutent au féminin.</td></tr>
+      <tr><td><strong>Encadré bleu</strong></td><td>Un point de règle à retenir.</td></tr>
+      <tr><td><strong style="color:var(--rouge)">Encadré rouge</strong></td><td>Une erreur fréquente à éviter.</td></tr>
+      <tr><td><strong style="color:#8a6614">Encadré or</strong></td><td>Une astuce de mémorisation.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Les deux niveaux</h3>
+  <p>La <strong>Partie I</strong> ne demande aucune connaissance préalable : on y apprend à saluer, à compter, à dire
+  l'heure et le temps qu'il fait, et à se débrouiller en voyage. La <strong>Partie II</strong> aborde la mécanique de
+  la langue : la conjugaison au présent, à l'imparfait et au passé composé, l'accord et la place des adjectifs,
+  et les mots pour poser des questions.</p>
+
+  <p>Les exercices se trouvent à la fin de chaque chapitre ; <strong>tous les corrigés sont regroupés en fin
+  d'ouvrage</strong>. Les versions interactives et auto-corrigées de ces exercices restent disponibles gratuitement
+  sur le site.</p>
+
+  <div class="box tip">
+    <span class="t">Un conseil pour travailler seul</span>
+    Lisez toujours à voix haute. Le français s'écrit beaucoup plus qu'il ne se prononce : les terminaisons
+    <em>-e</em>, <em>-es</em> et <em>-ent</em> des verbes sont muettes, et c'est en les entendant qu'on finit
+    par les oublier à l'oral — ce qui est exactement le but.
+  </div>
+</div>
+
+<!-- ============ TABLE DES MATIÈRES ============ -->
+<div class="front" style="page-break-before:always">
+  <h2>Table des matières</h2>
+
+  <div class="toc-part">Partie I — Débutant complet</div>
+  <div class="toc-row"><span class="toc-num">1</span><span class="toc-title">Salutations et politesse</span><span class="toc-desc">14 formules · tutoiement et vouvoiement</span></div>
+  <div class="toc-row"><span class="toc-num">2</span><span class="toc-title">Les nombres</span><span class="toc-desc">de 0 à un milliard</span></div>
+  <div class="toc-row"><span class="toc-num">3</span><span class="toc-title">Les couleurs</span><span class="toc-desc">12 couleurs · le féminin</span></div>
+  <div class="toc-row"><span class="toc-num">4</span><span class="toc-title">Les jours et l'heure</span><span class="toc-desc">l'article · l'heure officielle et courante</span></div>
+  <div class="toc-row"><span class="toc-num">5</span><span class="toc-title">Les saisons et les mois</span><span class="toc-desc">4 saisons · 12 mois</span></div>
+  <div class="toc-row"><span class="toc-num">6</span><span class="toc-title">La météo</span><span class="toc-desc">il fait · il pleut · il y a</span></div>
+  <div class="toc-row"><span class="toc-num">7</span><span class="toc-title">Les animaux</span><span class="toc-desc">79 animaux · les petits · les pièges</span></div>
+  <div class="toc-row"><span class="toc-num">8</span><span class="toc-title">Phrases essentielles</span><span class="toc-desc">12 phrases de survie</span></div>
+  <div class="toc-row"><span class="toc-num">9</span><span class="toc-title">Phrases utiles pour touristes</span><span class="toc-desc">6 situations · questions et réponses</span></div>
+
+  <div class="toc-part">Partie II — Faux débutant (A1–A2)</div>
+  <div class="toc-row"><span class="toc-num">10</span><span class="toc-title">Les verbes en -ER au présent</span><span class="toc-desc">22 verbes · les cas particuliers</span></div>
+  <div class="toc-row"><span class="toc-num">11</span><span class="toc-title">Les verbes irréguliers au présent</span><span class="toc-desc">24 verbes essentiels</span></div>
+  <div class="toc-row"><span class="toc-num">12</span><span class="toc-title">Imparfait et passé composé</span><span class="toc-desc">28 verbes · auxiliaires et participes</span></div>
+  <div class="toc-row"><span class="toc-num">13</span><span class="toc-title">Les adjectifs essentiels</span><span class="toc-desc">50 adjectifs · accord et place</span></div>
+  <div class="toc-row"><span class="toc-num">14</span><span class="toc-title">Les mots interrogatifs</span><span class="toc-desc">que · qu'est-ce que · quoi · quel</span></div>
+  <div class="toc-row"><span class="toc-num">15</span><span class="toc-title">Qui ou que ?</span><span class="toc-desc">le pronom relatif · 20 phrases</span></div>
+
+  <div class="toc-part">Annexes</div>
+  <div class="toc-row"><span class="toc-num">—</span><span class="toc-title">Corrigés des exercices</span><span class="toc-desc">tous les chapitres</span></div>
+</div>
+
+<!-- ============ PARTIE I ============ -->
+<div class="part">
+  <img src="../public/img/niveaux/oeuf.png" alt="">
+  <div class="lbl">Partie I</div>
+  <h2>Débutant complet</h2>
+  <div class="code">Aucun prérequis</div>
+  <p>Vous n'avez jamais appris le français, ou vous repartez de zéro. Ces neuf chapitres couvrent
+  ce qu'il faut pour saluer quelqu'un, compter, donner un rendez-vous, parler du temps qu'il fait
+  et voyager en France sans être bloqué.</p>
+</div>
+<!-- ============ CH 1 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 1</div>
+    <h2>Salutations et politesse</h2>
+    <div class="chap-sub">Les quatorze formules qui ouvrent et ferment toutes les conversations.</div>
+  </div>
+
+  <h3>Le vocabulaire</h3>
+  <table>
+    <thead><tr><th style="width:38%">Français</th><th style="width:30%">Prononciation</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Bonjour</td><td class="pho">/bɔ̃.ʒuʁ/</td><td class="en">Hello / Good morning</td></tr>
+      <tr><td class="fr">Bonsoir</td><td class="pho">/bɔ̃.swaʁ/</td><td class="en">Good evening</td></tr>
+      <tr><td class="fr">Salut</td><td class="pho">/sa.ly/</td><td class="en">Hi / Bye (informal)</td></tr>
+      <tr><td class="fr">Au revoir</td><td class="pho">/o ʁə.vwaʁ/</td><td class="en">Goodbye</td></tr>
+      <tr><td class="fr">À bientôt</td><td class="pho">/a bjɛ̃.to/</td><td class="en">See you soon</td></tr>
+      <tr><td class="fr">S'il vous plaît</td><td class="pho">/sil vu plɛ/</td><td class="en">Please (formal)</td></tr>
+      <tr><td class="fr">Merci beaucoup</td><td class="pho">/mɛʁ.si bo.ku/</td><td class="en">Thank you very much</td></tr>
+      <tr><td class="fr">De rien</td><td class="pho">/də ʁjɛ̃/</td><td class="en">You're welcome</td></tr>
+      <tr><td class="fr">Excusez-moi</td><td class="pho">/ɛk.sky.ze mwa/</td><td class="en">Excuse me (formal)</td></tr>
+      <tr><td class="fr">Pardon</td><td class="pho">/paʁ.dɔ̃/</td><td class="en">Sorry / Excuse me</td></tr>
+      <tr><td class="fr">Comment allez-vous ?</td><td class="pho">/kɔ.mɑ̃ t‿a.le vu/</td><td class="en">How are you? (formal)</td></tr>
+      <tr><td class="fr">Ça va ?</td><td class="pho">/sa va/</td><td class="en">How's it going? (informal)</td></tr>
+      <tr><td class="fr">Enchanté</td><td class="pho">/ɑ̃.ʃɑ̃.te/</td><td class="en">Nice to meet you</td></tr>
+      <tr><td class="fr">Bonne journée</td><td class="pho">/bɔn ʒuʁ.ne/</td><td class="en">Have a good day</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Trois choses à savoir</h3>
+
+  <div class="box">
+    <span class="t">Bonjour ne se dit qu'une fois</span>
+    On dit <strong>bonjour</strong> à la première rencontre de la journée, puis on ne le répète plus à la
+    même personne. Le soir, à partir du crépuscule, <strong>bonjour</strong> devient <strong>bonsoir</strong>.
+    Notez qu'il n'existe pas d'équivalent courant de <em>good afternoon</em> : on dit <strong>bonjour</strong>
+    toute la journée.
+  </div>
+
+  <div class="box warn">
+    <span class="t">Salut se dit à l'arrivée et au départ</span>
+    <strong>Salut</strong> <span class="pho">/sa.ly/</span> sert à la fois pour <em>hi</em> et pour <em>bye</em>,
+    mais uniquement entre proches : amis, famille, collègues du même âge. Dans un magasin, à l'hôtel ou avec
+    une personne plus âgée, dites <strong>bonjour</strong>.
+  </div>
+
+  <div class="box tip">
+    <span class="t">Bonne journée : la formule pour partir</span>
+    <strong>Bonne journée</strong> se dit en <em>quittant</em> quelqu'un, jamais en arrivant. Sur le même
+    modèle : <strong>bonne soirée</strong> le soir, <strong>bon week-end</strong> le vendredi,
+    <strong>bonne nuit</strong> seulement avant d'aller dormir.
+  </div>
+
+  <h3>Tutoyer ou vouvoyer</h3>
+  <p>Le français distingue deux façons de dire <em>you</em>. Ce choix est la principale difficulté de la
+  politesse française, et il se joue dès la première phrase.</p>
+
+  <table>
+    <thead><tr><th style="width:50%">Vouvoiement — <span style="text-transform:none;font-weight:400">avec <strong>vous</strong></span></th><th>Tutoiement — <span style="text-transform:none;font-weight:400">avec <strong>tu</strong></span></th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Inconnus, commerçants, personnes plus âgées, contexte professionnel.</td>
+        <td>Famille, amis, enfants, collègues proches.</td>
+      </tr>
+      <tr>
+        <td class="fr">Bonjour, comment allez-vous ?</td>
+        <td class="fr">Salut, ça va ?</td>
+      </tr>
+      <tr>
+        <td class="fr">Excusez-moi, vous avez l'heure ?</td>
+        <td class="fr">Pardon, tu as l'heure ?</td>
+      </tr>
+      <tr>
+        <td class="fr">S'il vous plaît</td>
+        <td class="fr">S'il te plaît</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">En cas de doute, vouvoyez</span>
+    Vouvoyer quelqu'un qu'on aurait pu tutoyer est au pire un peu distant. Tutoyer quelqu'un qui attendait
+    <strong>vous</strong> est ressenti comme impoli. C'est en général la personne la plus âgée, ou celle qui
+    reçoit, qui propose : « <em>On peut se tutoyer ?</em> »
+  </div>
+
+  <h3>Enchaîner une rencontre</h3>
+  <div class="dial">
+    <div><span class="q">— Bonjour ! Comment allez-vous ?</span><span class="a">Hello! How are you?</span></div>
+    <div><span class="q">— Très bien, merci. Et vous ?</span><span class="a">Very well, thank you. And you?</span></div>
+    <div><span class="q">— Ça va, merci. Je m'appelle Alban.</span><span class="a">I'm fine, thanks. My name is Alban.</span></div>
+    <div><span class="q">— Enchanté !</span><span class="a">Nice to meet you!</span></div>
+    <div><span class="q">— Au revoir, bonne journée !</span><span class="a">Goodbye, have a good day!</span></div>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 1.1 — Complétez</h4>
+    <p class="hint">Écrivez la formule française qui convient.</p>
+    <ol>
+      <li>Vous entrez dans une boulangerie à 9 h. Vous dites : <span class="gap"></span></li>
+      <li>Vous entrez dans un restaurant à 20 h. Vous dites : <span class="gap"></span></li>
+      <li>On vous dit « merci ». Vous répondez : <span class="gap"></span></li>
+      <li>Vous rencontrez quelqu'un pour la première fois. Vous dites : <span class="gap"></span></li>
+      <li>Vous quittez un collègue le matin. Vous dites : <span class="gap"></span></li>
+      <li>Vous marchez sur le pied de quelqu'un. Vous dites : <span class="gap"></span></li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 1.2 — Tu ou vous ?</h4>
+    <p class="hint">Pour chaque situation, indiquez la forme correcte.</p>
+    <ol>
+      <li>Vous parlez à la boulangère. <span class="gap"></span></li>
+      <li>Vous parlez à votre petit frère. <span class="gap"></span></li>
+      <li>Vous parlez au directeur de l'école. <span class="gap"></span></li>
+      <li>Vous parlez à un enfant de six ans. <span class="gap"></span></li>
+      <li>Vous parlez à un touriste de votre âge dans une auberge de jeunesse. <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 2 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 2</div>
+    <h2>Les nombres</h2>
+    <div class="chap-sub">De zéro à un milliard, avec la logique — parfois surprenante — des dizaines.</div>
+  </div>
+
+  <h3>De 1 à 19</h3>
+  <div class="vgrid three">
+    <div class="vrow"><span class="w">1</span><span class="g">un / une <span class="p">/œ̃/ · /yn/</span></span></div>
+    <div class="vrow"><span class="w">2</span><span class="g">deux <span class="p">/dø/</span></span></div>
+    <div class="vrow"><span class="w">3</span><span class="g">trois <span class="p">/tʁwa/</span></span></div>
+    <div class="vrow"><span class="w">4</span><span class="g">quatre <span class="p">/katʁ/</span></span></div>
+    <div class="vrow"><span class="w">5</span><span class="g">cinq <span class="p">/sɛ̃k/</span></span></div>
+    <div class="vrow"><span class="w">6</span><span class="g">six <span class="p">/sis/</span></span></div>
+    <div class="vrow"><span class="w">7</span><span class="g">sept <span class="p">/sɛt/</span></span></div>
+    <div class="vrow"><span class="w">8</span><span class="g">huit <span class="p">/ɥit/</span></span></div>
+    <div class="vrow"><span class="w">9</span><span class="g">neuf <span class="p">/nœf/</span></span></div>
+    <div class="vrow"><span class="w">10</span><span class="g">dix <span class="p">/dis/</span></span></div>
+    <div class="vrow"><span class="w">11</span><span class="g">onze <span class="p">/ɔ̃z/</span></span></div>
+    <div class="vrow"><span class="w">12</span><span class="g">douze <span class="p">/duz/</span></span></div>
+    <div class="vrow"><span class="w">13</span><span class="g">treize <span class="p">/tʁɛz/</span></span></div>
+    <div class="vrow"><span class="w">14</span><span class="g">quatorze <span class="p">/katɔʁz/</span></span></div>
+    <div class="vrow"><span class="w">15</span><span class="g">quinze <span class="p">/kɛ̃z/</span></span></div>
+    <div class="vrow"><span class="w">16</span><span class="g">seize <span class="p">/sɛz/</span></span></div>
+    <div class="vrow"><span class="w">17</span><span class="g">dix-sept <span class="p">/dis.sɛt/</span></span></div>
+    <div class="vrow"><span class="w">18</span><span class="g">dix-huit <span class="p">/diz.ɥit/</span></span></div>
+    <div class="vrow"><span class="w">19</span><span class="g">dix-neuf <span class="p">/diz.nœf/</span></span></div>
+  </div>
+
+  <div class="box">
+    <span class="t">La rupture se situe à 17</span>
+    De 11 à 16, le français a des mots à part — <strong>onze, douze, treize, quatorze, quinze, seize</strong> —
+    qu'il faut mémoriser. À partir de 17, la construction redevient logique : <strong>dix-sept</strong>,
+    <strong>dix-huit</strong>, <strong>dix-neuf</strong>, c'est-à-dire 10 + 7, 10 + 8, 10 + 9.
+  </div>
+
+  <h3>Les dizaines</h3>
+  <table class="tight">
+    <thead><tr><th style="width:16%">Chiffre</th><th style="width:42%">En lettres</th><th>Prononciation</th></tr></thead>
+    <tbody>
+      <tr><td>20</td><td class="fr">vingt</td><td class="pho">/vɛ̃/</td></tr>
+      <tr><td>30</td><td class="fr">trente</td><td class="pho">/tʁɑ̃t/</td></tr>
+      <tr><td>40</td><td class="fr">quarante</td><td class="pho">/kaʁɑ̃t/</td></tr>
+      <tr><td>50</td><td class="fr">cinquante</td><td class="pho">/sɛ̃kɑ̃t/</td></tr>
+      <tr><td>60</td><td class="fr">soixante</td><td class="pho">/swasɑ̃t/</td></tr>
+      <tr><td>70</td><td class="fr">soixante-dix</td><td class="pho">/swasɑ̃t.dis/</td></tr>
+      <tr><td>80</td><td class="fr">quatre-vingts</td><td class="pho">/katʁ.vɛ̃/</td></tr>
+      <tr><td>90</td><td class="fr">quatre-vingt-dix</td><td class="pho">/katʁ.vɛ̃.dis/</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">70, 80, 90 : le calcul mental du français</span>
+    Le français n'a pas de mot pour 70, 80 ni 90. Il compte :
+    <strong>70 = 60 + 10</strong> (soixante-dix), <strong>80 = 4 × 20</strong> (quatre-vingts),
+    <strong>90 = 4 × 20 + 10</strong> (quatre-vingt-dix). C'est un reste de numération par vingtaines.
+    Conséquence : la série des 70 continue avec <em>onze, douze, treize…</em> jusqu'à
+    <strong>soixante-dix-neuf</strong>, et celle des 90 de même jusqu'à <strong>quatre-vingt-dix-neuf</strong>.
+  </div>
+
+  <h4>De 20 à 29</h4>
+  <div class="vgrid three">
+    <div class="vrow"><span class="w">20</span><span class="g">vingt</span></div>
+    <div class="vrow"><span class="w">21</span><span class="g">vingt-et-un</span></div>
+    <div class="vrow"><span class="w">22</span><span class="g">vingt-deux</span></div>
+    <div class="vrow"><span class="w">23</span><span class="g">vingt-trois</span></div>
+    <div class="vrow"><span class="w">24</span><span class="g">vingt-quatre</span></div>
+    <div class="vrow"><span class="w">25</span><span class="g">vingt-cinq</span></div>
+    <div class="vrow"><span class="w">26</span><span class="g">vingt-six</span></div>
+    <div class="vrow"><span class="w">27</span><span class="g">vingt-sept</span></div>
+    <div class="vrow"><span class="w">28</span><span class="g">vingt-huit</span></div>
+    <div class="vrow"><span class="w">29</span><span class="g">vingt-neuf</span></div>
+  </div>
+
+  <h4>De 60 à 79 — la série qui surprend</h4>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">60</span><span class="g">soixante</span></div>
+    <div class="vrow"><span class="w">70</span><span class="g">soixante-dix</span></div>
+    <div class="vrow"><span class="w">61</span><span class="g">soixante-et-un</span></div>
+    <div class="vrow"><span class="w">71</span><span class="g">soixante-et-onze</span></div>
+    <div class="vrow"><span class="w">62</span><span class="g">soixante-deux</span></div>
+    <div class="vrow"><span class="w">72</span><span class="g">soixante-douze</span></div>
+    <div class="vrow"><span class="w">63</span><span class="g">soixante-trois</span></div>
+    <div class="vrow"><span class="w">73</span><span class="g">soixante-treize</span></div>
+    <div class="vrow"><span class="w">64</span><span class="g">soixante-quatre</span></div>
+    <div class="vrow"><span class="w">74</span><span class="g">soixante-quatorze</span></div>
+    <div class="vrow"><span class="w">65</span><span class="g">soixante-cinq</span></div>
+    <div class="vrow"><span class="w">75</span><span class="g">soixante-quinze</span></div>
+    <div class="vrow"><span class="w">66</span><span class="g">soixante-six</span></div>
+    <div class="vrow"><span class="w">76</span><span class="g">soixante-seize</span></div>
+    <div class="vrow"><span class="w">67</span><span class="g">soixante-sept</span></div>
+    <div class="vrow"><span class="w">77</span><span class="g">soixante-dix-sept</span></div>
+    <div class="vrow"><span class="w">68</span><span class="g">soixante-huit</span></div>
+    <div class="vrow"><span class="w">78</span><span class="g">soixante-dix-huit</span></div>
+    <div class="vrow"><span class="w">69</span><span class="g">soixante-neuf</span></div>
+    <div class="vrow"><span class="w">79</span><span class="g">soixante-dix-neuf</span></div>
+  </div>
+
+  <h4>De 80 à 99</h4>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">80</span><span class="g">quatre-vingts</span></div>
+    <div class="vrow"><span class="w">90</span><span class="g">quatre-vingt-dix</span></div>
+    <div class="vrow"><span class="w">81</span><span class="g">quatre-vingt-un</span></div>
+    <div class="vrow"><span class="w">91</span><span class="g">quatre-vingt-onze</span></div>
+    <div class="vrow"><span class="w">82</span><span class="g">quatre-vingt-deux</span></div>
+    <div class="vrow"><span class="w">92</span><span class="g">quatre-vingt-douze</span></div>
+    <div class="vrow"><span class="w">83</span><span class="g">quatre-vingt-trois</span></div>
+    <div class="vrow"><span class="w">93</span><span class="g">quatre-vingt-treize</span></div>
+    <div class="vrow"><span class="w">84</span><span class="g">quatre-vingt-quatre</span></div>
+    <div class="vrow"><span class="w">94</span><span class="g">quatre-vingt-quatorze</span></div>
+    <div class="vrow"><span class="w">85</span><span class="g">quatre-vingt-cinq</span></div>
+    <div class="vrow"><span class="w">95</span><span class="g">quatre-vingt-quinze</span></div>
+    <div class="vrow"><span class="w">86</span><span class="g">quatre-vingt-six</span></div>
+    <div class="vrow"><span class="w">96</span><span class="g">quatre-vingt-seize</span></div>
+    <div class="vrow"><span class="w">87</span><span class="g">quatre-vingt-sept</span></div>
+    <div class="vrow"><span class="w">97</span><span class="g">quatre-vingt-dix-sept</span></div>
+    <div class="vrow"><span class="w">88</span><span class="g">quatre-vingt-huit</span></div>
+    <div class="vrow"><span class="w">98</span><span class="g">quatre-vingt-dix-huit</span></div>
+    <div class="vrow"><span class="w">89</span><span class="g">quatre-vingt-neuf</span></div>
+    <div class="vrow"><span class="w">99</span><span class="g">quatre-vingt-dix-neuf</span></div>
+  </div>
+
+  <div class="box tip">
+    <span class="t">En Belgique et en Suisse, c'est plus simple</span>
+    <strong>70 = septante</strong> · <strong>80 = huitante</strong> (Suisse) ou <strong>quatre-vingts</strong> (Belgique)
+    · <strong>90 = nonante</strong>. Ces formes sont parfaitement correctes ; elles ne sont simplement pas
+    utilisées en France.
+  </div>
+
+  <h3>Les grands nombres</h3>
+  <table class="tight">
+    <thead><tr><th style="width:28%">Chiffre</th><th style="width:36%">En lettres</th><th>Prononciation</th></tr></thead>
+    <tbody>
+      <tr><td>100</td><td class="fr">cent</td><td class="pho">/sɑ̃/</td></tr>
+      <tr><td>200</td><td class="fr">deux cents</td><td class="pho">/dø.sɑ̃/</td></tr>
+      <tr><td>1 000</td><td class="fr">mille</td><td class="pho">/mil/</td></tr>
+      <tr><td>10 000</td><td class="fr">dix mille</td><td class="pho">/di.mil/</td></tr>
+      <tr><td>1 000 000</td><td class="fr">un million</td><td class="pho">/œ̃.mil.jɔ̃/</td></tr>
+      <tr><td>1 000 000 000</td><td class="fr">un milliard</td><td class="pho">/œ̃.mil.jaʁ/</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <span class="t">Le -s de vingt et de cent</span>
+    <strong>Quatre-vingts</strong> et <strong>deux cents</strong> prennent un <em>-s</em> quand ils terminent
+    le nombre. Ce <em>-s</em> disparaît dès qu'un chiffre les suit : <strong>quatre-vingt-un</strong>,
+    <strong>deux cent trois</strong>. <strong>Mille</strong>, lui, ne prend jamais de <em>-s</em> :
+    <em>deux mille</em>.
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 2.1 — Écrivez en chiffres</h4>
+    <ol>
+      <li>quarante-huit <span class="gap"></span></li>
+      <li>soixante-quinze <span class="gap"></span></li>
+      <li>quatre-vingt-treize <span class="gap"></span></li>
+      <li>soixante et onze <span class="gap"></span></li>
+      <li>quatre-vingt-dix-sept <span class="gap"></span></li>
+      <li>deux cent quatre-vingts <span class="gap"></span></li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 2.2 — Écrivez en toutes lettres</h4>
+    <ol>
+      <li>16 <span class="gap"></span></li>
+      <li>21 <span class="gap"></span></li>
+      <li>62 <span class="gap"></span></li>
+      <li>78 <span class="gap"></span></li>
+      <li>84 <span class="gap"></span></li>
+      <li>99 <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 3 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 3</div>
+    <h2>Les couleurs</h2>
+    <div class="chap-sub">Douze couleurs de base — et le premier accord au féminin.</div>
+  </div>
+
+  <p>Les lettres qui s'ajoutent au féminin apparaissent <span class="fem">en or</span>.</p>
+
+  <div class="pics">
+    <figure><img src="../public/img/rouge.png" alt=""><figcaption>rouge<span class="p">/ʁuʒ/</span></figcaption></figure>
+    <figure><img src="../public/img/bleu.png" alt=""><figcaption>bleu / bleu<span class="fem">e</span><span class="p">/blø/</span></figcaption></figure>
+    <figure><img src="../public/img/vert.png" alt=""><figcaption>vert / vert<span class="fem">e</span><span class="p">/vɛʁ/ · /vɛʁt/</span></figcaption></figure>
+    <figure><img src="../public/img/jaune.png" alt=""><figcaption>jaune<span class="p">/ʒon/</span></figcaption></figure>
+    <figure><img src="../public/img/orange.png" alt=""><figcaption>orange<span class="p">/ɔʁɑ̃ʒ/</span></figcaption></figure>
+    <figure><img src="../public/img/violet.png" alt=""><figcaption>violet / violet<span class="fem">te</span><span class="p">/vjɔlɛ/ · /vjɔlɛt/</span></figcaption></figure>
+    <figure><img src="../public/img/rose.png" alt=""><figcaption>rose<span class="p">/ʁoz/</span></figcaption></figure>
+    <figure><img src="../public/img/marron.png" alt=""><figcaption>marron<span class="p">/maʁɔ̃/</span></figcaption></figure>
+    <figure><img src="../public/img/gris.png" alt=""><figcaption>gris / gris<span class="fem">e</span><span class="p">/ɡʁi/ · /ɡʁiz/</span></figcaption></figure>
+    <figure><img src="../public/img/noir.png" alt=""><figcaption>noir / noir<span class="fem">e</span><span class="p">/nwaʁ/</span></figcaption></figure>
+    <figure><img src="../public/img/blanc.png" alt=""><figcaption>blanc / blan<span class="fem">che</span><span class="p">/blɑ̃/ · /blɑ̃ʃ/</span></figcaption></figure>
+    <figure><img src="../public/img/dore.png" alt=""><figcaption>doré / doré<span class="fem">e</span><span class="p">/dɔʁe/</span></figcaption></figure>
+  </div>
+
+  <h3>Trois comportements différents</h3>
+  <table>
+    <thead><tr><th style="width:30%">Type</th><th style="width:34%">Exemples</th><th>Règle</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Déjà terminé par <strong>-e</strong></td>
+        <td class="fr">rouge, jaune, rose</td>
+        <td>Aucun changement au féminin.</td>
+      </tr>
+      <tr>
+        <td>Terminé par une consonne ou une voyelle</td>
+        <td class="fr">vert → verte<br>bleu → bleue</td>
+        <td>On ajoute <strong>-e</strong>. La consonne, jusque-là muette, se prononce alors.</td>
+      </tr>
+      <tr>
+        <td>Formes irrégulières</td>
+        <td class="fr">blanc → blanche<br>violet → violette</td>
+        <td>À mémoriser individuellement.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">La consonne finale se réveille au féminin</span>
+    <strong>vert</strong> se prononce <span class="pho">/vɛʁ/</span> — le <em>t</em> est muet. Mais
+    <strong>verte</strong> se prononce <span class="pho">/vɛʁt/</span> : le <em>-e</em> ajouté fait sonner le
+    <em>t</em>. Même chose pour <strong>gris</strong> <span class="pho">/ɡʁi/</span> →
+    <strong>grise</strong> <span class="pho">/ɡʁiz/</span>. C'est la logique de tout l'accord français.
+  </div>
+
+  <div class="box tip">
+    <span class="t">Marron et orange ne changent jamais</span>
+    Les couleurs qui sont aussi des noms de choses — <strong>marron</strong> (le fruit),
+    <strong>orange</strong> (le fruit) — restent invariables : <em>des chaussures marron</em>,
+    <em>des murs orange</em>, sans <em>-s</em> ni <em>-e</em>.
+  </div>
+
+  <h3>La couleur se place après le nom</h3>
+  <div class="dial">
+    <div><span class="q">une voiture rouge</span><span class="a">a red car</span></div>
+    <div><span class="q">un pull vert</span><span class="a">a green jumper</span></div>
+    <div><span class="q">une maison blanche</span><span class="a">a white house</span></div>
+    <div><span class="q">des chaussures noires</span><span class="a">black shoes</span></div>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 3.1 — Mettez au féminin</h4>
+    <ol>
+      <li>un manteau vert → une veste <span class="gap"></span></li>
+      <li>un mur blanc → une porte <span class="gap"></span></li>
+      <li>un stylo bleu → une lampe <span class="gap"></span></li>
+      <li>un chat gris → une souris <span class="gap"></span></li>
+      <li>un rideau violet → une robe <span class="gap"></span></li>
+      <li>un vélo rouge → une voiture <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+<!-- ============ CH 4 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 4</div>
+    <h2>Les jours et l'heure</h2>
+    <div class="chap-sub">Fixer un rendez-vous : le jour, l'article qui change tout, et les deux façons de dire l'heure.</div>
+  </div>
+
+  <h3>Les jours de la semaine</h3>
+  <p>En français, la semaine commence le <strong>lundi</strong>. Les jours s'écrivent toujours en
+  <strong>minuscules</strong>, même au milieu d'une phrase — contrairement à l'anglais.</p>
+
+  <div class="vgrid three">
+    <div class="vrow"><span class="w">lundi</span><span class="g"><span class="p">/lœ̃di/</span> Monday</span></div>
+    <div class="vrow"><span class="w">mardi</span><span class="g"><span class="p">/maʁdi/</span> Tuesday</span></div>
+    <div class="vrow"><span class="w">mercredi</span><span class="g"><span class="p">/mɛʁkʁədi/</span> Wednesday</span></div>
+    <div class="vrow"><span class="w">jeudi</span><span class="g"><span class="p">/ʒødi/</span> Thursday</span></div>
+    <div class="vrow"><span class="w">vendredi</span><span class="g"><span class="p">/vɑ̃dʁədi/</span> Friday</span></div>
+    <div class="vrow"><span class="w">samedi</span><span class="g"><span class="p">/samdi/</span> Saturday</span></div>
+    <div class="vrow"><span class="w">dimanche</span><span class="g"><span class="p">/dimɑ̃ʃ/</span> Sunday</span></div>
+    <div class="vrow"><span class="w">le week-end</span><span class="g"><span class="p">/wikɛnd/</span> the weekend</span></div>
+  </div>
+
+  <h3>Avec ou sans article</h3>
+  <p>C'est la difficulté principale du chapitre : l'article change complètement le sens.</p>
+
+  <table>
+    <thead><tr><th style="width:50%">Sans article — une seule fois</th><th>Avec « le » — chaque semaine</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="fr">Je travaille lundi.<br><span class="en" style="font-weight:300">Ce lundi précis.</span></td>
+        <td class="fr">Je travaille le lundi.<br><span class="en" style="font-weight:300">Tous les lundis.</span></td>
+      </tr>
+      <tr>
+        <td class="fr">Samedi, je vais à Paris.</td>
+        <td class="fr">Le samedi, je fais du sport.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">Pas de préposition</span>
+    On ne dit pas « <em>sur lundi</em> » ni « <em>à lundi</em> » pour situer une action. On dit simplement
+    <strong>lundi</strong> ou <strong>le lundi</strong>. Attention : « <strong>à lundi !</strong> » existe,
+    mais c'est une formule pour se dire au revoir — <em>see you Monday</em>.
+  </div>
+
+  <h3>Situer dans le temps</h3>
+  <table>
+    <thead><tr><th style="width:34%">Passé</th><th style="width:33%">Présent</th><th>Futur</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">avant-hier</td><td class="fr">aujourd'hui</td><td class="fr">demain</td></tr>
+      <tr><td class="fr">hier</td><td class="fr">ce matin</td><td class="fr">après-demain</td></tr>
+      <tr><td class="fr">la semaine dernière</td><td class="fr">cette semaine</td><td class="fr">la semaine prochaine</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Quelle heure est-il ?</h3>
+  <p>Deux façons de dire l'heure coexistent : la forme <strong>officielle</strong>, de 0 à 24 heures, et la
+  forme <strong>courante</strong>, de 1 à 12 heures.</p>
+
+  <table>
+    <thead><tr><th style="width:22%">Heure</th><th style="width:42%">Forme courante</th><th>Forme officielle et remarque</th></tr></thead>
+    <tbody>
+      <tr><td>3 h 00</td><td class="fr">trois heures</td><td class="en">15h00 · trois heures de l'après-midi</td></tr>
+      <tr><td>3 h 15</td><td class="fr">trois heures et quart</td><td class="en">15h15 · trois heures quinze</td></tr>
+      <tr><td>3 h 30</td><td class="fr">trois heures et demie</td><td class="en">15h30 · trois heures trente</td></tr>
+      <tr><td>3 h 45</td><td class="fr">quatre heures moins le quart</td><td class="en">15h45 · trois heures quarante-cinq</td></tr>
+      <tr><td>7 h 10</td><td class="fr">sept heures dix</td><td class="en">7h10 · sept heures du matin</td></tr>
+      <tr><td>8 h 50</td><td class="fr">neuf heures moins dix</td><td class="en">8h50 · huit heures cinquante</td></tr>
+      <tr><td>12 h 00</td><td class="fr">midi</td><td class="en">12h00 · jamais « douze heures »</td></tr>
+      <tr><td>0 h 30</td><td class="fr">minuit et demi</td><td class="en">00h30 · sans « e » après minuit</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <span class="t">Officiel ou courant ?</span>
+    La forme officielle sert pour les <strong>horaires</strong> : trains, rendez-vous, télévision. La forme
+    courante s'emploie dans la <strong>conversation</strong>, avec <em>du matin</em>, <em>de l'après-midi</em>
+    ou <em>du soir</em> pour lever l'ambiguïté.
+  </div>
+
+  <h3>Les cas particuliers</h3>
+  <table>
+    <thead><tr><th style="width:30%">On dit</th><th>Explication</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">midi</td><td>12 h 00 — jamais « douze heures » dans la conversation.</td></tr>
+      <tr><td class="fr">minuit</td><td>00 h 00 — jamais « zéro heure » dans la conversation.</td></tr>
+      <tr><td class="fr">et demie</td><td>Après une heure : <em>trois heures et demie</em>. Mais après <strong>midi</strong> et <strong>minuit</strong>, on écrit <em>et demi</em> sans « e » : <em>midi et demi</em>.</td></tr>
+      <tr><td class="fr">et quart</td><td><em>trois heures et quart</em> — sans article devant « quart ».</td></tr>
+      <tr><td class="fr">moins le quart</td><td><em>quatre heures moins le quart</em> — avec l'article, contrairement à « et quart ».</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">Pourquoi « et demi » perd son -e</span>
+    <em>Heure</em> est un mot féminin : <strong>trois heures et demie</strong>. Mais <em>midi</em> et
+    <em>minuit</em> sont masculins : <strong>midi et demi</strong>, <strong>minuit et demi</strong>.
+    L'accord suit le mot qui précède.
+  </div>
+
+  <h3>Poser la question</h3>
+  <div class="dial">
+    <div><span class="q">Quelle heure est-il ?</span><span class="a">— Il est trois heures.</span></div>
+    <div><span class="q">Vous avez l'heure ?</span><span class="a">— Oui, il est huit heures et quart.</span></div>
+    <div><span class="q">À quelle heure commence le cours ?</span><span class="a">— À dix heures.</span></div>
+  </div>
+
+  <div class="box">
+    <span class="t">« Il est » et « à »</span>
+    Pour dire l'heure qu'il est : <strong>il est</strong> trois heures. Pour situer un événement :
+    <strong>à</strong> trois heures. Ne mélangez pas les deux.
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 4.1 — Une fois ou chaque semaine ?</h4>
+    <p class="hint">Indiquez si la phrase parle d'<strong>une seule fois</strong> ou de <strong>chaque semaine</strong>.</p>
+    <ol>
+      <li>Le mardi, j'ai un cours de français. <span class="gap"></span></li>
+      <li>Mardi, j'ai un rendez-vous chez le médecin. <span class="gap"></span></li>
+      <li>Je vais au marché le dimanche. <span class="gap"></span></li>
+      <li>Dimanche, nous allons chez ma sœur. <span class="gap"></span></li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 4.2 — Dites l'heure (forme courante)</h4>
+    <ol>
+      <li>10 h 15 <span class="gap"></span></li>
+      <li>6 h 30 <span class="gap"></span></li>
+      <li>13 h 45 <span class="gap"></span></li>
+      <li>12 h 00 <span class="gap"></span></li>
+      <li>00 h 30 <span class="gap"></span></li>
+      <li>21 h 50 <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 5 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 5</div>
+    <h2>Les saisons et les mois</h2>
+    <div class="chap-sub">Quatre saisons, douze mois — et une préposition qui change pour une seule d'entre elles.</div>
+  </div>
+
+  <h3>Les quatre saisons</h3>
+  <div class="pics four">
+    <figure><img src="../public/img/printemps.png" alt=""><figcaption>le printemps<span class="p">/lə pʁɛ̃tɑ̃/</span></figcaption></figure>
+    <figure><img src="../public/img/ete.png" alt=""><figcaption>l'été<span class="p">/lete/</span></figcaption></figure>
+    <figure><img src="../public/img/automne.png" alt=""><figcaption>l'automne<span class="p">/lotɔn/</span></figcaption></figure>
+    <figure><img src="../public/img/hiver.png" alt=""><figcaption>l'hiver<span class="p">/livɛʁ/</span></figcaption></figure>
+  </div>
+
+  <div class="box warn">
+    <span class="t">Au printemps, mais en été</span>
+    Trois saisons sur quatre prennent <strong>en</strong> : <em>en été, en automne, en hiver</em>. Le printemps
+    fait exception et prend <strong>au</strong> : <em>au printemps</em>. La raison est phonétique — les trois
+    autres commencent par une voyelle.
+  </div>
+
+  <h3>Les mois de l'année</h3>
+  <p>Comme les jours, les mois s'écrivent toujours en <strong>minuscules</strong>.</p>
+
+  <div class="vgrid three">
+    <div class="vrow"><span class="w">janvier</span><span class="g"><span class="p">/ʒɑ̃vje/</span></span></div>
+    <div class="vrow"><span class="w">février</span><span class="g"><span class="p">/fevʁije/</span></span></div>
+    <div class="vrow"><span class="w">mars</span><span class="g"><span class="p">/maʁs/</span></span></div>
+    <div class="vrow"><span class="w">avril</span><span class="g"><span class="p">/avʁil/</span></span></div>
+    <div class="vrow"><span class="w">mai</span><span class="g"><span class="p">/mɛ/</span></span></div>
+    <div class="vrow"><span class="w">juin</span><span class="g"><span class="p">/ʒɥɛ̃/</span></span></div>
+    <div class="vrow"><span class="w">juillet</span><span class="g"><span class="p">/ʒɥijɛ/</span></span></div>
+    <div class="vrow"><span class="w">août</span><span class="g"><span class="p">/ut/</span></span></div>
+    <div class="vrow"><span class="w">septembre</span><span class="g"><span class="p">/sɛptɑ̃bʁ/</span></span></div>
+    <div class="vrow"><span class="w">octobre</span><span class="g"><span class="p">/ɔktɔbʁ/</span></span></div>
+    <div class="vrow"><span class="w">novembre</span><span class="g"><span class="p">/nɔvɑ̃bʁ/</span></span></div>
+    <div class="vrow"><span class="w">décembre</span><span class="g"><span class="p">/desɑ̃bʁ/</span></span></div>
+  </div>
+
+  <div class="box tip">
+    <span class="t">Deux pièges de prononciation</span>
+    <strong>août</strong> se prononce <span class="pho">/ut/</span> : le <em>a</em> ne s'entend pas.
+    <strong>juin</strong> <span class="pho">/ʒɥɛ̃/</span> et <strong>juillet</strong> <span class="pho">/ʒɥijɛ/</span>
+    commencent tous deux par le son <span class="pho">/ʒɥ/</span>, qu'il faut travailler séparément.
+  </div>
+
+  <h3>Dire une date</h3>
+  <div class="dial">
+    <div><span class="q">Nous sommes le 3 mars.</span><span class="a">It's the 3rd of March.</span></div>
+    <div><span class="q">Mon anniversaire est en juillet.</span><span class="a">My birthday is in July.</span></div>
+    <div><span class="q">Je pars le premier août.</span><span class="a">I leave on the first of August.</span></div>
+    <div><span class="q">En hiver, il fait froid.</span><span class="a">In winter, it's cold.</span></div>
+  </div>
+
+  <div class="box">
+    <span class="t">Le premier, puis deux, trois…</span>
+    Seul le premier jour du mois utilise l'ordinal : <strong>le premier mai</strong>. Ensuite on emploie les
+    nombres simples : <strong>le deux mai</strong>, <strong>le trois mai</strong> — et non « le deuxième mai ».
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 5.1 — En ou au ?</h4>
+    <ol>
+      <li>Il fait chaud <span class="gap"></span> été.</li>
+      <li>Les fleurs poussent <span class="gap"></span> printemps.</li>
+      <li>Les feuilles tombent <span class="gap"></span> automne.</li>
+      <li>Il neige <span class="gap"></span> hiver.</li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 5.2 — Quelle saison ?</h4>
+    <p class="hint">Écrivez la saison qui correspond au mois.</p>
+    <ol>
+      <li>janvier <span class="gap"></span></li>
+      <li>avril <span class="gap"></span></li>
+      <li>juillet <span class="gap"></span></li>
+      <li>octobre <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 6 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 6</div>
+    <h2>La météo</h2>
+    <div class="chap-sub">Le sujet de conversation numéro un — et trois structures à ne pas confondre.</div>
+  </div>
+
+  <h3>Le vocabulaire</h3>
+  <div class="pics">
+    <figure><img src="../public/img/meteo/soleil.png" alt=""><figcaption>le soleil<span class="p">/sɔlɛj/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/nuage.png" alt=""><figcaption>le nuage<span class="p">/nɥaʒ/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/pluie.png" alt=""><figcaption>la pluie<span class="p">/plɥi/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/neige.png" alt=""><figcaption>la neige<span class="p">/nɛʒ/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/vent.png" alt=""><figcaption>le vent<span class="p">/vɑ̃/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/orage.png" alt=""><figcaption>l'orage<span class="p">/ɔʁaʒ/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/brouillard.png" alt=""><figcaption>le brouillard<span class="p">/bʁujaʁ/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/tempete.png" alt=""><figcaption>la tempête<span class="p">/tɑ̃pɛt/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/arc-en-ciel.png" alt=""><figcaption>l'arc-en-ciel<span class="p">/aʁkɑ̃sjɛl/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/ciel.png" alt=""><figcaption>le ciel<span class="p">/sjɛl/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/grele.png" alt=""><figcaption>la grêle<span class="p">/ɡʁɛl/</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/bulletin.png" alt=""><figcaption>la météo<span class="p">/meteo/</span></figcaption></figure>
+  </div>
+
+  <h4>Les autres mots utiles</h4>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">l'éclair</span><span class="g"><span class="p">/eklɛʁ/</span> lightning</span></div>
+    <div class="vrow"><span class="w">le gel</span><span class="g"><span class="p">/ʒɛl/</span> frost</span></div>
+    <div class="vrow"><span class="w">le tonnerre</span><span class="g"><span class="p">/tɔnɛʁ/</span> thunder</span></div>
+    <div class="vrow"><span class="w">la canicule</span><span class="g"><span class="p">/kanikyl/</span> heatwave</span></div>
+    <div class="vrow"><span class="w">l'averse</span><span class="g"><span class="p">/avɛʁs/</span> shower</span></div>
+    <div class="vrow"><span class="w">la prévision</span><span class="g"><span class="p">/pʁevizjɔ̃/</span> forecast</span></div>
+    <div class="vrow"><span class="w">la température</span><span class="g"><span class="p">/tɑ̃peʁatyʁ/</span> temperature</span></div>
+    <div class="vrow"><span class="w">le degré</span><span class="g"><span class="p">/dəɡʁe/</span> degree</span></div>
+  </div>
+
+  <h3>Quel temps fait-il ?</h3>
+  <p>C'est la question à connaître. Pour y répondre, le français utilise <strong>trois structures
+  différentes</strong> selon le mot employé.</p>
+
+  <table>
+    <thead><tr><th style="width:28%">Structure</th><th style="width:30%">Exemples</th><th>Quand l'utiliser</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="fr">il fait + adjectif</td>
+        <td class="fr">il fait beau<br>il fait froid</td>
+        <td>Pour la sensation générale et la température.</td>
+      </tr>
+      <tr>
+        <td class="fr">il + verbe</td>
+        <td class="fr">il pleut<br>il neige<br>il gèle</td>
+        <td>Quand un verbe existe. Ces verbes n'ont que la forme « il ».</td>
+      </tr>
+      <tr>
+        <td class="fr">il y a + nom</td>
+        <td class="fr">il y a du vent<br>il y a du brouillard</td>
+        <td>Quand le phénomène n'a pas de verbe.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">L'erreur la plus fréquente</span>
+    On ne dit pas « <em>il est pluie</em> » ni « <em>c'est froid</em> » pour parler du temps. La météo utilise
+    toujours <strong>il</strong> impersonnel — un <em>il</em> qui ne désigne personne, comme le <em>it</em> de
+    <em>it's raining</em>.
+  </div>
+
+  <h3>Il fait…</h3>
+  <div class="pics">
+    <figure><img src="../public/img/meteo/beau-temps.png" alt=""><figcaption>Il fait beau.<span class="p">le ciel est dégagé</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/mauvais.png" alt=""><figcaption>Il fait mauvais.<span class="p">le ciel est couvert</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/chaud.png" alt=""><figcaption>Il fait chaud.<span class="p">40 °C</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/doux.png" alt=""><figcaption>Il fait doux.<span class="p">23 °C</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/frais.png" alt=""><figcaption>Il fait frais.<span class="p">10 °C</span></figcaption></figure>
+    <figure><img src="../public/img/meteo/froid.png" alt=""><figcaption>Il fait froid.<span class="p">−25 °C</span></figcaption></figure>
+  </div>
+
+  <h4>Les adjectifs par paires</h4>
+  <table class="tight">
+    <thead><tr><th style="width:50%">Positif</th><th>Négatif</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">il fait beau</td><td class="fr">il fait mauvais</td></tr>
+      <tr><td class="fr">il fait chaud</td><td class="fr">il fait froid</td></tr>
+      <tr><td class="fr">il fait doux</td><td class="fr">il fait frais</td></tr>
+      <tr><td class="fr">il fait sec</td><td class="fr">il fait humide</td></tr>
+      <tr><td class="fr">il fait clair</td><td class="fr">il fait gris, il fait lourd</td></tr>
+    </tbody>
+  </table>
+
+  <h3>La température</h3>
+  <table>
+    <thead><tr><th style="width:44%">On demande</th><th>On répond</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Quelle température fait-il ?</td><td class="fr">Il fait vingt degrés.</td></tr>
+      <tr><td class="fr">Il fait combien ?</td><td class="fr">Il fait vingt.</td></tr>
+      <tr><td class="fr">Et en hiver ?</td><td class="fr">Il fait moins cinq.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <span class="t">Dans la conversation</span>
+    On dit simplement <strong>il fait vingt</strong> ou <strong>il fait moins cinq</strong>, sans répéter
+    « degrés ». Le mot n'apparaît que dans un bulletin météo ou une phrase soignée.
+  </div>
+
+  <h3>Quelques phrases</h3>
+  <div class="dial">
+    <div><span class="q">Quel temps fait-il ?</span><span class="a">— Il pleut.</span></div>
+    <div><span class="q">Quel temps fait-il chez vous ?</span><span class="a">— Il fait beau, mais il y a du vent.</span></div>
+    <div><span class="q">Il va faire beau demain ?</span><span class="a">— Oui, le ciel va se dégager.</span></div>
+  </div>
+
+  <h3>Quelques expressions</h3>
+  <table class="tight">
+    <thead><tr><th style="width:44%">Expression</th><th>Sens</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Il pleut des cordes.</td><td>Il pleut très fort.</td></tr>
+      <tr><td class="fr">Il fait un temps de chien.</td><td>Le temps est très mauvais.</td></tr>
+      <tr><td class="fr">Il fait un froid de canard.</td><td>Il fait extrêmement froid.</td></tr>
+      <tr><td class="fr">Un soleil de plomb.</td><td>Un soleil écrasant, très chaud.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="exo">
+    <h4>Exercice 6.1 — Il fait, il, ou il y a ?</h4>
+    <p class="hint">Complétez avec la structure qui convient.</p>
+    <ol>
+      <li><span class="gap"></span> beau aujourd'hui.</li>
+      <li><span class="gap"></span> pleut depuis ce matin.</li>
+      <li><span class="gap"></span> du brouillard sur la route.</li>
+      <li><span class="gap"></span> neige en montagne.</li>
+      <li><span class="gap"></span> très froid en janvier.</li>
+      <li><span class="gap"></span> des nuages, mais il ne pleut pas.</li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 6.2 — Trouvez le contraire</h4>
+    <ol>
+      <li>Il fait beau. → <span class="gap"></span></li>
+      <li>Il fait chaud. → <span class="gap"></span></li>
+      <li>Il fait doux. → <span class="gap"></span></li>
+      <li>Il fait sec. → <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+<!-- ============ CH 7 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 7</div>
+    <h2>Les animaux</h2>
+    <div class="chap-sub">Soixante-dix-neuf animaux classés par milieu — avec l'article, qui donne le genre.</div>
+  </div>
+
+  <div class="box">
+    <span class="t">Apprenez toujours l'article avec le mot</span>
+    <strong>le</strong> chat, <strong>la</strong> vache : l'article vous dit le genre du nom, et le genre
+    commande ensuite tous les accords. Devant une voyelle, <em>le</em> et <em>la</em> deviennent
+    <strong>l'</strong> — ce qui masque le genre : <em>l'oiseau</em> est masculin, <em>l'abeille</em> est
+    féminin, et rien ne le montre.
+  </div>
+
+  <h3>Animaux domestiques et de la ferme</h3>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">l'âne</span><span class="g"><span class="p">/ɑn/</span> the donkey</span></div>
+    <div class="vrow"><span class="w">le canard</span><span class="g"><span class="p">/kanaʁ/</span> the duck</span></div>
+    <div class="vrow"><span class="w">le chat</span><span class="g"><span class="p">/ʃa/</span> the cat</span></div>
+    <div class="vrow"><span class="w">le cheval</span><span class="g"><span class="p">/ʃəval/</span> the horse</span></div>
+    <div class="vrow"><span class="w">la chèvre</span><span class="g"><span class="p">/ʃɛvʁ/</span> the goat</span></div>
+    <div class="vrow"><span class="w">le coq</span><span class="g"><span class="p">/kɔk/</span> the rooster</span></div>
+    <div class="vrow"><span class="w">le chien</span><span class="g"><span class="p">/ʃjɛ̃/</span> the dog</span></div>
+    <div class="vrow"><span class="w">le cochon</span><span class="g"><span class="p">/kɔʃɔ̃/</span> the pig</span></div>
+    <div class="vrow"><span class="w">le hamster</span><span class="g"><span class="p">/amstɛʁ/</span> the hamster</span></div>
+    <div class="vrow"><span class="w">le lapin</span><span class="g"><span class="p">/lapɛ̃/</span> the rabbit</span></div>
+    <div class="vrow"><span class="w">le mouton</span><span class="g"><span class="p">/mutɔ̃/</span> the sheep</span></div>
+    <div class="vrow"><span class="w">l'oie</span><span class="g"><span class="p">/wa/</span> the goose</span></div>
+    <div class="vrow"><span class="w">l'oiseau</span><span class="g"><span class="p">/wazo/</span> the bird</span></div>
+    <div class="vrow"><span class="w">le poisson</span><span class="g"><span class="p">/pwasɔ̃/</span> the fish</span></div>
+    <div class="vrow"><span class="w">la poule</span><span class="g"><span class="p">/pul/</span> the hen</span></div>
+    <div class="vrow"><span class="w">la tortue</span><span class="g"><span class="p">/tɔʁty/</span> the tortoise</span></div>
+    <div class="vrow"><span class="w">la vache</span><span class="g"><span class="p">/vaʃ/</span> the cow</span></div>
+    <div class="vrow"><span class="w">la souris</span><span class="g"><span class="p">/suʁi/</span> the mouse</span></div>
+    <div class="vrow"><span class="w">le dindon</span><span class="g"><span class="p">/dɛ̃dɔ̃/</span> the turkey</span></div>
+    <div class="vrow"><span class="w">le cygne</span><span class="g"><span class="p">/siɲ/</span> the swan</span></div>
+  </div>
+
+  <h3>Animaux de la forêt</h3>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">la biche</span><span class="g"><span class="p">/biʃ/</span> the doe</span></div>
+    <div class="vrow"><span class="w">le cerf</span><span class="g"><span class="p">/sɛʁ/</span> the deer, the stag</span></div>
+    <div class="vrow"><span class="w">la chouette</span><span class="g"><span class="p">/ʃwɛt/</span> the owl</span></div>
+    <div class="vrow"><span class="w">l'écureuil</span><span class="g"><span class="p">/ekyʁœj/</span> the squirrel</span></div>
+    <div class="vrow"><span class="w">le hérisson</span><span class="g"><span class="p">/eʁisɔ̃/</span> the hedgehog</span></div>
+    <div class="vrow"><span class="w">le loup</span><span class="g"><span class="p">/lu/</span> the wolf</span></div>
+    <div class="vrow"><span class="w">le renard</span><span class="g"><span class="p">/ʁənaʁ/</span> the fox</span></div>
+    <div class="vrow"><span class="w">la taupe</span><span class="g"><span class="p">/top/</span> the mole</span></div>
+    <div class="vrow"><span class="w">le hibou</span><span class="g"><span class="p">/ibu/</span> the horned owl</span></div>
+    <div class="vrow"><span class="w">le sanglier</span><span class="g"><span class="p">/sɑ̃ɡlije/</span> the wild boar</span></div>
+  </div>
+
+  <h3>Animaux sauvages</h3>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">l'autruche</span><span class="g"><span class="p">/otʁyʃ/</span> the ostrich</span></div>
+    <div class="vrow"><span class="w">le castor</span><span class="g"><span class="p">/kastɔʁ/</span> the beaver</span></div>
+    <div class="vrow"><span class="w">le chameau</span><span class="g"><span class="p">/ʃamo/</span> the camel</span></div>
+    <div class="vrow"><span class="w">la cigogne</span><span class="g"><span class="p">/siɡɔɲ/</span> the stork</span></div>
+    <div class="vrow"><span class="w">le crocodile</span><span class="g"><span class="p">/kʁɔkɔdil/</span> the crocodile</span></div>
+    <div class="vrow"><span class="w">le dromadaire</span><span class="g"><span class="p">/dʁɔmadɛʁ/</span> the dromedary</span></div>
+    <div class="vrow"><span class="w">l'éléphant</span><span class="g"><span class="p">/elefɑ̃/</span> the elephant</span></div>
+    <div class="vrow"><span class="w">la girafe</span><span class="g"><span class="p">/ʒiʁaf/</span> the giraffe</span></div>
+    <div class="vrow"><span class="w">le gorille</span><span class="g"><span class="p">/ɡɔʁij/</span> the gorilla</span></div>
+    <div class="vrow"><span class="w">le guépard</span><span class="g"><span class="p">/ɡepaʁ/</span> the cheetah</span></div>
+    <div class="vrow"><span class="w">l'hippopotame</span><span class="g"><span class="p">/ipɔpɔtam/</span> the hippopotamus</span></div>
+    <div class="vrow"><span class="w">le kangourou</span><span class="g"><span class="p">/kɑ̃ɡuʁu/</span> the kangaroo</span></div>
+    <div class="vrow"><span class="w">le lion</span><span class="g"><span class="p">/ljɔ̃/</span> the lion</span></div>
+    <div class="vrow"><span class="w">l'ours</span><span class="g"><span class="p">/uʁs/</span> the bear</span></div>
+    <div class="vrow"><span class="w">la panthère</span><span class="g"><span class="p">/pɑ̃tɛʁ/</span> the panther</span></div>
+    <div class="vrow"><span class="w">le perroquet</span><span class="g"><span class="p">/peʁɔkɛ/</span> the parrot</span></div>
+    <div class="vrow"><span class="w">le serpent</span><span class="g"><span class="p">/sɛʁpɑ̃/</span> the snake</span></div>
+    <div class="vrow"><span class="w">le singe</span><span class="g"><span class="p">/sɛ̃ʒ/</span> the monkey</span></div>
+    <div class="vrow"><span class="w">le tigre</span><span class="g"><span class="p">/tiɡʁ/</span> the tiger</span></div>
+    <div class="vrow"><span class="w">le zèbre</span><span class="g"><span class="p">/zɛbʁ/</span> the zebra</span></div>
+  </div>
+
+  <h3>Insectes et petits animaux</h3>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">l'abeille</span><span class="g"><span class="p">/abɛj/</span> the bee</span></div>
+    <div class="vrow"><span class="w">l'araignée</span><span class="g"><span class="p">/aʁɛɲe/</span> the spider</span></div>
+    <div class="vrow"><span class="w">la chenille</span><span class="g"><span class="p">/ʃənij/</span> the caterpillar</span></div>
+    <div class="vrow"><span class="w">la coccinelle</span><span class="g"><span class="p">/kɔksinɛl/</span> the ladybird</span></div>
+    <div class="vrow"><span class="w">le crapaud</span><span class="g"><span class="p">/kʁapo/</span> the toad</span></div>
+    <div class="vrow"><span class="w">l'escargot</span><span class="g"><span class="p">/ɛskaʁɡo/</span> the snail</span></div>
+    <div class="vrow"><span class="w">la fourmi</span><span class="g"><span class="p">/fuʁmi/</span> the ant</span></div>
+    <div class="vrow"><span class="w">la grenouille</span><span class="g"><span class="p">/ɡʁənuj/</span> the frog</span></div>
+    <div class="vrow"><span class="w">le lézard</span><span class="g"><span class="p">/lezaʁ/</span> the lizard</span></div>
+    <div class="vrow"><span class="w">le mille-pattes</span><span class="g"><span class="p">/milpat/</span> the centipede</span></div>
+    <div class="vrow"><span class="w">la mouche</span><span class="g"><span class="p">/muʃ/</span> the fly</span></div>
+    <div class="vrow"><span class="w">le papillon</span><span class="g"><span class="p">/papijɔ̃/</span> the butterfly</span></div>
+    <div class="vrow"><span class="w">la sauterelle</span><span class="g"><span class="p">/sotʁɛl/</span> the grasshopper</span></div>
+    <div class="vrow"><span class="w">le scarabée</span><span class="g"><span class="p">/skaʁabe/</span> the beetle</span></div>
+    <div class="vrow"><span class="w">le ver de terre</span><span class="g"><span class="p">/vɛʁdətɛʁ/</span> the earthworm</span></div>
+  </div>
+
+  <h3>Animaux marins</h3>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">la baleine</span><span class="g"><span class="p">/balɛn/</span> the whale</span></div>
+    <div class="vrow"><span class="w">le bernard-l'ermite</span><span class="g"><span class="p">/bɛʁnaʁlɛʁmit/</span> the hermit crab</span></div>
+    <div class="vrow"><span class="w">le crabe</span><span class="g"><span class="p">/kʁab/</span> the crab</span></div>
+    <div class="vrow"><span class="w">le dauphin</span><span class="g"><span class="p">/dofɛ̃/</span> the dolphin</span></div>
+    <div class="vrow"><span class="w">l'étoile de mer</span><span class="g"><span class="p">/etwaldəmɛʁ/</span> the starfish</span></div>
+    <div class="vrow"><span class="w">l'hippocampe</span><span class="g"><span class="p">/ipɔkɑ̃p/</span> the seahorse</span></div>
+    <div class="vrow"><span class="w">la méduse</span><span class="g"><span class="p">/medyz/</span> the jellyfish</span></div>
+    <div class="vrow"><span class="w">la mouette</span><span class="g"><span class="p">/mwɛt/</span> the seagull</span></div>
+    <div class="vrow"><span class="w">l'otarie</span><span class="g"><span class="p">/ɔtaʁi/</span> the sea lion</span></div>
+    <div class="vrow"><span class="w">le pélican</span><span class="g"><span class="p">/pelikɑ̃/</span> the pelican</span></div>
+    <div class="vrow"><span class="w">la pieuvre</span><span class="g"><span class="p">/pjœvʁ/</span> the octopus</span></div>
+    <div class="vrow"><span class="w">le requin</span><span class="g"><span class="p">/ʁəkɛ̃/</span> the shark</span></div>
+    <div class="vrow"><span class="w">le phoque</span><span class="g"><span class="p">/fɔk/</span> the seal</span></div>
+    <div class="vrow"><span class="w">la tortue de mer</span><span class="g"><span class="p">/tɔʁtydəmɛʁ/</span> the sea turtle</span></div>
+  </div>
+
+  <h3>Les petits</h3>
+  <p>Le français a un mot distinct pour le petit de chaque animal — un vocabulaire que les enfants
+  apprennent très tôt.</p>
+
+  <div class="vgrid three">
+    <div class="vrow"><span class="w">le chat</span><span class="g">le chaton</span></div>
+    <div class="vrow"><span class="w">le chien</span><span class="g">le chiot</span></div>
+    <div class="vrow"><span class="w">le cheval</span><span class="g">le poulain</span></div>
+    <div class="vrow"><span class="w">la poule</span><span class="g">le poussin</span></div>
+    <div class="vrow"><span class="w">la vache</span><span class="g">le veau</span></div>
+    <div class="vrow"><span class="w">le mouton</span><span class="g">l'agneau</span></div>
+    <div class="vrow"><span class="w">le cochon</span><span class="g">le porcelet</span></div>
+    <div class="vrow"><span class="w">la chèvre</span><span class="g">le chevreau</span></div>
+    <div class="vrow"><span class="w">le lapin</span><span class="g">le lapereau</span></div>
+    <div class="vrow"><span class="w">le canard</span><span class="g">le caneton</span></div>
+    <div class="vrow"><span class="w">l'oie</span><span class="g">l'oison</span></div>
+    <div class="vrow"><span class="w">le lion</span><span class="g">le lionceau</span></div>
+    <div class="vrow"><span class="w">l'ours</span><span class="g">l'ourson</span></div>
+    <div class="vrow"><span class="w">le loup</span><span class="g">le louveteau</span></div>
+    <div class="vrow"><span class="w">l'éléphant</span><span class="g">l'éléphanteau</span></div>
+  </div>
+
+  <div class="box tip">
+    <span class="t">Deux terminaisons reviennent sans cesse</span>
+    <strong>-eau / -eton</strong> (lionceau, ourson, caneton, chevreau) et <strong>-et</strong>
+    (porcelet). Ce ne sont pas des règles absolues, mais elles aident : la plupart des petits d'animaux
+    sont masculins, même quand le parent est féminin — <em>la vache</em> donne <em>le veau</em>.
+  </div>
+
+  <h3>Trois pièges de genre et de pluriel</h3>
+  <div class="box warn">
+    <span class="t">Le hibou : un h aspiré</span>
+    On dit <strong>le hibou</strong>, jamais « l'hibou ». Le <em>h</em> dit « aspiré » interdit l'élision et
+    la liaison. Même chose pour <strong>le hérisson</strong> et <strong>le hamster</strong>.
+  </div>
+  <div class="box warn">
+    <span class="t">Une souris, malgré le -is</span>
+    <strong>Souris</strong> est un mot <em>féminin</em>, malgré sa terminaison en <em>-is</em> qui fait
+    penser à un masculin.
+  </div>
+  <div class="box warn">
+    <span class="t">Les pluriels en -aux et en -oux</span>
+    Les mots en <em>-al</em> font leur pluriel en <strong>-aux</strong> : <em>un cheval, des chevaux</em> ;
+    <em>un animal, des animaux</em>. Et sept mots en <em>-ou</em> prennent un <strong>-x</strong> :
+    bijou, caillou, chou, genou, <strong>hibou</strong>, joujou, pou.
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 7.1 — Les pièges</h4>
+    <p class="hint">Entourez la bonne réponse.</p>
+    <ol>
+      <li>le hibou · l'hibou · la hibou</li>
+      <li>une souris · un souris · un sourie</li>
+      <li>Pluriel de « un cheval » : des chevaux · des chevals · des chevales</li>
+      <li>Pluriel de « un hibou » : des hiboux · des hibous · des hiboues</li>
+      <li>Quel animal a une seule bosse ? le dromadaire · le chameau · le lama</li>
+      <li>En quoi se transforme la chenille ? en papillon · en sauterelle · en scarabée</li>
+      <li>Quel insecte fait le miel ? l'abeille · la guêpe · la mouche</li>
+      <li>Quel animal marin a huit bras ? la pieuvre · le crabe · la méduse</li>
+      <li>La femelle du cerf : la biche · la chèvre · la truie</li>
+      <li>Dans les expressions, quel animal est « rusé » ? le renard · le loup · la taupe</li>
+      <li>Quel animal est « têtu » ? l'âne · le chat · l'oie</li>
+      <li>Quand il pleut très fort : Il pleut des cordes · Il pleut des chats · Il pleut des grenouilles</li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 7.2 — Le petit de l'animal</h4>
+    <ol>
+      <li>la vache → <span class="gap"></span></li>
+      <li>le mouton → <span class="gap"></span></li>
+      <li>la poule → <span class="gap"></span></li>
+      <li>le cheval → <span class="gap"></span></li>
+      <li>le chien → <span class="gap"></span></li>
+      <li>le loup → <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 8 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 8</div>
+    <h2>Phrases essentielles</h2>
+    <div class="chap-sub">Douze phrases de survie. Si vous n'en apprenez que douze, apprenez celles-ci.</div>
+  </div>
+
+  <table>
+    <thead><tr><th style="width:40%">Français</th><th style="width:30%">Prononciation</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Je ne parle pas bien français</td><td class="pho">/ʒə nə paʁl pa bjɛ̃ fʁɑ̃.sɛ/</td><td class="en">I don't speak French well</td></tr>
+      <tr><td class="fr">Est-ce que vous parlez anglais ?</td><td class="pho">/ɛs kə vu paʁ.le ɑ̃.glɛ/</td><td class="en">Do you speak English?</td></tr>
+      <tr><td class="fr">Je ne comprends pas</td><td class="pho">/ʒə nə kɔ̃.pʁɑ̃ pa/</td><td class="en">I don't understand</td></tr>
+      <tr><td class="fr">Est-ce que vous pouvez répéter ?</td><td class="pho">/ɛs kə vu pu.ve ʁe.pe.te/</td><td class="en">Can you repeat that?</td></tr>
+      <tr><td class="fr">Est-ce que vous pouvez parler plus lentement ?</td><td class="pho">/ɛs kə vu pu.ve paʁ.le ply lɑ̃t.mɑ̃/</td><td class="en">Can you speak more slowly?</td></tr>
+      <tr><td class="fr">Combien ça coûte ?</td><td class="pho">/kɔ̃.bjɛ̃ sa kut/</td><td class="en">How much does it cost?</td></tr>
+      <tr><td class="fr">Je cherche la station Palais Royal</td><td class="pho">/ʒə ʃɛʁʃ la sta.sjɔ̃ pa.lɛ ʁwa.jal/</td><td class="en">I'm looking for Palais Royal station</td></tr>
+      <tr><td class="fr">Où sont les toilettes ?</td><td class="pho">/u sɔ̃ le twa.lɛt/</td><td class="en">Where are the toilets?</td></tr>
+      <tr><td class="fr">Vous prenez la carte bancaire ?</td><td class="pho">/vu pʁə.ne la kaʁt bɑ̃.kɛʁ/</td><td class="en">Do you take card payment?</td></tr>
+      <tr><td class="fr">J'ai une réservation au nom de…</td><td class="pho">/ʒe yn ʁe.zɛʁ.va.sjɔ̃ o nɔ̃ də/</td><td class="en">I have a reservation under the name…</td></tr>
+      <tr><td class="fr">Je vais à l'aéroport</td><td class="pho">/ʒə vɛ a la.e.ʁɔ.pɔʁ/</td><td class="en">I'm going to the airport</td></tr>
+      <tr><td class="fr">Une table pour trois personnes, s'il vous plaît</td><td class="pho">/yn tabl puʁ tʁwa pɛʁ.sɔn sil vu plɛ/</td><td class="en">A table for three people, please</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <span class="t">La négation encadre le verbe</span>
+    <strong>Je <span style="color:var(--rouge)">ne</span> comprends <span style="color:var(--rouge)">pas</span></strong> :
+    en français, la négation se fait en deux morceaux, placés de part et d'autre du verbe. À l'oral rapide, le
+    <em>ne</em> disparaît souvent — on entend « je comprends pas » — mais à l'écrit il reste obligatoire.
+  </div>
+
+  <div class="box tip">
+    <span class="t">Est-ce que : la question sans effort</span>
+    Placez <strong>est-ce que</strong> <span class="pho">/ɛs.kə/</span> devant n'importe quelle affirmation et
+    vous obtenez une question, sans rien changer d'autre : <em>Vous parlez anglais</em> →
+    <strong>Est-ce que</strong> <em>vous parlez anglais ?</em> C'est la construction la plus rentable du
+    français débutant. Voir le chapitre 14.
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 8.1 — Que dites-vous ?</h4>
+    <ol>
+      <li>Vous n'avez pas compris ce qu'on vient de vous dire. <span class="gap"></span></li>
+      <li>La personne parle trop vite. <span class="gap"></span></li>
+      <li>Vous voulez connaître le prix. <span class="gap"></span></li>
+      <li>Vous arrivez à l'hôtel. <span class="gap"></span></li>
+      <li>Vous cherchez les toilettes dans un café. <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 9 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 9</div>
+    <h2>Phrases utiles pour touristes</h2>
+    <div class="chap-sub">Les questions qu'un voyageur pose en France — et les réponses qu'il peut entendre.</div>
+  </div>
+
+  <div class="box">
+    <span class="t">Apprenez aussi les réponses</span>
+    La plupart des méthodes n'enseignent que les questions. Mais poser <em>« Où est la gare ? »</em> ne sert à
+    rien si l'on ne reconnaît pas <em>« C'est tout droit »</em>. Chaque section ci-dessous donne les deux
+    côtés de l'échange.
+  </div>
+
+  <h3>Se présenter</h3>
+  <table class="tight">
+    <thead><tr><th style="width:50%">Français</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Comment vous appelez-vous ?</td><td class="en">What's your name?</td></tr>
+      <tr><td class="fr">Je m'appelle Sarah.</td><td class="en">My name is Sarah.</td></tr>
+      <tr><td class="fr">D'où venez-vous ?</td><td class="en">Where are you from?</td></tr>
+      <tr><td class="fr">Je viens des États-Unis.</td><td class="en">I'm from the United States.</td></tr>
+      <tr><td class="fr">Je viens du Japon.</td><td class="en">I'm from Japan.</td></tr>
+      <tr><td class="fr">Vous parlez français ?</td><td class="en">Do you speak French?</td></tr>
+      <tr><td class="fr">Un peu. · Non, pas très bien. · Oui, un petit peu.</td><td class="en">A little. · No, not very well. · Yes, a little bit.</td></tr>
+      <tr><td class="fr">Vous êtes en vacances ?</td><td class="en">Are you on holiday?</td></tr>
+      <tr><td class="fr">Oui, je suis en vacances. · Oui, pour une semaine.</td><td class="en">Yes, I'm on holiday. · Yes, for a week.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Demander son chemin</h3>
+  <table class="tight">
+    <thead><tr><th style="width:50%">Français</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Excusez-moi, où est la gare ?</td><td class="en">Excuse me, where is the station?</td></tr>
+      <tr><td class="fr">C'est tout droit.</td><td class="en">It's straight ahead.</td></tr>
+      <tr><td class="fr">C'est à gauche, après le feu.</td><td class="en">It's on the left, after the traffic light.</td></tr>
+      <tr><td class="fr">C'est loin d'ici ?</td><td class="en">Is it far from here?</td></tr>
+      <tr><td class="fr">Non, c'est à cinq minutes à pied.</td><td class="en">No, it's five minutes on foot.</td></tr>
+      <tr><td class="fr">Oui, il faut prendre le bus.</td><td class="en">Yes, you need to take the bus.</td></tr>
+      <tr><td class="fr">Où sont les toilettes, s'il vous plaît ?</td><td class="en">Where are the toilets, please?</td></tr>
+      <tr><td class="fr">Au fond, à droite. · En bas de l'escalier.</td><td class="en">At the back, on the right. · Down the stairs.</td></tr>
+      <tr><td class="fr">Comment aller au musée ?</td><td class="en">How do I get to the museum?</td></tr>
+      <tr><td class="fr">Prenez la ligne 4. · C'est juste en face.</td><td class="en">Take line 4. · It's right opposite.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box tip">
+    <span class="t">Commencez toujours par « Excusez-moi »</span>
+    Aborder un inconnu sans <strong>excusez-moi</strong> ou <strong>pardon</strong> passe pour brusque en
+    France. La formule complète est : <em>Excusez-moi, monsieur / madame, …</em>
+  </div>
+
+  <h3>Au restaurant et au café</h3>
+  <table class="tight">
+    <thead><tr><th style="width:50%">Français</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Une table pour deux, s'il vous plaît ?</td><td class="en">A table for two, please?</td></tr>
+      <tr><td class="fr">Oui, suivez-moi. · Un instant, s'il vous plaît.</td><td class="en">Yes, follow me. · One moment, please.</td></tr>
+      <tr><td class="fr">Qu'est-ce que vous recommandez ?</td><td class="en">What do you recommend?</td></tr>
+      <tr><td class="fr">Le poulet rôti est très bon.</td><td class="en">The roast chicken is very good.</td></tr>
+      <tr><td class="fr">Essayez la tarte du jour.</td><td class="en">Try the tart of the day.</td></tr>
+      <tr><td class="fr">L'addition, s'il vous plaît ?</td><td class="en">The bill, please?</td></tr>
+      <tr><td class="fr">Voilà, ça fait vingt-cinq euros.</td><td class="en">Here you are, that's twenty-five euros.</td></tr>
+      <tr><td class="fr">Bien sûr, tout de suite.</td><td class="en">Of course, right away.</td></tr>
+      <tr><td class="fr">Avez-vous un menu en anglais ?</td><td class="en">Do you have a menu in English?</td></tr>
+      <tr><td class="fr">Oui, voici. · Désolé, seulement en français.</td><td class="en">Yes, here it is. · Sorry, only in French.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>À l'hôtel</h3>
+  <table class="tight">
+    <thead><tr><th style="width:50%">Français</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">J'ai une réservation au nom de Martin.</td><td class="en">I have a reservation under the name Martin.</td></tr>
+      <tr><td class="fr">Un instant, je vérifie.</td><td class="en">One moment, I'll check.</td></tr>
+      <tr><td class="fr">Oui, chambre 12, voici la clé.</td><td class="en">Yes, room 12, here's the key.</td></tr>
+      <tr><td class="fr">À quelle heure est le petit-déjeuner ?</td><td class="en">What time is breakfast?</td></tr>
+      <tr><td class="fr">De 7h à 10h. · Il est servi au rez-de-chaussée.</td><td class="en">From 7 to 10. · It's served on the ground floor.</td></tr>
+      <tr><td class="fr">Le Wi-Fi est-il gratuit ?</td><td class="en">Is the Wi-Fi free?</td></tr>
+      <tr><td class="fr">Oui, le code est sur la clé.</td><td class="en">Yes, the code is on the key.</td></tr>
+      <tr><td class="fr">Oui, il est gratuit dans tout l'hôtel.</td><td class="en">Yes, it's free throughout the hotel.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <span class="t">Le rez-de-chaussée n'est pas le premier étage</span>
+    En France, le niveau de la rue s'appelle le <strong>rez-de-chaussée</strong>. Le
+    <strong>premier étage</strong> est donc l'étage au-dessus — l'équivalent du <em>second floor</em>
+    américain. Dans l'ascenseur, le rez-de-chaussée porte le bouton <strong>0</strong> ou
+    <strong>RDC</strong>.
+  </div>
+
+  <h3>Achats et marché</h3>
+  <table class="tight">
+    <thead><tr><th style="width:50%">Français</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Combien ça coûte ?</td><td class="en">How much does it cost?</td></tr>
+      <tr><td class="fr">Ça coûte dix euros. · C'est quinze euros cinquante.</td><td class="en">It costs ten euros. · It's fifteen euros fifty.</td></tr>
+      <tr><td class="fr">Vous acceptez la carte bancaire ?</td><td class="en">Do you accept cards?</td></tr>
+      <tr><td class="fr">Oui, sans problème. · Non, seulement en espèces.</td><td class="en">Yes, no problem. · No, cash only.</td></tr>
+      <tr><td class="fr">Je peux essayer ça ?</td><td class="en">Can I try this on?</td></tr>
+      <tr><td class="fr">Oui, la cabine est là-bas. · Bien sûr, allez-y.</td><td class="en">Yes, the fitting room is over there. · Of course, go ahead.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Transports</h3>
+  <table class="tight">
+    <thead><tr><th style="width:50%">Français</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Un billet pour Lyon, s'il vous plaît.</td><td class="en">A ticket to Lyon, please.</td></tr>
+      <tr><td class="fr">Aller simple ou aller-retour ?</td><td class="en">One way or return?</td></tr>
+      <tr><td class="fr">Ça fait trente euros.</td><td class="en">That's thirty euros.</td></tr>
+      <tr><td class="fr">À quelle heure part le train ?</td><td class="en">What time does the train leave?</td></tr>
+      <tr><td class="fr">Il part à 14h20. · Dans dix minutes, quai 3.</td><td class="en">It leaves at 2:20 pm. · In ten minutes, platform 3.</td></tr>
+      <tr><td class="fr">Ce bus va au centre-ville ?</td><td class="en">Does this bus go to the town centre?</td></tr>
+      <tr><td class="fr">Oui, c'est le bon. · Non, prenez le 12.</td><td class="en">Yes, that's the right one. · No, take the 12.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="exo">
+    <h4>Exercice 9.1 — Question ou réponse ?</h4>
+    <p class="hint">Reliez chaque question à la réponse qui convient.</p>
+    <table class="tight" style="margin-top:2mm">
+      <tbody>
+        <tr><td style="width:50%">1. C'est loin d'ici ?</td><td>a. Aller simple ou aller-retour ?</td></tr>
+        <tr><td>2. Un billet pour Lyon, s'il vous plaît.</td><td>b. Non, seulement en espèces.</td></tr>
+        <tr><td>3. Vous acceptez la carte bancaire ?</td><td>c. Au fond, à droite.</td></tr>
+        <tr><td>4. Où sont les toilettes ?</td><td>d. De 7h à 10h.</td></tr>
+        <tr><td>5. À quelle heure est le petit-déjeuner ?</td><td>e. Non, c'est à cinq minutes à pied.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- ============ PARTIE II ============ -->
+<div class="part">
+  <img src="../public/img/niveaux/poussin.png" alt="">
+  <div class="lbl">Partie II</div>
+  <h2>Faux débutant</h2>
+  <div class="code">A1 – A2</div>
+  <p>Vous connaissez déjà quelques mots et quelques phrases toutes faites. Il s'agit maintenant de
+  comprendre la mécanique : conjuguer au présent, au passé, accorder les adjectifs et poser de vraies
+  questions.</p>
+</div>
+
+<!-- ============ CH 10 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 10</div>
+    <h2>Les verbes en -ER au présent</h2>
+    <div class="chap-sub">Le premier groupe — près de 90 % des verbes français, et un seul modèle à retenir.</div>
+  </div>
+
+  <h3>Les pronoms sujets</h3>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">je</span><span class="g">I</span></div>
+    <div class="vrow"><span class="w">nous</span><span class="g">we</span></div>
+    <div class="vrow"><span class="w">tu</span><span class="g">you (informal)</span></div>
+    <div class="vrow"><span class="w">vous</span><span class="g">you (formal or plural)</span></div>
+    <div class="vrow"><span class="w">il / elle / on</span><span class="g">he / she / one, we</span></div>
+    <div class="vrow"><span class="w">ils / elles</span><span class="g">they</span></div>
+  </div>
+
+  <div class="box">
+    <span class="t">On, le « nous » de tous les jours</span>
+    <strong>On</strong> se conjugue comme <em>il</em>, mais dans la langue parlée il remplace presque toujours
+    <em>nous</em> : on dit <strong>on mange</strong> bien plus souvent que <em>nous mangeons</em>.
+    Apprenez donc <em>on</em> avec les formes du singulier, et utilisez-le pour parler de vous et d'autrui.
+  </div>
+
+  <h3>Vingt-deux verbes à connaître</h3>
+  <div class="vgrid">
+    <div class="vrow"><span class="w">acheter</span><span class="g">to buy</span></div>
+    <div class="vrow"><span class="w">habiter</span><span class="g">to live</span></div>
+    <div class="vrow"><span class="w">aider</span><span class="g">to help</span></div>
+    <div class="vrow"><span class="w">jouer</span><span class="g">to play</span></div>
+    <div class="vrow"><span class="w">aimer</span><span class="g">to like / to love</span></div>
+    <div class="vrow"><span class="w">manger</span><span class="g">to eat</span></div>
+    <div class="vrow"><span class="w">appeler</span><span class="g">to call</span></div>
+    <div class="vrow"><span class="w">montrer</span><span class="g">to show</span></div>
+    <div class="vrow"><span class="w">arrêter</span><span class="g">to stop</span></div>
+    <div class="vrow"><span class="w">oublier</span><span class="g">to forget</span></div>
+    <div class="vrow"><span class="w">chercher</span><span class="g">to look for</span></div>
+    <div class="vrow"><span class="w">parler</span><span class="g">to speak</span></div>
+    <div class="vrow"><span class="w">commander</span><span class="g">to order</span></div>
+    <div class="vrow"><span class="w">payer</span><span class="g">to pay</span></div>
+    <div class="vrow"><span class="w">commencer</span><span class="g">to start</span></div>
+    <div class="vrow"><span class="w">penser</span><span class="g">to think</span></div>
+    <div class="vrow"><span class="w">demander</span><span class="g">to ask</span></div>
+    <div class="vrow"><span class="w">regarder</span><span class="g">to look</span></div>
+    <div class="vrow"><span class="w">donner</span><span class="g">to give</span></div>
+    <div class="vrow"><span class="w">trouver</span><span class="g">to find</span></div>
+    <div class="vrow"><span class="w">écouter</span><span class="g">to listen</span></div>
+    <div class="vrow"><span class="w">étudier</span><span class="g">to study</span></div>
+  </div>
+
+  <h3>Le modèle : parler</h3>
+  <div class="conj-grid two">
+    <div class="conj">
+      <div class="inf">Parler <span>to speak</span></div>
+      <dl>
+        <div><dt>je</dt><dd>parl<span style="color:var(--gris-texte)">e</span></dd></div>
+        <div><dt>tu</dt><dd>parl<span style="color:var(--gris-texte)">es</span></dd></div>
+        <div><dt>il / elle / on</dt><dd>parl<span style="color:var(--gris-texte)">e</span></dd></div>
+        <div><dt>nous</dt><dd>parl<span style="color:var(--rouge)">ons</span></dd></div>
+        <div><dt>vous</dt><dd>parl<span style="color:var(--rouge)">ez</span></dd></div>
+        <div><dt>ils / elles</dt><dd>parl<span style="color:var(--gris-texte)">ent</span></dd></div>
+      </dl>
+    </div>
+    <div style="font-size:9.2pt">
+      <p>La très grande majorité des verbes en <em>-ER</em> suivent ce modèle. Retirez simplement
+      <strong>-er</strong> de l'infinitif pour obtenir le <strong>radical</strong>
+      (<em>parler</em> → <em>parl-</em>), puis ajoutez les terminaisons.</p>
+      <div class="box warn" style="margin-top:4mm">
+        <span class="t">Quatre formes sur six se prononcent pareil</span>
+        Les terminaisons <strong>-e</strong>, <strong>-es</strong> et <strong>-ent</strong> sont
+        <strong>muettes</strong>. <em>je parle</em>, <em>tu parles</em>, <em>il parle</em> et
+        <em>ils parlent</em> se prononcent tous <span class="pho">/paʁl/</span>. Seules
+        <strong>-ons</strong> et <strong>-ez</strong> s'entendent.
+      </div>
+    </div>
+  </div>
+
+  <div class="dial">
+    <div><span class="q">— Est-ce que vous parlez français ?</span><span class="a">Do you speak French?</span></div>
+    <div><span class="q">— Oui, je parle français, anglais et espagnol.</span><span class="a">Yes, I speak French, English and Spanish.</span></div>
+  </div>
+
+  <h3>Les cas particuliers</h3>
+  <p>Quatre verbes du tableau ci-dessus modifient légèrement leur radical. Dans tous les cas,
+  <strong>c'est la prononciation qui commande l'orthographe</strong>, et non l'inverse.</p>
+
+  <div class="conj-grid two">
+    <div class="conj">
+      <div class="inf">Commencer <span>to start</span></div>
+      <dl>
+        <div><dt>je</dt><dd>commence</dd></div>
+        <div><dt>tu</dt><dd>commences</dd></div>
+        <div><dt>il / elle / on</dt><dd>commence</dd></div>
+        <div><dt>nous</dt><dd>commen<span style="color:var(--rouge)">ç</span>ons</dd></div>
+        <div><dt>vous</dt><dd>commencez</dd></div>
+        <div><dt>ils / elles</dt><dd>commencent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Manger <span>to eat</span></div>
+      <dl>
+        <div><dt>je</dt><dd>mange</dd></div>
+        <div><dt>tu</dt><dd>manges</dd></div>
+        <div><dt>il / elle / on</dt><dd>mange</dd></div>
+        <div><dt>nous</dt><dd>mang<span style="color:var(--rouge)">e</span>ons</dd></div>
+        <div><dt>vous</dt><dd>mangez</dd></div>
+        <div><dt>ils / elles</dt><dd>mangent</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="box">
+    <span class="t">Pourquoi la cédille et le -e-</span>
+    Le groupe <em>-ce-</em> se lit <span class="pho">/s/</span>, mais <em>-co-</em> se lirait
+    <span class="pho">/k/</span> : on ajoute une <strong>cédille</strong> pour garder le son
+    <span class="pho">/s/</span> dans <em>nous commençons</em>. De même, <em>-ge-</em> se lit
+    <span class="pho">/ʒ/</span> mais <em>-go-</em> se lirait <span class="pho">/ɡ/</span> : on ajoute un
+    <strong>-e-</strong> après le <em>g</em> dans <em>nous mangeons</em>.
+  </div>
+
+  <div class="conj-grid two">
+    <div class="conj">
+      <div class="inf">Appeler <span>to call</span></div>
+      <dl>
+        <div><dt>j'</dt><dd>appe<span style="color:var(--rouge)">ll</span>e</dd></div>
+        <div><dt>tu</dt><dd>appe<span style="color:var(--rouge)">ll</span>es</dd></div>
+        <div><dt>il / elle / on</dt><dd>appe<span style="color:var(--rouge)">ll</span>e</dd></div>
+        <div><dt>nous</dt><dd class="mute">appelons</dd></div>
+        <div><dt>vous</dt><dd class="mute">appelez</dd></div>
+        <div><dt>ils / elles</dt><dd>appe<span style="color:var(--rouge)">ll</span>ent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Acheter <span>to buy</span></div>
+      <dl>
+        <div><dt>j'</dt><dd>ach<span style="color:var(--rouge)">è</span>te</dd></div>
+        <div><dt>tu</dt><dd>ach<span style="color:var(--rouge)">è</span>tes</dd></div>
+        <div><dt>il / elle / on</dt><dd>ach<span style="color:var(--rouge)">è</span>te</dd></div>
+        <div><dt>nous</dt><dd class="mute">achetons</dd></div>
+        <div><dt>vous</dt><dd class="mute">achetez</dd></div>
+        <div><dt>ils / elles</dt><dd>ach<span style="color:var(--rouge)">è</span>tent</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="box">
+    <span class="t">La même logique, deux orthographes</span>
+    Quand la terminaison est <strong>muette</strong>, la voyelle du radical est accentuée et tendue :
+    <span class="pho">/ɛ/</span> — le <em>e</em> de l'anglais <em>bed</em>. On l'écrit soit en doublant la
+    consonne (<em>j'appe<strong>ll</strong>e</em>), soit avec un accent grave (<em>j'ach<strong>è</strong>te</em>).
+    Quand la terminaison est <strong>prononcée</strong> — <em>nous</em> et <em>vous</em> — la voyelle
+    redevient neutre <span class="pho">/ə/</span> et l'orthographe se simplifie :
+    <em>nous appelons</em>, <em>nous achetons</em>. <span class="en">(Approximations : le son exact varie
+    selon l'accent.)</span>
+  </div>
+
+  <div class="box tip">
+    <span class="t">Une astuce visuelle</span>
+    Regardez la forme des six lignes : les quatre du haut et du bas sont modifiées, les deux du milieu
+    (<em>nous</em>, <em>vous</em>) restent régulières. Ce dessin en « bottes » — les quatre coins accentués,
+    le centre plat — revient dans toute la conjugaison française.
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 10.1 — Conjuguez au présent</h4>
+    <ol>
+      <li>Je <span class="gap"></span> (regarder) la télévision.</li>
+      <li>Nous <span class="gap"></span> (manger) à midi.</li>
+      <li>Tu <span class="gap"></span> (habiter) à Paris ?</li>
+      <li>Nous <span class="gap"></span> (commencer) le cours.</li>
+      <li>Elle <span class="gap"></span> (acheter) du pain.</li>
+      <li>Vous <span class="gap"></span> (parler) très bien.</li>
+      <li>Ils <span class="gap"></span> (écouter) de la musique.</li>
+      <li>J&#39;<span class="gap"></span> (appeler) mon frère.</li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 10.2 — Muet ou prononcé ?</h4>
+    <p class="hint">Indiquez si la terminaison s'entend à l'oral.</p>
+    <ol>
+      <li>je trouve <span class="gap"></span></li>
+      <li>nous trouvons <span class="gap"></span></li>
+      <li>ils trouvent <span class="gap"></span></li>
+      <li>vous trouvez <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 11 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 11</div>
+    <h2>Les verbes irréguliers au présent</h2>
+    <div class="chap-sub">Vingt-quatre verbes qui ne suivent aucun modèle — et qui sont les plus fréquents de la langue.</div>
+  </div>
+
+  <div class="box">
+    <span class="t">Les plus irréguliers sont les plus utiles</span>
+    Ce n'est pas un hasard : ce sont les verbes les plus employés qui résistent le mieux à la
+    régularisation. <strong>Être</strong> et <strong>avoir</strong> sont à apprendre en premier — ils
+    servent aussi d'auxiliaires pour former le passé composé (chapitre 12).
+  </div>
+
+  <h3>Les deux auxiliaires</h3>
+  <div class="conj-grid two">
+    <div class="conj">
+      <div class="inf">Être <span>to be</span></div>
+      <dl>
+        <div><dt>je</dt><dd>suis</dd></div>
+        <div><dt>tu</dt><dd>es</dd></div>
+        <div><dt>il / elle</dt><dd>est</dd></div>
+        <div><dt>nous</dt><dd>sommes</dd></div>
+        <div><dt>vous</dt><dd>êtes</dd></div>
+        <div><dt>ils / elles</dt><dd>sont</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Avoir <span>to have</span></div>
+      <dl>
+        <div><dt>j'</dt><dd>ai</dd></div>
+        <div><dt>tu</dt><dd>as</dd></div>
+        <div><dt>il / elle</dt><dd>a</dd></div>
+        <div><dt>nous</dt><dd>avons</dd></div>
+        <div><dt>vous</dt><dd>avez</dd></div>
+        <div><dt>ils / elles</dt><dd>ont</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <h3>Les verbes du quotidien</h3>
+  <div class="conj-grid">
+    <div class="conj">
+      <div class="inf">Aller <span>to go</span></div>
+      <dl>
+        <div><dt>je</dt><dd>vais</dd></div><div><dt>tu</dt><dd>vas</dd></div>
+        <div><dt>il / elle</dt><dd>va</dd></div><div><dt>nous</dt><dd>allons</dd></div>
+        <div><dt>vous</dt><dd>allez</dd></div><div><dt>ils / elles</dt><dd>vont</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Faire <span>to do / make</span></div>
+      <dl>
+        <div><dt>je</dt><dd>fais</dd></div><div><dt>tu</dt><dd>fais</dd></div>
+        <div><dt>il / elle</dt><dd>fait</dd></div><div><dt>nous</dt><dd>faisons</dd></div>
+        <div><dt>vous</dt><dd>faites</dd></div><div><dt>ils / elles</dt><dd>font</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Prendre <span>to take</span></div>
+      <dl>
+        <div><dt>je</dt><dd>prends</dd></div><div><dt>tu</dt><dd>prends</dd></div>
+        <div><dt>il / elle</dt><dd>prend</dd></div><div><dt>nous</dt><dd>prenons</dd></div>
+        <div><dt>vous</dt><dd>prenez</dd></div><div><dt>ils / elles</dt><dd>prennent</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="t">Trois formes en -tes à retenir</span>
+    <strong>vous êtes</strong>, <strong>vous faites</strong>, <strong>vous dites</strong> sont les seules
+    formes de <em>vous</em> qui ne se terminent pas en <em>-ez</em>. Toutes les autres, sans exception,
+    prennent <em>-ez</em>. Attention aussi à <em>nous faisons</em>, qui se prononce
+    <span class="pho">/fə.zɔ̃/</span> et non <span class="pho">/fɛ.zɔ̃/</span>.
+  </div>
+
+  <h3>Les verbes modaux</h3>
+  <div class="conj-grid">
+    <div class="conj">
+      <div class="inf">Pouvoir <span>can</span></div>
+      <dl>
+        <div><dt>je</dt><dd>peux</dd></div><div><dt>tu</dt><dd>peux</dd></div>
+        <div><dt>il / elle</dt><dd>peut</dd></div><div><dt>nous</dt><dd>pouvons</dd></div>
+        <div><dt>vous</dt><dd>pouvez</dd></div><div><dt>ils / elles</dt><dd>peuvent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Vouloir <span>to want</span></div>
+      <dl>
+        <div><dt>je</dt><dd>veux</dd></div><div><dt>tu</dt><dd>veux</dd></div>
+        <div><dt>il / elle</dt><dd>veut</dd></div><div><dt>nous</dt><dd>voulons</dd></div>
+        <div><dt>vous</dt><dd>voulez</dd></div><div><dt>ils / elles</dt><dd>veulent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Devoir <span>must</span></div>
+      <dl>
+        <div><dt>je</dt><dd>dois</dd></div><div><dt>tu</dt><dd>dois</dd></div>
+        <div><dt>il / elle</dt><dd>doit</dd></div><div><dt>nous</dt><dd>devons</dd></div>
+        <div><dt>vous</dt><dd>devez</dd></div><div><dt>ils / elles</dt><dd>doivent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Savoir <span>to know</span></div>
+      <dl>
+        <div><dt>je</dt><dd>sais</dd></div><div><dt>tu</dt><dd>sais</dd></div>
+        <div><dt>il / elle</dt><dd>sait</dd></div><div><dt>nous</dt><dd>savons</dd></div>
+        <div><dt>vous</dt><dd>savez</dd></div><div><dt>ils / elles</dt><dd>savent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Connaître <span>to know</span></div>
+      <dl>
+        <div><dt>je</dt><dd>connais</dd></div><div><dt>tu</dt><dd>connais</dd></div>
+        <div><dt>il / elle</dt><dd>connaît</dd></div><div><dt>nous</dt><dd>connaissons</dd></div>
+        <div><dt>vous</dt><dd>connaissez</dd></div><div><dt>ils / elles</dt><dd>connaissent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Falloir <span>impersonnel</span></div>
+      <dl>
+        <div><dt>il</dt><dd>faut</dd></div>
+      </dl>
+      <p style="font-size:8pt;color:var(--gris-texte);margin:2mm 0 0;font-weight:300">
+      Ce verbe n'existe qu'à la forme <em>il</em> : <em>il faut partir</em>.</p>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="t">Savoir ou connaître ?</span>
+    <strong>Savoir</strong> porte sur une information ou une compétence : <em>je sais nager</em>,
+    <em>je sais où il habite</em>. <strong>Connaître</strong> porte sur une personne ou un lieu dont on a
+    l'expérience : <em>je connais Marie</em>, <em>je connais Paris</em>. <em>Connaître</em> n'est jamais
+    suivi d'un verbe.
+  </div>
+
+  <h3>Venir, tenir et les verbes en -ir</h3>
+  <div class="conj-grid">
+    <div class="conj">
+      <div class="inf">Venir <span>to come</span></div>
+      <dl>
+        <div><dt>je</dt><dd>viens</dd></div><div><dt>tu</dt><dd>viens</dd></div>
+        <div><dt>il / elle</dt><dd>vient</dd></div><div><dt>nous</dt><dd>venons</dd></div>
+        <div><dt>vous</dt><dd>venez</dd></div><div><dt>ils / elles</dt><dd>viennent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Tenir <span>to hold</span></div>
+      <dl>
+        <div><dt>je</dt><dd>tiens</dd></div><div><dt>tu</dt><dd>tiens</dd></div>
+        <div><dt>il / elle</dt><dd>tient</dd></div><div><dt>nous</dt><dd>tenons</dd></div>
+        <div><dt>vous</dt><dd>tenez</dd></div><div><dt>ils / elles</dt><dd>tiennent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Partir <span>to leave</span></div>
+      <dl>
+        <div><dt>je</dt><dd>pars</dd></div><div><dt>tu</dt><dd>pars</dd></div>
+        <div><dt>il / elle</dt><dd>part</dd></div><div><dt>nous</dt><dd>partons</dd></div>
+        <div><dt>vous</dt><dd>partez</dd></div><div><dt>ils / elles</dt><dd>partent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Courir <span>to run</span></div>
+      <dl>
+        <div><dt>je</dt><dd>cours</dd></div><div><dt>tu</dt><dd>cours</dd></div>
+        <div><dt>il / elle</dt><dd>court</dd></div><div><dt>nous</dt><dd>courons</dd></div>
+        <div><dt>vous</dt><dd>courez</dd></div><div><dt>ils / elles</dt><dd>courent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Ouvrir <span>to open</span></div>
+      <dl>
+        <div><dt>j'</dt><dd>ouvre</dd></div><div><dt>tu</dt><dd>ouvres</dd></div>
+        <div><dt>il / elle</dt><dd>ouvre</dd></div><div><dt>nous</dt><dd>ouvrons</dd></div>
+        <div><dt>vous</dt><dd>ouvrez</dd></div><div><dt>ils / elles</dt><dd>ouvrent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Recevoir <span>to receive</span></div>
+      <dl>
+        <div><dt>je</dt><dd>reçois</dd></div><div><dt>tu</dt><dd>reçois</dd></div>
+        <div><dt>il / elle</dt><dd>reçoit</dd></div><div><dt>nous</dt><dd>recevons</dd></div>
+        <div><dt>vous</dt><dd>recevez</dd></div><div><dt>ils / elles</dt><dd>reçoivent</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="box tip">
+    <span class="t">Ouvrir se conjugue comme un verbe en -ER</span>
+    Malgré son infinitif en <em>-ir</em>, <strong>ouvrir</strong> prend les terminaisons du premier groupe :
+    <em>j'ouvr<strong>e</strong></em>, <em>tu ouvr<strong>es</strong></em>. Il en va de même pour
+    <em>offrir</em>, <em>couvrir</em> et <em>souffrir</em>.
+  </div>
+
+  <h3>Dire, lire, écrire, boire, voir, croire, mettre</h3>
+  <div class="conj-grid">
+    <div class="conj">
+      <div class="inf">Dire <span>to say</span></div>
+      <dl>
+        <div><dt>je</dt><dd>dis</dd></div><div><dt>tu</dt><dd>dis</dd></div>
+        <div><dt>il / elle</dt><dd>dit</dd></div><div><dt>nous</dt><dd>disons</dd></div>
+        <div><dt>vous</dt><dd>dites</dd></div><div><dt>ils / elles</dt><dd>disent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Lire <span>to read</span></div>
+      <dl>
+        <div><dt>je</dt><dd>lis</dd></div><div><dt>tu</dt><dd>lis</dd></div>
+        <div><dt>il / elle</dt><dd>lit</dd></div><div><dt>nous</dt><dd>lisons</dd></div>
+        <div><dt>vous</dt><dd>lisez</dd></div><div><dt>ils / elles</dt><dd>lisent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Écrire <span>to write</span></div>
+      <dl>
+        <div><dt>j'</dt><dd>écris</dd></div><div><dt>tu</dt><dd>écris</dd></div>
+        <div><dt>il / elle</dt><dd>écrit</dd></div><div><dt>nous</dt><dd>écrivons</dd></div>
+        <div><dt>vous</dt><dd>écrivez</dd></div><div><dt>ils / elles</dt><dd>écrivent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Boire <span>to drink</span></div>
+      <dl>
+        <div><dt>je</dt><dd>bois</dd></div><div><dt>tu</dt><dd>bois</dd></div>
+        <div><dt>il / elle</dt><dd>boit</dd></div><div><dt>nous</dt><dd>buvons</dd></div>
+        <div><dt>vous</dt><dd>buvez</dd></div><div><dt>ils / elles</dt><dd>boivent</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Voir <span>to see</span></div>
+      <dl>
+        <div><dt>je</dt><dd>vois</dd></div><div><dt>tu</dt><dd>vois</dd></div>
+        <div><dt>il / elle</dt><dd>voit</dd></div><div><dt>nous</dt><dd>voyons</dd></div>
+        <div><dt>vous</dt><dd>voyez</dd></div><div><dt>ils / elles</dt><dd>voient</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Croire <span>to believe</span></div>
+      <dl>
+        <div><dt>je</dt><dd>crois</dd></div><div><dt>tu</dt><dd>crois</dd></div>
+        <div><dt>il / elle</dt><dd>croit</dd></div><div><dt>nous</dt><dd>croyons</dd></div>
+        <div><dt>vous</dt><dd>croyez</dd></div><div><dt>ils / elles</dt><dd>croient</dd></div>
+      </dl>
+    </div>
+    <div class="conj">
+      <div class="inf">Mettre <span>to put</span></div>
+      <dl>
+        <div><dt>je</dt><dd>mets</dd></div><div><dt>tu</dt><dd>mets</dd></div>
+        <div><dt>il / elle</dt><dd>met</dd></div><div><dt>nous</dt><dd>mettons</dd></div>
+        <div><dt>vous</dt><dd>mettez</dd></div><div><dt>ils / elles</dt><dd>mettent</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <p style="font-size:9pt;color:var(--gris-texte)">Se conjuguent sur les mêmes modèles :
+  <strong>vivre, sortir, sentir, dormir, servir, suivre, mentir</strong>.</p>
+
+  <div class="exo">
+    <h4>Exercice 11.1 — Conjuguez au présent</h4>
+    <ol>
+      <li>Nous <span class="gap"></span> (être) en retard.</li>
+      <li>Vous <span class="gap"></span> (faire) la cuisine ?</li>
+      <li>Ils <span class="gap"></span> (avoir) deux enfants.</li>
+      <li>Je <span class="gap"></span> (prendre) le train à 8 h.</li>
+      <li>Tu <span class="gap"></span> (pouvoir) m'aider ?</li>
+      <li>Elle <span class="gap"></span> (venir) de Lyon.</li>
+      <li>Nous <span class="gap"></span> (boire) du café.</li>
+      <li>Vous <span class="gap"></span> (dire) la vérité.</li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 11.2 — Savoir ou connaître ?</h4>
+    <ol>
+      <li>Je <span class="gap"></span> parler trois langues.</li>
+      <li>Tu <span class="gap"></span> ce restaurant ?</li>
+      <li>Nous <span class="gap"></span> bien Marseille.</li>
+      <li>Elle <span class="gap"></span> que le train est en retard.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 12 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 12</div>
+    <h2>Imparfait et passé composé</h2>
+    <div class="chap-sub">Les deux temps du passé, et la table de référence des vingt-huit verbes essentiels.</div>
+  </div>
+
+  <h3>L'imparfait : une seule règle</h3>
+  <p>L'imparfait est le temps le plus régulier du français. Il se forme toujours de la même façon, pour
+  <strong>tous les verbes sauf un</strong>.</p>
+
+  <div class="box">
+    <span class="t">La recette</span>
+    Prenez la forme <strong>nous</strong> du présent, retirez la terminaison <strong>-ons</strong>, ajoutez
+    les terminaisons de l'imparfait.<br><br>
+    <em>nous fais<span style="color:var(--rouge)">ons</span></em> → radical <strong>fais-</strong> →
+    <strong>je faisais, tu faisais, il faisait, nous faisions, vous faisiez, ils faisaient</strong>.
+  </div>
+
+  <table class="tight" style="max-width:100mm">
+    <thead><tr><th style="width:40%">Pronom</th><th>Terminaison</th></tr></thead>
+    <tbody>
+      <tr><td>je</td><td class="fr">-ais</td></tr>
+      <tr><td>tu</td><td class="fr">-ais</td></tr>
+      <tr><td>il / elle</td><td class="fr">-ait</td></tr>
+      <tr><td>nous</td><td class="fr">-ions</td></tr>
+      <tr><td>vous</td><td class="fr">-iez</td></tr>
+      <tr><td>ils / elles</td><td class="fr">-aient</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">La seule exception : être</span>
+    <strong>Être</strong> ne suit pas la règle (on ne dit pas « nous sommes » → « somm- »). Son radical
+    d'imparfait est <strong>ét-</strong> : <em>j'étais, tu étais, il était, nous étions, vous étiez,
+    ils étaient</em>.
+  </div>
+
+  <div class="box tip">
+    <span class="t">Quatre formes qui se prononcent pareil</span>
+    Comme au présent, <em>-ais</em>, <em>-ait</em> et <em>-aient</em> se prononcent tous
+    <span class="pho">/ɛ/</span>. Seules les formes <em>nous</em> et <em>vous</em> se distinguent à l'oreille.
+  </div>
+
+  <h3>Le passé composé : deux morceaux</h3>
+  <p>Le passé composé se construit avec un <strong>auxiliaire</strong> conjugué au présent, suivi du
+  <strong>participe passé</strong> du verbe.</p>
+
+  <table>
+    <thead><tr><th style="width:34%">Auxiliaire</th><th>Exemple</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="fr">avoir<br><span class="en" style="font-weight:300">la grande majorité des verbes</span></td>
+        <td class="fr">j'ai parlé · tu as pris · nous avons fait<br><span class="en" style="font-weight:300">I spoke · you took · we did</span></td>
+      </tr>
+      <tr>
+        <td class="fr">être<br><span class="en" style="font-weight:300">verbes de mouvement et d'état</span></td>
+        <td class="fr">je suis allé · elle est partie · nous sommes venus<br><span class="en" style="font-weight:300">I went · she left · we came</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">Avec être, le participe s'accorde</span>
+    Quand l'auxiliaire est <strong>être</strong>, le participe passé s'accorde avec le sujet, comme un
+    adjectif : <em>il est all<strong>é</strong></em>, <em>elle est all<strong>ée</strong></em>,
+    <em>ils sont all<strong>és</strong></em>, <em>elles sont all<strong>ées</strong></em>.
+    Avec <strong>avoir</strong>, il n'y a pas d'accord avec le sujet : <em>elle a mangé</em>, sans <em>-e</em>.
+  </div>
+
+  <h3>Table de référence — 28 verbes</h3>
+  <p>Pour chaque verbe : la traduction, l'auxiliaire du passé composé et le participe passé.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:22%">Infinitif</th><th style="width:30%">Anglais</th><th style="width:22%">Auxiliaire</th><th>Participe passé</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">être</td><td class="en">to be</td><td>avoir</td><td class="fr">été</td></tr>
+      <tr><td class="fr">avoir</td><td class="en">to have</td><td>avoir</td><td class="fr">eu</td></tr>
+      <tr><td class="fr">aller</td><td class="en">to go</td><td style="color:var(--rouge);font-weight:600">être</td><td class="fr">allé</td></tr>
+      <tr><td class="fr">faire</td><td class="en">to make / to do</td><td>avoir</td><td class="fr">fait</td></tr>
+      <tr><td class="fr">vouloir</td><td class="en">to want</td><td>avoir</td><td class="fr">voulu</td></tr>
+      <tr><td class="fr">pouvoir</td><td class="en">to be able to / can</td><td>avoir</td><td class="fr">pu</td></tr>
+      <tr><td class="fr">devoir</td><td class="en">to have to / must</td><td>avoir</td><td class="fr">dû</td></tr>
+      <tr><td class="fr">savoir</td><td class="en">to know (things)</td><td>avoir</td><td class="fr">su</td></tr>
+      <tr><td class="fr">venir</td><td class="en">to come</td><td style="color:var(--rouge);font-weight:600">être</td><td class="fr">venu</td></tr>
+      <tr><td class="fr">tenir</td><td class="en">to hold</td><td>avoir</td><td class="fr">tenu</td></tr>
+      <tr><td class="fr">lire</td><td class="en">to read</td><td>avoir</td><td class="fr">lu</td></tr>
+      <tr><td class="fr">dire</td><td class="en">to say</td><td>avoir</td><td class="fr">dit</td></tr>
+      <tr><td class="fr">recevoir</td><td class="en">to receive</td><td>avoir</td><td class="fr">reçu</td></tr>
+      <tr><td class="fr">voir</td><td class="en">to see</td><td>avoir</td><td class="fr">vu</td></tr>
+      <tr><td class="fr">croire</td><td class="en">to believe</td><td>avoir</td><td class="fr">cru</td></tr>
+      <tr><td class="fr">boire</td><td class="en">to drink</td><td>avoir</td><td class="fr">bu</td></tr>
+      <tr><td class="fr">écrire</td><td class="en">to write</td><td>avoir</td><td class="fr">écrit</td></tr>
+      <tr><td class="fr">dormir</td><td class="en">to sleep</td><td>avoir</td><td class="fr">dormi</td></tr>
+      <tr><td class="fr">partir</td><td class="en">to leave</td><td style="color:var(--rouge);font-weight:600">être</td><td class="fr">parti</td></tr>
+      <tr><td class="fr">sortir</td><td class="en">to go out</td><td style="color:var(--rouge);font-weight:600">être</td><td class="fr">sorti</td></tr>
+      <tr><td class="fr">mettre</td><td class="en">to put</td><td>avoir</td><td class="fr">mis</td></tr>
+      <tr><td class="fr">prendre</td><td class="en">to take</td><td>avoir</td><td class="fr">pris</td></tr>
+      <tr><td class="fr">ouvrir</td><td class="en">to open</td><td>avoir</td><td class="fr">ouvert</td></tr>
+      <tr><td class="fr">offrir</td><td class="en">to offer</td><td>avoir</td><td class="fr">offert</td></tr>
+      <tr><td class="fr">appeler</td><td class="en">to call</td><td>avoir</td><td class="fr">appelé</td></tr>
+      <tr><td class="fr">connaître</td><td class="en">to know (places, people)</td><td>avoir</td><td class="fr">connu</td></tr>
+      <tr><td class="fr">conduire</td><td class="en">to drive</td><td>avoir</td><td class="fr">conduit</td></tr>
+      <tr><td class="fr">produire</td><td class="en">to produce</td><td>avoir</td><td class="fr">produit</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box tip">
+    <span class="t">Des familles de participes</span>
+    Les participes ne sont pas si nombreux à mémoriser si on les groupe :
+    en <strong>-u</strong> (eu, voulu, pu, su, tenu, venu, lu, reçu, vu, cru, bu, connu),
+    en <strong>-is</strong> (mis, pris),
+    en <strong>-it</strong> (dit, écrit, conduit, produit),
+    en <strong>-ert</strong> (ouvert, offert).
+    Restent <em>été</em>, <em>fait</em>, <em>dû</em> et les participes réguliers en <strong>-é</strong>
+    de tous les verbes du premier groupe.
+  </div>
+
+  <h3>Imparfait ou passé composé ?</h3>
+  <table>
+    <thead><tr><th style="width:50%">Imparfait — le décor</th><th>Passé composé — l'événement</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Une situation, une habitude, une description qui dure.</td>
+        <td>Une action ponctuelle, terminée, qui fait avancer le récit.</td>
+      </tr>
+      <tr>
+        <td class="fr">Il pleuvait.</td>
+        <td class="fr">Le téléphone a sonné.</td>
+      </tr>
+      <tr>
+        <td class="fr">Quand j'étais petit, j'habitais à Nice.</td>
+        <td class="fr">Hier, j'ai visité le musée.</td>
+      </tr>
+      <tr>
+        <td class="fr">Tous les lundis, elle allait au marché.</td>
+        <td class="fr">Lundi, elle est allée au marché.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <span class="t">Une image utile</span>
+    L'imparfait, c'est le <strong>décor du film</strong> : ce qui était déjà là, en cours, sans début ni fin
+    précis. Le passé composé, c'est <strong>ce qui arrive</strong> : les événements qu'on pourrait numéroter.
+    Dans un même récit, les deux alternent constamment.
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 12.1 — Mettez à l'imparfait</h4>
+    <ol>
+      <li>nous faisons → je <span class="gap"></span></li>
+      <li>nous prenons → tu <span class="gap"></span></li>
+      <li>nous buvons → il <span class="gap"></span></li>
+      <li>nous finissons → nous <span class="gap"></span></li>
+      <li>nous sommes → elles <span class="gap"></span></li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 12.2 — Mettez au passé composé</h4>
+    <ol>
+      <li>Je (prendre) le bus. → <span class="gap"></span></li>
+      <li>Elle (aller) à Paris. → <span class="gap"></span></li>
+      <li>Nous (voir) un film. → <span class="gap"></span></li>
+      <li>Ils (partir) tôt. → <span class="gap"></span></li>
+      <li>Tu (écrire) une lettre. → <span class="gap"></span></li>
+      <li>Vous (boire) du thé. → <span class="gap"></span></li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 12.3 — Imparfait ou passé composé ?</h4>
+    <ol>
+      <li>Quand j'<span class="gap"></span> (être) enfant, je <span class="gap"></span> (jouer) au football tous les jours.</li>
+      <li>Hier, il <span class="gap"></span> (pleuvoir) toute la journée, alors nous <span class="gap"></span> (rester) à la maison.</li>
+      <li>Elle <span class="gap"></span> (lire) tranquillement quand le téléphone <span class="gap"></span> (sonner).</li>
+    </ol>
+  </div>
+</div>
+<!-- ============ CH 13 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 13</div>
+    <h2>Les adjectifs essentiels</h2>
+    <div class="chap-sub">Décrire une personne, un objet, une situation — avec l'accord et la place, qui n'obéissent pas à l'anglais.</div>
+  </div>
+
+  <h3>L'accord des adjectifs</h3>
+  <p>En français, l'adjectif s'accorde avec le nom qu'il décrit : il change de forme au féminin et au pluriel.</p>
+
+  <table>
+    <thead><tr><th style="width:44%">Règle</th><th style="width:28%">Masculin</th><th>Féminin</th></tr></thead>
+    <tbody>
+      <tr><td>Cas général : on ajoute <strong>-e</strong></td><td class="fr">grand</td><td class="fr">grande</td></tr>
+      <tr><td>Déjà terminé par <strong>-e</strong> : aucun changement</td><td class="fr">calme</td><td class="fr">calme</td></tr>
+      <tr><td><strong>-eux</strong> → <strong>-euse</strong></td><td class="fr">heureux</td><td class="fr">heureuse</td></tr>
+      <tr><td><strong>-f</strong> → <strong>-ve</strong></td><td class="fr">neuf</td><td class="fr">neuve</td></tr>
+      <tr><td><strong>-er</strong> → <strong>-ère</strong></td><td class="fr">cher</td><td class="fr">chère</td></tr>
+      <tr><td>Consonne doublée + <strong>-e</strong></td><td class="fr">bon, gentil</td><td class="fr">bonne, gentille</td></tr>
+      <tr><td>Irréguliers à mémoriser</td><td class="fr">beau, nouveau, vieux</td><td class="fr">belle, nouvelle, vieille</td></tr>
+    </tbody>
+  </table>
+
+  <p>Au pluriel, on ajoute <strong>-s</strong> : <em>des livres intéressants</em>, <em>des maisons propres</em>.
+  Les adjectifs en <strong>-eux</strong> ne changent pas au masculin pluriel : <em>des étudiants sérieux</em>.</p>
+
+  <div class="dial">
+    <div><span class="q">Mon frère est grand et ma sœur est grande.</span><span class="a">My brother is tall and my sister is tall.</span></div>
+    <div><span class="q">Elle est très heureuse aujourd'hui.</span><span class="a">She is very happy today.</span></div>
+    <div><span class="q">Ce sont des voisins gentils.</span><span class="a">They are kind neighbours.</span></div>
+  </div>
+
+  <div class="box warn">
+    <span class="t">Neuf ou nouveau ?</span>
+    Les deux se traduisent par <em>new</em>, mais <strong>neuf</strong> veut dire « jamais utilisé, qui sort
+    de l'usine » : <em>une voiture neuve</em>. <strong>Nouveau</strong> veut dire « nouveau pour moi » :
+    <em>ma nouvelle voiture</em>, achetée d'occasion la semaine dernière.
+  </div>
+
+  <h3>La place de l'adjectif</h3>
+  <p>Contrairement à l'anglais, l'adjectif français se place normalement <strong>après le nom</strong> :
+  <em>une voiture rapide</em>, <em>un film intéressant</em>.</p>
+
+  <h4>Les exceptions : avant le nom</h4>
+  <p>Un petit groupe d'adjectifs très courants se place <strong>avant</strong> le nom. Ils concernent la
+  beauté, l'âge, la qualité et la taille.</p>
+
+  <table>
+    <thead><tr><th style="width:22%">Catégorie</th><th style="width:44%">Adjectifs</th><th>Exemple</th></tr></thead>
+    <tbody>
+      <tr><td><strong>B</strong>eauté</td><td class="fr">beau, joli</td><td class="fr">un beau jardin</td></tr>
+      <tr><td><strong>Â</strong>ge</td><td class="fr">jeune, vieux, nouveau</td><td class="fr">une vieille maison</td></tr>
+      <tr><td><strong>Q</strong>ualité</td><td class="fr">bon, mauvais</td><td class="fr">un bon café</td></tr>
+      <tr><td><strong>T</strong>aille</td><td class="fr">grand, petit, long, court</td><td class="fr">un petit problème</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box tip">
+    <span class="t">Astuce de mémorisation</span>
+    Retenez les quatre catégories : <strong>B</strong>eauté, <strong>Â</strong>ge,
+    <strong>Q</strong>ualité, <strong>T</strong>aille. Tous les autres adjectifs de ce chapitre se placent
+    après le nom.
+  </div>
+
+  <h3>Les 50 adjectifs</h3>
+  <p>La forme féminine apparaît quand elle diffère. La prononciation est donnée en alphabet phonétique
+  international.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:34%">Français</th><th style="width:28%">Prononciation</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">beau / belle</td><td class="pho">/bo/ · /bɛl/</td><td class="en">beautiful</td></tr>
+      <tr><td class="fr">bon / bonne</td><td class="pho">/bɔ̃/ · /bɔn/</td><td class="en">good</td></tr>
+      <tr><td class="fr">calme</td><td class="pho">/kalm/</td><td class="en">calm</td></tr>
+      <tr><td class="fr">cher / chère</td><td class="pho">/ʃɛʁ/</td><td class="en">expensive</td></tr>
+      <tr><td class="fr">clair / claire</td><td class="pho">/klɛʁ/</td><td class="en">clear, light</td></tr>
+      <tr><td class="fr">content / contente</td><td class="pho">/kɔ̃tɑ̃/ · /kɔ̃tɑ̃t/</td><td class="en">happy, pleased</td></tr>
+      <tr><td class="fr">court / courte</td><td class="pho">/kuʁ/ · /kuʁt/</td><td class="en">short</td></tr>
+      <tr><td class="fr">désolé / désolée</td><td class="pho">/dezɔle/</td><td class="en">sorry</td></tr>
+      <tr><td class="fr">difficile</td><td class="pho">/difisil/</td><td class="en">difficult</td></tr>
+      <tr><td class="fr">drôle</td><td class="pho">/dʁol/</td><td class="en">funny</td></tr>
+      <tr><td class="fr">égoïste</td><td class="pho">/eɡɔist/</td><td class="en">selfish</td></tr>
+      <tr><td class="fr">facile</td><td class="pho">/fasil/</td><td class="en">easy</td></tr>
+      <tr><td class="fr">faible</td><td class="pho">/fɛbl/</td><td class="en">weak</td></tr>
+      <tr><td class="fr">fier / fière</td><td class="pho">/fjɛʁ/</td><td class="en">proud</td></tr>
+      <tr><td class="fr">fort / forte</td><td class="pho">/fɔʁ/ · /fɔʁt/</td><td class="en">strong</td></tr>
+      <tr><td class="fr">froid / froide</td><td class="pho">/fʁwa/ · /fʁwad/</td><td class="en">cold</td></tr>
+      <tr><td class="fr">génial / géniale</td><td class="pho">/ʒenjal/</td><td class="en">great, awesome</td></tr>
+      <tr><td class="fr">gentil / gentille</td><td class="pho">/ʒɑ̃ti/ · /ʒɑ̃tij/</td><td class="en">kind</td></tr>
+      <tr><td class="fr">grand / grande</td><td class="pho">/ɡʁɑ̃/ · /ɡʁɑ̃d/</td><td class="en">tall, big</td></tr>
+      <tr><td class="fr">heureux / heureuse</td><td class="pho">/øʁø/ · /øʁøz/</td><td class="en">happy</td></tr>
+      <tr><td class="fr">important / importante</td><td class="pho">/ɛ̃pɔʁtɑ̃/ · /ɛ̃pɔʁtɑ̃t/</td><td class="en">important</td></tr>
+      <tr><td class="fr">inquiet / inquiète</td><td class="pho">/ɛ̃kjɛ/ · /ɛ̃kjɛt/</td><td class="en">worried</td></tr>
+      <tr><td class="fr">intelligent / intelligente</td><td class="pho">/ɛ̃teliʒɑ̃/ · /ɛ̃teliʒɑ̃t/</td><td class="en">smart</td></tr>
+      <tr><td class="fr">intéressant / intéressante</td><td class="pho">/ɛ̃teʁesɑ̃/ · /ɛ̃teʁesɑ̃t/</td><td class="en">interesting</td></tr>
+      <tr><td class="fr">jeune</td><td class="pho">/ʒœn/</td><td class="en">young</td></tr>
+      <tr><td class="fr">joli / jolie</td><td class="pho">/ʒɔli/</td><td class="en">pretty</td></tr>
+      <tr><td class="fr">lent / lente</td><td class="pho">/lɑ̃/ · /lɑ̃t/</td><td class="en">slow</td></tr>
+      <tr><td class="fr">libre</td><td class="pho">/libʁ/</td><td class="en">free, available</td></tr>
+      <tr><td class="fr">long / longue</td><td class="pho">/lɔ̃/ · /lɔ̃ɡ/</td><td class="en">long</td></tr>
+      <tr><td class="fr">malade</td><td class="pho">/malad/</td><td class="en">sick</td></tr>
+      <tr><td class="fr">mauvais / mauvaise</td><td class="pho">/movɛ/ · /movɛz/</td><td class="en">bad</td></tr>
+      <tr><td class="fr">méchant / méchante</td><td class="pho">/meʃɑ̃/ · /meʃɑ̃t/</td><td class="en">mean</td></tr>
+      <tr><td class="fr">neuf / neuve</td><td class="pho">/nœf/ · /nœv/</td><td class="en">brand new</td></tr>
+      <tr><td class="fr">normal / normale</td><td class="pho">/nɔʁmal/</td><td class="en">normal</td></tr>
+      <tr><td class="fr">nouveau / nouvelle</td><td class="pho">/nuvo/ · /nuvɛl/</td><td class="en">new</td></tr>
+      <tr><td class="fr">occupé / occupée</td><td class="pho">/ɔkype/</td><td class="en">busy</td></tr>
+      <tr><td class="fr">ouvert / ouverte</td><td class="pho">/uvɛʁ/ · /uvɛʁt/</td><td class="en">open</td></tr>
+      <tr><td class="fr">parfait / parfaite</td><td class="pho">/paʁfɛ/ · /paʁfɛt/</td><td class="en">perfect</td></tr>
+      <tr><td class="fr">pauvre</td><td class="pho">/povʁ/</td><td class="en">poor</td></tr>
+      <tr><td class="fr">petit / petite</td><td class="pho">/pəti/ · /pətit/</td><td class="en">small</td></tr>
+      <tr><td class="fr">possible</td><td class="pho">/pɔsibl/</td><td class="en">possible</td></tr>
+      <tr><td class="fr">prêt / prête</td><td class="pho">/pʁɛ/ · /pʁɛt/</td><td class="en">ready</td></tr>
+      <tr><td class="fr">propre</td><td class="pho">/pʁɔpʁ/</td><td class="en">clean</td></tr>
+      <tr><td class="fr">rapide</td><td class="pho">/ʁapid/</td><td class="en">fast</td></tr>
+      <tr><td class="fr">riche</td><td class="pho">/ʁiʃ/</td><td class="en">rich</td></tr>
+      <tr><td class="fr">sale</td><td class="pho">/sal/</td><td class="en">dirty</td></tr>
+      <tr><td class="fr">sérieux / sérieuse</td><td class="pho">/seʁjø/ · /seʁjøz/</td><td class="en">serious</td></tr>
+      <tr><td class="fr">simple</td><td class="pho">/sɛ̃pl/</td><td class="en">simple</td></tr>
+      <tr><td class="fr">triste</td><td class="pho">/tʁist/</td><td class="en">sad</td></tr>
+      <tr><td class="fr">vieux / vieille</td><td class="pho">/vjø/ · /vjɛj/</td><td class="en">old</td></tr>
+    </tbody>
+  </table>
+
+  <div class="exo">
+    <h4>Exercice 13.1 — Écrivez le féminin</h4>
+    <ol>
+      <li>heureux → <span class="gap"></span></li>
+      <li>gentil → <span class="gap"></span></li>
+      <li>cher → <span class="gap"></span></li>
+      <li>neuf → <span class="gap"></span></li>
+      <li>beau → <span class="gap"></span></li>
+      <li>long → <span class="gap"></span></li>
+      <li>calme → <span class="gap"></span></li>
+      <li>vieux → <span class="gap"></span></li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 13.2 — Avant ou après le nom ?</h4>
+    <p class="hint">Placez l'adjectif au bon endroit et accordez-le.</p>
+    <ol>
+      <li>une maison (vieux) → <span class="gap"></span></li>
+      <li>un film (intéressant) → <span class="gap"></span></li>
+      <li>un jardin (beau) → <span class="gap"></span></li>
+      <li>une voiture (rapide) → <span class="gap"></span></li>
+      <li>un problème (petit) → <span class="gap"></span></li>
+      <li>des chaussures (propre) → <span class="gap"></span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 14 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 14</div>
+    <h2>Les mots interrogatifs</h2>
+    <div class="chap-sub">Neuf mots pour poser une question — et trois façons de dire « what ».</div>
+  </div>
+
+  <h3>Le vocabulaire</h3>
+  <table>
+    <thead><tr><th style="width:34%">Français</th><th style="width:26%">Prononciation</th><th>Anglais</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Combien</td><td class="pho">/kɔ̃.bjɛ̃/</td><td class="en">How much / How many</td></tr>
+      <tr><td class="fr">Comment</td><td class="pho">/kɔ.mɑ̃/</td><td class="en">How</td></tr>
+      <tr><td class="fr">Pourquoi</td><td class="pho">/puʁ.kwa/</td><td class="en">Why</td></tr>
+      <tr><td class="fr">Qui</td><td class="pho">/ki/</td><td class="en">Who</td></tr>
+      <tr><td class="fr">Quand</td><td class="pho">/kɑ̃/</td><td class="en">When</td></tr>
+      <tr><td class="fr">Où</td><td class="pho">/u/</td><td class="en">Where</td></tr>
+      <tr><td class="fr">Que / Qu'est-ce que / Quoi<br><span class="en" style="font-weight:300">(what + verbe)</span></td><td class="pho">/kə/ · /kɛs.kə/ · /kwa/</td><td class="en">What</td></tr>
+      <tr><td class="fr">Quel(s) / Quelle(s)<br><span class="en" style="font-weight:300">(which / what + nom)</span></td><td class="pho">/kɛl/</td><td class="en">Which / What</td></tr>
+      <tr><td class="fr">Est-ce que<br><span class="en" style="font-weight:300">(transforme une affirmation en question)</span></td><td class="pho">/ɛs.kə/</td><td class="en">(question marker — no direct translation)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Que, qu'est-ce que, quoi</h3>
+  <p>Ces trois formes signifient toutes <em>what</em>. Elles ne diffèrent pas par le sens, mais par le
+  <strong>registre</strong> — le niveau de formalité.</p>
+
+  <table>
+    <thead><tr><th style="width:26%">Forme</th><th style="width:30%">Registre</th><th>Exemples</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Que</td><td>Soutenu, avec inversion</td><td class="fr">Que fais-tu ? · Que manges-tu ?</td></tr>
+      <tr><td class="fr">Qu'est-ce que</td><td>Standard, courant</td><td class="fr">Qu'est-ce que tu fais ? · Qu'est-ce que tu manges ?</td></tr>
+      <tr><td class="fr">Quoi</td><td>Familier, oral</td><td class="fr">Tu fais quoi ? · Tu manges quoi ?</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box warn">
+    <span class="t">Quoi se place toujours à la fin</span>
+    On ne dit jamais « <em>Quoi tu fais ?</em> » — seulement <strong>Tu fais quoi ?</strong> C'est la
+    différence de construction la plus visible entre les trois formes.
+  </div>
+
+  <h3>Est-ce que</h3>
+  <p><strong>Est-ce que</strong> ne se traduit pas par un mot anglais : c'est un <strong>marqueur de
+  question</strong> qu'on place devant une affirmation pour la transformer en question, sans avoir à
+  inverser le sujet et le verbe.</p>
+
+  <div class="dial">
+    <div><span class="q">Tu parles français.</span><span class="a">→ Est-ce que tu parles français ?</span></div>
+    <div><span class="q">Où est-ce que tu habites ?</span><span class="a">Where do you live?</span></div>
+    <div><span class="q">Quand est-ce que tu arrives ?</span><span class="a">When are you arriving?</span></div>
+  </div>
+
+  <div class="box">
+    <span class="t">D'où vient « qu'est-ce que »</span>
+    C'est littéralement <strong>que + est-ce que</strong>, soudés en une seule expression. Une fois qu'on
+    voit la construction, elle cesse d'être opaque.
+  </div>
+
+  <div class="box tip">
+    <span class="t">Est-ce que est facultatif</span>
+    On peut aussi se contenter de monter l'intonation à la fin d'une affirmation :
+    <em>« Tu parles français ? »</em> Mais <strong>est-ce que</strong> est très employé, à l'oral comme à
+    l'écrit, précisément parce qu'il évite l'inversion.
+  </div>
+
+  <h3>Quel, quelle, quels, quelles</h3>
+  <p>Contrairement à <em>que</em> et <em>quoi</em>, ces formes ne changent pas selon le registre : elles
+  s'accordent en <strong>genre et en nombre</strong> avec le nom qui suit.</p>
+
+  <table>
+    <thead><tr><th style="width:26%">Forme</th><th style="width:30%">Accord</th><th>Exemple</th></tr></thead>
+    <tbody>
+      <tr><td class="fr">Quel</td><td>masculin singulier</td><td class="fr">Quel jour sommes-nous ?</td></tr>
+      <tr><td class="fr">Quelle</td><td>féminin singulier</td><td class="fr">Quelle heure est-il ?</td></tr>
+      <tr><td class="fr">Quels</td><td>masculin pluriel</td><td class="fr">Quels sports pratiques-tu ?</td></tr>
+      <tr><td class="fr">Quelles</td><td>féminin pluriel</td><td class="fr">Quelles langues parles-tu ?</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <span class="t">Même prononciation pour les quatre</span>
+    <strong>quel</strong>, <strong>quelle</strong>, <strong>quels</strong> et <strong>quelles</strong> se
+    prononcent tous <span class="pho">/kɛl/</span>. Seule l'orthographe change, selon le genre et le nombre
+    du nom.
+  </div>
+
+  <div class="box tip">
+    <span class="t">L'ordre des mots est souple</span>
+    On peut aussi placer le mot interrogatif à la fin : <em>« Nous sommes quel jour ? »</em> ou
+    <em>« Il est quelle heure ? »</em> au lieu de la forme inversée. Les deux sont correctes et
+    couramment employées.
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 14.1 — Quel mot interrogatif ?</h4>
+    <ol>
+      <li><span class="gap"></span> tu habites ? — À Lyon.</li>
+      <li><span class="gap"></span> ça coûte ? — Dix euros.</li>
+      <li><span class="gap"></span> est-ce que le train part ? — À 14 h.</li>
+      <li><span class="gap"></span> tu pleures ? — Parce que je suis triste.</li>
+      <li><span class="gap"></span> allez-vous ? — Très bien, merci.</li>
+      <li><span class="gap"></span> est cette femme ? — C'est ma sœur.</li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 14.2 — Quel, quelle, quels ou quelles ?</h4>
+    <ol>
+      <li><span class="gap"></span> heure est-il ?</li>
+      <li><span class="gap"></span> jour sommes-nous ?</li>
+      <li><span class="gap"></span> langues parlez-vous ?</li>
+      <li><span class="gap"></span> sports pratiques-tu ?</li>
+      <li><span class="gap"></span> est votre nom ?</li>
+      <li><span class="gap"></span> sont vos couleurs préférées ?</li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 14.3 — Trois registres</h4>
+    <p class="hint">Écrivez la même question dans les trois registres.</p>
+    <ol>
+      <li>Soutenu : <span class="gap"></span> · Standard : <span class="gap"></span> · Familier : <span class="gap"></span> <span class="en">(what are you doing?)</span></li>
+      <li>Soutenu : <span class="gap"></span> · Standard : <span class="gap"></span> · Familier : <span class="gap"></span> <span class="en">(what are you eating?)</span></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ CH 15 ============ -->
+<div class="chap">
+  <div class="chap-head">
+    <div class="chap-num">Chapitre 15</div>
+    <h2>Qui ou que ?</h2>
+    <div class="chap-sub">Le pronom relatif : une seule question à se poser, et vingt phrases pour l'ancrer.</div>
+  </div>
+
+  <h3>La règle</h3>
+  <p>Un pronom relatif relie deux propositions : <em>le livre</em> + <em>il est sur la table</em> →
+  <em>le livre <strong>qui</strong> est sur la table</em>. Le choix entre <strong>qui</strong> et
+  <strong>que</strong> dépend d'une seule chose : ce qui suit immédiatement le pronom.</p>
+
+  <table>
+    <thead><tr><th style="width:26%">Pronom</th><th style="width:32%">Ce qui suit</th><th>Exemple</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="fr" style="font-size:12pt">qui</td>
+        <td>un <strong>verbe</strong><br><span class="en" style="font-weight:300">le pronom est sujet</span></td>
+        <td class="fr">le livre <strong>qui</strong> <span style="color:var(--rouge)">est</span> sur la table</td>
+      </tr>
+      <tr>
+        <td class="fr" style="font-size:12pt">que</td>
+        <td>un <strong>sujet</strong><br><span class="en" style="font-weight:300">le pronom est complément</span></td>
+        <td class="fr">le livre <strong>que</strong> <span style="color:var(--rouge)">je</span> lis</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <span class="t">Le test en une seconde</span>
+    Regardez le mot qui suit le blanc. Si c'est un <strong>verbe</strong> → <strong>qui</strong>.
+    Si c'est un <strong>sujet</strong> (je, tu, il, nous, un nom propre, un groupe nominal) →
+    <strong>que</strong>. Vous n'avez pas besoin d'analyser le sens de la phrase.
+  </div>
+
+  <div class="box warn">
+    <span class="t">Que s'élide, qui ne s'élide jamais</span>
+    Devant une voyelle, <strong>que</strong> devient <strong>qu'</strong> : <em>le pays
+    <strong>qu'</strong>elle adore</em>, <em>ce <strong>qu'</strong>il a dit</em>. En revanche
+    <strong>qui</strong> ne change jamais : on écrit <em>l'homme <strong>qui</strong> arrive</em>, et
+    jamais « qu'arrive ».
+  </div>
+
+  <div class="box warn">
+    <span class="t">Attention aux faux sujets</span>
+    Dans <em>« un chat <strong>qui</strong> nous observe »</em>, le mot <em>nous</em> suit le pronom — mais
+    ce n'est pas un sujet : c'est un complément (le chat observe <em>nous</em>). Le vrai verbe est
+    <em>observe</em>, donc on écrit <strong>qui</strong>. Vérifiez toujours qui fait l'action.
+  </div>
+
+  <h3>Ce qui, ce que</h3>
+  <p>Quand il n'y a pas de nom auquel se rattacher, on ajoute <strong>ce</strong> devant le pronom. La règle
+  de choix reste exactement la même.</p>
+  <div class="dial">
+    <div><span class="q">Je ne sais pas ce qui se passe.</span><span class="a">« se passe » est un verbe → ce qui</span></div>
+    <div><span class="q">Fais ce que tu veux.</span><span class="a">« tu » est un sujet → ce que</span></div>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 15.1 — Qui ou que ?</h4>
+    <ol>
+      <li>Quel est le type de fromage <span class="gap"></span> vous préférez ?</li>
+      <li>Je voudrais acheter la voiture <span class="gap"></span> coûte le moins cher.</li>
+      <li>Est-ce que tu aimes la chanson <span class="gap"></span> passe à la radio ?</li>
+      <li>Le film <span class="gap"></span> je préfère s'appelle Le Grand Bleu.</li>
+      <li>Pouvez-vous me donner le livre <span class="gap"></span> est sur la table ?</li>
+      <li>Le cadeau <span class="gap"></span> j'ai reçu pour mon anniversaire est dans ma chambre.</li>
+      <li>Le magasin <span class="gap"></span> a fermé employait des dizaines de salariés.</li>
+      <li>Qui est la personne <span class="gap"></span> m'a envoyé un message ?</li>
+      <li>Voici le restaurant <span class="gap"></span> nous vous recommandons.</li>
+      <li>Il y a un chat <span class="gap"></span> nous observe de l'autre côté de la rue.</li>
+    </ol>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 15.2 — Qui, que ou qu' ?</h4>
+    <p class="hint">Attention à l'élision : « que » devient « qu' » devant une voyelle.</p>
+    <ol>
+      <li>Le Maroc est un pays <span class="gap"></span> elle adore.</li>
+      <li>Fais ce <span class="gap"></span> tu veux, ce n'est pas mon problème.</li>
+      <li>C'est une politique <span class="gap"></span> a créé de fortes divisions.</li>
+      <li>Je suis d'accord avec ce <span class="gap"></span> il a dit.</li>
+      <li>L'homme <span class="gap"></span> arrive est probablement notre hôte.</li>
+      <li>Je ne sais pas ce <span class="gap"></span> se passe ici.</li>
+      <li>Dans la vie, je fais toujours ce <span class="gap"></span> me plaît !</li>
+      <li>Le rouge est la couleur <span class="gap"></span> vous va le mieux !</li>
+      <li>C'est la robe <span class="gap"></span> Aurélie a choisie pour son mariage.</li>
+      <li>Monsieur Fournier est le professeur <span class="gap"></span> nous enseigne le français.</li>
+    </ol>
+  </div>
+</div>
+<!-- ============ CORRIGÉS ============ -->
+<div class="part">
+  <img src="../public/img/niveaux/coquelet.png" alt="">
+  <div class="lbl">Annexe</div>
+  <h2>Corrigés</h2>
+  <div class="code">Tous les exercices</div>
+  <p>Corrigez-vous une fois l'exercice terminé, jamais pendant. Si une réponse vous surprend,
+  relisez l'encadré correspondant dans le chapitre plutôt que de mémoriser la correction seule.</p>
+</div>
+
+<div class="chap key">
+  <div class="chap-head">
+    <div class="chap-num">Annexe</div>
+    <h2>Corrigés des exercices</h2>
+  </div>
+
+  <h3>Chapitre 1 — Salutations et politesse</h3>
+  <h4>1.1 — Complétez</h4>
+  <ol>
+    <li>Bonjour</li>
+    <li>Bonsoir</li>
+    <li>De rien</li>
+    <li>Enchanté</li>
+    <li>Bonne journée</li>
+    <li>Pardon <span class="why">(ou : Excusez-moi)</span></li>
+  </ol>
+  <h4>1.2 — Tu ou vous ?</h4>
+  <ol>
+    <li>vous</li>
+    <li>tu</li>
+    <li>vous</li>
+    <li>tu <span class="why">— on tutoie toujours un jeune enfant</span></li>
+    <li>tu <span class="why">— entre voyageurs du même âge, le tutoiement s'impose vite ; « vous » n'est pas faux</span></li>
+  </ol>
+
+  <h3>Chapitre 2 — Les nombres</h3>
+  <h4>2.1 — En chiffres</h4>
+  <ol>
+    <li>48</li><li>75</li><li>93</li><li>71</li><li>97</li><li>280</li>
+  </ol>
+  <h4>2.2 — En toutes lettres</h4>
+  <ol>
+    <li>seize</li>
+    <li>vingt et un</li>
+    <li>soixante-deux</li>
+    <li>soixante-dix-huit</li>
+    <li>quatre-vingt-quatre</li>
+    <li>quatre-vingt-dix-neuf</li>
+  </ol>
+
+  <h3>Chapitre 3 — Les couleurs</h3>
+  <h4>3.1 — Mettez au féminin</h4>
+  <ol>
+    <li>verte</li><li>blanche</li><li>bleue</li>
+    <li>grise</li><li>violette</li><li>rouge <span class="why">— invariable</span></li>
+  </ol>
+
+  <h3>Chapitre 4 — Les jours et l'heure</h3>
+  <h4>4.1 — Une fois ou chaque semaine ?</h4>
+  <ol>
+    <li>chaque semaine <span class="why">(le mardi)</span></li>
+    <li>une seule fois</li>
+    <li>chaque semaine <span class="why">(le dimanche)</span></li>
+    <li>une seule fois</li>
+  </ol>
+  <h4>4.2 — Dites l'heure</h4>
+  <ol>
+    <li>dix heures et quart</li>
+    <li>six heures et demie</li>
+    <li>deux heures moins le quart</li>
+    <li>midi</li>
+    <li>minuit et demi <span class="why">— sans « e »</span></li>
+    <li>dix heures moins dix</li>
+  </ol>
+
+  <h3>Chapitre 5 — Les saisons et les mois</h3>
+  <h4>5.1 — En ou au ?</h4>
+  <ol>
+    <li>en été</li><li>au printemps</li><li>en automne</li><li>en hiver</li>
+  </ol>
+  <h4>5.2 — Quelle saison ?</h4>
+  <ol>
+    <li>l'hiver</li><li>le printemps</li><li>l'été</li><li>l'automne</li>
+  </ol>
+
+  <h3>Chapitre 6 — La météo</h3>
+  <h4>6.1 — Il fait, il, ou il y a ?</h4>
+  <ol>
+    <li>Il fait beau</li>
+    <li>Il pleut</li>
+    <li>Il y a du brouillard</li>
+    <li>Il neige</li>
+    <li>Il fait très froid</li>
+    <li>Il y a des nuages</li>
+  </ol>
+  <h4>6.2 — Trouvez le contraire</h4>
+  <ol>
+    <li>Il fait mauvais.</li>
+    <li>Il fait froid.</li>
+    <li>Il fait frais.</li>
+    <li>Il fait humide.</li>
+  </ol>
+
+  <h3>Chapitre 7 — Les animaux</h3>
+  <h4>7.1 — Les pièges</h4>
+  <ol>
+    <li><strong>le hibou</strong> <span class="why">— h aspiré : pas d'élision, on ne dit jamais « l'hibou ».</span></li>
+    <li><strong>une souris</strong> <span class="why">— mot féminin, malgré sa terminaison en -is.</span></li>
+    <li><strong>des chevaux</strong> <span class="why">— les mots en -al font leur pluriel en -aux.</span></li>
+    <li><strong>des hiboux</strong> <span class="why">— sept mots en -ou prennent un -x : bijou, caillou, chou, genou, hibou, joujou, pou.</span></li>
+    <li><strong>le dromadaire</strong> <span class="why">— une bosse ; le chameau en a deux.</span></li>
+    <li><strong>en papillon</strong> <span class="why">— c'est la métamorphose.</span></li>
+    <li><strong>l'abeille</strong> <span class="why">— la guêpe ne fait pas de miel.</span></li>
+    <li><strong>la pieuvre</strong> <span class="why">— aussi appelée poulpe, elle a huit bras.</span></li>
+    <li><strong>la biche</strong> <span class="why">— femelle du cerf ; leur petit est le faon.</span></li>
+    <li><strong>le renard</strong> <span class="why">— « rusé comme un renard ».</span></li>
+    <li><strong>l'âne</strong> <span class="why">— « têtu comme un âne », ou « comme une mule ».</span></li>
+    <li><strong>Il pleut des cordes</strong> <span class="why">— ou « il pleut à verse ». L'anglais dit « cats and dogs », pas le français.</span></li>
+  </ol>
+  <h4>7.2 — Le petit de l'animal</h4>
+  <ol>
+    <li>le veau</li><li>l'agneau</li><li>le poussin</li>
+    <li>le poulain</li><li>le chiot</li><li>le louveteau</li>
+  </ol>
+
+  <h3>Chapitre 8 — Phrases essentielles</h3>
+  <h4>8.1 — Que dites-vous ?</h4>
+  <ol>
+    <li>Je ne comprends pas. <span class="why">(ou : Est-ce que vous pouvez répéter ?)</span></li>
+    <li>Est-ce que vous pouvez parler plus lentement ?</li>
+    <li>Combien ça coûte ?</li>
+    <li>J'ai une réservation au nom de…</li>
+    <li>Où sont les toilettes ?</li>
+  </ol>
+
+  <h3>Chapitre 9 — Phrases utiles pour touristes</h3>
+  <h4>9.1 — Question ou réponse ?</h4>
+  <ol>
+    <li>e — Non, c'est à cinq minutes à pied.</li>
+    <li>a — Aller simple ou aller-retour ?</li>
+    <li>b — Non, seulement en espèces.</li>
+    <li>c — Au fond, à droite.</li>
+    <li>d — De 7h à 10h.</li>
+  </ol>
+
+  <h3>Chapitre 10 — Les verbes en -ER</h3>
+  <h4>10.1 — Conjuguez au présent</h4>
+  <ol>
+    <li>regarde</li>
+    <li>mangeons <span class="why">— le -e- garde le son /ʒ/</span></li>
+    <li>habites</li>
+    <li>commençons <span class="why">— la cédille garde le son /s/</span></li>
+    <li>achète <span class="why">— terminaison muette → accent grave</span></li>
+    <li>parlez</li>
+    <li>écoutent</li>
+    <li>appelle <span class="why">— terminaison muette → double l</span></li>
+  </ol>
+  <h4>10.2 — Muet ou prononcé ?</h4>
+  <ol>
+    <li>muet</li><li>prononcé</li><li>muet</li><li>prononcé</li>
+  </ol>
+
+  <h3>Chapitre 11 — Les verbes irréguliers</h3>
+  <h4>11.1 — Conjuguez au présent</h4>
+  <ol>
+    <li>sommes</li><li>faites</li><li>ont</li><li>prends</li>
+    <li>peux</li><li>vient</li><li>buvons</li><li>dites</li>
+  </ol>
+  <h4>11.2 — Savoir ou connaître ?</h4>
+  <ol>
+    <li>sais <span class="why">— une compétence, suivie d'un verbe</span></li>
+    <li>connais <span class="why">— un lieu dont on a l'expérience</span></li>
+    <li>connaissons</li>
+    <li>sait <span class="why">— une information</span></li>
+  </ol>
+
+  <h3>Chapitre 12 — Imparfait et passé composé</h3>
+  <h4>12.1 — À l'imparfait</h4>
+  <ol>
+    <li>je faisais</li><li>tu prenais</li><li>il buvait</li>
+    <li>nous finissions</li><li>elles étaient <span class="why">— seule exception : radical ét-</span></li>
+  </ol>
+  <h4>12.2 — Au passé composé</h4>
+  <ol>
+    <li>J'ai pris le bus.</li>
+    <li>Elle est allée à Paris. <span class="why">— être → accord au féminin</span></li>
+    <li>Nous avons vu un film.</li>
+    <li>Ils sont partis tôt. <span class="why">— être → accord au pluriel</span></li>
+    <li>Tu as écrit une lettre.</li>
+    <li>Vous avez bu du thé.</li>
+  </ol>
+  <h4>12.3 — Imparfait ou passé composé ?</h4>
+  <ol>
+    <li>j'étais · je jouais <span class="why">— une situation et une habitude</span></li>
+    <li>il a plu · nous sommes restés <span class="why">— deux événements datés</span></li>
+    <li>elle lisait · a sonné <span class="why">— le décor, puis l'événement qui l'interrompt</span></li>
+  </ol>
+
+  <h3>Chapitre 13 — Les adjectifs</h3>
+  <h4>13.1 — Écrivez le féminin</h4>
+  <ol>
+    <li>heureuse</li><li>gentille</li><li>chère</li><li>neuve</li>
+    <li>belle</li><li>longue</li><li>calme <span class="why">— déjà en -e</span></li><li>vieille</li>
+  </ol>
+  <h4>13.2 — Avant ou après le nom ?</h4>
+  <ol>
+    <li>une vieille maison <span class="why">— âge</span></li>
+    <li>un film intéressant</li>
+    <li>un beau jardin <span class="why">— beauté</span></li>
+    <li>une voiture rapide</li>
+    <li>un petit problème <span class="why">— taille</span></li>
+    <li>des chaussures propres</li>
+  </ol>
+
+  <h3>Chapitre 14 — Les mots interrogatifs</h3>
+  <h4>14.1 — Quel mot interrogatif ?</h4>
+  <ol>
+    <li>Où</li><li>Combien</li><li>Quand</li>
+    <li>Pourquoi</li><li>Comment</li><li>Qui</li>
+  </ol>
+  <h4>14.2 — Quel, quelle, quels ou quelles ?</h4>
+  <ol>
+    <li>Quelle <span class="why">(heure, féminin)</span></li>
+    <li>Quel <span class="why">(jour, masculin)</span></li>
+    <li>Quelles <span class="why">(langues, féminin pluriel)</span></li>
+    <li>Quels <span class="why">(sports, masculin pluriel)</span></li>
+    <li>Quel <span class="why">(nom, masculin)</span></li>
+    <li>Quelles <span class="why">(couleurs, féminin pluriel)</span></li>
+  </ol>
+  <h4>14.3 — Trois registres</h4>
+  <ol>
+    <li>Que fais-tu ? · Qu'est-ce que tu fais ? · Tu fais quoi ?</li>
+    <li>Que manges-tu ? · Qu'est-ce que tu manges ? · Tu manges quoi ?</li>
+  </ol>
+
+  <h3>Chapitre 15 — Qui ou que ?</h3>
+  <h4>15.1 — Qui ou que ?</h4>
+  <ol>
+    <li><strong>que</strong> <span class="why">— « vous » est un sujet.</span></li>
+    <li><strong>qui</strong> <span class="why">— « coûte » est un verbe.</span></li>
+    <li><strong>qui</strong> <span class="why">— « passe » est un verbe.</span></li>
+    <li><strong>que</strong> <span class="why">— « je » est un sujet.</span></li>
+    <li><strong>qui</strong> <span class="why">— « est » est un verbe.</span></li>
+    <li><strong>que</strong> <span class="why">— « j' » est un sujet : « que j'ai reçu ».</span></li>
+    <li><strong>qui</strong> <span class="why">— « a fermé » est un verbe.</span></li>
+    <li><strong>qui</strong> <span class="why">— « a envoyé » est un verbe.</span></li>
+    <li><strong>que</strong> <span class="why">— « nous » est un sujet.</span></li>
+    <li><strong>qui</strong> <span class="why">— ici « nous » est complément, pas sujet : le chat nous observe.</span></li>
+  </ol>
+  <h4>15.2 — Qui, que ou qu' ?</h4>
+  <ol>
+    <li><strong>qu'</strong> <span class="why">— « elle » est un sujet ; élision devant la voyelle.</span></li>
+    <li><strong>que</strong> <span class="why">— « tu » est un sujet ; pas d'élision devant une consonne.</span></li>
+    <li><strong>qui</strong> <span class="why">— « a créé » est un verbe.</span></li>
+    <li><strong>qu'</strong> <span class="why">— « il » est un sujet, élidé en qu'.</span></li>
+    <li><strong>qui</strong> <span class="why">— « arrive » est un verbe. Qui ne s'élide jamais.</span></li>
+    <li><strong>qui</strong> <span class="why">— « se passe » est un verbe : ce qui.</span></li>
+    <li><strong>qui</strong> <span class="why">— « plaît » est un verbe : ce qui. Ici « me » est complément.</span></li>
+    <li><strong>qui</strong> <span class="why">— ici « vous » est complément : la couleur vous va.</span></li>
+    <li><strong>qu'</strong> <span class="why">— « Aurélie » est un sujet ; élision même devant un nom propre.</span></li>
+    <li><strong>qui</strong> <span class="why">— « enseigne » est un verbe. Ici « nous » est complément.</span></li>
+  </ol>
+</div>
+
+<!-- ============ BACK ============ -->
+<div class="back">
+  <img src="../public/coq.png" alt="">
+  <h2>Continuez en ligne</h2>
+  <p>Tous les chapitres de ce manuel existent en version interactive et auto-corrigée sur le site :
+  quiz, cartes de révision, exercices d'écoute et de conjugaison notés.</p>
+  <p>Les ressources sont gratuites, et de nouveaux chapitres — niveaux intermédiaire et avancé —
+  sont en préparation.</p>
+  <div class="site">frenchwithalban.com</div>
+  <p style="margin-top:8mm;font-size:8pt">© 2026 · French with Alban · Cours de français en ligne</p>
+</div>
+
+</body>
+</html>

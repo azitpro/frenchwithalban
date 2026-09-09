@@ -148,6 +148,21 @@ export default function Home() {
           .langues { right: 14px; bottom: 14px; flex-direction: row; }
           .lang-btn { width: 38px; height: 45px; }
         }
+
+        /* Sur petits écrans, le décalage et la rotation des photos débordaient
+           de quelques pixels : on resserre le collage sans le supprimer. */
+        @media (max-width: 420px) {
+          .hero-photos { max-width: 300px; gap: 10px 12px; }
+          .photo-1 { width: 112%; margin-left: -10%; transform: rotate(-4deg); }
+          .photo-2 { width: 104%; transform: rotate(3deg); }
+          .photo-3 { margin-left: -5%; }
+          .stats { gap: 16px; }
+          h1 { font-size: 2.2rem; }
+        }
+
+        @media (max-width: 370px) {
+          .stats { grid-template-columns: 1fr; }
+        }
       `}</style>
 
       {/* ---------- SÉLECTEUR DE LANGUE ---------- */}

@@ -97,6 +97,12 @@ footer {
 @keyframes tourne { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { #chargement svg { animation-duration: 3s; } }
 
+
+/* ===== MOBILE ===== */
+@media (max-width: 720px) {
+  .tz-row { flex-wrap: wrap; gap: 8px; }
+  .tz-select { max-width: 100%; min-width: 0; }
+}
 </style>
 </head>
 <body>

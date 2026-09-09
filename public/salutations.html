@@ -147,12 +147,51 @@ td { padding: 12px 16px; font-size: 0.95rem; vertical-align: top; }
 @keyframes blink { 50% { opacity: 0; } }
 .start-screen { text-align: center; padding: 20px 0; }
 .start-screen p { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 20px; }
+
+/* ===== MOBILE ===== */
+header {
+  padding: 28px 48px; border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream); width: 100%; box-sizing: border-box;
+}
+
+/* en-tête : styles repris des attributs en ligne, pour être pilotables en media query */
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-name { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+.logo-al { color: var(--red); }
+nav { display: flex; gap: 44px; align-items: center; }
+nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
+nav a:hover { opacity: 1; }
+
+@media (max-width: 720px) {
+  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
+  .logo svg { width: 26px; height: 30px; }
+  .logo-name { font-size: 1.3rem; }
+  nav { gap: 22px; }
+  nav a { font-size: 0.95rem; }
+  .wrap { padding-left: 16px; padding-right: 16px; }
+}
+@media (max-width: 400px) {
+  header { padding: 14px 16px; }
+  .logo-name { font-size: 1.12rem; }
+  nav { gap: 16px; }
+  nav a { font-size: 0.88rem; }
+}
+
+@media (max-width: 720px) {
+  h1 { font-size: 1.5rem; margin: 28px 0 18px; }
+  .ex-card, .ex-block { padding: 20px 16px; }
+  .toggle-btn { padding: 9px 14px; font-size: 0.78rem; }
+  td { padding: 10px 8px; font-size: 0.88rem; }
+  .qcm-grid { grid-template-columns: 1fr; }
+  .ex-actions { flex-wrap: wrap; }
+}
 </style>
 </head>
 <body>
 
-<header style="padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); width: 100%; box-sizing: border-box;">
-  <div style="display: flex; align-items: center; gap: 10px;">
+<header>
+  <div class="logo">
     <svg width="30" height="35" viewBox="0 0 24 28">
       <defs><clipPath id="hHeader"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
       <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hHeader)"/>
@@ -160,11 +199,11 @@ td { padding: 12px 16px; font-size: 0.95rem; vertical-align: top; }
       <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hHeader)"/>
       <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
     </svg>
-    <span style="font-family:'Fraunces',serif; font-size:1.7rem; font-weight:700; color:var(--navy); letter-spacing:-0.01em;">French with <span style="color:var(--red)">Alban</span></span>
+    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
   </div>
-  <nav style="display: flex; gap: 44px; align-items: center;">
-    <a href="/ressources.html" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65; transition:opacity 0.2s;">← Retour</a>
-    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65; transition:opacity 0.2s;">Accueil</a>
+  <nav>
+    <a href="/ressources.html">← Retour</a>
+    <a href="/">Accueil</a>
   </nav>
 </header>
 
