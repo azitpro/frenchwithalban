@@ -45,7 +45,7 @@ export default function Home() {
         body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
         .gold-line { height: 2px; background: var(--gold); width: 100%; }
         header { padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); width: 100%; box-sizing: border-box; }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         nav { display: flex; gap: 44px; align-items: center; }
         nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
         nav a:hover { opacity: 1; }
@@ -224,7 +224,7 @@ export default function Home() {
 
       <header>
         <a href="/" className="logo">
-          <svg width="30" height="35" viewBox="-1 -1 26 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="30" height="35" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <clipPath id="hxHeader">
                 <polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/>
