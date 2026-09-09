@@ -240,6 +240,7 @@ export default function Home() {
           </span>
         </a>
         <nav>
+          <a href="/cours.html">{t('Cours', 'Lessons')}</a>
           <a href="/planning_public.html">{t('Créneaux', 'Availability')}</a>
           <a href="/ressources.html">{t('Ressources', 'Resources')}</a>
           <a href="/apropos.html">{t('À propos', 'About')}</a>

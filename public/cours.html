@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les cours — French with Alban</title>
+<meta name="description" content="Cours particuliers de français en ligne : déroulement, formats, niveaux et tarif. Professeur natif, approche personnalisée.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ece4;
+  --navy: #0d2b45;
+  --red: #c0392b;
+  --gold: #c9972a;
+  --border: #ddd8ce;
+  --text-soft: #666;
+  --conj-color: #1a56a0;
+  --gram-color: #b8860b;
+  --vocab-color: #2e7d4f;
+  --test-color: #c0392b;
+  --orth-color: #7b3f9d;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); }
+
+header { padding: 28px 48px; border-bottom: 3px solid var(--navy); display: flex; justify-content: space-between; align-items: center; background: var(--cream); }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-text { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); }
+.logo-text .red { color: var(--red); }
+nav { display: flex; gap: 44px; align-items: center; }
+nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
+nav a:hover { opacity: 1; }
+nav a.active { opacity: 1; border-bottom: 2px solid var(--red); padding-bottom: 2px; }
+.nav-cta { padding: 9px 22px; background: var(--red); color: var(--cream) !important; opacity: 1 !important; font-weight: 600 !important; box-shadow: 3px 3px 0 var(--navy); }
+.gold-line { height: 2px; background: var(--gold); }
+
+/* ---------- SÉLECTEUR DE LANGUE ---------- */
+.langues { position: fixed; right: 22px; bottom: 22px; z-index: 500; display: flex; flex-direction: column; gap: 10px; }
+.lang-btn { width: 46px; height: 54px; padding: 0; border: none; background: none; cursor: pointer; line-height: 0; opacity: .45; transition: opacity .2s, transform .2s; filter: drop-shadow(2px 2px 0 rgba(13,43,69,.25)); }
+.lang-btn:hover { opacity: .85; transform: translateY(-2px); }
+.lang-btn.actif { opacity: 1; filter: none; }
+.lang-btn svg { width: 100%; height: 100%; display: block; }
+.lang-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.page-header { padding: 56px 64px 40px; border-bottom: 1px solid var(--border); max-width: 1100px; margin: 0 auto; width: 100%; }
+.page-header h1 { font-family: 'DM Serif Display', serif; font-size: 3.5rem; font-weight: 400; margin-bottom: 12px; }
+.page-header p { font-size: 1rem; font-weight: 300; color: var(--text-soft); line-height: 1.7; max-width: 560px; }
+
+
+.content { padding: 48px 64px 80px; display: flex; flex-direction: column; gap: 18px; max-width: 1100px; margin: 0 auto; }
+
+/* ---------- NIVEAUX ---------- */
+.chevron { font-size: 1.1rem; color: var(--navy); transition: transform .25s; flex-shrink: 0; }
+
+.vide { padding: 18px 20px; border: 1px dashed var(--border); font-size: .82rem; font-weight: 300; color: var(--text-soft); font-style: italic; text-align: center; }
+
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
+.footer-copy { font-size: .72rem; font-weight: 300; color: rgba(250,247,242,.4); letter-spacing: .04em; }
+.footer-copy a { color: rgba(250,247,242,.6); }
+
+@media (max-width: 720px) {
+  html, body { overflow-x: hidden; max-width: 100%; }
+  header { padding: 18px 20px; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .logo-text { font-size: 1.25rem; }
+  nav { gap: 14px 16px; flex-wrap: wrap; width: 100%; }
+  nav a { font-size: .88rem; }
+  .nav-cta { padding: 8px 16px; margin-left: auto; }
+  .page-header { padding: 32px 20px 24px; }
+  .page-header h1 { font-size: 2.2rem; }
+  .page-header p { font-size: .92rem; }
+  .content { padding: 28px 20px 56px; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+  .langues { right: 14px; bottom: 14px; flex-direction: row; }
+  .lang-btn { width: 38px; height: 45px; }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 720px) {
+}
+
+/* ===== LOGO HARMONISE ===== */
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-name {
+  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
+  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
+}
+.logo-al { color: var(--red); }
+@media (max-width: 720px) {
+  .logo-name { font-size: 1.3rem; }
+  .logo svg { width: 26px; height: 30px; }
+}
+@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
+
+/* ---------- PAGE COURS ---------- */
+.cours-section { max-width: 1100px; margin: 0 auto; padding: 0 48px 64px; }
+.cours-section + .cours-section { padding-top: 8px; }
+.cours-titre {
+  font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 8px;
+}
+.cours-chapo {
+  font-size: .95rem; font-weight: 300; color: var(--text-soft);
+  line-height: 1.7; max-width: 620px; margin-bottom: 28px;
+}
+
+/* étapes */
+.etapes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.etape { border-top: 3px solid var(--navy); padding-top: 18px; }
+.etape-n {
+  font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 300;
+  color: var(--gold); line-height: 1; margin-bottom: 10px;
+}
+.etape-t { font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.etape-d { font-size: .9rem; font-weight: 300; color: var(--text-soft); line-height: 1.7; }
+
+/* formats */
+.formats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.format {
+  background: var(--cream-dark); border: 1px solid var(--border);
+  border-left: 3px solid var(--red); padding: 24px 26px;
+}
+.format-duree {
+  font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 6px;
+}
+.format-d { font-size: .9rem; font-weight: 300; color: var(--text-soft); line-height: 1.7; }
+.cours-note {
+  margin-top: 20px; font-size: .88rem; font-weight: 300; color: var(--text-soft);
+  border-left: 3px solid var(--gold); padding: 10px 16px; background: var(--cream-dark);
+}
+
+/* niveaux */
+.niveaux-cours { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.niv { text-align: center; }
+.niv img { width: 72px; height: 72px; object-fit: contain; margin-bottom: 12px; }
+.niv-nom { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); }
+.niv-code {
+  font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--gold); margin: 4px 0 8px;
+}
+.niv-desc { font-size: .85rem; font-weight: 300; color: var(--text-soft); line-height: 1.6; }
+
+/* inclus */
+.inclus { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.inclus-carte { background: var(--cream-dark); border-top: 2px solid var(--gold); padding: 22px 24px; }
+.inclus-t { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
+.inclus-d { font-size: .88rem; font-weight: 300; color: var(--text-soft); line-height: 1.7; }
+
+/* tarif */
+.tarif-bloc {
+  background: var(--navy); color: var(--cream);
+  padding: 40px 48px; display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; align-items: center; max-width: 1100px; margin: 0 auto 64px;
+}
+.tarif-label {
+  font-size: .7rem; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+}
+.tarif-prix { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.prix-ancien { font-size: 1.4rem; color: rgba(250,247,242,.45); text-decoration: line-through; }
+.prix-nouveau { font-family: 'Fraunces', serif; font-size: 3rem; font-weight: 600; line-height: 1; }
+.prix-unite { font-size: .95rem; color: rgba(250,247,242,.65); }
+.tarif-d {
+  font-size: .9rem; font-weight: 300; color: rgba(250,247,242,.75);
+  line-height: 1.7; margin-top: 14px;
+}
+.tarif-actions { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.btn-reserver {
+  display: inline-block; padding: 14px 32px; background: var(--red); color: var(--cream);
+  text-decoration: none; font-size: .84rem; font-weight: 600; letter-spacing: .06em;
+  box-shadow: 4px 4px 0 var(--gold); transition: all .15s;
+}
+.btn-reserver:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--gold); }
+.tarif-lien { font-size: .85rem; color: rgba(250,247,242,.7); border-bottom: 1px solid var(--gold); text-decoration: none; padding-bottom: 2px; }
+.tarif-lien:hover { color: var(--cream); }
+
+@media (max-width: 900px) {
+  .etapes, .inclus { grid-template-columns: 1fr; gap: 20px; }
+  .niveaux-cours { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .tarif-bloc { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; }
+}
+@media (max-width: 720px) {
+  .cours-section { padding: 0 20px 44px; }
+  .formats { grid-template-columns: 1fr; }
+  .tarif-bloc { margin-bottom: 44px; }
+  .prix-nouveau { font-size: 2.4rem; }
+}
+@media (max-width: 460px) {
+  .niveaux-cours { grid-template-columns: 1fr; }
+}
+
+/* ---------- SOMMAIRE DES COURS ---------- */
+.programme { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.prog { border: 1px solid var(--border); background: var(--cream-dark); }
+.prog-tete {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+}
+.prog-tete img { width: 52px; height: 52px; object-fit: contain; flex-shrink: 0; }
+.prog-nom { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); }
+.prog-code {
+  font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--gold); margin-top: 3px;
+}
+.prog-liste { list-style: none; margin: 0; padding: 8px 0; counter-reset: none; }
+.prog-liste li + li { border-top: 1px solid var(--border); }
+.prog-liste a {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 10px 22px; text-decoration: none; transition: background .15s;
+}
+.prog-liste a:hover { background: var(--cream); }
+.prog-num {
+  font-family: 'Fraunces', serif; font-size: .8rem; color: var(--gold);
+  width: 18px; flex-shrink: 0; text-align: right;
+}
+.prog-t { font-size: .92rem; font-weight: 500; color: var(--navy); flex: 1; }
+.prog-liste a:hover .prog-t { color: var(--red); }
+.prog-tag {
+  font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-soft); white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .programme { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 460px) {
+  .prog-liste a { padding: 10px 16px; gap: 8px; flex-wrap: wrap; }
+  .prog-tag { width: 100%; padding-left: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ---------- SÉLECTEUR DE LANGUE ---------- -->
+<div class="langues" role="group" aria-label="Langue">
+  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxFR)">
+        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button type="button" class="lang-btn" id="btn-en" title="English">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxEN)">
+        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
+        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
+        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
+        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
+        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
+      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
+    <a href="/cours.html" class="active t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="nav-cta t" data-fr="Réserver" data-en="Book">Réserver</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<div class="page-header">
+  <h1 class="t" data-fr="Les cours" data-en="Lessons">Les cours</h1>
+  <p class="t" data-fr="Des cours particuliers de français en visioconférence, construits autour de vos objectifs. Voici comment ça se passe, pour qui, et à quel tarif." data-en="One-to-one French lessons by video call, built around your goals. Here is how it works, who it is for, and what it costs.">Des cours particuliers de français en visioconférence, construits autour de vos objectifs. Voici comment ça se passe, pour qui, et à quel tarif.</p>
+</div>
+
+<div class="cours-section">
+  <div class="cours-titre" class="t" data-fr="Comment ça se passe" data-en="How it works">Comment ça se passe</div>
+  <p class="cours-chapo" class="t" data-fr="Trois étapes, sans engagement de durée." data-en="Three steps, with no long-term commitment.">Trois étapes, sans engagement de durée.</p>
+  <div class="etapes">
+    <div class="etape">
+      <div class="etape-n">1</div>
+      <div class="etape-t" class="t" data-fr="Vous me dites où vous en êtes" data-en="You tell me where you are">Vous me dites où vous en êtes</div>
+      <div class="etape-d" class="t" data-fr="Par le formulaire ou via Preply : votre niveau estimé, vos objectifs, vos disponibilités et votre fuseau horaire." data-en="Through the form or via Preply: your estimated level, your goals, your availability and your time zone.">Par le formulaire ou via Preply : votre niveau estimé, vos objectifs, vos disponibilités et votre fuseau horaire.</div>
+    </div>
+    <div class="etape">
+      <div class="etape-n">2</div>
+      <div class="etape-t" class="t" data-fr="On fixe un créneau" data-en="We set a time">On fixe un créneau</div>
+      <div class="etape-d" class="t" data-fr="Un ou plusieurs rendez-vous par semaine, à l'horaire qui vous arrange, affiché dans votre fuseau. Les créneaux libres sont visibles en ligne." data-en="One or more sessions a week, at a time that suits you, shown in your own time zone. Available slots are listed online.">Un ou plusieurs rendez-vous par semaine, à l'horaire qui vous arrange, affiché dans votre fuseau. Les créneaux libres sont visibles en ligne.</div>
+    </div>
+    <div class="etape">
+      <div class="etape-n">3</div>
+      <div class="etape-t" class="t" data-fr="On travaille, et vous gardez la main" data-en="We work, and you stay in control">On travaille, et vous gardez la main</div>
+      <div class="etape-d" class="t" data-fr="Chaque séance est construite sur vos objectifs du moment. Entre les cours, les ressources du site prolongent le travail." data-en="Each session is built on your current goals. Between lessons, the site's resources carry the work on.">Chaque séance est construite sur vos objectifs du moment. Entre les cours, les ressources du site prolongent le travail.</div>
+    </div>
+  </div>
+</div>
+
+<div class="cours-section">
+  <div class="cours-titre" class="t" data-fr="Les formats" data-en="Formats">Les formats</div>
+  <p class="cours-chapo" class="t" data-fr="Deux durées, de une à trois séances par semaine." data-en="Two lengths, from one to three sessions a week.">Deux durées, de une à trois séances par semaine.</p>
+  <div class="formats">
+    <div class="format">
+      <div class="format-duree">25 min</div>
+      <div class="format-d" class="t" data-fr="Un format court, qui se glisse dans un emploi du temps chargé et se prête bien à une pratique fréquente." data-en="A short format that fits into a busy schedule and lends itself to frequent practice.">Un format court, qui se glisse dans un emploi du temps chargé et se prête bien à une pratique fréquente.</div>
+    </div>
+    <div class="format">
+      <div class="format-duree">50 min</div>
+      <div class="format-d" class="t" data-fr="Le format complet : le temps d'aborder un point de grammaire, de le pratiquer à l'oral et de faire le point." data-en="The full format: time to cover a grammar point, practise it aloud and take stock.">Le format complet : le temps d'aborder un point de grammaire, de le pratiquer à l'oral et de faire le point.</div>
+    </div>
+  </div>
+  <div class="cours-note" class="t" data-fr="Les cours ont lieu en visioconférence, où que vous soyez. Le rythme et la durée se décident ensemble et peuvent changer en cours de route." data-en="Lessons take place by video call, wherever you are. Pace and length are decided together and can change along the way.">Les cours ont lieu en visioconférence, où que vous soyez. Le rythme et la durée se décident ensemble et peuvent changer en cours de route.</div>
+</div>
+
+<div class="cours-section">
+  <div class="cours-titre" class="t" data-fr="À quel niveau ?" data-en="What level?">À quel niveau ?</div>
+  <p class="cours-chapo" class="t" data-fr="Du débutant complet au niveau avancé. Si vous hésitez, on le détermine ensemble au premier cours." data-en="From complete beginner to advanced. If you are unsure, we work it out together in the first lesson.">Du débutant complet au niveau avancé. Si vous hésitez, on le détermine ensemble au premier cours.</p>
+  <div class="niveaux-cours">
+    <div class="niv">
+      <img src="/img/niveaux/oeuf.png" alt="">
+      <div class="niv-nom" class="t" data-fr="Débutant complet" data-en="Complete beginner">Débutant complet</div>
+      <div class="niv-code">A0</div>
+      <div class="niv-desc" class="t" data-fr="Vous partez de zéro : premiers mots, premières phrases, prononciation." data-en="Starting from scratch: first words, first sentences, pronunciation.">Vous partez de zéro : premiers mots, premières phrases, prononciation.</div>
+    </div>
+    <div class="niv">
+      <img src="/img/niveaux/poussin.png" alt="">
+      <div class="niv-nom" class="t" data-fr="Faux débutant" data-en="Elementary">Faux débutant</div>
+      <div class="niv-code">A1 – A2</div>
+      <div class="niv-desc" class="t" data-fr="Vous connaissez les bases : il s'agit maintenant de construire des phrases justes." data-en="You know the basics — now it's about building correct sentences.">Vous connaissez les bases : il s'agit maintenant de construire des phrases justes.</div>
+    </div>
+    <div class="niv">
+      <img src="/img/niveaux/coquelet.png" alt="">
+      <div class="niv-nom" class="t" data-fr="Intermédiaire" data-en="Intermediate">Intermédiaire</div>
+      <div class="niv-code">B1 – B2</div>
+      <div class="niv-desc" class="t" data-fr="Vous vous exprimez sans difficulté majeure et cherchez à gagner en précision." data-en="You speak without major difficulty and want to gain precision.">Vous vous exprimez sans difficulté majeure et cherchez à gagner en précision.</div>
+    </div>
+    <div class="niv">
+      <img src="/img/niveaux/coq-drapeau.png" alt="">
+      <div class="niv-nom" class="t" data-fr="Avancé" data-en="Advanced">Avancé</div>
+      <div class="niv-code">C1+</div>
+      <div class="niv-desc" class="t" data-fr="Vous visez la nuance, le registre et le français réellement parlé." data-en="You're after nuance, register and the French people actually speak.">Vous visez la nuance, le registre et le français réellement parlé.</div>
+    </div>
+  </div>
+</div>
+
+<div class="cours-section">
+  <div class="cours-titre" class="t" data-fr="Sommaire des cours" data-en="Course outline">Sommaire des cours</div>
+  <p class="cours-chapo" class="t" data-fr="Les thèmes abordés aux deux premiers niveaux. Chaque ligne renvoie à la ressource gratuite correspondante, que vous pouvez consulter avant même de commencer." data-en="The topics covered at the first two levels. Each line links to the matching free resource, which you can read before you even start.">Les thèmes abordés aux deux premiers niveaux. Chaque ligne renvoie à la ressource gratuite correspondante, que vous pouvez consulter avant même de commencer.</p>
+
+  <div class="programme">
+    <div class="prog">
+      <div class="prog-tete">
+        <img src="/img/niveaux/oeuf.png" alt="">
+        <div>
+          <div class="prog-nom" class="t" data-fr="Débutant complet" data-en="Complete beginner">Débutant complet</div>
+          <div class="prog-code" class="t" data-fr="A0 · 9 thèmes" data-en="A0 · 9 topics">A0 · 9 thèmes</div>
+        </div>
+      </div>
+      <ol class="prog-liste">
+        <li>
+          <a href="/salutations.html">
+            <span class="prog-num">1</span>
+            <span class="prog-t" class="t" data-fr="Salutations et politesse" data-en="Greetings and politeness">Salutations et politesse</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/les_nombres.html">
+            <span class="prog-num">2</span>
+            <span class="prog-t" class="t" data-fr="Les nombres" data-en="Numbers">Les nombres</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/couleurs.html">
+            <span class="prog-num">3</span>
+            <span class="prog-t" class="t" data-fr="Les couleurs" data-en="Colours">Les couleurs</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/jours_heure.html">
+            <span class="prog-num">4</span>
+            <span class="prog-t" class="t" data-fr="Les jours et l'heure" data-en="Days and time">Les jours et l'heure</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/saisons.html">
+            <span class="prog-num">5</span>
+            <span class="prog-t" class="t" data-fr="Les saisons et les mois" data-en="Seasons and months">Les saisons et les mois</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/meteo.html">
+            <span class="prog-num">6</span>
+            <span class="prog-t" class="t" data-fr="La météo" data-en="The weather">La météo</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/animaux.html">
+            <span class="prog-num">7</span>
+            <span class="prog-t" class="t" data-fr="Les animaux" data-en="Animals">Les animaux</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/phrases_essentielles.html">
+            <span class="prog-num">8</span>
+            <span class="prog-t" class="t" data-fr="Phrases essentielles" data-en="Essential phrases">Phrases essentielles</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/phrases_touristes.html">
+            <span class="prog-num">9</span>
+            <span class="prog-t" class="t" data-fr="Phrases utiles pour touristes" data-en="Useful phrases for travellers">Phrases utiles pour touristes</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+      </ol>
+    </div>
+    <div class="prog">
+      <div class="prog-tete">
+        <img src="/img/niveaux/poussin.png" alt="">
+        <div>
+          <div class="prog-nom" class="t" data-fr="Faux débutant" data-en="Elementary">Faux débutant</div>
+          <div class="prog-code" class="t" data-fr="A1 – A2 · 6 thèmes" data-en="A1 – A2 · 6 topics">A1 – A2 · 6 thèmes</div>
+        </div>
+      </div>
+      <ol class="prog-liste">
+        <li>
+          <a href="/verbes_er.html">
+            <span class="prog-num">1</span>
+            <span class="prog-t" class="t" data-fr="Les verbes en -ER au présent" data-en="-ER verbs in the present tense">Les verbes en -ER au présent</span>
+            <span class="prog-tag" class="t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
+          </a>
+        </li>
+        <li>
+          <a href="/verbes_irreguliers.html">
+            <span class="prog-num">2</span>
+            <span class="prog-t" class="t" data-fr="Les verbes irréguliers au présent" data-en="Irregular verbs in the present tense">Les verbes irréguliers au présent</span>
+            <span class="prog-tag" class="t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
+          </a>
+        </li>
+        <li>
+          <a href="/conjugaison.html">
+            <span class="prog-num">3</span>
+            <span class="prog-t" class="t" data-fr="Test de conjugaison" data-en="Conjugation test">Test de conjugaison</span>
+            <span class="prog-tag" class="t" data-fr="Test" data-en="Test">Test</span>
+          </a>
+        </li>
+        <li>
+          <a href="/adjectifs.html">
+            <span class="prog-num">4</span>
+            <span class="prog-t" class="t" data-fr="Les 50 adjectifs essentiels" data-en="The 50 essential adjectives">Les 50 adjectifs essentiels</span>
+            <span class="prog-tag" class="t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/mots_interrogatifs_page.html">
+            <span class="prog-num">5</span>
+            <span class="prog-t" class="t" data-fr="Les mots interrogatifs" data-en="Question words">Les mots interrogatifs</span>
+            <span class="prog-tag" class="t" data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/qui_que.html">
+            <span class="prog-num">6</span>
+            <span class="prog-t" class="t" data-fr="Qui ou que ?" data-en="Qui or que?">Qui ou que ?</span>
+            <span class="prog-tag" class="t" data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+          </a>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="cours-note" class="t" data-fr="Aux niveaux intermédiaire et avancé, le programme se construit à partir de vos objectifs. Les premières ressources de ces niveaux arrivent bientôt." data-en="At intermediate and advanced level, the syllabus is built from your own goals. The first resources for these levels are on their way.">Aux niveaux intermédiaire et avancé, le programme se construit à partir de vos objectifs. Les premières ressources de ces niveaux arrivent bientôt.</div>
+</div>
+
+<div class="cours-section">
+  <div class="cours-titre" class="t" data-fr="Ce qui est inclus" data-en="What you get">Ce qui est inclus</div>
+  <div class="inclus">
+    <div class="inclus-carte">
+      <div class="inclus-t" class="t" data-fr="Cours sur mesure" data-en="Tailored lessons">Cours sur mesure</div>
+      <div class="inclus-d" class="t" data-fr="Chaque séance est construite autour de vos objectifs et de votre niveau du moment." data-en="Each session is built around your goals and your current level.">Chaque séance est construite autour de vos objectifs et de votre niveau du moment.</div>
+    </div>
+    <div class="inclus-carte">
+      <div class="inclus-t" class="t" data-fr="Ressources incluses" data-en="Resources included">Ressources incluses</div>
+      <div class="inclus-d" class="t" data-fr="PDFs, exercices et outils de pratique disponibles entre les cours." data-en="PDFs, exercises and practice tools available between lessons.">PDFs, exercices et outils de pratique disponibles entre les cours.</div>
+    </div>
+    <div class="inclus-carte">
+      <div class="inclus-t" class="t" data-fr="Flexibilité totale" data-en="Complete flexibility">Flexibilité totale</div>
+      <div class="inclus-d" class="t" data-fr="Choisissez l'horaire qui vous convient, où que vous soyez dans le monde." data-en="Choose the time that suits you, wherever you are in the world.">Choisissez l'horaire qui vous convient, où que vous soyez dans le monde.</div>
+    </div>
+  </div>
+</div>
+
+<div class="tarif-bloc">
+  <div>
+    <div class="tarif-label" class="t" data-fr="Tarif" data-en="Rate">Tarif</div>
+    <div class="tarif-prix">
+      <span class="prix-ancien" id="prixAncien">$37</span>
+      <span class="prix-nouveau" id="prixNouveau">$34</span>
+      <span class="prix-unite" id="prixUnite">/ 50 min</span>
+    </div>
+    <div class="tarif-d" class="t" data-fr="En contact direct, sans frais de plateforme. Les cours réservés via Preply suivent la tarification de Preply, frais de service inclus." data-en="Booking directly, with no platform fees. Lessons booked through Preply follow Preply's own pricing, service fees included.">En contact direct, sans frais de plateforme. Les cours réservés via Preply suivent la tarification de Preply, frais de service inclus.</div>
+  </div>
+  <div class="tarif-actions">
+    <a href="/reserver.html" class="btn-reserver" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+    <a href="/planning_public.html" class="tarif-lien" class="t" data-fr="Voir les créneaux disponibles →" data-en="See available slots →">Voir les créneaux disponibles →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <svg width="18" height="22" viewBox="-1 -1 26 30">
+      <defs><clipPath id="hf"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hf)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hf)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hf)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#faf7f2" stroke-width="1.5"/>
+    </svg>
+    French with Alban
+  </div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" class="t" data-fr="Soutenir le site" data-en="Support the site">Soutenir le site</a></div>
+</footer>
+
+<script>
+});
+
+/* ---------- LANGUE ---------- */
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+function appliquer(lang){
+  document.querySelectorAll('.t').forEach(function(el){
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  btnFr.classList.toggle('actif', lang === 'fr');
+  btnEn.classList.toggle('actif', lang === 'en');
+  btnFr.querySelector('.cadre').setAttribute('stroke', lang === 'fr' ? '#c9972a' : '#0d2b45');
+  btnEn.querySelector('.cadre').setAttribute('stroke', lang === 'en' ? '#c9972a' : '#0d2b45');
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+
+btnFr.addEventListener('click', function(){ appliquer('fr'); });
+btnEn.addEventListener('click', function(){ appliquer('en'); });
+
+/* ---------- TARIF EN DIRECT ---------- */
+fetch('/api/pricing')
+  .then(function (r) { return r.json(); })
+  .then(function (p) {
+    document.getElementById('prixAncien').textContent = p.currency + p.realPrice;
+    document.getElementById('prixNouveau').textContent = p.currency + p.discountPrice;
+    document.getElementById('prixUnite').textContent = '/ ' + p.duration;
+  })
+  .catch(function () {});
+</script>
+
+</body>
+</html>
