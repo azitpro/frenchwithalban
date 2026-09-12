@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Les 50 adjectifs essentiels — French with Alban</title>
-<meta name="description" content="Les 50 adjectifs français essentiels : accord au féminin et au pluriel, place avant ou après le nom, phonétique et 5 exercices.">
+<title>Les adjectifs essentiels — French with Alban</title>
+<meta name="description" content="Les adjectifs français essentiels : accord au féminin et au pluriel, place avant ou après le nom, phonétique et 5 exercices.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -316,6 +316,25 @@
   .logo svg { width: 26px; height: 30px; }
 }
 @media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
+
+  /* ===== LES CONTRAIRES EN IMAGES ===== */
+  .paires{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:28px;}
+  .paire{display:flex;align-items:flex-start;justify-content:center;gap:14px;padding:22px 16px;border:1px solid var(--bordure);}
+  .paire figure{margin:0;flex:1 1 0;min-width:0;max-width:190px;}
+  .paire .illus{display:block;padding:8px;background:var(--creme);border:2px solid var(--navy);box-shadow:5px 5px 0 var(--navy);line-height:0;}
+  .paire .illus img{display:block;width:100%;height:auto;}
+  .paire .illus-label{font-family:'Fraunces',serif;font-size:1.02rem;font-weight:600;color:var(--navy);text-align:center;margin-top:14px;line-height:1.35;}
+  .paire .illus-label .phon{display:block;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:400;white-space:normal;margin-top:3px;}
+  .paire-sep{align-self:center;margin-bottom:52px;font-family:'Fraunces',serif;font-size:1.8rem;font-weight:600;color:var(--or);flex:none;}
+  /* cher, sans contraire illustré, prend la dernière case à côté de haut/bas */
+  .paire-seule figure{flex:0 1 190px;}
+  @media (max-width:720px){
+    .paires{grid-template-columns:1fr;gap:18px;}
+    .paire{padding:16px 10px;gap:8px;}
+    .paire .illus{padding:5px;box-shadow:3px 3px 0 var(--navy);}
+    .paire .illus-label{font-size:.95rem;margin-top:10px;}
+    .paire-sep{font-size:1.4rem;margin-bottom:44px;}
+  }
 </style>
 </head>
 <body>
@@ -361,11 +380,125 @@
 
 <div class="hero">
   <h1>Les adjectifs essentiels</h1>
-  <p>Décrire une personne, un objet, une situation. Les 50 adjectifs les plus utiles en français, avec leur accord, leur place dans la phrase et leur prononciation.</p>
-  <div class="compteur">50 adjectifs · 5 exercices</div>
+  <p>Décrire une personne, un objet, une situation. Les adjectifs les plus utiles en français, avec leur accord, leur place dans la phrase et leur prononciation.</p>
+  <div class="compteur" id="compteur">50 adjectifs · 5 exercices</div>
 </div>
 
 <div class="wrap">
+
+  <!-- ===================== LES CONTRAIRES EN IMAGES ===================== -->
+  <section>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les contraires en images</h2>
+    <p class="intro">Des adjectifs contraires, deux par deux. La forme féminine apparaît en or quand elle est différente.</p>
+
+    <div class="paires">
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/beau.jpg" alt="Belle maison en pierre, fleurie" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">beau / <span class="fem">belle</span><span class="phon">/bo/ · /bɛl/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/laid.jpg" alt="Maison terne aux murs gris" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">laid / <span class="fem">laide</span><span class="phon">/lɛ/ · /lɛd/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/bon.jpg" alt="Pouce levé sur fond vert" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">bon / <span class="fem">bonne</span><span class="phon">/bɔ̃/ · /bɔn/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/mauvais.jpg" alt="Pouce baissé sur fond rouge" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">mauvais / <span class="fem">mauvaise</span><span class="phon">/movɛ/ · /movɛz/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/grand.jpg" alt="Un éléphant" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">grand / <span class="fem">grande</span><span class="phon">/ɡʁɑ̃/ · /ɡʁɑ̃d/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/petit.jpg" alt="Une souris au pied d'un éléphant" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">petit / <span class="fem">petite</span><span class="phon">/pəti/ · /pətit/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/fort.jpg" alt="Haltérophile soulevant une lourde barre" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">fort / <span class="fem">forte</span><span class="phon">/fɔʁ/ · /fɔʁt/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/faible.jpg" alt="Garçon peinant à soulever un petit haltère" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">faible<span class="phon">/fɛbl/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/facile.jpg" alt="Fillette qui résout 2 + 2 au tableau" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">facile<span class="phon">/fasil/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/difficile.jpg" alt="Fillette perplexe devant une intégrale" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">difficile<span class="phon">/difisil/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/court.jpg" alt="Un crayon court" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">court / <span class="fem">courte</span><span class="phon">/kuʁ/ · /kuʁt/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/long.jpg" alt="Un crayon long" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">long / <span class="fem">longue</span><span class="phon">/lɔ̃/ · /lɔ̃ɡ/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/rapide.jpg" alt="Un guépard en pleine course" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">rapide<span class="phon">/ʁapid/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/lent.jpg" alt="Un escargot" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">lent / <span class="fem">lente</span><span class="phon">/lɑ̃/ · /lɑ̃t/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/etroit.jpg" alt="Ruelle pavée étroite" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">étroit / <span class="fem">étroite</span><span class="phon">/etʁwa/ · /etʁwat/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/large.jpg" alt="Large avenue bordée d'arbres" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">large<span class="phon">/laʁʒ/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/haut.jpg" alt="Une tour très haute" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">haut / <span class="fem">haute</span><span class="phon">/o/ · /ot/</span></figcaption>
+        </figure>
+        <span class="paire-sep" aria-hidden="true">≠</span>
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/bas.jpg" alt="Avion volant bas au-dessus d'une ville" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">bas / <span class="fem">basse</span><span class="phon">/ba/ · /bas/</span></figcaption>
+        </figure>
+      </div>
+      <div class="paire paire-seule">
+        <figure>
+          <div class="illus"><img src="/img/adjectifs/cher.jpg" alt="Sac à main vendu 6 000 €" width="700" height="700" loading="lazy"></div>
+          <figcaption class="illus-label">cher / <span class="fem">chère</span><span class="phon">/ʃɛʁ/</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
 
   <!-- ===================== ACCORD ===================== -->
   <section>
@@ -433,9 +566,9 @@
     </div>
   </section>
 
-  <!-- ===================== TABLEAU DES 50 ===================== -->
+  <!-- ===================== TABLEAU DES ADJECTIFS ===================== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les 50 adjectifs</h2>
+    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>La liste des adjectifs</h2>
     <p class="intro">La forme féminine apparaît en or quand elle est différente. La prononciation est donnée en alphabet phonétique international.</p>
 
     <div class="toggle" role="group" aria-label="Choix de la langue affichée">
@@ -897,5 +1030,13 @@ construit4();
 construit5();
 </script>
 
+<script>
+/* compteur du bandeau : suit le nombre réel de lignes du tableau */
+(function () {
+  var n = document.querySelectorAll('#tableau-vocab tbody tr').length;
+  var c = document.getElementById('compteur');
+  if (c && n) c.textContent = n + ' adjectifs · 5 exercices';
+})();
+</script>
 </body>
 </html>

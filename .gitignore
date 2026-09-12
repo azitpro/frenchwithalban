@@ -42,3 +42,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# images sources haute definition, non publiees
+/_originaux
