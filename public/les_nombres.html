@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Les nombres — French with Alban</title>
-<meta name="description" content="Les nombres en français de 1 à 1 milliard, avec le détail de 60 à 99. Deux exercices : chiffres vers lettres et lettres vers chiffres.">
+<title>Les nombres en français — French Numbers 1 to 100 Explained</title>
+<meta name="description" content="French numbers 70 to 99 explained: soixante-dix, quatre-vingts, quatre-vingt-dix. Les nombres en français de 1 à 100, avec prononciation et exercices.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -147,9 +147,67 @@ nav a:hover { opacity: 1; }
   .logo svg { width: 26px; height: 30px; }
 }
 @media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
+
+/* ===== SECTION 70-99 ===== */
+.n7099 { margin: 8px 0 4px; }
+.n7099 p { font-size: 0.9rem; line-height: 1.7; color: var(--navy); margin: 0 0 12px; }
+.n7099 ul { list-style: none; margin: 0 0 8px; padding: 0; }
+.n7099 li {
+  font-size: 0.88rem; line-height: 1.65; color: var(--navy);
+  background: var(--cream-dark); border-left: 3px solid var(--gold);
+  padding: 9px 14px; margin-bottom: 6px;
+}
+.n7099 li b { font-weight: 700; }
+.n7099 .n7099-erreurs li { border-left-color: var(--red); }
+.n7099 .note-box { margin-top: 4px; }
+
+/* ===== SÉLECTEUR DE LANGUE ===== */
+.langues { position: fixed; right: 22px; bottom: 22px; z-index: 500; display: flex; flex-direction: column; gap: 10px; }
+.lang-btn { width: 46px; height: 54px; padding: 0; border: none; background: none; cursor: pointer; line-height: 0; opacity: .45; transition: opacity .2s, transform .2s; filter: drop-shadow(2px 2px 0 rgba(13,43,69,.25)); }
+.lang-btn:hover { opacity: .85; transform: translateY(-2px); }
+.lang-btn.actif { opacity: 1; filter: none; }
+.lang-btn svg { width: 100%; height: 100%; display: block; }
+.lang-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+@media (max-width: 720px) {
+  .langues { right: 14px; bottom: 14px; flex-direction: row; }
+  .lang-btn { width: 38px; height: 45px; }
+}
 </style>
 </head>
 <body>
+
+<div class="langues" role="group" aria-label="Langue">
+  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxFR)">
+        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button type="button" class="lang-btn" id="btn-en" title="English">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxEN)">
+        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
+        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
+        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
+        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
+        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
 
 <header>
   <a href="/" class="logo">
@@ -163,29 +221,45 @@ nav a:hover { opacity: 1; }
     <span class="logo-name">French with <span class="logo-al">Alban</span></span>
   </a>
   <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
+    <a href="/ressources.html" class="t" data-fr="Retour" data-en="Back">Retour</a>
+    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
   </nav>
 </header>
 <div class="gold-line"></div>
 
 <div class="wrap">
-<h1>Les nombres</h1>
+<h1 class="t" data-fr="Les nombres" data-en="French numbers">Les nombres</h1>
 
 <div id="vocabRoot"></div>
 
-<div class="note-box">
-  <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
-  <span><b>In Belgium and Switzerland</b>, some numbers are simpler: 70 = <em>septante</em> · 80 = <em>huitante</em> (Switzerland) or <em>quatre-vingts</em> (Belgium) · 90 = <em>nonante</em>.</span>
-</div>
+<section class="n7099" id="nombres-70-99">
+  <div class="section-head"><svg class="hex-icon" width="12" height="14" viewBox="0 0 24 28" aria-hidden="true"><defs><clipPath id="hx7099"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx7099)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx7099)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx7099)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg><h2 class="t" data-fr="Pourquoi les nombres de 70 à 99 sont différents" data-en="Why French numbers 70 to 99 are different">Pourquoi les nombres de 70 à 99 sont différents</h2></div>
+  <p class="t" data-fr="Le français n'a pas de mot simple pour 70, 80 ou 90. Il les construit à partir de nombres plus petits." data-en="French has no single word for 70, 80 or 90. It builds them from smaller numbers.">Le français n'a pas de mot simple pour 70, 80 ou 90. Il les construit à partir de nombres plus petits.</p>
+  <ul class="n7099-regles">
+    <li class="t" data-html="1" data-fr="<b>70 = 60 + 10</b> → <em>soixante-dix</em>. 71 se dit <em>soixante et onze</em>, 72 <em>soixante-douze</em>, jusqu'à 79 <em>soixante-dix-neuf</em>." data-en="<b>70 = 60 + 10</b> → <em>soixante-dix</em>. 71 is <em>soixante et onze</em>, 72 is <em>soixante-douze</em>, up to 79, <em>soixante-dix-neuf</em>."><b>70 = 60 + 10</b> → <em>soixante-dix</em>. 71 se dit <em>soixante et onze</em>, 72 <em>soixante-douze</em>, jusqu'à 79 <em>soixante-dix-neuf</em>.</li>
+    <li class="t" data-html="1" data-fr="<b>80 = 4 × 20</b> → <em>quatre-vingts</em>. C'est la trace d'un ancien système qui comptait par vingtaines." data-en="<b>80 = 4 × 20</b> → <em>quatre-vingts</em>. It is a trace of an older system that counted in twenties."><b>80 = 4 × 20</b> → <em>quatre-vingts</em>. C'est la trace d'un ancien système qui comptait par vingtaines.</li>
+    <li class="t" data-html="1" data-fr="<b>90 = 4 × 20 + 10</b> → <em>quatre-vingt-dix</em>. 91 se dit <em>quatre-vingt-onze</em>, jusqu'à 99 <em>quatre-vingt-dix-neuf</em>." data-en="<b>90 = 4 × 20 + 10</b> → <em>quatre-vingt-dix</em>. 91 is <em>quatre-vingt-onze</em>, up to 99, <em>quatre-vingt-dix-neuf</em>."><b>90 = 4 × 20 + 10</b> → <em>quatre-vingt-dix</em>. 91 se dit <em>quatre-vingt-onze</em>, jusqu'à 99 <em>quatre-vingt-dix-neuf</em>.</li>
+  </ul>
+  <div class="subgroup-label t" data-fr="Erreurs fréquentes" data-en="Common mistakes">Erreurs fréquentes</div>
+  <ul class="n7099-erreurs">
+    <li class="t" data-html="1" data-fr="« Et » n'apparaît que dans 21, 31, 41, 51, 61 et 71. On dit donc <em>soixante-douze</em>, et non « soixante et douze ». De même, 81 se dit <em>quatre-vingt-un</em> et 91 <em>quatre-vingt-onze</em>." data-en="“Et” only appears in 21, 31, 41, 51, 61 and 71. So 72 is <em>soixante-douze</em>, not “soixante et douze”. Likewise, 81 is <em>quatre-vingt-un</em> and 91 is <em>quatre-vingt-onze</em>.">« Et » n'apparaît que dans 21, 31, 41, 51, 61 et 71. On dit donc <em>soixante-douze</em>, et non « soixante et douze ». De même, 81 se dit <em>quatre-vingt-un</em> et 91 <em>quatre-vingt-onze</em>.</li>
+    <li class="t" data-html="1" data-fr="<em>Quatre-vingts</em> ne prend un s que s'il termine le nombre : <em>quatre-vingts</em>, mais <em>quatre-vingt-un</em>." data-en="<em>Quatre-vingts</em> only takes an s at the end of the number: <em>quatre-vingts</em>, but <em>quatre-vingt-un</em>."><em>Quatre-vingts</em> ne prend un s que s'il termine le nombre : <em>quatre-vingts</em>, mais <em>quatre-vingt-un</em>.</li>
+    <li class="t" data-html="1" data-fr="« Soixante et onze » et « soixante-et-onze » sont toutes deux correctes : depuis la réforme de l'orthographe de 1990, les traits d'union sont admis partout." data-en="<em>Soixante et onze</em> and <em>soixante-et-onze</em> are both correct. Since the 1990 spelling reform, hyphens are allowed throughout.">« Soixante et onze » et « soixante-et-onze » sont toutes deux correctes : depuis la réforme de l'orthographe de 1990, les traits d'union sont admis partout.</li>
+  </ul>
+  <div class="subgroup-label t" data-fr="Belgique et Suisse" data-en="Belgium and Switzerland">Belgique et Suisse</div>
+  <div class="note-box"><span class="t" data-html="1" data-fr="En Belgique et en Suisse romande, 70 se dit <em>septante</em> et 90 <em>nonante</em>. Pour 80, la Belgique garde <em>quatre-vingts</em> ; une partie de la Suisse (Vaud, le Valais et Fribourg) dit <em>huitante</em>. En France, seules les formes <em>soixante-dix</em>, <em>quatre-vingts</em> et <em>quatre-vingt-dix</em> sont en usage." data-en="In Belgium and French-speaking Switzerland, 70 is <em>septante</em> and 90 is <em>nonante</em>. For 80, Belgium keeps <em>quatre-vingts</em>, while part of Switzerland (Vaud, Valais and Fribourg) says <em>huitante</em>. In France, only <em>soixante-dix</em>, <em>quatre-vingts</em> and <em>quatre-vingt-dix</em> are used.">En Belgique et en Suisse romande, 70 se dit <em>septante</em> et 90 <em>nonante</em>. Pour 80, la Belgique garde <em>quatre-vingts</em> ; une partie de la Suisse (Vaud, le Valais et Fribourg) dit <em>huitante</em>. En France, seules les formes <em>soixante-dix</em>, <em>quatre-vingts</em> et <em>quatre-vingt-dix</em> sont en usage.</span></div>
+</section>
+
+<div id="bigRoot"></div>
+
 
 <!-- EXERCISE 1: WORD → DIGIT -->
 <div class="ex-block">
   <div class="ex-title">
     <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hxE1"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hxE1)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hxE1)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hxE1)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    &nbsp;Exercice 1 — Écriture en chiffres
+    &nbsp;<span class="t" data-fr="Exercice 1 — Écriture en chiffres" data-en="Exercise 1 — Write it in digits">Exercice 1 — Écriture en chiffres</span>
   </div>
-  <div class="ex-desc">Le nombre s'affiche en lettres — écrivez-le en chiffres.</div>
+  <div class="ex-desc t" data-fr="Le nombre s'affiche en lettres — écrivez-le en chiffres." data-en="The number appears in words. Write it in digits.">Le nombre s'affiche en lettres — écrivez-le en chiffres.</div>
   <div class="ex-card" id="ex1Root"></div>
 </div>
 
@@ -193,17 +267,17 @@ nav a:hover { opacity: 1; }
 <div class="ex-block">
   <div class="ex-title">
     <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hxE2"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hxE2)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hxE2)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hxE2)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    &nbsp;Exercice 2 — Écriture en lettres
+    &nbsp;<span class="t" data-fr="Exercice 2 — Écriture en lettres" data-en="Exercise 2 — Write it in words">Exercice 2 — Écriture en lettres</span>
   </div>
-  <div class="ex-desc">Le nombre s'affiche en chiffres (1 à 100) — écrivez-le en toutes lettres.</div>
+  <div class="ex-desc t" data-fr="Le nombre s'affiche en chiffres (1 à 100) — écrivez-le en toutes lettres." data-en="The number appears in digits (1 to 100). Write it out in words.">Le nombre s'affiche en chiffres (1 à 100) — écrivez-le en toutes lettres.</div>
   <div class="ex-card" id="ex2Root"></div>
 </div>
 </div>
 
 <footer>
-  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
+  <div class="footer-nav"><a href="/" class="footer-btn t" data-fr="Accueil" data-en="Home">Accueil</a></div>
   <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
@@ -263,18 +337,38 @@ function renderNumGrid(data) {
     </div>`).join('')}</div>`;
 }
 
-const vocabRoot = document.getElementById('vocabRoot');
-vocabRoot.innerHTML = `
-  <div class="section-head">${hexSvg()}<h2>1 à 19</h2></div>
+/* ===== TEXTES DE L'INTERFACE (FR / EN) ===== */
+var LANG = 'fr';
+var TXT = {
+  fr: {
+    s1: '1 à 19', s2: '20 à 29', s3: 'Les dizaines', s4: '60 à 99 — le détail', s5: 'Les grands nombres',
+    random: 'nombres, ordre aléatoire.', start: 'Commencer', retry: 'Recommencer',
+    score: 'Score : ', placeholder: 'Votre réponse...', check: 'Valider',
+    correct: 'Correct !', expected: 'Réponse attendue : ',
+    m1: 'à revoir', m2: 'passable', m3: 'assez bien', m4: 'bien', m5: 'très bien'
+  },
+  en: {
+    s1: '1 to 19', s2: '20 to 29', s3: 'Tens', s4: '60 to 99 in detail', s5: 'Large numbers',
+    random: 'numbers, in random order.', start: 'Start', retry: 'Try again',
+    score: 'Score: ', placeholder: 'Your answer...', check: 'Check',
+    correct: 'Correct!', expected: 'Correct answer: ',
+    m1: 'needs work', m2: 'fair', m3: 'quite good', m4: 'good', m5: 'very good'
+  }
+};
+function T(k) { return (TXT[LANG] && TXT[LANG][k]) || TXT.fr[k]; }
+
+function renderVocab() {
+  document.getElementById('vocabRoot').innerHTML = `
+  <div class="section-head">${hexSvg()}<h2>${T('s1')}</h2></div>
   ${renderNumGrid(ONES_TEENS)}
 
-  <div class="section-head">${hexSvg()}<h2>20 à 29</h2></div>
+  <div class="section-head">${hexSvg()}<h2>${T('s2')}</h2></div>
   ${renderNumGrid(TWENTIES)}
 
-  <div class="section-head">${hexSvg()}<h2>Les dizaines</h2></div>
+  <div class="section-head">${hexSvg()}<h2>${T('s3')}</h2></div>
   ${renderNumGrid(TENS)}
 
-  <div class="section-head">${hexSvg()}<h2>60 à 99 — le détail</h2></div>
+  <div class="section-head">${hexSvg()}<h2>${T('s4')}</h2></div>
   <div class="subgroup-label">60 – 69</div>
   ${renderNumGrid(SIXTIES)}
   <div class="subgroup-label">70 – 79</div>
@@ -283,10 +377,13 @@ vocabRoot.innerHTML = `
   ${renderNumGrid(EIGHTIES)}
   <div class="subgroup-label">90 – 99</div>
   ${renderNumGrid(NINETIES)}
-
-  <div class="section-head">${hexSvg()}<h2>Les grands nombres</h2></div>
+`;
+  // les grands nombres viennent après la section 70-99, dans leur propre conteneur
+  document.getElementById('bigRoot').innerHTML = `
+  <div class="section-head">${hexSvg()}<h2>${T('s5')}</h2></div>
   ${renderNumGrid(BIG_NUMBERS)}
 `;
+}
 
 /* ===== NUMBER <-> WORD LOGIC (1-100) ===== */
 const UNITS = ["zéro","un","deux","trois","quatre","cinq","six","sept","huit","neuf"];
@@ -326,11 +423,11 @@ function randomNumbers(count, max) {
   return shuffle(pool).slice(0, count);
 }
 function mention(pct) {
-  if(pct<50) return {label:"à revoir",cls:"m-revoir"};
-  if(pct<60) return {label:"passable",cls:"m-passable"};
-  if(pct<70) return {label:"assez bien",cls:"m-assezbien"};
-  if(pct<80) return {label:"bien",cls:"m-bien"};
-  return {label:"très bien",cls:"m-tresbien"};
+  if(pct<50) return {label:T('m1'),cls:"m-revoir"};
+  if(pct<60) return {label:T('m2'),cls:"m-passable"};
+  if(pct<70) return {label:T('m3'),cls:"m-assezbien"};
+  if(pct<80) return {label:T('m4'),cls:"m-bien"};
+  return {label:T('m5'),cls:"m-tresbien"};
 }
 function normalizeWord(s) {
   return s.trim().toLowerCase().replace(/[-\s]+/g, ' ');
@@ -340,10 +437,10 @@ function normalizeWord(s) {
 let ex1Order = [], ex1Idx = 0, ex1Score = 0, ex1Started = false, ex1Answered = false;
 const EX_LENGTH = 15;
 
-function renderEx1() {
+function renderEx1(noFocus) {
   const root = document.getElementById('ex1Root');
   if (!ex1Started) {
-    root.innerHTML = `<div class="start-screen"><p>${EX_LENGTH} nombres, ordre aléatoire.</p><button class="btn btn-primary" id="ex1Start">Commencer</button></div>`;
+    root.innerHTML = `<div class="start-screen"><p>${EX_LENGTH} ${T('random')}</p><button class="btn btn-primary" id="ex1Start">${T('start')}</button></div>`;
     document.getElementById('ex1Start').onclick = () => {
       ex1Started = true;
       ex1Order = randomNumbers(EX_LENGTH, 100);
@@ -358,42 +455,41 @@ function renderEx1() {
     root.innerHTML = `<div class="ex-result">
       <div class="score">${ex1Score} / ${ex1Order.length}</div>
       <span class="mention ${m.cls}">${m.label} — ${pct}%</span><br>
-      <button class="btn btn-primary" id="ex1Retry">Recommencer</button></div>`;
+      <button class="btn btn-primary" id="ex1Retry">${T('retry')}</button></div>`;
     document.getElementById('ex1Retry').onclick = () => { ex1Started = false; renderEx1(); };
     return;
   }
   const n = ex1Order[ex1Idx];
   const word = numberToWords(n);
   root.innerHTML = `
-    <div class="ex-progress"><span>Question ${ex1Idx+1} / ${ex1Order.length}</span><span>Score : ${ex1Score}</span></div>
+    <div class="ex-progress"><span>Question ${ex1Idx+1} / ${ex1Order.length}</span><span>${T('score')}${ex1Score}</span></div>
     <div class="ex-prompt" style="font-size:1.3rem;">${word}</div>
-    <div class="type-field"><input type="text" id="ex1Input" inputmode="numeric" autocomplete="off" placeholder="Votre réponse..."></div>
+    <div class="type-field"><input type="text" id="ex1Input" inputmode="numeric" autocomplete="off" placeholder="${T('placeholder')}"></div>
     <div id="ex1Feedback"></div>
-    <button class="btn btn-primary" id="ex1Submit">Valider</button>`;
+    <button class="btn btn-primary" id="ex1Submit">${T('check')}</button>`;
   const input = document.getElementById('ex1Input');
-  input.focus();
+  if (!noFocus) input.focus();
   function submit() {
     if (ex1Answered) return;
     ex1Answered = true;
     const correct = parseInt(input.value.trim(), 10) === n;
     if (correct) ex1Score++;
     input.classList.add(correct ? 'ok' : 'bad');
-    const msg = correct ? 'Correct !' : `Réponse attendue : <b>${n}</b>`;
+    const msg = correct ? T('correct') : `${T('expected')}<b>${n}</b>`;
     document.getElementById('ex1Feedback').innerHTML = `<div class="feedback ${correct?'ok':'bad'}">${msg}</div>`;
     setTimeout(() => { ex1Answered = false; ex1Idx++; renderEx1(); }, 1200);
   }
   document.getElementById('ex1Submit').onclick = submit;
   input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
 }
-renderEx1();
 
 /* ===== EXERCISE 2: DIGIT -> WORD ===== */
 let ex2Order = [], ex2Idx = 0, ex2Score = 0, ex2Started = false, ex2Answered = false;
 
-function renderEx2() {
+function renderEx2(noFocus) {
   const root = document.getElementById('ex2Root');
   if (!ex2Started) {
-    root.innerHTML = `<div class="start-screen"><p>${EX_LENGTH} nombres, ordre aléatoire.</p><button class="btn btn-primary" id="ex2Start">Commencer</button></div>`;
+    root.innerHTML = `<div class="start-screen"><p>${EX_LENGTH} ${T('random')}</p><button class="btn btn-primary" id="ex2Start">${T('start')}</button></div>`;
     document.getElementById('ex2Start').onclick = () => {
       ex2Started = true;
       ex2Order = randomNumbers(EX_LENGTH, 100);
@@ -408,19 +504,19 @@ function renderEx2() {
     root.innerHTML = `<div class="ex-result">
       <div class="score">${ex2Score} / ${ex2Order.length}</div>
       <span class="mention ${m.cls}">${m.label} — ${pct}%</span><br>
-      <button class="btn btn-primary" id="ex2Retry">Recommencer</button></div>`;
+      <button class="btn btn-primary" id="ex2Retry">${T('retry')}</button></div>`;
     document.getElementById('ex2Retry').onclick = () => { ex2Started = false; renderEx2(); };
     return;
   }
   const n = ex2Order[ex2Idx];
   root.innerHTML = `
-    <div class="ex-progress"><span>Question ${ex2Idx+1} / ${ex2Order.length}</span><span>Score : ${ex2Score}</span></div>
+    <div class="ex-progress"><span>Question ${ex2Idx+1} / ${ex2Order.length}</span><span>${T('score')}${ex2Score}</span></div>
     <div class="ex-prompt">${n}</div>
-    <div class="type-field"><input type="text" id="ex2Input" autocomplete="off" placeholder="Votre réponse..."></div>
+    <div class="type-field"><input type="text" id="ex2Input" autocomplete="off" placeholder="${T('placeholder')}"></div>
     <div id="ex2Feedback"></div>
-    <button class="btn btn-primary" id="ex2Submit">Valider</button>`;
+    <button class="btn btn-primary" id="ex2Submit">${T('check')}</button>`;
   const input = document.getElementById('ex2Input');
-  input.focus();
+  if (!noFocus) input.focus();
   function submit() {
     if (ex2Answered) return;
     ex2Answered = true;
@@ -428,14 +524,56 @@ function renderEx2() {
     const correct = normalizeWord(input.value) === normalizeWord(correctWord);
     if (correct) ex2Score++;
     input.classList.add(correct ? 'ok' : 'bad');
-    const msg = correct ? 'Correct !' : `Réponse attendue : <b>${correctWord}</b>`;
+    const msg = correct ? T('correct') : `${T('expected')}<b>${correctWord}</b>`;
     document.getElementById('ex2Feedback').innerHTML = `<div class="feedback ${correct?'ok':'bad'}">${msg}</div>`;
     setTimeout(() => { ex2Answered = false; ex2Idx++; renderEx2(); }, 1300);
   }
   document.getElementById('ex2Submit').onclick = submit;
   input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
 }
-renderEx2();
+
+/* ===== LANGUE ===== */
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+// redessine un exercice dans l'autre langue sans perdre la saisie en cours
+function redessiner(inputId, render) {
+  var champ = document.getElementById(inputId);
+  var saisie = champ ? champ.value : null;
+  render();
+  var nouveau = document.getElementById(inputId);
+  if (nouveau && saisie !== null) nouveau.value = saisie;
+}
+
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  btnFr.classList.toggle('actif', lang === 'fr');
+  btnEn.classList.toggle('actif', lang === 'en');
+  btnFr.querySelector('.cadre').setAttribute('stroke', lang === 'fr' ? '#c9972a' : '#0d2b45');
+  btnEn.querySelector('.cadre').setAttribute('stroke', lang === 'en' ? '#c9972a' : '#0d2b45');
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+  renderVocab();
+  // une question déjà validée passera d'elle-même à la suivante, dans la nouvelle langue
+  if (!ex1Answered) redessiner('ex1Input', function () { renderEx1(true); });
+  if (!ex2Answered) redessiner('ex2Input', function () { renderEx2(true); });
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
 </script>
 </body>
 </html>
