@@ -374,7 +374,7 @@ export default function Home() {
           <span style={{fontFamily: "'Fraunces', serif", fontSize: "1rem", color: "#faf7f2"}}>French with Alban</span>
         </div>
         <div className="footer-copy">
-          © 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener">{t('Soutenir le site', 'Support the site')}</a>
+          © 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener">{t('Soutenir le site', 'Support the site')}</a> · <a href="/mentions-legales.html">{t('Mentions légales', 'Legal notice')}</a> · <a href="/confidentialite.html">{t('Confidentialité', 'Privacy')}</a>
         </div>
       </footer>
     </>

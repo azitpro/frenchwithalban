@@ -11,8 +11,8 @@ type Pricing = {
 };
 
 const DEFAULT_PRICING: Pricing = {
-  realPrice: 37,
-  discountPrice: 34,
+  realPrice: 38,
+  discountPrice: 38,
   currency: '$',
   duration: '50 min',
 };

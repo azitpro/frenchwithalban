@@ -131,6 +131,12 @@ footer {
   .logo svg { width: 26px; height: 30px; }
 }
 @media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
+
+.consent-note {
+  margin-top: 14px; font-size: .78rem; font-weight: 300;
+  color: var(--text-soft); line-height: 1.6; text-align: center;
+}
+.consent-note a { color: var(--red); }
 </style>
 </head>
 <body>
@@ -170,11 +176,11 @@ footer {
     <div class="option-title">Me contacter</div>
     <div class="option-desc">Sans frais de plateforme, tarif direct, et un échange avec moi avant le premier cours.</div>
     <div class="price-block">
-      <span class="price-old" id="priceOld"></span>
-      <span class="price-new" id="priceNew"></span>
-      <span class="price-off" id="priceOff"></span>
-      <div class="price-unit" id="priceUnit"></div>
-      <div class="price-promo">Offre du moment</div>
+      <span class="price-old" id="priceOld" style="display:none"></span>
+      <span class="price-new" id="priceNew">$38</span>
+      <span class="price-off" id="priceOff" style="display:none"></span>
+      <div class="price-unit" id="priceUnit">/ 50 min</div>
+      <div class="price-promo" style="display:none">Offre du moment</div>
     </div>
     <button class="option-btn" id="showFormBtn">Remplir le formulaire</button>
   </div>
@@ -271,6 +277,7 @@ footer {
       <textarea id="other" placeholder="Toute autre information utile..."></textarea>
     </div>
     <button type="submit" class="submit-btn">Envoyer</button>
+    <p class="consent-note">En envoyant ce formulaire, vous acceptez notre <a href="/confidentialite.html">politique de confidentialité</a>.</p>
   </form>
   <div id="confirmMsg"></div>
 </div>
@@ -279,17 +286,26 @@ footer {
 <footer>
   <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
   <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
 </footer>
 
 <script>
+  /* Le prix affiché par défaut dans le HTML sert de repli si l'API ne répond pas.
+     Prix barré, pastille de remise et « Offre du moment » restent masqués tant
+     qu'une remise réelle n'a pas été confirmée par l'API. */
   fetch('/api/pricing').then(function(r){ return r.json(); }).then(function(p){
   var pct = Math.ceil((p.realPrice - p.discountPrice) / p.realPrice * 100);
   document.getElementById('priceOld').textContent = p.currency + p.realPrice;
   document.getElementById('priceNew').textContent = p.currency + p.discountPrice;
   document.getElementById('priceUnit').textContent = '/ ' + p.duration;
   var off = document.getElementById('priceOff');
-  if (pct > 0) { off.textContent = '−' + pct + '%'; } else { off.style.display = 'none'; document.getElementById('priceOld').style.display = 'none'; }
+  var promo = document.querySelector('.price-promo');
+  if (pct > 0) {
+    off.textContent = '−' + pct + '%';
+    off.style.display = '';
+    document.getElementById('priceOld').style.display = '';
+    if (promo) promo.style.display = '';
+  }
 }).catch(function(){});
 const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 const PERIODS = ['Matin', 'Midi', 'Après-midi', 'Soir'];

@@ -137,6 +137,24 @@ nav a:hover { opacity: 1; }
   .logo svg { width: 26px; height: 30px; }
 }
 @media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
+
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer {
+  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+@media (max-width: 720px) {
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+.footer-nav { display: flex; gap: 20px; }
+.footer-btn {
+  font-size: 0.8rem; font-weight: 500; color: var(--cream);
+  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
+}
 </style>
 </head>
 <body>
@@ -262,5 +280,11 @@ function render() {
 }
 render();
 </script>
+<footer>
+  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
+</footer>
+
 </body>
 </html>

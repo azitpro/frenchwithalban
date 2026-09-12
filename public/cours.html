@@ -229,6 +229,14 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   .prog-liste a { padding: 10px 16px; gap: 8px; flex-wrap: wrap; }
   .prog-tag { width: 100%; padding-left: 30px; }
 }
+
+/* ===== MENU A SIX ENTREES : repli entre 720 et 900 px ===== */
+@media (max-width: 900px) {
+  header { padding: 18px 24px; flex-wrap: wrap; gap: 14px; }
+  nav { gap: 14px 18px; flex-wrap: wrap; }
+  nav a { font-size: 0.92rem; }
+  .nav-cta { padding: 9px 18px; }
+}
 </style>
 </head>
 <body>
@@ -522,8 +530,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   <div>
     <div class="tarif-label t"  data-fr="Tarif" data-en="Rate">Tarif</div>
     <div class="tarif-prix">
-      <span class="prix-ancien" id="prixAncien">$37</span>
-      <span class="prix-nouveau" id="prixNouveau">$34</span>
+      <span class="prix-ancien" id="prixAncien" style="display:none">$38</span>
+      <span class="prix-nouveau" id="prixNouveau">$38</span>
       <span class="prix-unite" id="prixUnite">/ 50 min</span>
     </div>
     <div class="tarif-d t"  data-fr="En contact direct, sans frais de plateforme. Les cours réservés via Preply suivent la tarification de Preply, frais de service inclus." data-en="Booking directly, with no platform fees. Lessons booked through Preply follow Preply's own pricing, service fees included.">En contact direct, sans frais de plateforme. Les cours réservés via Preply suivent la tarification de Preply, frais de service inclus.</div>
@@ -545,7 +553,7 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
     </svg>
     French with Alban
   </div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" class="t" data-fr="Soutenir le site" data-en="Support the site">Soutenir le site</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="https://donate.stripe.com/cNidR2aQf8ehaKvbCv4gg00" target="_blank" rel="noopener" class="t" data-fr="Soutenir le site" data-en="Support the site">Soutenir le site</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
@@ -585,6 +593,9 @@ fetch('/api/pricing')
     document.getElementById('prixAncien').textContent = p.currency + p.realPrice;
     document.getElementById('prixNouveau').textContent = p.currency + p.discountPrice;
     document.getElementById('prixUnite').textContent = '/ ' + p.duration;
+    // pas de remise : on masque le prix barré plutôt que d'afficher deux fois le même
+    // le prix barré n'apparaît que s'il y a une remise réelle
+    if (p.realPrice > p.discountPrice) document.getElementById('prixAncien').style.display = '';
   })
   .catch(function () {});
 </script>
