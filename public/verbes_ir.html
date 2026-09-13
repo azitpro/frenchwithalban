@@ -35,7 +35,7 @@ a { color: inherit; }
 /* ---------- EN-TÊTE ACIDULÉ ----------
    Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
    habillé du style acidulé. Le logo reste celui du site. */
-.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,247,238,.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
 .ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
 .ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
 .ac-logo { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 1.45rem; letter-spacing: -.01em; margin-right: auto; white-space: nowrap; color: var(--navy); text-decoration: none; }
@@ -44,8 +44,9 @@ a { color: inherit; }
 .ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
 .ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
 .ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
-.ac-langue { display: flex; border: 2.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
-.ac-langue button { border: none; background: none; padding: 5px 11px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+/* le bouton actif est une pastille posée à l'intérieur du cadre (pas de fond collé au bord arrondi : pas de crénelage) */
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
 .ac-langue button.on { background: var(--ink); color: #fff; }
 .ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
 .ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
@@ -68,7 +69,16 @@ a { color: inherit; }
   .ac-menu a[aria-current] { background: var(--lime); }
   .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
 }
-@media (max-width: 370px) { .ac-langue button { padding: 5px 8px; } }
+/* le bouton menu et le sélecteur gardent leur taille : c'est le logo et les marges qui se resserrent */
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: .95rem; gap: 6px; }
+  .ac-logo svg { width: 19px; height: 22px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
 
 /* ---------- MISE EN PAGE ---------- */
 .page {
