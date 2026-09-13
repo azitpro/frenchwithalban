@@ -5,12 +5,12 @@ import type { CSSProperties, PointerEvent as ReactPointerEvent, MouseEvent as Re
 import { EMPTY_SCHEDULE, withDefaults } from '@/lib/schedule';
 import type { Schedule } from '@/lib/schedule';
 import {
-  DAY_END_MIN, DAY_START_MIN, EMPTY_PLANNING, ROUNDING_OPTIONS, ROUTINE_COLORS, WEEKDAY_NAMES,
+  DAY_END_MIN, DAY_START_MIN, DEFAULT_SETTINGS, EMPTY_PLANNING, ROUNDING_OPTIONS, ROUTINE_COLORS, WEEKDAY_NAMES,
   addDays, addRoutine, addSlot, deleteOccurrence, deleteRoutine, fmtDuration, fmtTime,
   lessonsForWeek, occurrencesForWeek, setRounding, todayInParis, updateOccurrence, updateRoutine,
   weekDates, weekStartOf, weeklyQuotas,
 } from '@/lib/planning';
-import type { Lesson, Occurrence, Planning, PreplyBusy, Routine, RoundingMin, Scope } from '@/lib/planning';
+import type { Lesson, Occurrence, PlacementDefaults, Planning, PreplyBusy, Routine, RoundingMin, Scope } from '@/lib/planning';
 
 /* ======================= réglages ======================= */
 
@@ -202,7 +202,7 @@ export default function PlanningPersonnel() {
   const occurrences = useMemo(() => occurrencesForWeek(weekStart, planning, lessons), [weekStart, planning, lessons]);
   const quotas = useMemo(() => weeklyQuotas(planning, occurrences), [planning, occurrences]);
   const routineById = useMemo(() => new Map(planning.routines.map((r) => [r.id, r])), [planning.routines]);
-  const rounding = planning.settings?.roundingMin ?? 0;
+  const rounding = planning.settings?.countRoundingMin ?? DEFAULT_SETTINGS.countRoundingMin;
 
   /* ---------- clavier : Échap ferme la fenêtre ---------- */
   useEffect(() => {
@@ -431,6 +431,7 @@ export default function PlanningPersonnel() {
       {dialog?.type === 'place' && (
         <PlaceDialog
           dates={dates}
+          defaults={planning.settings?.lastPlacement}
           initialDate={dialog.date}
           initialStart={dialog.startMin}
           routines={planning.routines}
@@ -649,15 +650,18 @@ function PlaceDialog(props: {
   initialDate: string;
   initialStart: number;
   routines: Routine[];
+  defaults?: PlacementDefaults;
   onCreateRoutine: () => void;
   onCancel: () => void;
   onSubmit: (input: { routineId: string; kind: 'weekly' | 'once'; date: string; startMin: number; durationMin: number }) => void;
 }) {
-  const [routineId, setRoutineId] = useState(props.routines[0]?.id ?? '');
+  // reprend la routine, la durée et la répétition du dernier créneau placé ; l'heure reste celle du clic
+  const last = props.routines.some((r) => r.id === props.defaults?.routineId) ? props.defaults : undefined;
+  const [routineId, setRoutineId] = useState(last?.routineId ?? props.routines[0]?.id ?? '');
   const [date, setDate] = useState(props.initialDate);
   const [start, setStart] = useState(fmtTime(props.initialStart));
-  const [durationMin, setDurationMin] = useState(60);
-  const [kind, setKind] = useState<'weekly' | 'once'>('once');
+  const [durationMin, setDurationMin] = useState(last?.durationMin ?? 60);
+  const [kind, setKind] = useState<'weekly' | 'once'>(last?.kind ?? 'once');
 
   if (props.routines.length === 0) {
     return (

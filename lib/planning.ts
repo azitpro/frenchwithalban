@@ -43,7 +43,13 @@ export type SlotOverride = {
 /** Pas d'arrondi du décompte : 0 = minutes exactes. */
 export type RoundingMin = 0 | 15 | 30;
 
-export type PlanningSettings = { roundingMin: RoundingMin };
+/** Derniers choix de la fenêtre « Placer un créneau », repris par défaut au placement suivant. */
+export type PlacementDefaults = { routineId: string; durationMin: number; kind: 'weekly' | 'once' };
+
+export type PlanningSettings = {
+  countRoundingMin: RoundingMin; // demi-heure par défaut : 25 min comptent 30, 50 min comptent 1 h
+  lastPlacement?: PlacementDefaults;
+};
 
 export type Planning = {
   routines: Routine[];
@@ -52,7 +58,7 @@ export type Planning = {
   settings: PlanningSettings;
 };
 
-export const DEFAULT_SETTINGS: PlanningSettings = { roundingMin: 0 };
+export const DEFAULT_SETTINGS: PlanningSettings = { countRoundingMin: 30 };
 
 export const EMPTY_PLANNING: Planning = { routines: [], slots: [], overrides: [], settings: DEFAULT_SETTINGS };
 
@@ -217,7 +223,7 @@ export type Occurrence = {
 export function occurrencesForWeek(weekStart: string, planning: Planning, lessons: Lesson[]): Occurrence[] {
   const dates = weekDates(weekStart);
   const weekEnd = dates[6];
-  const step = planning.settings?.roundingMin ?? 0;
+  const step = planning.settings?.countRoundingMin ?? DEFAULT_SETTINGS.countRoundingMin;
   const routineIds = new Set(planning.routines.map((r) => r.id));
   const result: Occurrence[] = [];
 
@@ -318,7 +324,7 @@ export function deleteRoutine(p: Planning, id: string): Planning {
 }
 
 export function setRounding(p: Planning, roundingMin: RoundingMin): Planning {
-  return { ...p, settings: { ...(p.settings ?? DEFAULT_SETTINGS), roundingMin } };
+  return { ...p, settings: { ...(p.settings ?? DEFAULT_SETTINGS), countRoundingMin: roundingMin } };
 }
 
 export type SlotInput = { routineId: string; kind: 'weekly' | 'once'; date: string; startMin: number; durationMin: number };
@@ -328,7 +334,8 @@ export function addSlot(p: Planning, input: SlotInput, id: string = newId()): Pl
   const slot: RoutineSlot = input.kind === 'weekly'
     ? { ...base, weekday: isoWeekday(input.date), validFrom: weekStartOf(input.date) }
     : { ...base, date: input.date };
-  return { ...p, slots: [...p.slots, slot] };
+  const lastPlacement: PlacementDefaults = { routineId: input.routineId, durationMin: input.durationMin, kind: input.kind };
+  return { ...p, slots: [...p.slots, slot], settings: { ...(p.settings ?? DEFAULT_SETTINGS), lastPlacement } };
 }
 
 export type OccurrenceRef = { slotId: string; weekStart: string };
@@ -407,8 +414,9 @@ export function validatePlanning(raw: unknown): Result {
   if (routinesIn.length > 100 || slotsIn.length > 3000 || overridesIn.length > 10000) return { ok: false, error: 'Trop d’éléments.' };
 
   const settingsIn = (src.settings && typeof src.settings === 'object' ? src.settings : {}) as Record<string, unknown>;
-  const roundingMin = settingsIn.roundingMin ?? 0;
-  if (roundingMin !== 0 && roundingMin !== 15 && roundingMin !== 30) return { ok: false, error: 'Arrondi du décompte invalide.' };
+  // « countRoundingMin » remplace l'ancien « roundingMin », enregistré à 0 sans choix explicite : ce dernier est ignoré
+  const countRoundingMin = settingsIn.countRoundingMin ?? DEFAULT_SETTINGS.countRoundingMin;
+  if (countRoundingMin !== 0 && countRoundingMin !== 15 && countRoundingMin !== 30) return { ok: false, error: 'Arrondi du décompte invalide.' };
 
   const routines: Routine[] = [];
   for (const r of routinesIn as Record<string, unknown>[]) {
@@ -465,5 +473,11 @@ export function validatePlanning(raw: unknown): Result {
     }
   }
 
-  return { ok: true, planning: { routines, slots, overrides, settings: { roundingMin } } };
+  const settings: PlanningSettings = { countRoundingMin };
+  const lp = settingsIn.lastPlacement as Record<string, unknown> | undefined;
+  // simple préférence : ignorée si elle ne correspond plus à rien (routine supprimée, par exemple)
+  if (lp && typeof lp === 'object' && routineIds.has(lp.routineId as string) && isInt(lp.durationMin, 5, 24 * 60) && (lp.kind === 'weekly' || lp.kind === 'once')) {
+    settings.lastPlacement = { routineId: lp.routineId as string, durationMin: lp.durationMin as number, kind: lp.kind };
+  }
+  return { ok: true, planning: { routines, slots, overrides, settings } };
 }
