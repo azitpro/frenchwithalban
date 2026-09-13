@@ -237,6 +237,13 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   nav a { font-size: 0.92rem; }
   .nav-cta { padding: 9px 18px; }
 }
+
+/* ---------- SOMMAIRE : THÈMES EN CONSTRUCTION ---------- */
+.prog-liste li.prog-soon { display: flex; align-items: baseline; gap: 12px; padding: 10px 22px; opacity: .5; }
+.prog-liste li.prog-soon .prog-tag { font-style: italic; }
+@media (max-width: 460px) {
+  .prog-liste li.prog-soon { padding: 10px 16px; gap: 8px; flex-wrap: wrap; }
+}
 </style>
 </head>
 <body>
@@ -373,7 +380,7 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
 
 <div class="cours-section">
   <div class="cours-titre t"  data-fr="Sommaire des cours" data-en="Course outline">Sommaire des cours</div>
-  <p class="cours-chapo t"  data-fr="Les thèmes abordés aux deux premiers niveaux. Chaque ligne renvoie à la ressource gratuite correspondante, que vous pouvez consulter avant même de commencer." data-en="The topics covered at the first two levels. Each line links to the matching free resource, which you can read before you even start.">Les thèmes abordés aux deux premiers niveaux. Chaque ligne renvoie à la ressource gratuite correspondante, que vous pouvez consulter avant même de commencer.</p>
+  <p class="cours-chapo t"  data-fr="Les thèmes abordés aux deux premiers niveaux. Ceux déjà en ligne renvoient à la ressource gratuite correspondante ; les autres sont en construction." data-en="The topics covered at the first two levels. Those already online link to the matching free resource; the others are coming soon.">Les thèmes abordés aux deux premiers niveaux. Ceux déjà en ligne renvoient à la ressource gratuite correspondante ; les autres sont en construction.</p>
 
   <div class="programme">
     <div class="prog">
@@ -381,71 +388,136 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
         <img src="/img/niveaux/oeuf.png" alt="">
         <div>
           <div class="prog-nom t"  data-fr="Débutant complet" data-en="Complete beginner">Débutant complet</div>
-          <div class="prog-code t"  data-fr="A0 · 9 thèmes" data-en="A0 · 9 topics">A0 · 9 thèmes</div>
+          <div class="prog-code t"  data-fr="A0 · 9 thèmes en ligne" data-en="A0 · 9 topics online">A0 · 9 thèmes en ligne</div>
         </div>
       </div>
       <ol class="prog-liste">
         <li>
           <a href="/salutations.html">
             <span class="prog-num">1</span>
-            <span class="prog-t t"  data-fr="Salutations et politesse" data-en="Greetings and politeness">Salutations et politesse</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
-          </a>
-        </li>
-        <li>
-          <a href="/les_nombres.html">
-            <span class="prog-num">2</span>
-            <span class="prog-t t"  data-fr="Les nombres" data-en="Numbers">Les nombres</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
-          </a>
-        </li>
-        <li>
-          <a href="/couleurs.html">
-            <span class="prog-num">3</span>
-            <span class="prog-t t"  data-fr="Les couleurs" data-en="Colours">Les couleurs</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
-          </a>
-        </li>
-        <li>
-          <a href="/jours_heure.html">
-            <span class="prog-num">4</span>
-            <span class="prog-t t"  data-fr="Les jours et l'heure" data-en="Days and time">Les jours et l'heure</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
-          </a>
-        </li>
-        <li>
-          <a href="/saisons.html">
-            <span class="prog-num">5</span>
-            <span class="prog-t t"  data-fr="Les saisons et les mois" data-en="Seasons and months">Les saisons et les mois</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
-          </a>
-        </li>
-        <li>
-          <a href="/meteo.html">
-            <span class="prog-num">6</span>
-            <span class="prog-t t"  data-fr="La météo" data-en="The weather">La météo</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
-          </a>
-        </li>
-        <li>
-          <a href="/animaux.html">
-            <span class="prog-num">7</span>
-            <span class="prog-t t"  data-fr="Les animaux" data-en="Animals">Les animaux</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+            <span class="prog-t t" data-fr="Salutations et politesse" data-en="Greetings and politeness">Salutations et politesse</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
           </a>
         </li>
         <li>
           <a href="/phrases_essentielles.html">
+            <span class="prog-num">2</span>
+            <span class="prog-t t" data-fr="Phrases essentielles" data-en="Essential phrases">Phrases essentielles</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">3</span>
+          <span class="prog-t t" data-fr="Se présenter" data-en="Introducing yourself">Se présenter</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li>
+          <a href="/les_nombres.html">
+            <span class="prog-num">4</span>
+            <span class="prog-t t" data-fr="Les nombres" data-en="Numbers">Les nombres</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">5</span>
+          <span class="prog-t t" data-fr="Les pays et nationalités" data-en="Countries and nationalities">Les pays et nationalités</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">6</span>
+          <span class="prog-t t" data-fr="La famille" data-en="Family">La famille</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li>
+          <a href="/couleurs.html">
+            <span class="prog-num">7</span>
+            <span class="prog-t t" data-fr="Les couleurs" data-en="Colours">Les couleurs</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/jours_heure.html">
             <span class="prog-num">8</span>
-            <span class="prog-t t"  data-fr="Phrases essentielles" data-en="Essential phrases">Phrases essentielles</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+            <span class="prog-t t" data-fr="Les jours et l'heure" data-en="Days and time">Les jours et l'heure</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">9</span>
+          <span class="prog-t t" data-fr="La date" data-en="The date">La date</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li>
+          <a href="/saisons.html">
+            <span class="prog-num">10</span>
+            <span class="prog-t t" data-fr="Les saisons et les mois" data-en="Seasons and months">Les saisons et les mois</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/meteo.html">
+            <span class="prog-num">11</span>
+            <span class="prog-t t" data-fr="La météo" data-en="The weather">La météo</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">12</span>
+          <span class="prog-t t" data-fr="Le corps" data-en="The body">Le corps</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">13</span>
+          <span class="prog-t t" data-fr="Les vêtements" data-en="Clothes">Les vêtements</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">14</span>
+          <span class="prog-t t" data-fr="Les objets du quotidien" data-en="Everyday objects">Les objets du quotidien</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">15</span>
+          <span class="prog-t t" data-fr="La maison" data-en="The home">La maison</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">16</span>
+          <span class="prog-t t" data-fr="La nourriture et les boissons" data-en="Food and drink">La nourriture et les boissons</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">17</span>
+          <span class="prog-t t" data-fr="Les repas et le restaurant" data-en="Meals and restaurants">Les repas et le restaurant</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">18</span>
+          <span class="prog-t t" data-fr="La ville et les lieux publics" data-en="The town and public places">La ville et les lieux publics</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">19</span>
+          <span class="prog-t t" data-fr="Les transports" data-en="Transport">Les transports</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">20</span>
+          <span class="prog-t t" data-fr="Les loisirs" data-en="Leisure activities">Les loisirs</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li>
+          <a href="/animaux.html">
+            <span class="prog-num">21</span>
+            <span class="prog-t t" data-fr="Les animaux" data-en="Animals">Les animaux</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
           </a>
         </li>
         <li>
           <a href="/phrases_touristes.html">
-            <span class="prog-num">9</span>
-            <span class="prog-t t"  data-fr="Phrases utiles pour touristes" data-en="Useful phrases for travellers">Phrases utiles pour touristes</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+            <span class="prog-num">22</span>
+            <span class="prog-t t" data-fr="Phrases utiles pour touristes" data-en="Useful phrases for travellers">Phrases utiles pour touristes</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
           </a>
         </li>
       </ol>
@@ -455,50 +527,130 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
         <img src="/img/niveaux/poussin.png" alt="">
         <div>
           <div class="prog-nom t"  data-fr="Faux débutant" data-en="Elementary">Faux débutant</div>
-          <div class="prog-code t"  data-fr="A1 – A2 · 6 thèmes" data-en="A1 – A2 · 6 topics">A1 – A2 · 6 thèmes</div>
+          <div class="prog-code t"  data-fr="A1 – A2 · 6 thèmes en ligne" data-en="A1 – A2 · 6 topics online">A1 – A2 · 6 thèmes en ligne</div>
         </div>
       </div>
       <ol class="prog-liste">
+        <li class="prog-soon">
+          <span class="prog-num">1</span>
+          <span class="prog-t t" data-fr="Les pronoms sujets" data-en="Subject pronouns">Les pronoms sujets</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">2</span>
+          <span class="prog-t t" data-fr="Le genre et le nombre des noms" data-en="Gender and number of nouns">Le genre et le nombre des noms</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">3</span>
+          <span class="prog-t t" data-fr="Les articles définis et indéfinis" data-en="Definite and indefinite articles">Les articles définis et indéfinis</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">4</span>
+          <span class="prog-t t" data-fr="Être et avoir au présent" data-en="Être and avoir in the present">Être et avoir au présent</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
         <li>
           <a href="/verbes_er.html">
-            <span class="prog-num">1</span>
-            <span class="prog-t t"  data-fr="Les verbes en -ER au présent" data-en="-ER verbs in the present tense">Les verbes en -ER au présent</span>
-            <span class="prog-tag t"  data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
+            <span class="prog-num">5</span>
+            <span class="prog-t t" data-fr="Les verbes en -ER au présent" data-en="-ER verbs in the present tense">Les verbes en -ER au présent</span>
+            <span class="prog-tag t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
           </a>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">6</span>
+          <span class="prog-t t" data-fr="La négation ne… pas" data-en="Negation with ne… pas">La négation ne… pas</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">7</span>
+          <span class="prog-t t" data-fr="Il y a" data-en="Il y a (there is, there are)">Il y a</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
         </li>
         <li>
           <a href="/verbes_irreguliers.html">
-            <span class="prog-num">2</span>
-            <span class="prog-t t"  data-fr="Les verbes irréguliers au présent" data-en="Irregular verbs in the present tense">Les verbes irréguliers au présent</span>
-            <span class="prog-tag t"  data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
-          </a>
-        </li>
-        <li>
-          <a href="/conjugaison.html">
-            <span class="prog-num">3</span>
-            <span class="prog-t t"  data-fr="Test de conjugaison" data-en="Conjugation test">Test de conjugaison</span>
-            <span class="prog-tag t"  data-fr="Test" data-en="Test">Test</span>
-          </a>
-        </li>
-        <li>
-          <a href="/adjectifs.html">
-            <span class="prog-num">4</span>
-            <span class="prog-t t"  data-fr="Les adjectifs essentiels" data-en="The essential adjectives">Les adjectifs essentiels</span>
-            <span class="prog-tag t"  data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+            <span class="prog-num">8</span>
+            <span class="prog-t t" data-fr="Les verbes irréguliers au présent" data-en="Irregular verbs in the present tense">Les verbes irréguliers au présent</span>
+            <span class="prog-tag t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
           </a>
         </li>
         <li>
           <a href="/mots_interrogatifs_page.html">
-            <span class="prog-num">5</span>
-            <span class="prog-t t"  data-fr="Les mots interrogatifs" data-en="Question words">Les mots interrogatifs</span>
-            <span class="prog-tag t"  data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+            <span class="prog-num">9</span>
+            <span class="prog-t t" data-fr="Les mots interrogatifs" data-en="Question words">Les mots interrogatifs</span>
+            <span class="prog-tag t" data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+          </a>
+        </li>
+        <li>
+          <a href="/adjectifs.html">
+            <span class="prog-num">10</span>
+            <span class="prog-t t" data-fr="Les adjectifs essentiels" data-en="The essential adjectives">Les adjectifs essentiels</span>
+            <span class="prog-tag t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          </a>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">11</span>
+          <span class="prog-t t" data-fr="Les adjectifs possessifs" data-en="Possessive adjectives">Les adjectifs possessifs</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">12</span>
+          <span class="prog-t t" data-fr="Les adjectifs démonstratifs" data-en="Demonstrative adjectives">Les adjectifs démonstratifs</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">13</span>
+          <span class="prog-t t" data-fr="Les prépositions de lieu" data-en="Prepositions of place">Les prépositions de lieu</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">14</span>
+          <span class="prog-t t" data-fr="Les articles partitifs" data-en="Partitive articles">Les articles partitifs</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">15</span>
+          <span class="prog-t t" data-fr="Les nombres ordinaux" data-en="Ordinal numbers">Les nombres ordinaux</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">16</span>
+          <span class="prog-t t" data-fr="Les adverbes de fréquence" data-en="Adverbs of frequency">Les adverbes de fréquence</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">17</span>
+          <span class="prog-t t" data-fr="Les verbes pronominaux" data-en="Reflexive verbs">Les verbes pronominaux</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">18</span>
+          <span class="prog-t t" data-fr="L'impératif" data-en="The imperative">L'impératif</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">19</span>
+          <span class="prog-t t" data-fr="Le futur proche" data-en="The near future">Le futur proche</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li class="prog-soon">
+          <span class="prog-num">20</span>
+          <span class="prog-t t" data-fr="Le passé composé avec avoir" data-en="The passé composé with avoir">Le passé composé avec avoir</span>
+          <span class="prog-tag t" data-fr="En construction" data-en="Coming soon">En construction</span>
+        </li>
+        <li>
+          <a href="/conjugaison.html">
+            <span class="prog-num">21</span>
+            <span class="prog-t t" data-fr="Test de conjugaison" data-en="Conjugation test">Test de conjugaison</span>
+            <span class="prog-tag t" data-fr="Test" data-en="Test">Test</span>
           </a>
         </li>
         <li>
           <a href="/qui_que.html">
-            <span class="prog-num">6</span>
-            <span class="prog-t t"  data-fr="Qui ou que ?" data-en="Qui or que?">Qui ou que ?</span>
-            <span class="prog-tag t"  data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+            <span class="prog-num">22</span>
+            <span class="prog-t t" data-fr="Qui ou que ?" data-en="Qui or que?">Qui ou que ?</span>
+            <span class="prog-tag t" data-fr="Grammaire" data-en="Grammar">Grammaire</span>
           </a>
         </li>
       </ol>
