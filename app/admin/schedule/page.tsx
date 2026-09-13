@@ -114,7 +114,7 @@ export default function ScheduleAdmin() {
     setLoggingIn(true);
     setError('');
     try {
-      const getRes = await fetch('/api/schedule');
+      const getRes = await fetch('/api/admin/schedule');
       const current = await getRes.json();
       const normalized: Schedule = {
         recurring: current.recurring || [],
@@ -125,7 +125,7 @@ export default function ScheduleAdmin() {
         forced: current.forced || [],
       };
 
-      const verifyRes = await fetch('/api/schedule', {
+      const verifyRes = await fetch('/api/admin/schedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password, schedule: normalized }),
@@ -146,7 +146,7 @@ export default function ScheduleAdmin() {
   async function save(updated: Schedule) {
     setSaving(true);
     setError('');
-    const res = await fetch('/api/schedule', {
+    const res = await fetch('/api/admin/schedule', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password, schedule: updated }),
