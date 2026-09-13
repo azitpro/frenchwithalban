@@ -5,12 +5,12 @@ import type { CSSProperties, PointerEvent as ReactPointerEvent, MouseEvent as Re
 import { EMPTY_SCHEDULE, withDefaults } from '@/lib/schedule';
 import type { Schedule } from '@/lib/schedule';
 import {
-  DAY_END_MIN, DAY_START_MIN, EMPTY_PLANNING, ROUTINE_COLORS, WEEKDAY_NAMES,
+  DAY_END_MIN, DAY_START_MIN, EMPTY_PLANNING, ROUNDING_OPTIONS, ROUTINE_COLORS, WEEKDAY_NAMES,
   addDays, addRoutine, addSlot, deleteOccurrence, deleteRoutine, fmtDuration, fmtTime,
-  lessonsForWeek, occurrencesForWeek, todayInParis, updateOccurrence, updateRoutine,
+  lessonsForWeek, occurrencesForWeek, setRounding, todayInParis, updateOccurrence, updateRoutine,
   weekDates, weekStartOf, weeklyQuotas,
 } from '@/lib/planning';
-import type { Lesson, Occurrence, Planning, PreplyBusy, Routine, Scope } from '@/lib/planning';
+import type { Lesson, Occurrence, Planning, PreplyBusy, Routine, RoundingMin, Scope } from '@/lib/planning';
 
 /* ======================= réglages ======================= */
 
@@ -26,6 +26,9 @@ type Dialog =
 /* ======================= utilitaires d'affichage ======================= */
 
 const cssVars = (vars: Record<string, number | string>) => vars as CSSProperties;
+
+/** « 30 min déplacées », « 1 h 30 déplacée », « 2 h déplacées ». */
+const plural = (min: number) => ((min > 1 && min < 60) || min >= 120 ? 's' : '');
 
 function formatLongDate(date: string, withYear: boolean): string {
   const text = new Intl.DateTimeFormat('fr-FR', {
@@ -164,6 +167,7 @@ export default function PlanningPersonnel() {
   const occurrences = useMemo(() => occurrencesForWeek(weekStart, planning, lessons), [weekStart, planning, lessons]);
   const quotas = useMemo(() => weeklyQuotas(planning, occurrences), [planning, occurrences]);
   const routineById = useMemo(() => new Map(planning.routines.map((r) => [r.id, r])), [planning.routines]);
+  const rounding = planning.settings?.roundingMin ?? 0;
 
   /* ---------- clavier : Échap ferme la fenêtre ---------- */
   useEffect(() => {
@@ -309,6 +313,17 @@ export default function PlanningPersonnel() {
         <aside className="pp-panneau">
           <h2>Quotas de la semaine</h2>
           <p className="pp-sous">Remis à zéro chaque lundi. Les minutes couvertes par un cours ne comptent pas.</p>
+          <label className="pp-arrondi">
+            <span>Arrondi du décompte</span>
+            <select className="pp-inp" value={rounding}
+              onChange={(e) => persist(setRounding(planning, Number(e.target.value) as RoundingMin))}>
+              {ROUNDING_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+            {rounding > 0 && <small>Ex. {fmtDuration(25)} → {fmtDuration(Math.ceil(25 / rounding) * rounding)}, {fmtDuration(50)} → {fmtDuration(Math.ceil(50 / rounding) * rounding)}. La grille garde les horaires exacts.</small>}
+          </label>
+          {rounding > 0 && (
+            <p className="pp-arrondi-impression">Décompte arrondi {rounding === 30 ? 'à la demi-heure' : 'au quart d’heure'} supérieur{rounding === 30 ? 'e' : ''}.</p>
+          )}
           {planning.routines.length === 0 && (
             <p className="pp-vide">Aucune routine pour l’instant. Créez-en une avec « + Routine ».</p>
           )}
@@ -331,7 +346,7 @@ export default function PlanningPersonnel() {
                     : <span className="pp-reste">Reste {fmtDuration(q.remainingMin)}</span>}
                 </div>
                 {q.displacedMin > 0 && (
-                  <div className="pp-deplace">dont {fmtDuration(q.displacedMin)} déplacée{q.displacedMin > 1 ? 's' : ''} par un cours</div>
+                  <div className="pp-deplace">dont {fmtDuration(q.displacedMin)} déplacée{plural(q.displacedMin)} par un cours</div>
                 )}
               </div>
             );
@@ -504,7 +519,7 @@ function MobileDay(props: {
             <div>
               <b>{o.kind === 'weekly' ? '↻ ' : ''}{r.name}</b>
               <span>{o.kind === 'weekly' ? 'Routine hebdomadaire' : 'Routine ponctuelle'}</span>
-              {o.displacedMin > 0 && <em>⚠ {fmtDuration(o.displacedMin)} déplacée{o.displacedMin > 1 ? 's' : ''} par un cours</em>}
+              {o.displacedMin > 0 && <em>⚠ {fmtDuration(o.displacedMin)} déplacée{plural(o.displacedMin)} par un cours</em>}
             </div>
           </button>
         ),
@@ -778,6 +793,11 @@ const CSS = `
 .pp-panneau h2{font-family:Fraunces,Georgia,serif;font-size:1.05rem;margin:0 0 4px}
 .pp-sous{font-size:.72rem;color:var(--soft);margin:0 0 14px}
 .pp-vide{font-size:.8rem;color:var(--soft)}
+.pp-arrondi{display:block;margin:0 0 14px}
+.pp-arrondi>span{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:5px}
+.pp-arrondi select{background:#fff;padding:6px 8px;font-size:.8rem}
+.pp-arrondi small{display:block;font-size:.68rem;color:var(--soft);margin-top:5px;line-height:1.35}
+.pp-arrondi-impression{display:none}
 .pp-quota{padding:11px 0;border-top:1px solid var(--border)}
 .pp-quota-tete{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.86rem}
 .pp-pastille-couleur{width:12px;height:12px;border-radius:3px;flex:none}
@@ -852,7 +872,8 @@ const CSS = `
 @page{size:A4 landscape;margin:8mm}
 @media print{
   .pp{min-height:0;font-size:10px;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff}
-  .pp-barre,.pp-messages,.pp-mobile,.pp-voile,.pp-crayon,.pp-poignee{display:none !important}
+  .pp-barre,.pp-messages,.pp-mobile,.pp-voile,.pp-crayon,.pp-poignee,.pp-arrondi{display:none !important}
+  .pp-arrondi-impression{display:block;font-size:8.5px;color:var(--soft);margin:-8px 0 6px}
   .pp-filet{order:0}
   .pp-impression-titre{display:block;font-family:Inter,system-ui,sans-serif;font-size:11px;padding:0 0 4px;border-bottom:2px solid var(--navy);margin-bottom:0}
   .pp-impression-titre strong{font-family:Fraunces,Georgia,serif}

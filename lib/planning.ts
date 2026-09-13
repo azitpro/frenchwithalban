@@ -5,8 +5,10 @@
  * /api/admin/planning. Aucune page ni API publique ne lit ces données : une
  * routine n'est jamais une indisponibilité et n'empêche aucune réservation.
  *
- * Toutes les heures sont des minutes depuis minuit, en nombres entiers :
- * un créneau de 10h07 à 10h57 est stocké tel quel, sans arrondi.
+ * Toutes les heures sont stockées en minutes depuis minuit, en nombres entiers :
+ * un créneau de 10h07 à 10h57 est enregistré et affiché tel quel. L'arrondi
+ * facultatif (au quart d'heure ou à la demi-heure supérieurs) ne s'applique
+ * qu'au décompte des quotas.
  */
 import type { Schedule } from './schedule';
 
@@ -38,9 +40,27 @@ export type SlotOverride = {
   durationMin?: number;
 };
 
-export type Planning = { routines: Routine[]; slots: RoutineSlot[]; overrides: SlotOverride[] };
+/** Pas d'arrondi du décompte : 0 = minutes exactes. */
+export type RoundingMin = 0 | 15 | 30;
 
-export const EMPTY_PLANNING: Planning = { routines: [], slots: [], overrides: [] };
+export type PlanningSettings = { roundingMin: RoundingMin };
+
+export type Planning = {
+  routines: Routine[];
+  slots: RoutineSlot[];
+  overrides: SlotOverride[];
+  settings: PlanningSettings;
+};
+
+export const DEFAULT_SETTINGS: PlanningSettings = { roundingMin: 0 };
+
+export const EMPTY_PLANNING: Planning = { routines: [], slots: [], overrides: [], settings: DEFAULT_SETTINGS };
+
+export const ROUNDING_OPTIONS: Array<{ value: RoundingMin; label: string }> = [
+  { value: 0, label: 'Minutes exactes' },
+  { value: 15, label: 'Quart d’heure supérieur' },
+  { value: 30, label: 'Demi-heure supérieure' },
+];
 
 export const DAY_START_MIN = 7 * 60;
 export const DAY_END_MIN = 22 * 60;
@@ -94,30 +114,35 @@ export function fmtDuration(min: number): string {
   return `${m} min`;
 }
 
+/** Arrondi au pas supérieur ; un pas de 0 laisse la valeur exacte. */
+export function roundUp(min: number, step: number): number {
+  return step > 0 ? Math.ceil(min / step) * step : min;
+}
+
 /* ======================= intervalles ======================= */
 
 export function overlapMinutes(aStart: number, aEnd: number, bStart: number, bEnd: number): number {
   return Math.max(0, Math.min(aEnd, bEnd) - Math.max(aStart, bStart));
 }
 
-/** Minutes de [start, end[ couvertes par des intervalles, sans compter deux fois un recouvrement. */
-export function coveredMinutes(start: number, end: number, intervals: Array<[number, number]>): number {
+/** Portions de [start, end[ couvertes par des intervalles, fusionnées quand elles se touchent ou se chevauchent. */
+export function coveredSegments(start: number, end: number, intervals: Array<[number, number]>): Array<[number, number]> {
   const clipped = intervals
     .map(([s, e]) => [Math.max(s, start), Math.min(e, end)] as [number, number])
     .filter(([s, e]) => e > s)
     .sort((a, b) => a[0] - b[0]);
-  let total = 0;
-  let current: [number, number] | null = null;
+  const segments: Array<[number, number]> = [];
   for (const [s, e] of clipped) {
-    if (!current || s > current[1]) {
-      if (current) total += current[1] - current[0];
-      current = [s, e];
-    } else {
-      current[1] = Math.max(current[1], e);
-    }
+    const last = segments[segments.length - 1];
+    if (last && s <= last[1]) last[1] = Math.max(last[1], e);
+    else segments.push([s, e]);
   }
-  if (current) total += current[1] - current[0];
-  return total;
+  return segments;
+}
+
+/** Minutes de [start, end[ couvertes par des intervalles, sans compter deux fois un recouvrement. */
+export function coveredMinutes(start: number, end: number, intervals: Array<[number, number]>): number {
+  return coveredSegments(start, end, intervals).reduce((t, [s, e]) => t + e - s, 0);
 }
 
 /* ======================= cours (lecture seule) ======================= */
@@ -184,13 +209,15 @@ export type Occurrence = {
   durationMin: number;
   endMin: number;
   moved: boolean; // créneau hebdomadaire déplacé pour cette semaine seulement
-  displacedMin: number; // minutes recouvertes par un cours
+  overlapMin: number; // minutes exactes recouvertes par un cours
+  displacedMin: number; // minutes retirées du décompte (arrondies si l'option est active)
   countedMin: number; // minutes qui comptent dans le quota
 };
 
 export function occurrencesForWeek(weekStart: string, planning: Planning, lessons: Lesson[]): Occurrence[] {
   const dates = weekDates(weekStart);
   const weekEnd = dates[6];
+  const step = planning.settings?.roundingMin ?? 0;
   const routineIds = new Set(planning.routines.map((r) => r.id));
   const result: Occurrence[] = [];
 
@@ -221,10 +248,15 @@ export function occurrencesForWeek(weekStart: string, planning: Planning, lesson
 
     const endMin = startMin + durationMin;
     const dayLessons = lessons.filter((l) => l.date === date).map((l) => [l.startMin, l.endMin] as [number, number]);
-    const displacedMin = coveredMinutes(startMin, endMin, dayLessons);
+    const segments = coveredSegments(startMin, endMin, dayLessons);
+    const overlapMin = segments.reduce((t, [s, e]) => t + e - s, 0);
+    // avec arrondi : chaque cours retire son temps arrondi (25 → 30, 50 → 60), jamais plus que le créneau
+    const countedDuration = roundUp(durationMin, step);
+    const displacedMin = Math.min(countedDuration, segments.reduce((t, [s, e]) => t + roundUp(e - s, step), 0));
     result.push({
       slotId: slot.id, routineId: slot.routineId, kind: slot.kind, weekStart,
-      date, startMin, durationMin, endMin, moved, displacedMin, countedMin: durationMin - displacedMin,
+      date, startMin, durationMin, endMin, moved,
+      overlapMin, displacedMin, countedMin: countedDuration - displacedMin,
     });
   }
   return result.sort(byDateThenStart);
@@ -278,10 +310,15 @@ export function updateRoutine(p: Planning, id: string, patch: Partial<Omit<Routi
 export function deleteRoutine(p: Planning, id: string): Planning {
   const slotIds = new Set(p.slots.filter((s) => s.routineId === id).map((s) => s.id));
   return {
+    ...p,
     routines: p.routines.filter((r) => r.id !== id),
     slots: p.slots.filter((s) => s.routineId !== id),
     overrides: p.overrides.filter((o) => !slotIds.has(o.slotId)),
   };
+}
+
+export function setRounding(p: Planning, roundingMin: RoundingMin): Planning {
+  return { ...p, settings: { ...(p.settings ?? DEFAULT_SETTINGS), roundingMin } };
 }
 
 export type SlotInput = { routineId: string; kind: 'weekly' | 'once'; date: string; startMin: number; durationMin: number };
@@ -369,6 +406,10 @@ export function validatePlanning(raw: unknown): Result {
   if (!Array.isArray(routinesIn) || !Array.isArray(slotsIn) || !Array.isArray(overridesIn)) return { ok: false, error: 'Structure invalide.' };
   if (routinesIn.length > 100 || slotsIn.length > 3000 || overridesIn.length > 10000) return { ok: false, error: 'Trop d’éléments.' };
 
+  const settingsIn = (src.settings && typeof src.settings === 'object' ? src.settings : {}) as Record<string, unknown>;
+  const roundingMin = settingsIn.roundingMin ?? 0;
+  if (roundingMin !== 0 && roundingMin !== 15 && roundingMin !== 30) return { ok: false, error: 'Arrondi du décompte invalide.' };
+
   const routines: Routine[] = [];
   for (const r of routinesIn as Record<string, unknown>[]) {
     const name = typeof r?.name === 'string' ? r.name.trim() : '';
@@ -424,5 +465,5 @@ export function validatePlanning(raw: unknown): Result {
     }
   }
 
-  return { ok: true, planning: { routines, slots, overrides } };
+  return { ok: true, planning: { routines, slots, overrides, settings: { roundingMin } } };
 }
