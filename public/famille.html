@@ -129,28 +129,38 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
 .arbre-lignes path { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
 .generations, .generation { position: absolute; inset: 0; }
 .membre { position: absolute; width: 150px; translate: -50% 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
-.photo {
-  width: 92px; height: 92px; border-radius: 50%; overflow: hidden; background: #bfe0fb;
-  border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
-}
-.photo img { width: 100%; height: 100%; object-fit: cover; scale: 1.16; }
+/* portrait affiché tel quel, sans cercle ni ombre */
+.photo { width: 96px; height: 96px; }
+/* le fond blanc cassé des illustrations se fond dans la carte : pas de carré visible */
+.photo img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
 .prenom { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; line-height: 1.2; margin-top: 10px; }
 .lien {
-  margin-top: 5px; padding: 2px 10px; border: 2px solid var(--ink); border-radius: 99px; white-space: nowrap;
-  font-weight: 700; font-size: .76rem; background: var(--c); color: var(--c-texte);
+  margin-top: 6px; padding: 3px 12px; border: 2px solid var(--ink); border-radius: 99px; white-space: nowrap;
+  font-weight: 700; font-size: .95rem; background: var(--c); color: var(--c-texte);
 }
-.membre.moi .photo { box-shadow: 5px 5px 0 var(--pink); border-width: 4px; }
 .membre.moi .lien { background: var(--ink); color: #fff; }
-.alliance {
-  position: absolute; width: 38px; height: 38px; translate: -50% -50%; z-index: 2; display: grid; place-items: center;
-  background: #fff; border: 2.5px solid var(--ink); border-radius: 50%; box-shadow: 2px 2px 0 var(--ink);
+/* alliances entre les époux, sans cercle */
+.alliance { position: absolute; width: 64px; height: 64px; translate: -50% -50%; z-index: 2; }
+.alliance img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+/* flèches de relation (ex. « petit-fils ») : courbes, en pointillés, violettes pour ne pas se confondre avec les liens de parenté */
+.arbre-lignes path.fleche { stroke: var(--violet); stroke-width: 3; stroke-dasharray: 9 7; }
+.arbre-lignes marker path { fill: var(--violet); stroke: none; }
+.etiquette-fleche {
+  position: absolute; translate: -50% -50%; rotate: -4deg; z-index: 3; white-space: nowrap;
+  padding: 3px 12px; border: 2px solid var(--ink); border-radius: 99px; box-shadow: 2px 2px 0 var(--ink);
+  font-weight: 700; font-size: .95rem; background: var(--violet); color: #fff;
 }
-.alliance img { width: 28px; height: 28px; object-fit: contain; }
+/* mot de vocabulaire posé au-dessus d'une alliance (« parents ») */
+.etiquette-couple {
+  position: absolute; translate: -50% -100%; z-index: 3; white-space: nowrap;
+  padding: 3px 12px; border: 2px solid var(--ink); border-radius: 99px; box-shadow: 2px 2px 0 var(--ink);
+  font-weight: 700; font-size: .95rem; background: var(--c); color: var(--c-texte); /* couleur de la génération du couple */
+}
 
 /* ---------- QUI EST QUI ? ---------- */
 .qui { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .fiche { display: flex; gap: 14px; align-items: center; background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 12px 16px; box-shadow: 3px 3px 0 var(--ink); }
-.fiche .photo { width: 64px; height: 64px; flex: none; box-shadow: 2px 2px 0 var(--ink); border-width: 2.5px; }
+.fiche .photo { width: 72px; height: 72px; flex: none; }
 .phrase { font-size: 1.02rem; line-height: 1.35; }
 .phrase b { font-weight: 800; background: linear-gradient(transparent 55%, var(--lemon) 55%); }
 .precision { font-size: .88rem; color: var(--soft); line-height: 1.35; margin-top: 3px; }
@@ -256,13 +266,21 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
         <span class="num">1</span>
         <h2 class="t" data-fr="L'arbre de Baptiste" data-en="Baptiste's family tree">L'arbre de Baptiste</h2>
       </div>
-      <p class="intro t" data-fr="Les alliances relient les couples. Les rôles sont donnés du point de vue de Baptiste." data-en="The rings link the couples. Each role is given from Baptiste's point of view.">Les alliances relient les couples. Les rôles sont donnés du point de vue de Baptiste.</p>
+      <p class="intro t" data-fr="Les alliances relient les couples. Les rôles sont donnés du point de vue de Baptiste." data-en="The rings link the couples. Each role is given in French, from Baptiste's point of view: these are the words to learn.">Les alliances relient les couples. Les rôles sont donnés du point de vue de Baptiste.</p>
       <div class="arbre-cadre" id="arbreCadre">
         <p class="glisser t" data-fr="Faites glisser l'arbre pour tout voir →" data-en="Swipe to see the whole tree →">Faites glisser l'arbre pour tout voir →</p>
         <div class="arbre-defile" id="arbreDefile">
           <div class="arbre-taille" id="arbreTaille">
             <div class="arbre" id="arbre" role="img" aria-label="Arbre généalogique de Baptiste">
-              <svg class="arbre-lignes" aria-hidden="true"><path id="lignes" d=""/></svg>
+              <svg class="arbre-lignes" aria-hidden="true">
+                <defs>
+                  <marker id="pointe" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse">
+                    <path d="M0 0 L10 5 L0 10 Z"/>
+                  </marker>
+                </defs>
+                <path id="lignes" d=""/>
+                <g id="fleches"></g>
+              </svg>
               <div class="generations suite" id="generations"></div>
             </div>
           </div>
@@ -320,23 +338,23 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
 /* ======================= la famille de Baptiste ======================= */
 // gen : génération (0 = la plus ancienne) ; x : centre de la carte dans l'arbre (px, largeur 1100)
 var MEMBRES = [
-  { id: 'henriette', prenom: 'Henriette', img: 'arriere-grand-mere', gen: 0, x: 452, role: { fr: 'arrière-grand-mère', en: 'great-grandmother' },
+  { id: 'henriette', prenom: 'Henriette', img: 'arriere-grand-mere', gen: 0, x: 497, role: { fr: 'arrière-grand-mère', en: 'great-grandmother' },
     phrase: { fr: 'Henriette est <b>mon arrière-grand-mère</b>.', en: 'Henriette is my great-grandmother.' }, precision: { fr: 'la mère de mon grand-père', en: "my grandfather's mother" } },
-  { id: 'jean-michel', prenom: 'Jean-Michel', img: 'grand-pere', gen: 1, x: 452, role: { fr: 'grand-père', en: 'grandfather' },
+  { id: 'jean-michel', prenom: 'Jean-Michel', img: 'grand-pere', gen: 1, x: 497, role: { fr: 'grand-père', en: 'grandfather' },
     phrase: { fr: 'Jean-Michel est <b>mon grand-père</b>.', en: 'Jean-Michel is my grandfather.' }, precision: { fr: 'le père de mon père', en: "my father's father" } },
   { id: 'paul', prenom: 'Paul', img: 'oncle', gen: 2, x: 95, role: { fr: 'oncle', en: 'uncle' },
     phrase: { fr: 'Paul est <b>mon oncle</b>.', en: 'Paul is my uncle.' }, precision: { fr: 'le mari de ma tante', en: "my aunt's husband" } },
   { id: 'vanessa', prenom: 'Vanessa', img: 'tante', gen: 2, x: 265, role: { fr: 'tante', en: 'aunt' },
     phrase: { fr: 'Vanessa est <b>ma tante</b>.', en: 'Vanessa is my aunt.' }, precision: { fr: 'la sœur de mon père', en: "my father's sister" } },
-  { id: 'laurent', prenom: 'Laurent', img: 'pere', gen: 2, x: 640, role: { fr: 'père', en: 'father' },
+  { id: 'laurent', prenom: 'Laurent', img: 'pere', gen: 2, x: 730, role: { fr: 'père', en: 'father' },
     phrase: { fr: 'Laurent est <b>mon père</b>.', en: 'Laurent is my father.' } },
-  { id: 'nathalie', prenom: 'Nathalie', img: 'mere', gen: 2, x: 820, role: { fr: 'mère', en: 'mother' },
+  { id: 'nathalie', prenom: 'Nathalie', img: 'mere', gen: 2, x: 910, role: { fr: 'mère', en: 'mother' },
     phrase: { fr: 'Nathalie est <b>ma mère</b>.', en: 'Nathalie is my mother.' } },
   { id: 'jeremy', prenom: 'Jérémy', img: 'cousin', gen: 3, x: 180, role: { fr: 'cousin', en: 'cousin' },
     phrase: { fr: 'Jérémy est <b>mon cousin</b>.', en: 'Jérémy is my cousin.' }, precision: { fr: 'le fils de ma tante et de mon oncle', en: "my aunt and uncle's son" } },
-  { id: 'thomas', prenom: 'Thomas', img: 'grand-frere', gen: 3, x: 470, role: { fr: 'grand frère', en: 'big brother' },
+  { id: 'thomas', prenom: 'Thomas', img: 'grand-frere', gen: 3, x: 640, role: { fr: 'grand frère', en: 'big brother' },
     phrase: { fr: 'Thomas est <b>mon grand frère</b>.', en: 'Thomas is my big brother.' } },
-  { id: 'lina', prenom: 'Lina', img: 'belle-soeur', gen: 3, x: 640, role: { fr: 'belle-sœur', en: 'sister-in-law' },
+  { id: 'lina', prenom: 'Lina', img: 'belle-soeur', gen: 3, x: 470, role: { fr: 'belle-sœur', en: 'sister-in-law' },
     phrase: { fr: 'Lina est <b>ma belle-sœur</b>.', en: 'Lina is my sister-in-law.' }, precision: { fr: 'la femme de mon frère', en: "my brother's wife" } },
   { id: 'baptiste', prenom: 'Baptiste', img: 'moi', gen: 3, x: 830, moi: true, role: { fr: 'moi', en: 'me' },
     phrase: { fr: 'Moi, c’est <b>Baptiste</b> !', en: "I'm Baptiste!" } },
@@ -347,15 +365,22 @@ var MEMBRES = [
   { id: 'jade', prenom: 'Jade', img: 'niece', gen: 4, x: 640, role: { fr: 'nièce', en: 'niece' },
     phrase: { fr: 'Jade est <b>ma nièce</b>.', en: 'Jade is my niece.' }, precision: { fr: 'la fille de mon frère', en: "my brother's daughter" } }
 ];
-var COUPLES = [['paul', 'vanessa'], ['laurent', 'nathalie'], ['thomas', 'lina']];
+// dans chaque couple, la personne liée par alliance est placée vers l'extérieur de la famille
+var COUPLES = [['paul', 'vanessa'], ['laurent', 'nathalie'], ['lina', 'thomas']];
+// mots de vocabulaire affichés au-dessus d'une alliance (restent en français)
+var ETIQUETTES_COUPLE = { 'laurent-nathalie': 'parents' };
+// flèches de relation : « vers » est le … de « de » (le mot reste en français) ; decalage : écart horizontal de la courbe
+var FLECHES = [
+  { de: 'jean-michel', vers: 'thomas', mot: 'petit-fils', decalage: 90 }
+];
 var FILIATIONS = [
   { parents: ['henriette'], enfants: ['jean-michel'] },
   { parents: ['jean-michel'], enfants: ['vanessa', 'laurent'] },
   { parents: ['paul', 'vanessa'], enfants: ['jeremy'] },
   { parents: ['laurent', 'nathalie'], enfants: ['thomas', 'baptiste', 'lea'] },
-  { parents: ['thomas', 'lina'], enfants: ['liam', 'jade'] }
+  { parents: ['lina', 'thomas'], enfants: ['liam', 'jade'] }
 ];
-var LARGEUR = 1100, HAUTEUR = 950, RANG = 190, PHOTO = 92;
+var LARGEUR = 1100, HAUTEUR = 950, RANG = 190, PHOTO = 96, ALLIANCE = 64;
 var LANG = 'fr';
 var parId = {};
 MEMBRES.forEach(function (m) { parId[m.id] = m; });
@@ -391,8 +416,11 @@ MEMBRES.forEach(function (m) {
   var carte = el('div', 'membre' + (m.moi ? ' moi' : ''));
   carte.id = 'membre-' + m.id;
   carte.style.left = m.x + 'px';
-  carte.style.top = (m.gen * RANG + (m.moi ? 0 : 6)) + 'px';
-  carte.append(photo(m), el('div', 'prenom', m.prenom), traduisible('div', 'lien', m.role));
+  carte.style.top = (m.gen * RANG) + 'px';
+  // le rôle est le mot de vocabulaire à apprendre : il reste en français, même dans la version anglaise
+  var role = el('div', 'lien', m.role.fr);
+  role.lang = 'fr';
+  carte.append(photo(m), el('div', 'prenom', m.prenom), role);
   generations.children[m.gen].appendChild(carte);
 });
 var arbre = document.getElementById('arbre');
@@ -404,6 +432,27 @@ COUPLES.forEach(function (c) {
   i.alt = '';
   a.appendChild(i);
   arbre.appendChild(a);
+  var mot = ETIQUETTES_COUPLE[c.join('-')];
+  if (mot) {
+    var e = el('div', 'etiquette-couple', mot);
+    e.id = 'etiquette-' + c.join('-');
+    e.lang = 'fr';
+    generations.children[parId[c[0]].gen].appendChild(e); // hérite de la couleur de la génération
+  }
+});
+
+var calqueFleches = document.getElementById('fleches');
+FLECHES.forEach(function (f) {
+  var nom = f.de + '-' + f.vers;
+  var trait = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  trait.setAttribute('class', 'fleche');
+  trait.setAttribute('id', 'fleche-' + nom);
+  trait.setAttribute('marker-end', 'url(#pointe)');
+  calqueFleches.appendChild(trait);
+  var e = el('div', 'etiquette-fleche', f.mot);
+  e.id = 'etiquette-fleche-' + nom;
+  e.lang = 'fr';
+  arbre.appendChild(e);
 });
 
 /* ---------- qui est qui ? ---------- */
@@ -427,14 +476,19 @@ function tracer() {
     var a = document.getElementById('alliance-' + c.join('-'));
     var g1 = carte(c[0]), g2 = carte(c[1]);
     a.style.left = ((parId[c[0]].x + parId[c[1]].x) / 2) + 'px';
-    a.style.top = (g1.offsetTop + PHOTO / 2 + 3) + 'px';
+    a.style.top = (g1.offsetTop + PHOTO / 2) + 'px';
+    var e = document.getElementById('etiquette-' + c.join('-'));
+    if (e) {
+      e.style.left = a.style.left;
+      e.style.top = (g1.offsetTop + PHOTO / 2 - ALLIANCE / 2 + 2) + 'px'; // bas de l'étiquette juste au-dessus des alliances
+    }
   });
   // filiations : du parent (ou de l'alliance) vers le haut de chaque enfant
   var d = '';
   FILIATIONS.forEach(function (f) {
     var xs = f.parents.map(function (id) { return parId[id].x; });
     var depX = xs.reduce(function (t, x) { return t + x; }, 0) / xs.length;
-    var depY = f.parents.length === 2 ? carte(f.parents[0]).offsetTop + PHOTO / 2 + 3 + 19 : Math.max.apply(null, f.parents.map(function (id) { return bas(carte(id)); })) + 4;
+    var depY = f.parents.length === 2 ? carte(f.parents[0]).offsetTop + PHOTO / 2 + ALLIANCE / 2 - 12 : Math.max.apply(null, f.parents.map(function (id) { return bas(carte(id)); })) + 4;
     var basParents = Math.max.apply(null, f.parents.map(function (id) { return bas(carte(id)); }));
     var hautEnfants = Math.min.apply(null, f.enfants.map(function (id) { return carte(id).offsetTop; }));
     var milieu = Math.round((basParents + hautEnfants) / 2);
@@ -444,6 +498,19 @@ function tracer() {
     f.enfants.forEach(function (id) { d += 'M' + parId[id].x + ' ' + milieu + 'V' + (carte(id).offsetTop - 2); });
   });
   document.getElementById('lignes').setAttribute('d', d);
+  // flèches : du côté du portrait de départ jusqu'au-dessus du portrait d'arrivée, en courbe (Bézier cubique)
+  FLECHES.forEach(function (f) {
+    var nom = f.de + '-' + f.vers, cd = carte(f.de), cv = carte(f.vers);
+    var sens = parId[f.vers].x >= parId[f.de].x ? 1 : -1;
+    var x0 = parId[f.de].x + sens * (PHOTO / 2 + 6), y0 = cd.offsetTop + PHOTO / 2;
+    var x3 = parId[f.vers].x - sens * 26, y3 = cv.offsetTop - 8;
+    var x1 = x0 + sens * f.decalage, y1 = y0 + 40, x2 = x3 - sens * 20, y2 = y3 - 110;
+    document.getElementById('fleche-' + nom).setAttribute('d', 'M' + x0 + ' ' + y0 + 'C' + x1 + ' ' + y1 + ' ' + x2 + ' ' + y2 + ' ' + x3 + ' ' + y3);
+    // étiquette sur la courbe, sous la barre horizontale des parents (t = 0,68), pour ne pas recouvrir un trait
+    var e = document.getElementById('etiquette-fleche-' + nom), t = 0.68, u = 1 - t;
+    e.style.left = (u * u * u * x0 + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x3) + 'px';
+    e.style.top = (u * u * u * y0 + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3) + 'px';
+  });
 }
 function echelle() {
   var cadre = document.getElementById('arbreCadre');
