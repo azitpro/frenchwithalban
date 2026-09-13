@@ -21,19 +21,49 @@ body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 
-/* ---------- EN-TÊTE (charte du site) ---------- */
-header {
-  padding: 28px 48px; border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%;
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE (identique à la page d'accueil, app/_accueil/Accueil.tsx) ---------- */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--navy); background: rgba(250,247,242,.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid #e2dbcf; font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 28px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 1.45rem; letter-spacing: -.01em; margin-right: auto; white-space: nowrap; color: var(--navy); text-decoration: none; }
+.ac-logo b { color: var(--red); font-weight: 700; }
+.ac-nav { display: flex; gap: 30px; font-size: .95rem; font-weight: 500; }
+.ac-nav a { color: #5b6672; text-decoration: none; }
+.ac-nav a:hover { color: var(--navy); }
+.ac-langue { display: flex; border: 1.5px solid #e2dbcf; border-radius: 99px; overflow: hidden; }
+.ac-langue button { border: none; background: none; padding: 5px 11px; font: 600 .78rem 'Inter', sans-serif; color: #5b6672; cursor: pointer; }
+.ac-langue button.on { background: var(--navy); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; font-size: .95rem; padding: 13px 24px; border-radius: 6px; transition: transform .15s; white-space: nowrap; text-decoration: none; }
+.ac-btn:hover { transform: translateY(-1px); }
+.ac-rouge { background: var(--red); color: #fff; box-shadow: 3px 3px 0 var(--navy); }
+.ac-burger { display: none; width: 40px; height: 40px; border: 1.5px solid #e2dbcf; border-radius: 8px; background: none; cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2px; background: var(--navy); box-shadow: 0 -6px 0 var(--navy), 0 6px 0 var(--navy); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+@media (max-width: 1060px) { .ac-nav { gap: 20px; } .ac-barre { gap: 18px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 1.12rem; }
+  .ac-logo svg { width: 22px; height: 26px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 4px; padding: 8px 20px 18px; border-top: 1px solid #e2dbcf; background: var(--cream); }
+  .ac-menu a { padding: 10px 0; font-weight: 500; border-bottom: 1px solid #e2dbcf; color: var(--navy); text-decoration: none; }
+  .ac-menu .ac-btn { margin-top: 10px; border-bottom: none; padding: 13px 24px; color: #fff; }
 }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; line-height: 1.2; }
-.logo-al { color: var(--red); }
-nav { display: flex; gap: 44px; align-items: center; }
-nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
-nav a:hover { opacity: 1; }
-.gold-line { height: 2px; background: var(--gold); }
+@media (max-width: 370px) { .ac-langue button { padding: 5px 8px; } }
 
 /* ---------- MISE EN PAGE ---------- */
 .page {
@@ -51,6 +81,7 @@ section { padding: 56px 0; }
   width: 46px; height: 46px; flex: none; display: grid; place-items: center;
   font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem;
   border: 3px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); rotate: -6deg;
+  background: var(--c); color: var(--c-texte);
 }
 h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
 .intro { color: var(--soft); max-width: 640px; margin: -12px 0 28px; }
@@ -63,9 +94,10 @@ h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size
   display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px;
   font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink);
 }
-.pastille:nth-child(1) { background: var(--lime); rotate: -3deg; }
-.pastille:nth-child(2) { background: var(--pink); color: #fff; rotate: 2deg; }
-.pastille:nth-child(3) { background: var(--aqua); rotate: -1deg; }
+.pastille { background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
 h1 {
   font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.2rem;
   line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px;
@@ -102,9 +134,7 @@ h1 .petit { display: block; font-size: .55em; color: var(--violet); margin-top: 
 .carte h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.7rem; line-height: 1.1; letter-spacing: -0.02em; }
 .sens { font-size: .85rem; font-weight: 600; padding: 2px 10px; border-radius: 99px; border: 2px solid var(--ink); white-space: nowrap; }
 .ex { font-size: 1rem; color: var(--ink); margin-top: 4px; }
-.c1 .sens { background: var(--lime); } .c2 .sens { background: var(--pink); color: #fff; }
-.c3 .sens { background: var(--aqua); } .c4 .sens { background: var(--lemon); }
-.c5 .sens { background: var(--orange); color: #fff; } .c6 .sens { background: var(--violet); color: #fff; }
+.sens { background: var(--c); color: var(--c-texte); }
 
 /* terminaisons colorées */
 .fs { color: #e0337f; font-weight: 800; }                       /* singulier : -is, -is, -it */
@@ -188,14 +218,6 @@ h1 .petit { display: block; font-size: .55em; color: var(--violet); margin-top: 
 }
 :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
 
-/* ---------- SÉLECTEUR DE LANGUE (identique aux autres pages) ---------- */
-.langues { position: fixed; right: 22px; bottom: 22px; z-index: 500; display: flex; flex-direction: column; gap: 10px; }
-.lang-btn { width: 46px; height: 54px; padding: 0; border: none; background: none; cursor: pointer; line-height: 0; opacity: .45; transition: opacity .2s, transform .2s; filter: drop-shadow(2px 2px 0 rgba(13,43,69,.25)); }
-.lang-btn:hover { opacity: .85; transform: translateY(-2px); }
-.lang-btn.actif { opacity: 1; filter: none; }
-.lang-btn svg { width: 100%; height: 100%; display: block; }
-.lang-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-
 /* ---------- PIED DE PAGE (charte du site) ---------- */
 footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
@@ -216,11 +238,6 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
 }
 /* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
-  nav { gap: 22px; }
-  nav a { font-size: 0.95rem; }
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
   .wrap { padding: 0 20px; }
   section { padding: 40px 0; }
   .hero { padding: 36px 0 24px; }
@@ -236,12 +253,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   .formes .pr { min-width: 104px; }
   .bloc { padding: 22px 20px; }
   footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
-  .langues { right: 14px; bottom: 14px; flex-direction: row; }
-  .lang-btn { width: 38px; height: 45px; }
 }
 @media (max-width: 400px) {
-  .logo-name { font-size: 1.12rem; }
-  nav { gap: 16px; }
   h1 { font-size: 2.3rem; }
   .adjverbes { grid-template-columns: 1fr; }
   .formes .pr { min-width: 92px; }
@@ -250,64 +263,47 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
 </head>
 <body>
 
-<div class="langues" role="group" aria-label="Langue">
-  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
-    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
-      <g clip-path="url(#hxFR)">
-        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-      </g>
-      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
-    </svg>
-  </button>
-  <button type="button" class="lang-btn" id="btn-en" title="English">
-    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
-      <g clip-path="url(#hxEN)">
-        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
-        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
-        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
-        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
-        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
-        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
-        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
-        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
-      </g>
-      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
-    </svg>
-  </button>
-</div>
-
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html" class="t" data-fr="Retour" data-en="Back">Retour</a>
-    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
-  </nav>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg width="26" height="30" viewBox="0 0 24 28" aria-hidden="true">
+        <defs><clipPath id="acHex"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+        <rect width="8" height="28" fill="#002395" clip-path="url(#acHex)"/>
+        <rect x="8" width="8" height="28" fill="#ffffff" clip-path="url(#acHex)"/>
+        <rect x="16" width="8" height="28" fill="#ED2939" clip-path="url(#acHex)"/>
+        <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+      </svg>
+      <span>French with <b>Alban</b></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<main class="page">
+<main class="page suite-sections">
 
   <!-- ===== HÉROS ===== -->
   <div class="hero">
     <div class="wrap">
       <div>
-        <div class="pastilles">
+        <div class="pastilles suite">
           <span class="pastille t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
           <span class="pastille t" data-fr="Présent" data-en="Present tense">Présent</span>
           <span class="pastille">A1</span>
@@ -333,46 +329,46 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   <section>
     <div class="wrap">
       <div class="titre-section">
-        <span class="num" style="background:var(--lime)">1</span>
+        <span class="num">1</span>
         <h2 class="t" data-fr="Six verbes en images" data-en="Six verbs in pictures">Six verbes en images</h2>
       </div>
-      <div class="grille-verbes">
-        <article class="carte c1">
+      <div class="grille-verbes suite">
+        <article class="carte">
           <img src="/img/verbes-2e-groupe/choisir.jpg" alt="choisir" loading="lazy" width="800" height="800">
           <div class="carte-corps">
             <div class="carte-tete"><h3>choisir</h3><span class="sens">to choose</span></div>
             <p class="ex">Je chois<span class="fs">is</span> le t-shirt bleu.</p>
           </div>
         </article>
-        <article class="carte c2">
+        <article class="carte">
           <img src="/img/verbes-2e-groupe/finir.jpg" alt="finir" loading="lazy" width="800" height="800">
           <div class="carte-corps">
             <div class="carte-tete"><h3>finir</h3><span class="sens">to finish</span></div>
             <p class="ex">Il fin<span class="fs">it</span> la course.</p>
           </div>
         </article>
-        <article class="carte c3">
+        <article class="carte">
           <img src="/img/verbes-2e-groupe/grandir.jpg" alt="grandir" loading="lazy" width="800" height="800">
           <div class="carte-corps">
             <div class="carte-tete"><h3>grandir</h3><span class="sens">to grow up</span></div>
             <p class="ex">Les enfants grand<span class="fp"><span class="iss">iss</span>ent</span> vite.</p>
           </div>
         </article>
-        <article class="carte c4">
+        <article class="carte">
           <img src="/img/verbes-2e-groupe/reflechir.jpg" alt="réfléchir" loading="lazy" width="800" height="800">
           <div class="carte-corps">
             <div class="carte-tete"><h3>réfléchir</h3><span class="sens">to think (about)</span></div>
             <p class="ex">Elle réfléch<span class="fs">it</span> à la question.</p>
           </div>
         </article>
-        <article class="carte c5">
+        <article class="carte">
           <img src="/img/verbes-2e-groupe/remplir.jpg" alt="remplir" loading="lazy" width="800" height="800">
           <div class="carte-corps">
             <div class="carte-tete"><h3>remplir</h3><span class="sens">to fill</span></div>
             <p class="ex">Tu rempl<span class="fs">is</span> la bouteille.</p>
           </div>
         </article>
-        <article class="carte c6">
+        <article class="carte">
           <img src="/img/verbes-2e-groupe/reussir.jpg" alt="réussir" loading="lazy" width="800" height="800">
           <div class="carte-corps">
             <div class="carte-tete"><h3>réussir</h3><span class="sens">to succeed, to pass</span></div>
@@ -387,7 +383,7 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   <section>
     <div class="wrap">
       <div class="titre-section">
-        <span class="num" style="background:var(--pink);color:#fff">2</span>
+        <span class="num">2</span>
         <h2 class="t" data-fr="La conjugaison au présent" data-en="Present tense conjugation">La conjugaison au présent</h2>
       </div>
       <div class="conj">
@@ -435,7 +431,7 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   <section>
     <div class="wrap">
       <div class="titre-section">
-        <span class="num" style="background:var(--aqua)">3</span>
+        <span class="num">3</span>
         <h2 class="t" data-fr="Le test du « nous »" data-en="The “nous” test">Le test du « nous »</h2>
       </div>
       <p class="intro t" data-html="1"
@@ -469,7 +465,7 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   <section>
     <div class="wrap">
       <div class="titre-section">
-        <span class="num" style="background:var(--lemon)">4</span>
+        <span class="num">4</span>
         <h2 class="t" data-fr="Des adjectifs aux verbes" data-en="From adjectives to verbs">Des adjectifs aux verbes</h2>
       </div>
       <p class="intro t"
@@ -493,7 +489,7 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   <section>
     <div class="wrap">
       <div class="titre-section">
-        <span class="num" style="background:var(--violet);color:#fff">5</span>
+        <span class="num">5</span>
         <h2 class="t" data-fr="À vous !" data-en="Your turn!">À vous !</h2>
       </div>
       <p class="intro t"
@@ -518,6 +514,22 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
 var LANG = 'fr';
 var btnFr = document.getElementById('btn-fr');
 var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
 
 /* ---------- exercice ---------- */
 var QUESTIONS = [
@@ -603,10 +615,13 @@ function appliquer(lang) {
     if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
   });
   document.documentElement.lang = lang;
-  btnFr.classList.toggle('actif', lang === 'fr');
-  btnEn.classList.toggle('actif', lang === 'en');
-  btnFr.querySelector('.cadre').setAttribute('stroke', lang === 'fr' ? '#c9972a' : '#0d2b45');
-  btnEn.querySelector('.cadre').setAttribute('stroke', lang === 'en' ? '#c9972a' : '#0d2b45');
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
   try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
   afficherQuiz();
 }
