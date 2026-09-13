@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les verbes en -IR du 2e groupe au présent — French with Alban</title>
+<meta name="description" content="Les verbes en -IR du 2e groupe au présent (finir, choisir, réussir, grandir, remplir, réfléchir) : conjugaison, prononciation, le test du « nous » et un exercice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* charte du site (en-tête, pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé de la page */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+/* ---------- EN-TÊTE (charte du site) ---------- */
+header {
+  padding: 28px 48px; border-bottom: 3px solid var(--navy);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream); width: 100%;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-name { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; line-height: 1.2; }
+.logo-al { color: var(--red); }
+nav { display: flex; gap: 44px; align-items: center; }
+nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
+nav a:hover { opacity: 1; }
+.gold-line { height: 2px; background: var(--gold); }
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 8% 6%, rgba(200,245,96,.55) 0, transparent 26%),
+    radial-gradient(circle at 96% 18%, rgba(255,95,162,.30) 0, transparent 24%),
+    radial-gradient(circle at 4% 62%, rgba(62,224,198,.28) 0, transparent 22%),
+    radial-gradient(circle at 98% 82%, rgba(255,228,92,.45) 0, transparent 24%);
+  overflow: hidden;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 56px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; flex-wrap: wrap; }
+.num {
+  width: 46px; height: 46px; flex: none; display: grid; place-items: center;
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem;
+  border: 3px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); rotate: -6deg;
+}
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 640px; margin: -12px 0 28px; }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 56px 0 40px; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille {
+  display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px;
+  font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink);
+}
+.pastille:nth-child(1) { background: var(--lime); rotate: -3deg; }
+.pastille:nth-child(2) { background: var(--pink); color: #fff; rotate: 2deg; }
+.pastille:nth-child(3) { background: var(--aqua); rotate: -1deg; }
+h1 {
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.2rem;
+  line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px;
+}
+h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .55em; color: var(--violet); margin-top: .18em; letter-spacing: -0.02em; }
+.lead { font-size: 1.2rem; color: var(--soft); max-width: 520px; }
+
+.apercu {
+  background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink);
+  padding: 30px 28px; position: relative; rotate: 2deg;
+}
+.apercu .inf { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.4rem; line-height: 1; letter-spacing: -0.03em; }
+.apercu .inf span { color: var(--pink); }
+.apercu .fleche { font-size: 1.6rem; margin: 10px 0 6px; color: var(--violet); font-weight: 800; }
+.apercu .forme { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 2rem; line-height: 1.2; }
+.apercu .forme b { background: var(--lime); border-radius: 8px; padding: 0 6px; }
+.autocollant {
+  position: absolute; top: -22px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink);
+  border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem;
+  rotate: 12deg; box-shadow: 3px 3px 0 var(--ink);
+}
+
+/* ---------- LES 6 VERBES EN IMAGES ---------- */
+.grille-verbes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.carte {
+  background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow);
+  overflow: hidden; display: flex; flex-direction: column; transition: translate .18s, box-shadow .18s;
+}
+.carte:hover { translate: -3px -3px; box-shadow: 8px 8px 0 var(--ink); }
+.carte img { aspect-ratio: 1 / 1; object-fit: cover; border-bottom: 3px solid var(--ink); width: 100%; height: auto; }
+.carte-corps { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.carte-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.carte h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.7rem; line-height: 1.1; letter-spacing: -0.02em; }
+.sens { font-size: .85rem; font-weight: 600; padding: 2px 10px; border-radius: 99px; border: 2px solid var(--ink); white-space: nowrap; }
+.ex { font-size: 1rem; color: var(--ink); margin-top: 4px; }
+.c1 .sens { background: var(--lime); } .c2 .sens { background: var(--pink); color: #fff; }
+.c3 .sens { background: var(--aqua); } .c4 .sens { background: var(--lemon); }
+.c5 .sens { background: var(--orange); color: #fff; } .c6 .sens { background: var(--violet); color: #fff; }
+
+/* terminaisons colorées */
+.fs { color: #e0337f; font-weight: 800; }                       /* singulier : -is, -is, -it */
+.fp { color: var(--violet); font-weight: 800; }                  /* pluriel : -issons, -issez, -issent */
+.fp .iss { background: var(--lime); color: var(--ink); border-radius: 5px; padding: 0 2px; }
+
+/* ---------- CONJUGAISON ---------- */
+.conj { display: grid; grid-template-columns: .9fr 1.1fr; gap: 26px; align-items: stretch; }
+.bloc {
+  background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px;
+}
+.bloc-verbe { background: var(--ink); color: #fff; box-shadow: 6px 6px 0 var(--pink); }
+.bloc-verbe .inf { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3rem; line-height: 1; letter-spacing: -0.03em; margin-bottom: 18px; }
+.bloc-verbe .inf span { color: var(--lime); }
+.formes { list-style: none; font-size: 1.3rem; line-height: 2.15; }
+.formes .pr { display: inline-block; min-width: 118px; color: rgba(255,255,255,.62); font-weight: 500; }
+.bloc-verbe .fs { color: #ff8fc0; }
+.bloc-verbe .fp { color: #b9a8ff; }
+.bloc-verbe .fp .iss { background: var(--lime); color: var(--ink); }
+.regles { display: grid; gap: 16px; }
+.regle { display: flex; gap: 14px; align-items: flex-start; }
+.regle .etape {
+  flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%;
+  border: 2.5px solid var(--ink); font-weight: 800; background: var(--lemon);
+}
+.regle:nth-child(2) .etape { background: var(--aqua); }
+.regle p { padding-top: 3px; }
+.code { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; background: var(--bg); border: 2px solid var(--ink); border-radius: 8px; padding: 0 6px; white-space: nowrap; }
+.remarque { background: var(--lemon); border: 3px solid var(--ink); border-radius: 14px; padding: 14px 18px; box-shadow: 3px 3px 0 var(--ink); }
+.exemple { background: var(--aqua); border: 3px solid var(--ink); border-radius: 14px; padding: 14px 18px; box-shadow: 3px 3px 0 var(--ink); }
+.exemple .label, .remarque .label { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: .82rem; margin-bottom: 4px; }
+.exemple .ligne { display: block; }
+
+/* ---------- LE TEST DU « NOUS » ---------- */
+.test { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.colonne { border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px 26px; }
+.colonne-oui { background: var(--lime); }
+.colonne-non { background: #ffd3e6; }
+.colonne h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.4rem; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.colonne h3 i { font-style: normal; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: var(--ink); color: #fff; font-size: 1.05rem; flex: none; }
+.colonne ul { list-style: none; display: grid; gap: 8px; }
+.colonne li { background: #fff; border: 2px solid var(--ink); border-radius: 12px; padding: 8px 14px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.colonne li strong { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.1rem; }
+.colonne .pied-note { margin-top: 12px; font-size: .92rem; }
+
+/* ---------- DES ADJECTIFS AUX VERBES ---------- */
+.adjverbes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.av { background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 14px 16px; box-shadow: 3px 3px 0 var(--ink); }
+.av:nth-child(4n+1) { rotate: -1.5deg; } .av:nth-child(4n+3) { rotate: 1.5deg; }
+.av .paire { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.15rem; }
+.av .paire b { color: var(--violet); }
+.av small { display: block; color: var(--soft); font-size: .85rem; }
+.lien-adj { display: inline-block; margin-top: 24px; font-weight: 700; background: var(--lemon); border: 2.5px solid var(--ink); border-radius: 99px; padding: 8px 18px; box-shadow: 3px 3px 0 var(--ink); text-decoration: none; }
+.lien-adj:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+
+/* ---------- EXERCICE ---------- */
+.quiz { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.question { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); padding: 18px 20px; box-shadow: 3px 3px 0 var(--ink); }
+.question.juste { background: #ecffc4; }
+.question.faux { background: #ffe1ee; }
+.phrase { font-size: 1.12rem; font-weight: 500; margin-bottom: 12px; }
+.phrase .trou { display: inline-block; min-width: 92px; border-bottom: 3px dashed var(--violet); text-align: center; font-weight: 800; color: var(--violet); }
+.phrase .indice { color: var(--soft); font-size: .92rem; white-space: nowrap; }
+.options { display: flex; gap: 8px; flex-wrap: wrap; }
+.options button {
+  font: 700 1rem 'Inter', sans-serif; padding: 8px 14px; border-radius: 12px; border: 2.5px solid var(--ink);
+  background: var(--bg); color: var(--ink); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: translate .12s;
+}
+.options button:hover:not(:disabled) { translate: -1px -1px; background: var(--lemon); }
+.options button:disabled { cursor: default; opacity: .55; }
+.options button.bonne { background: var(--lime); opacity: 1; }
+.options button.choisie-fausse { background: var(--pink); color: #fff; opacity: 1; text-decoration: line-through; }
+.retour { margin-top: 10px; font-size: .92rem; font-weight: 600; min-height: 1.4em; }
+.score-barre {
+  margin-top: 26px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  background: var(--ink); color: #fff; border-radius: var(--radius); padding: 18px 24px; box-shadow: 6px 6px 0 var(--aqua);
+}
+.score { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.7rem; margin-right: auto; }
+.score-barre button {
+  font: 700 .95rem 'Inter', sans-serif; padding: 10px 18px; border-radius: 99px; border: 2.5px solid #fff; background: var(--pink); color: #fff; cursor: pointer;
+}
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- SÉLECTEUR DE LANGUE (identique aux autres pages) ---------- */
+.langues { position: fixed; right: 22px; bottom: 22px; z-index: 500; display: flex; flex-direction: column; gap: 10px; }
+.lang-btn { width: 46px; height: 54px; padding: 0; border: none; background: none; cursor: pointer; line-height: 0; opacity: .45; transition: opacity .2s, transform .2s; filter: drop-shadow(2px 2px 0 rgba(13,43,69,.25)); }
+.lang-btn:hover { opacity: .85; transform: translateY(-2px); }
+.lang-btn.actif { opacity: 1; filter: none; }
+.lang-btn svg { width: 100%; height: 100%; display: block; }
+.lang-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .carte, .options button, .lien-adj { transition: none; }
+}
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 900px) {
+  .hero .wrap, .conj { grid-template-columns: 1fr; }
+  .apercu { max-width: 420px; rotate: 1deg; }
+  .grille-verbes { grid-template-columns: repeat(2, 1fr); }
+  .adjverbes { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 3.4rem; }
+}
+/* ---------- MOBILE ---------- */
+@media (max-width: 720px) {
+  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
+  nav { gap: 22px; }
+  nav a { font-size: 0.95rem; }
+  .logo-name { font-size: 1.3rem; }
+  .logo svg { width: 26px; height: 30px; }
+  .wrap { padding: 0 20px; }
+  section { padding: 40px 0; }
+  .hero { padding: 36px 0 24px; }
+  h1 { font-size: 2.7rem; }
+  .lead { font-size: 1.08rem; }
+  h2 { font-size: 1.7rem; }
+  .apercu { padding: 24px 22px; }
+  .apercu .inf { font-size: 2.6rem; }
+  .apercu .forme { font-size: 1.6rem; }
+  .autocollant { right: -6px; }
+  .grille-verbes, .test, .quiz { grid-template-columns: 1fr; }
+  .formes { font-size: 1.15rem; }
+  .formes .pr { min-width: 104px; }
+  .bloc { padding: 22px 20px; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+  .langues { right: 14px; bottom: 14px; flex-direction: row; }
+  .lang-btn { width: 38px; height: 45px; }
+}
+@media (max-width: 400px) {
+  .logo-name { font-size: 1.12rem; }
+  nav { gap: 16px; }
+  h1 { font-size: 2.3rem; }
+  .adjverbes { grid-template-columns: 1fr; }
+  .formes .pr { min-width: 92px; }
+}
+</style>
+</head>
+<body>
+
+<div class="langues" role="group" aria-label="Langue">
+  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxFR)">
+        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
+        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
+        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button type="button" class="lang-btn" id="btn-en" title="English">
+    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
+      <g clip-path="url(#hxEN)">
+        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
+        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
+        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
+        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
+        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
+        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
+        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
+        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
+      </g>
+      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
+<header>
+  <a href="/" class="logo">
+    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
+      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
+      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
+      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
+      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+    </svg>
+    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
+  </a>
+  <nav>
+    <a href="/ressources.html" class="t" data-fr="Retour" data-en="Back">Retour</a>
+    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
+  </nav>
+</header>
+<div class="gold-line"></div>
+
+<main class="page">
+
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="pastilles">
+          <span class="pastille t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
+          <span class="pastille t" data-fr="Présent" data-en="Present tense">Présent</span>
+          <span class="pastille">A1</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Les verbes en &lt;mark&gt;-IR&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;du 2&lt;sup&gt;e&lt;/sup&gt; groupe&lt;/span&gt;"
+            data-en="Regular &lt;mark&gt;-IR&lt;/mark&gt; verbs &lt;span class=&quot;petit&quot;&gt;the French 2nd group&lt;/span&gt;">Les verbes en <mark>-IR</mark> <span class="petit">du 2<sup>e</sup> groupe</span></h1>
+        <p class="lead t"
+           data-fr="Finir, choisir, réussir… Une seule règle, six terminaisons, et un petit test pour ne jamais se tromper."
+           data-en="Finir, choisir, réussir… One rule, six endings, and a quick test so you never get it wrong.">Finir, choisir, réussir… Une seule règle, six terminaisons, et un petit test pour ne jamais se tromper.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant">iss !</span>
+        <div class="inf">fin<span>ir</span></div>
+        <div class="fleche">↓</div>
+        <div class="forme">je fin<b>is</b></div>
+        <div class="forme">nous fin<b>issons</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 1. LES VERBES EN IMAGES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <span class="num" style="background:var(--lime)">1</span>
+        <h2 class="t" data-fr="Six verbes en images" data-en="Six verbs in pictures">Six verbes en images</h2>
+      </div>
+      <div class="grille-verbes">
+        <article class="carte c1">
+          <img src="/img/verbes-2e-groupe/choisir.jpg" alt="choisir" loading="lazy" width="800" height="800">
+          <div class="carte-corps">
+            <div class="carte-tete"><h3>choisir</h3><span class="sens">to choose</span></div>
+            <p class="ex">Je chois<span class="fs">is</span> le t-shirt bleu.</p>
+          </div>
+        </article>
+        <article class="carte c2">
+          <img src="/img/verbes-2e-groupe/finir.jpg" alt="finir" loading="lazy" width="800" height="800">
+          <div class="carte-corps">
+            <div class="carte-tete"><h3>finir</h3><span class="sens">to finish</span></div>
+            <p class="ex">Il fin<span class="fs">it</span> la course.</p>
+          </div>
+        </article>
+        <article class="carte c3">
+          <img src="/img/verbes-2e-groupe/grandir.jpg" alt="grandir" loading="lazy" width="800" height="800">
+          <div class="carte-corps">
+            <div class="carte-tete"><h3>grandir</h3><span class="sens">to grow up</span></div>
+            <p class="ex">Les enfants grand<span class="fp"><span class="iss">iss</span>ent</span> vite.</p>
+          </div>
+        </article>
+        <article class="carte c4">
+          <img src="/img/verbes-2e-groupe/reflechir.jpg" alt="réfléchir" loading="lazy" width="800" height="800">
+          <div class="carte-corps">
+            <div class="carte-tete"><h3>réfléchir</h3><span class="sens">to think (about)</span></div>
+            <p class="ex">Elle réfléch<span class="fs">it</span> à la question.</p>
+          </div>
+        </article>
+        <article class="carte c5">
+          <img src="/img/verbes-2e-groupe/remplir.jpg" alt="remplir" loading="lazy" width="800" height="800">
+          <div class="carte-corps">
+            <div class="carte-tete"><h3>remplir</h3><span class="sens">to fill</span></div>
+            <p class="ex">Tu rempl<span class="fs">is</span> la bouteille.</p>
+          </div>
+        </article>
+        <article class="carte c6">
+          <img src="/img/verbes-2e-groupe/reussir.jpg" alt="réussir" loading="lazy" width="800" height="800">
+          <div class="carte-corps">
+            <div class="carte-tete"><h3>réussir</h3><span class="sens">to succeed, to pass</span></div>
+            <p class="ex">Nous réuss<span class="fp"><span class="iss">iss</span>ons</span> l'examen !</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. CONJUGAISON ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <span class="num" style="background:var(--pink);color:#fff">2</span>
+        <h2 class="t" data-fr="La conjugaison au présent" data-en="Present tense conjugation">La conjugaison au présent</h2>
+      </div>
+      <div class="conj">
+        <div class="bloc bloc-verbe">
+          <div class="inf">FIN<span>IR</span></div>
+          <ul class="formes">
+            <li><span class="pr">je</span>fin<span class="fs">is</span></li>
+            <li><span class="pr">tu</span>fin<span class="fs">is</span></li>
+            <li><span class="pr">il / elle / on</span>fin<span class="fs">it</span></li>
+            <li><span class="pr">nous</span>fin<span class="fp"><span class="iss">iss</span>ons</span></li>
+            <li><span class="pr">vous</span>fin<span class="fp"><span class="iss">iss</span>ez</span></li>
+            <li><span class="pr">ils / elles</span>fin<span class="fp"><span class="iss">iss</span>ent</span></li>
+          </ul>
+        </div>
+        <div class="bloc regles">
+          <div class="regle">
+            <span class="etape">1</span>
+            <p class="t" data-html="1"
+               data-fr="On enlève &lt;strong&gt;-ir&lt;/strong&gt; de l'infinitif : &lt;span class=&quot;code&quot;&gt;finir → fin-&lt;/span&gt;"
+               data-en="Remove &lt;strong&gt;-ir&lt;/strong&gt; from the infinitive: &lt;span class=&quot;code&quot;&gt;finir → fin-&lt;/span&gt;">On enlève <strong>-ir</strong> de l'infinitif : <span class="code">finir → fin-</span></p>
+          </div>
+          <div class="regle">
+            <span class="etape">2</span>
+            <p class="t" data-html="1"
+               data-fr="On ajoute les terminaisons : &lt;span class=&quot;fs&quot;&gt;-is, -is, -it&lt;/span&gt; au singulier, &lt;span class=&quot;fp&quot;&gt;-issons, -issez, -issent&lt;/span&gt; au pluriel."
+               data-en="Add the endings: &lt;span class=&quot;fs&quot;&gt;-is, -is, -it&lt;/span&gt; in the singular, &lt;span class=&quot;fp&quot;&gt;-issons, -issez, -issent&lt;/span&gt; in the plural.">On ajoute les terminaisons : <span class="fs">-is, -is, -it</span> au singulier, <span class="fp">-issons, -issez, -issent</span> au pluriel.</p>
+          </div>
+          <div class="remarque">
+            <div class="label t" data-fr="À l'oreille" data-en="Listen carefully">À l'oreille</div>
+            <p class="t" data-html="1"
+               data-fr="&lt;em&gt;je finis, tu finis, il finit&lt;/em&gt; se prononcent pareil : /fi.ni/. Au pluriel, on entend le son /s/ de &lt;strong&gt;-iss-&lt;/strong&gt; : &lt;em&gt;ils finissent&lt;/em&gt; /fi.nis/."
+               data-en="&lt;em&gt;je finis, tu finis, il finit&lt;/em&gt; all sound the same: /fi.ni/. In the plural you hear the /s/ of &lt;strong&gt;-iss-&lt;/strong&gt;: &lt;em&gt;ils finissent&lt;/em&gt; /fi.nis/."><em>je finis, tu finis, il finit</em> se prononcent pareil : /fi.ni/. Au pluriel, on entend le son /s/ de <strong>-iss-</strong> : <em>ils finissent</em> /fi.nis/.</p>
+          </div>
+          <div class="exemple">
+            <div class="label t" data-fr="Exemple" data-en="Example">Exemple</div>
+            <span class="ligne">— Vous fin<span class="fp"><span class="iss">iss</span>ez</span> à quelle heure ?</span>
+            <span class="ligne">— Je fin<span class="fs">is</span> à 18 heures.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. LE TEST DU « NOUS » ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <span class="num" style="background:var(--aqua)">3</span>
+        <h2 class="t" data-fr="Le test du « nous »" data-en="The “nous” test">Le test du « nous »</h2>
+      </div>
+      <p class="intro t" data-html="1"
+         data-fr="Attention : tous les verbes en -ir ne sont pas du 2&lt;sup&gt;e&lt;/sup&gt; groupe. Mettez-les à la forme &lt;strong&gt;nous&lt;/strong&gt; : si on entend &lt;strong&gt;-issons&lt;/strong&gt;, c'est gagné."
+         data-en="Careful: not every -ir verb belongs to the 2nd group. Put it in the &lt;strong&gt;nous&lt;/strong&gt; form: if you hear &lt;strong&gt;-issons&lt;/strong&gt;, you've got one.">Attention : tous les verbes en -ir ne sont pas du 2<sup>e</sup> groupe. Mettez-les à la forme <strong>nous</strong> : si on entend <strong>-issons</strong>, c'est gagné.</p>
+      <div class="test">
+        <div class="colonne colonne-oui">
+          <h3><i>✓</i><span class="t" data-html="1" data-fr="2&lt;sup&gt;e&lt;/sup&gt; groupe" data-en="2nd group">2<sup>e</sup> groupe</span></h3>
+          <ul>
+            <li><strong>finir</strong><span>nous fin<span class="fp"><span class="iss">iss</span>ons</span></span></li>
+            <li><strong>choisir</strong><span>nous chois<span class="fp"><span class="iss">iss</span>ons</span></span></li>
+            <li><strong>grandir</strong><span>nous grand<span class="fp"><span class="iss">iss</span>ons</span></span></li>
+          </ul>
+        </div>
+        <div class="colonne colonne-non">
+          <h3><i>✗</i><span class="t" data-html="1" data-fr="Pas du 2&lt;sup&gt;e&lt;/sup&gt; groupe" data-en="Not 2nd group">Pas du 2<sup>e</sup> groupe</span></h3>
+          <ul>
+            <li><strong>partir</strong><span>nous partons</span></li>
+            <li><strong>dormir</strong><span>nous dormons</span></li>
+            <li><strong>venir</strong><span>nous venons</span></li>
+          </ul>
+          <p class="pied-note t" data-html="1"
+             data-fr="Ces verbes sont irréguliers : &lt;a href=&quot;/verbes_irreguliers.html&quot;&gt;voir les verbes irréguliers&lt;/a&gt;."
+             data-en="These verbs are irregular: &lt;a href=&quot;/verbes_irreguliers.html&quot;&gt;see the irregular verbs&lt;/a&gt;.">Ces verbes sont irréguliers : <a href="/verbes_irreguliers.html">voir les verbes irréguliers</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. DES ADJECTIFS AUX VERBES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <span class="num" style="background:var(--lemon)">4</span>
+        <h2 class="t" data-fr="Des adjectifs aux verbes" data-en="From adjectives to verbs">Des adjectifs aux verbes</h2>
+      </div>
+      <p class="intro t"
+         data-fr="Beaucoup de verbes du 2e groupe viennent d'un adjectif. Ils veulent souvent dire « devenir… »."
+         data-en="Many 2nd-group verbs come from an adjective. They often mean “to become…”.">Beaucoup de verbes du 2e groupe viennent d'un adjectif. Ils veulent souvent dire « devenir… ».</p>
+      <div class="adjverbes">
+        <div class="av"><div class="paire">grand → <b>grandir</b></div><small>to grow up</small></div>
+        <div class="av"><div class="paire">rouge → <b>rougir</b></div><small>to blush</small></div>
+        <div class="av"><div class="paire">vieux → <b>vieillir</b></div><small>to grow old</small></div>
+        <div class="av"><div class="paire">gros → <b>grossir</b></div><small>to put on weight</small></div>
+        <div class="av"><div class="paire">maigre → <b>maigrir</b></div><small>to lose weight</small></div>
+        <div class="av"><div class="paire">pâle → <b>pâlir</b></div><small>to turn pale</small></div>
+        <div class="av"><div class="paire">blanc → <b>blanchir</b></div><small>to turn white</small></div>
+        <div class="av"><div class="paire">jaune → <b>jaunir</b></div><small>to turn yellow</small></div>
+      </div>
+      <a class="lien-adj t" href="/adjectifs.html" data-fr="Revoir les adjectifs essentiels →" data-en="Review the essential adjectives →">Revoir les adjectifs essentiels →</a>
+    </div>
+  </section>
+
+  <!-- ===== 5. EXERCICE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <span class="num" style="background:var(--violet);color:#fff">5</span>
+        <h2 class="t" data-fr="À vous !" data-en="Your turn!">À vous !</h2>
+      </div>
+      <p class="intro t"
+         data-fr="Choisissez la bonne forme. Attention, un verbe s'est glissé dans la liste sans être du 2e groupe."
+         data-en="Pick the right form. Careful: one verb in the list doesn't belong to the 2nd group.">Choisissez la bonne forme. Attention, un verbe s'est glissé dans la liste sans être du 2e groupe.</p>
+      <div class="quiz" id="quiz"></div>
+      <div class="score-barre">
+        <div class="score" id="score" aria-live="polite"></div>
+        <button type="button" id="recommencer" class="t" data-fr="Recommencer" data-en="Start again">Recommencer</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+</footer>
+
+<script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- exercice ---------- */
+var QUESTIONS = [
+  { avant: 'Je ', apres: ' le t-shirt bleu.', verbe: 'choisir', options: ['choisit', 'choisis', 'choisissons'], bonne: 'choisis' },
+  { avant: 'Les enfants ', apres: ' vite.', verbe: 'grandir', options: ['grandent', 'grandit', 'grandissent'], bonne: 'grandissent' },
+  { avant: 'Nous ', apres: " l'examen !", verbe: 'réussir', options: ['réussissons', 'réussons', 'réussissez'], bonne: 'réussissons' },
+  { avant: 'Tu ', apres: ' la bouteille.', verbe: 'remplir', options: ['remplis', 'remplit', 'remplissez'], bonne: 'remplis' },
+  { avant: 'Vous ', apres: ' à la question ?', verbe: 'réfléchir', options: ['réfléchez', 'réfléchissons', 'réfléchissez'], bonne: 'réfléchissez' },
+  { avant: 'Il ', apres: ' la course.', verbe: 'finir', options: ['finit', 'finis', 'finissent'], bonne: 'finit' },
+  { avant: 'Nous ', apres: ' à 8 heures.', verbe: 'partir', options: ['partissons', 'partons', 'partez'], bonne: 'partons',
+    note: { fr: "partir n'est pas du 2e groupe : nous partons.", en: "partir isn't a 2nd-group verb: nous partons." } }
+];
+var reponses = QUESTIONS.map(function () { return null; });
+
+var TEXTES = {
+  bravo: { fr: 'Bravo !', en: 'Well done!' },
+  rate: { fr: 'Réponse : ', en: 'Answer: ' },
+  score: { fr: 'Score : ', en: 'Score: ' },
+  fini: { fr: ' — bien joué !', en: ' — nice work!' }
+};
+function tx(cle) { return TEXTES[cle][LANG]; }
+
+function afficherQuiz() {
+  var zone = document.getElementById('quiz');
+  zone.innerHTML = '';
+  QUESTIONS.forEach(function (q, i) {
+    var rep = reponses[i];
+    var carte = document.createElement('div');
+    carte.className = 'question' + (rep === null ? '' : rep === q.bonne ? ' juste' : ' faux');
+
+    var phrase = document.createElement('p');
+    phrase.className = 'phrase';
+    var trou = document.createElement('span');
+    trou.className = 'trou';
+    trou.textContent = rep === null ? '' : q.bonne;
+    var indice = document.createElement('span');
+    indice.className = 'indice';
+    indice.textContent = ' (' + q.verbe + ')';
+    phrase.append(document.createTextNode((i + 1) + '. ' + q.avant), trou, document.createTextNode(q.apres), indice);
+
+    var options = document.createElement('div');
+    options.className = 'options';
+    q.options.forEach(function (opt) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = opt;
+      if (rep !== null) {
+        b.disabled = true;
+        if (opt === q.bonne) b.className = 'bonne';
+        else if (opt === rep) b.className = 'choisie-fausse';
+      }
+      b.addEventListener('click', function () { reponses[i] = opt; afficherQuiz(); });
+      options.appendChild(b);
+    });
+
+    var retour = document.createElement('p');
+    retour.className = 'retour';
+    if (rep !== null) {
+      if (rep === q.bonne) retour.textContent = tx('bravo') + (q.note ? ' ' + q.note[LANG] : '');
+      else retour.textContent = q.note ? q.note[LANG] : tx('rate') + q.bonne;
+    }
+
+    carte.append(phrase, options, retour);
+    zone.appendChild(carte);
+  });
+
+  var faites = reponses.filter(function (r) { return r !== null; }).length;
+  var justes = reponses.filter(function (r, i) { return r === QUESTIONS[i].bonne; }).length;
+  document.getElementById('score').textContent = tx('score') + justes + ' / ' + QUESTIONS.length + (faites === QUESTIONS.length && justes >= 6 ? tx('fini') : '');
+}
+
+document.getElementById('recommencer').addEventListener('click', function () {
+  reponses = QUESTIONS.map(function () { return null; });
+  afficherQuiz();
+});
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  btnFr.classList.toggle('actif', lang === 'fr');
+  btnEn.classList.toggle('actif', lang === 'en');
+  btnFr.querySelector('.cadre').setAttribute('stroke', lang === 'fr' ? '#c9972a' : '#0d2b45');
+  btnEn.querySelector('.cadre').setAttribute('stroke', lang === 'en' ? '#c9972a' : '#0d2b45');
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+  afficherQuiz();
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
+</body>
+</html>
