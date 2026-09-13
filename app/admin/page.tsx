@@ -6,6 +6,11 @@ export default function AdminHub() {
       href: '/admin/schedule',
     },
     {
+      title: 'Organisation personnelle',
+      desc: 'Semaine type : cours, routines et quotas hebdomadaires, export PDF.',
+      href: '/admin/planning',
+    },
+    {
       title: 'Demandes de contact',
       desc: 'Formulaires envoyés depuis la page Réserver.',
             href: '/admin/leads',
