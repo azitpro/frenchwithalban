@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, PointerEvent as ReactPointerEvent, MouseEvent as ReactMouseEvent } from 'react';
 import { EMPTY_SCHEDULE, withDefaults } from '@/lib/schedule';
 import type { Schedule } from '@/lib/schedule';
@@ -86,6 +86,13 @@ function laneLayout(occurrences: Occurrence[]): Map<Occurrence, { lane: number; 
   return result;
 }
 
+async function fetchPlanning(): Promise<{ planning: Planning; revision: number }> {
+  const res = await fetch('/api/admin/planning', { cache: 'no-store' });
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.planning || !Number.isInteger(data.revision)) throw new Error(data?.error || 'Chargement impossible.');
+  return data;
+}
+
 /* ======================= page ======================= */
 
 export default function PlanningPersonnel() {
@@ -104,6 +111,14 @@ export default function PlanningPersonnel() {
   const [dialog, setDialog] = useState<Dialog>(null);
   const [mobileDay, setMobileDay] = useState(() => Math.max(0, weekDates(currentWeek).indexOf(today)));
   const [resize, setResize] = useState<{ occ: Occurrence; startY: number; durationMin: number } | null>(null);
+  const [notice, setNotice] = useState('');
+
+  // révision du planning chargé, enregistrements en file d'attente, file annulée après un conflit
+  const revisionRef = useRef(0);
+  const queueRef = useRef<Promise<void>>(Promise.resolve());
+  const pendingRef = useRef(0);
+  const generationRef = useRef(0);
+  const dialogRef = useRef<Dialog>(null);
 
   /* ---------- chargement ---------- */
   useEffect(() => {
@@ -111,16 +126,17 @@ export default function PlanningPersonnel() {
     (async () => {
       const notes: string[] = [];
       const [planningRes, scheduleRes, preplyRes] = await Promise.allSettled([
-        fetch('/api/admin/planning', { cache: 'no-store' }),
+        fetchPlanning(),
         fetch('/api/admin/schedule', { cache: 'no-store' }),
         fetch('/api/preply-busy'),
       ]);
       if (cancelled) return;
 
-      if (planningRes.status === 'fulfilled' && planningRes.value.ok) {
-        setPlanning(await planningRes.value.json());
+      if (planningRes.status === 'fulfilled') {
+        revisionRef.current = planningRes.value.revision;
+        setPlanning(planningRes.value.planning);
       } else {
-        setFatal('Impossible de charger les routines. Rechargez la page.');
+        setFatal('Impossible de charger le planning. Pour ne pas écraser vos données, la page reste bloquée tant que le chargement n’a pas réussi.');
       }
       if (scheduleRes.status === 'fulfilled' && scheduleRes.value.ok) {
         setSchedule(withDefaults(await scheduleRes.value.json()));
@@ -138,27 +154,46 @@ export default function PlanningPersonnel() {
     return () => { cancelled = true; };
   }, []);
 
-  /* ---------- enregistrement (optimiste, annulé en cas d'échec) ---------- */
-  async function persist(next: Planning) {
+  /* ---------- enregistrement ----------
+     Optimiste et en file d'attente. Chaque envoi porte la révision chargée : si le planning a été
+     modifié ailleurs (autre onglet, autre appareil), le serveur refuse et la dernière version est
+     affichée, au lieu d'écraser des données plus récentes. */
+  function persist(next: Planning) {
     const previous = planning;
+    const generation = generationRef.current;
     setPlanning(next);
+    pendingRef.current += 1;
     setSaving(true);
     setSaveError('');
-    try {
-      const res = await fetch('/api/admin/planning', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ planning: next }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || 'Enregistrement refusé.');
-      setPlanning(data.planning);
-    } catch (e) {
-      setPlanning(previous);
-      setSaveError(e instanceof Error ? e.message : 'Enregistrement impossible.');
-    } finally {
-      setSaving(false);
-    }
+    setNotice('');
+    queueRef.current = queueRef.current.then(async () => {
+      try {
+        if (generation !== generationRef.current) return; // annulé par un conflit ou un échec précédent
+        const res = await fetch('/api/admin/planning', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ planning: next, revision: revisionRef.current }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.status === 409 && data.planning) {
+          generationRef.current += 1;
+          revisionRef.current = data.revision;
+          setPlanning(data.planning);
+          setSaveError('Le planning a été modifié depuis un autre onglet ou appareil. Pour ne rien écraser, la dernière version enregistrée est affichée : refaites votre modification.');
+          return;
+        }
+        if (!res.ok) throw new Error(data.error || 'Enregistrement refusé.');
+        revisionRef.current = data.revision;
+        if (pendingRef.current === 1) setPlanning(data.planning);
+      } catch (e) {
+        generationRef.current += 1;
+        setPlanning(previous);
+        setSaveError(`${e instanceof Error ? e.message : 'Enregistrement impossible.'} Vos dernières modifications ont été annulées.`);
+      } finally {
+        pendingRef.current -= 1;
+        if (pendingRef.current === 0) setSaving(false);
+      }
+    });
   }
 
   /* ---------- calculs de la semaine ---------- */
@@ -176,6 +211,30 @@ export default function PlanningPersonnel() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [dialog]);
+
+  /* ---------- retour sur l'onglet : recharger si le planning a changé ailleurs ---------- */
+  useEffect(() => { dialogRef.current = dialog; }, [dialog]);
+  useEffect(() => {
+    if (loading || fatal) return;
+    const sync = async () => {
+      if (document.visibilityState !== 'visible' || pendingRef.current > 0 || dialogRef.current) return;
+      try {
+        const data = await fetchPlanning();
+        if (pendingRef.current > 0 || data.revision === revisionRef.current) return;
+        revisionRef.current = data.revision;
+        setPlanning(data.planning);
+        setNotice('Planning mis à jour : des modifications ont été faites depuis un autre onglet ou appareil.');
+      } catch {
+        // hors ligne : nouvel essai au prochain retour sur l'onglet
+      }
+    };
+    document.addEventListener('visibilitychange', sync);
+    window.addEventListener('focus', sync);
+    return () => {
+      document.removeEventListener('visibilitychange', sync);
+      window.removeEventListener('focus', sync);
+    };
+  }, [loading, fatal]);
 
   const goToWeek = (ws: string) => {
     setWeekStart(ws);
@@ -217,6 +276,15 @@ export default function PlanningPersonnel() {
 
   /* ---------- rendu ---------- */
   if (loading) return <div className="pp"><style>{CSS}</style><p className="pp-etat">Chargement du planning…</p></div>;
+  if (fatal) {
+    return (
+      <div className="pp">
+        <style>{CSS}</style>
+        <div className="pp-messages"><p className="pp-erreur">{fatal}</p></div>
+        <p className="pp-etat"><button className="pp-btn pp-plein" onClick={() => window.location.reload()}>Recharger</button></p>
+      </div>
+    );
+  }
 
   const isCurrentWeek = weekStart === currentWeek;
   const label = weekLabel(weekStart);
@@ -242,10 +310,10 @@ export default function PlanningPersonnel() {
         <strong>French with Alban</strong> · Planning personnel · {label}
       </div>
 
-      {(fatal || saveError || warnings.length > 0 || saving) && (
+      {(saveError || notice || warnings.length > 0 || saving) && (
         <div className="pp-messages">
-          {fatal && <p className="pp-erreur">{fatal}</p>}
-          {saveError && <p className="pp-erreur">{saveError} Vos dernières modifications ont été annulées.</p>}
+          {saveError && <p className="pp-erreur">{saveError}</p>}
+          {notice && <p className="pp-avert">{notice}</p>}
           {warnings.map((w) => <p key={w} className="pp-avert">{w}</p>)}
           {saving && <p className="pp-info">Enregistrement…</p>}
         </div>

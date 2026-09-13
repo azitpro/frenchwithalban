@@ -1,34 +1,41 @@
 import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminRequest, unauthorizedResponse } from '@/lib/admin-auth';
-import { EMPTY_PLANNING, validatePlanning } from '@/lib/planning';
+import { readPlanning, savePlanning } from '@/lib/planning-store';
 
 const redis = Redis.fromEnv();
+const NO_STORE = { 'Cache-Control': 'no-store' };
 
-// Clé réservée à l'organisation personnelle. Aucune route publique ne la lit :
+// Organisation personnelle. Aucune route publique ne lit ces données :
 // les routines ne créent jamais d'indisponibilité visible des élèves.
-const KEY = 'planning';
 
 export async function GET(request: NextRequest) {
   if (!isAdminRequest(request)) return unauthorizedResponse();
 
-  const stored = await redis.get(KEY);
-  const result = validatePlanning(stored ?? EMPTY_PLANNING);
+  const result = await readPlanning(redis);
   if (!result.ok) {
-    return NextResponse.json({ error: `Données enregistrées illisibles : ${result.error}` }, { status: 500 });
+    return NextResponse.json({ error: `Données enregistrées illisibles : ${result.error}` }, { status: 500, headers: NO_STORE });
   }
-  return NextResponse.json(result.planning, { headers: { 'Cache-Control': 'no-store' } });
+  return NextResponse.json({ planning: result.planning, revision: result.revision }, { headers: NO_STORE });
 }
 
 export async function POST(request: NextRequest) {
   if (!isAdminRequest(request)) return unauthorizedResponse();
 
   const body = await request.json().catch(() => null);
-  const result = validatePlanning(body?.planning);
-  if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 400 });
-  }
+  const result = await savePlanning(redis, body?.planning, body?.revision);
 
-  await redis.set(KEY, result.planning);
-  return NextResponse.json({ success: true, planning: result.planning });
+  switch (result.status) {
+    case 'saved':
+      return NextResponse.json({ success: true, planning: result.planning, revision: result.revision }, { headers: NO_STORE });
+    case 'conflict':
+      return NextResponse.json(
+        { error: 'Le planning a été modifié ailleurs entre-temps.', planning: result.planning, revision: result.revision },
+        { status: 409, headers: NO_STORE },
+      );
+    case 'invalid':
+      return NextResponse.json({ error: result.error }, { status: 400, headers: NO_STORE });
+    default:
+      return NextResponse.json({ error: `Données enregistrées illisibles : ${result.error}` }, { status: 500, headers: NO_STORE });
+  }
 }
