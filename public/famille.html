@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La famille — French with Alban</title>
+<meta name="description" content="Le vocabulaire de la famille en français avec l'arbre généalogique illustré de Baptiste : parents, grands-parents, oncle, tante, cousin, neveu, nièce, belle-sœur.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+/* logo « empilé » : hexagone tricolore penché avec ombre, « French with » en petites capitales, « Alban » surligné */
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+/* le bouton actif est une pastille posée à l'intérieur du cadre (pas de fond collé au bord arrondi : pas de crénelage) */
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+/* le bouton menu et le sélecteur gardent leur taille : c'est le logo et les marges qui se resserrent */
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 8% 5%, rgba(200,245,96,.55) 0, transparent 24%),
+    radial-gradient(circle at 96% 20%, rgba(62,224,198,.28) 0, transparent 22%),
+    radial-gradient(circle at 3% 62%, rgba(255,95,162,.20) 0, transparent 22%),
+    radial-gradient(circle at 98% 88%, rgba(255,228,92,.45) 0, transparent 24%);
+  overflow: hidden;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+section { padding: 44px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+.num {
+  width: 46px; height: 46px; flex: none; display: grid; place-items: center;
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem;
+  border: 3px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); rotate: -6deg;
+  background: var(--c); color: var(--c-texte);
+}
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 680px; margin: -8px 0 22px; }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 52px 0 18px; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille {
+  display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px;
+  font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink);
+  background: var(--c); color: var(--c-texte);
+}
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.2rem; line-height: 1; letter-spacing: -0.035em; margin-bottom: 18px; }
+h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+.lead { font-size: 1.2rem; color: var(--soft); max-width: 640px; }
+
+/* ---------- ARBRE GÉNÉALOGIQUE ---------- */
+.arbre-cadre { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 22px; }
+.glisser { display: none; font-size: .9rem; font-weight: 600; color: var(--soft); margin-bottom: 8px; }
+.arbre-cadre.a-defiler .glisser { display: block; }
+.arbre-defile { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 6px; }
+.arbre-taille { position: relative; margin: 0 auto; }
+.arbre { position: absolute; top: 0; left: 0; width: 1100px; height: 950px; transform-origin: 0 0; }
+.arbre-lignes { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.arbre-lignes path { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+.generations, .generation { position: absolute; inset: 0; }
+.membre { position: absolute; width: 150px; translate: -50% 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.photo {
+  width: 92px; height: 92px; border-radius: 50%; overflow: hidden; background: #bfe0fb;
+  border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; scale: 1.16; }
+.prenom { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; line-height: 1.2; margin-top: 10px; }
+.lien {
+  margin-top: 5px; padding: 2px 10px; border: 2px solid var(--ink); border-radius: 99px; white-space: nowrap;
+  font-weight: 700; font-size: .76rem; background: var(--c); color: var(--c-texte);
+}
+.membre.moi .photo { box-shadow: 5px 5px 0 var(--pink); border-width: 4px; }
+.membre.moi .lien { background: var(--ink); color: #fff; }
+.alliance {
+  position: absolute; width: 38px; height: 38px; translate: -50% -50%; z-index: 2; display: grid; place-items: center;
+  background: #fff; border: 2.5px solid var(--ink); border-radius: 50%; box-shadow: 2px 2px 0 var(--ink);
+}
+.alliance img { width: 28px; height: 28px; object-fit: contain; }
+
+/* ---------- QUI EST QUI ? ---------- */
+.qui { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.fiche { display: flex; gap: 14px; align-items: center; background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 12px 16px; box-shadow: 3px 3px 0 var(--ink); }
+.fiche .photo { width: 64px; height: 64px; flex: none; box-shadow: 2px 2px 0 var(--ink); border-width: 2.5px; }
+.phrase { font-size: 1.02rem; line-height: 1.35; }
+.phrase b { font-weight: 800; background: linear-gradient(transparent 55%, var(--lemon) 55%); }
+.precision { font-size: .88rem; color: var(--soft); line-height: 1.35; margin-top: 3px; }
+.trad { font-size: .82rem; color: var(--soft); font-style: italic; margin-top: 3px; }
+
+/* ---------- À RETENIR ---------- */
+.retenir { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.remarque { border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 24px; background: var(--c); color: var(--c-texte); }
+.remarque h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem; margin-bottom: 6px; }
+.remarque p + p { margin-top: 6px; }
+.remarque .exemples { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.1rem; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 1000px) {
+  .qui { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  h1 { font-size: 3.4rem; }
+}
+/* ---------- MOBILE ---------- */
+@media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+  section { padding: 32px 0; }
+  .hero { padding: 34px 0 10px; }
+  h1 { font-size: 2.8rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .arbre-cadre { padding: 16px 12px; }
+  .qui, .retenir { grid-template-columns: 1fr; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+@media (max-width: 400px) {
+  h1 { font-size: 2.3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
+</header>
+
+<main class="page suite-sections">
+
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div class="pastilles suite">
+        <span class="pastille t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+        <span class="pastille t" data-fr="Arbre généalogique" data-en="Family tree">Arbre généalogique</span>
+        <span class="pastille">A0</span>
+      </div>
+      <h1 class="t" data-html="1" data-fr="La &lt;mark&gt;famille&lt;/mark&gt;" data-en="The &lt;mark&gt;family&lt;/mark&gt;">La <mark>famille</mark></h1>
+      <p class="lead t"
+         data-fr="Voici la famille de Baptiste, sur cinq générations. Qui est qui ? Suivez les lignes de l'arbre."
+         data-en="Meet Baptiste's family, across five generations. Who's who? Follow the lines of the tree.">Voici la famille de Baptiste, sur cinq générations. Qui est qui ? Suivez les lignes de l'arbre.</p>
+    </div>
+  </div>
+
+  <!-- ===== 1. L'ARBRE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <span class="num">1</span>
+        <h2 class="t" data-fr="L'arbre de Baptiste" data-en="Baptiste's family tree">L'arbre de Baptiste</h2>
+      </div>
+      <p class="intro t" data-fr="Les alliances relient les couples. Les rôles sont donnés du point de vue de Baptiste." data-en="The rings link the couples. Each role is given from Baptiste's point of view.">Les alliances relient les couples. Les rôles sont donnés du point de vue de Baptiste.</p>
+      <div class="arbre-cadre" id="arbreCadre">
+        <p class="glisser t" data-fr="Faites glisser l'arbre pour tout voir →" data-en="Swipe to see the whole tree →">Faites glisser l'arbre pour tout voir →</p>
+        <div class="arbre-defile" id="arbreDefile">
+          <div class="arbre-taille" id="arbreTaille">
+            <div class="arbre" id="arbre" role="img" aria-label="Arbre généalogique de Baptiste">
+              <svg class="arbre-lignes" aria-hidden="true"><path id="lignes" d=""/></svg>
+              <div class="generations suite" id="generations"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. QUI EST QUI ? ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <span class="num">2</span>
+        <h2 class="t" data-fr="Qui est qui ?" data-en="Who's who?">Qui est qui ?</h2>
+      </div>
+      <p class="intro t" data-fr="Baptiste présente sa famille. Repérez mon, ma et les liens avec de." data-en="Baptiste introduces his family. Look out for mon, ma and the links with de.">Baptiste présente sa famille. Repérez mon, ma et les liens avec de.</p>
+      <div class="qui" id="qui"></div>
+    </div>
+  </section>
+
+  <!-- ===== 3. À RETENIR ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <span class="num">3</span>
+        <h2 class="t" data-fr="À retenir" data-en="Remember">À retenir</h2>
+      </div>
+      <div class="retenir suite">
+        <div class="remarque">
+          <h3 class="t" data-fr="Mon ou ma ?" data-en="Mon or ma?">Mon ou ma ?</h3>
+          <p class="t" data-html="1"
+             data-fr="&lt;strong&gt;mon&lt;/strong&gt; devant un nom masculin, &lt;strong&gt;ma&lt;/strong&gt; devant un nom féminin. Mais devant une voyelle, on dit toujours &lt;strong&gt;mon&lt;/strong&gt;, pour faciliter la prononciation."
+             data-en="&lt;strong&gt;mon&lt;/strong&gt; before a masculine noun, &lt;strong&gt;ma&lt;/strong&gt; before a feminine noun. But before a vowel, it is always &lt;strong&gt;mon&lt;/strong&gt;, to make it easier to say."><strong>mon</strong> devant un nom masculin, <strong>ma</strong> devant un nom féminin. Mais devant une voyelle, on dit toujours <strong>mon</strong>, pour faciliter la prononciation.</p>
+          <p class="exemples">mon père · ma mère · mon arrière-grand-mère</p>
+        </div>
+        <div class="remarque">
+          <h3 class="t" data-fr="Grand frère ou grand-père ?" data-en="Grand frère or grand-père?">Grand frère ou grand-père ?</h3>
+          <p class="t" data-html="1"
+             data-fr="Le trait d'union change tout : &lt;strong&gt;mon grand-père&lt;/strong&gt; est le père de mon père, &lt;strong&gt;mon grand frère&lt;/strong&gt; est mon frère plus âgé."
+             data-en="The hyphen changes everything: &lt;strong&gt;mon grand-père&lt;/strong&gt; is my grandfather, &lt;strong&gt;mon grand frère&lt;/strong&gt; is my big brother.">Le trait d'union change tout : <strong>mon grand-père</strong> est le père de mon père, <strong>mon grand frère</strong> est mon frère plus âgé.</p>
+          <p class="exemples">grand-père ≠ grand frère · petite sœur</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+</footer>
+
+<script>
+/* ======================= la famille de Baptiste ======================= */
+// gen : génération (0 = la plus ancienne) ; x : centre de la carte dans l'arbre (px, largeur 1100)
+var MEMBRES = [
+  { id: 'henriette', prenom: 'Henriette', img: 'arriere-grand-mere', gen: 0, x: 452, role: { fr: 'arrière-grand-mère', en: 'great-grandmother' },
+    phrase: { fr: 'Henriette est <b>mon arrière-grand-mère</b>.', en: 'Henriette is my great-grandmother.' }, precision: { fr: 'la mère de mon grand-père', en: "my grandfather's mother" } },
+  { id: 'jean-michel', prenom: 'Jean-Michel', img: 'grand-pere', gen: 1, x: 452, role: { fr: 'grand-père', en: 'grandfather' },
+    phrase: { fr: 'Jean-Michel est <b>mon grand-père</b>.', en: 'Jean-Michel is my grandfather.' }, precision: { fr: 'le père de mon père', en: "my father's father" } },
+  { id: 'paul', prenom: 'Paul', img: 'oncle', gen: 2, x: 95, role: { fr: 'oncle', en: 'uncle' },
+    phrase: { fr: 'Paul est <b>mon oncle</b>.', en: 'Paul is my uncle.' }, precision: { fr: 'le mari de ma tante', en: "my aunt's husband" } },
+  { id: 'vanessa', prenom: 'Vanessa', img: 'tante', gen: 2, x: 265, role: { fr: 'tante', en: 'aunt' },
+    phrase: { fr: 'Vanessa est <b>ma tante</b>.', en: 'Vanessa is my aunt.' }, precision: { fr: 'la sœur de mon père', en: "my father's sister" } },
+  { id: 'laurent', prenom: 'Laurent', img: 'pere', gen: 2, x: 640, role: { fr: 'père', en: 'father' },
+    phrase: { fr: 'Laurent est <b>mon père</b>.', en: 'Laurent is my father.' } },
+  { id: 'nathalie', prenom: 'Nathalie', img: 'mere', gen: 2, x: 820, role: { fr: 'mère', en: 'mother' },
+    phrase: { fr: 'Nathalie est <b>ma mère</b>.', en: 'Nathalie is my mother.' } },
+  { id: 'jeremy', prenom: 'Jérémy', img: 'cousin', gen: 3, x: 180, role: { fr: 'cousin', en: 'cousin' },
+    phrase: { fr: 'Jérémy est <b>mon cousin</b>.', en: 'Jérémy is my cousin.' }, precision: { fr: 'le fils de ma tante et de mon oncle', en: "my aunt and uncle's son" } },
+  { id: 'thomas', prenom: 'Thomas', img: 'grand-frere', gen: 3, x: 470, role: { fr: 'grand frère', en: 'big brother' },
+    phrase: { fr: 'Thomas est <b>mon grand frère</b>.', en: 'Thomas is my big brother.' } },
+  { id: 'lina', prenom: 'Lina', img: 'belle-soeur', gen: 3, x: 640, role: { fr: 'belle-sœur', en: 'sister-in-law' },
+    phrase: { fr: 'Lina est <b>ma belle-sœur</b>.', en: 'Lina is my sister-in-law.' }, precision: { fr: 'la femme de mon frère', en: "my brother's wife" } },
+  { id: 'baptiste', prenom: 'Baptiste', img: 'moi', gen: 3, x: 830, moi: true, role: { fr: 'moi', en: 'me' },
+    phrase: { fr: 'Moi, c’est <b>Baptiste</b> !', en: "I'm Baptiste!" } },
+  { id: 'lea', prenom: 'Léa', img: 'petite-soeur', gen: 3, x: 1000, role: { fr: 'petite sœur', en: 'little sister' },
+    phrase: { fr: 'Léa est <b>ma petite sœur</b>.', en: 'Léa is my little sister.' } },
+  { id: 'liam', prenom: 'Liam', img: 'neveu', gen: 4, x: 470, role: { fr: 'neveu', en: 'nephew' },
+    phrase: { fr: 'Liam est <b>mon neveu</b>.', en: 'Liam is my nephew.' }, precision: { fr: 'le fils de mon frère', en: "my brother's son" } },
+  { id: 'jade', prenom: 'Jade', img: 'niece', gen: 4, x: 640, role: { fr: 'nièce', en: 'niece' },
+    phrase: { fr: 'Jade est <b>ma nièce</b>.', en: 'Jade is my niece.' }, precision: { fr: 'la fille de mon frère', en: "my brother's daughter" } }
+];
+var COUPLES = [['paul', 'vanessa'], ['laurent', 'nathalie'], ['thomas', 'lina']];
+var FILIATIONS = [
+  { parents: ['henriette'], enfants: ['jean-michel'] },
+  { parents: ['jean-michel'], enfants: ['vanessa', 'laurent'] },
+  { parents: ['paul', 'vanessa'], enfants: ['jeremy'] },
+  { parents: ['laurent', 'nathalie'], enfants: ['thomas', 'baptiste', 'lea'] },
+  { parents: ['thomas', 'lina'], enfants: ['liam', 'jade'] }
+];
+var LARGEUR = 1100, HAUTEUR = 950, RANG = 190, PHOTO = 92;
+var LANG = 'fr';
+var parId = {};
+MEMBRES.forEach(function (m) { parId[m.id] = m; });
+
+function el(tag, classe, texte) {
+  var e = document.createElement(tag);
+  if (classe) e.className = classe;
+  if (texte !== undefined) e.textContent = texte;
+  return e;
+}
+function photo(m) {
+  var p = el('div', 'photo');
+  var i = document.createElement('img');
+  i.src = '/img/famille/' + m.img + '.jpg';
+  i.alt = '';
+  i.width = 480; i.height = 480;
+  p.appendChild(i);
+  return p;
+}
+function traduisible(tag, classe, texte, html) {
+  var e = el(tag, classe + ' t');
+  e.setAttribute('data-fr', texte.fr);
+  e.setAttribute('data-en', texte.en);
+  if (html) e.setAttribute('data-html', '1');
+  if (html) e.innerHTML = texte.fr; else e.textContent = texte.fr;
+  return e;
+}
+
+/* ---------- construction de l'arbre ---------- */
+var generations = document.getElementById('generations');
+for (var g = 0; g < 5; g++) generations.appendChild(el('div', 'generation'));
+MEMBRES.forEach(function (m) {
+  var carte = el('div', 'membre' + (m.moi ? ' moi' : ''));
+  carte.id = 'membre-' + m.id;
+  carte.style.left = m.x + 'px';
+  carte.style.top = (m.gen * RANG + (m.moi ? 0 : 6)) + 'px';
+  carte.append(photo(m), el('div', 'prenom', m.prenom), traduisible('div', 'lien', m.role));
+  generations.children[m.gen].appendChild(carte);
+});
+var arbre = document.getElementById('arbre');
+COUPLES.forEach(function (c) {
+  var a = el('div', 'alliance');
+  a.id = 'alliance-' + c.join('-');
+  var i = document.createElement('img');
+  i.src = '/img/famille/alliances.jpg';
+  i.alt = '';
+  a.appendChild(i);
+  arbre.appendChild(a);
+});
+
+/* ---------- qui est qui ? ---------- */
+var qui = document.getElementById('qui');
+MEMBRES.forEach(function (m) {
+  var fiche = el('div', 'fiche');
+  var texte = el('div', '');
+  texte.appendChild(traduisible('p', 'phrase', { fr: m.phrase.fr, en: m.phrase.fr }, true));
+  if (m.precision) texte.appendChild(traduisible('p', 'precision', { fr: m.precision.fr, en: m.precision.fr }));
+  texte.appendChild(el('p', 'trad', m.phrase.en));
+  fiche.append(photo(m), texte);
+  qui.appendChild(fiche);
+});
+
+/* ---------- lignes, alliances, mise à l'échelle ---------- */
+function carte(id) { return document.getElementById('membre-' + id); }
+function bas(c) { return c.offsetTop + c.offsetHeight; }
+function tracer() {
+  // alliances : entre les deux photos du couple
+  COUPLES.forEach(function (c) {
+    var a = document.getElementById('alliance-' + c.join('-'));
+    var g1 = carte(c[0]), g2 = carte(c[1]);
+    a.style.left = ((parId[c[0]].x + parId[c[1]].x) / 2) + 'px';
+    a.style.top = (g1.offsetTop + PHOTO / 2 + 3) + 'px';
+  });
+  // filiations : du parent (ou de l'alliance) vers le haut de chaque enfant
+  var d = '';
+  FILIATIONS.forEach(function (f) {
+    var xs = f.parents.map(function (id) { return parId[id].x; });
+    var depX = xs.reduce(function (t, x) { return t + x; }, 0) / xs.length;
+    var depY = f.parents.length === 2 ? carte(f.parents[0]).offsetTop + PHOTO / 2 + 3 + 19 : Math.max.apply(null, f.parents.map(function (id) { return bas(carte(id)); })) + 4;
+    var basParents = Math.max.apply(null, f.parents.map(function (id) { return bas(carte(id)); }));
+    var hautEnfants = Math.min.apply(null, f.enfants.map(function (id) { return carte(id).offsetTop; }));
+    var milieu = Math.round((basParents + hautEnfants) / 2);
+    var enfantsX = f.enfants.map(function (id) { return parId[id].x; });
+    var gauche = Math.min.apply(null, enfantsX.concat(depX)), droite = Math.max.apply(null, enfantsX.concat(depX));
+    d += 'M' + depX + ' ' + depY + 'V' + milieu + 'M' + gauche + ' ' + milieu + 'H' + droite;
+    f.enfants.forEach(function (id) { d += 'M' + parId[id].x + ' ' + milieu + 'V' + (carte(id).offsetTop - 2); });
+  });
+  document.getElementById('lignes').setAttribute('d', d);
+}
+function echelle() {
+  var cadre = document.getElementById('arbreCadre');
+  var defile = document.getElementById('arbreDefile');
+  var dispo = defile.clientWidth;
+  // jamais sous 80 % : les prénoms et les rôles restent lisibles, l'arbre se fait glisser sur petit écran
+  var s = Math.max(0.8, Math.min(1, dispo / LARGEUR));
+  var taille = document.getElementById('arbreTaille');
+  taille.style.width = Math.round(LARGEUR * s) + 'px';
+  taille.style.height = Math.round(HAUTEUR * s) + 'px';
+  arbre.style.transform = 'scale(' + s + ')';
+  var deborde = LARGEUR * s > dispo + 1;
+  cadre.classList.toggle('a-defiler', deborde);
+  return { s: s, deborde: deborde };
+}
+function disposer(centrerSurMoi) {
+  tracer();
+  var e = echelle();
+  if (centrerSurMoi && e.deborde) {
+    var defile = document.getElementById('arbreDefile');
+    defile.scrollLeft = parId.baptiste.x * e.s - defile.clientWidth / 2;
+  }
+}
+
+/* ---------- en-tête : menu mobile ---------- */
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  arbre: { fr: 'Arbre généalogique de Baptiste', en: "Baptiste's family tree" },
+  titre: { fr: 'La famille — French with Alban', en: 'Family — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (e) {
+    var txt = e.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (e.getAttribute('data-html')) e.innerHTML = txt; else e.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  arbre.setAttribute('aria-label', LIBELLES.arbre[lang]);
+  majBurger();
+  disposer(false);
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+
+disposer(true);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { disposer(true); });
+var attente;
+window.addEventListener('resize', function () { clearTimeout(attente); attente = setTimeout(function () { disposer(false); }, 80); });
+</script>
+</body>
+</html>
