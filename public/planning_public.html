@@ -31,26 +31,30 @@ a { color: inherit; }
 .suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
 .suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
 
-/* ---------- EN-TÊTE (identique à la page d'accueil, app/_accueil/Accueil.tsx) ---------- */
-.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--navy); background: rgba(250,247,242,.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid #e2dbcf; font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé. Le logo reste celui du site. */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,247,238,.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
 .ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
-.ac-barre { display: flex; align-items: center; gap: 28px; height: 76px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
 .ac-logo { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 1.45rem; letter-spacing: -.01em; margin-right: auto; white-space: nowrap; color: var(--navy); text-decoration: none; }
 .ac-logo b { color: var(--red); font-weight: 700; }
-.ac-nav { display: flex; gap: 30px; font-size: .95rem; font-weight: 500; }
-.ac-nav a { color: #5b6672; text-decoration: none; }
-.ac-nav a:hover, .ac-nav a[aria-current="page"] { color: var(--navy); }
-.ac-langue { display: flex; border: 1.5px solid #e2dbcf; border-radius: 99px; overflow: hidden; }
-.ac-langue button { border: none; background: none; padding: 5px 11px; font: 600 .78rem 'Inter', sans-serif; color: #5b6672; cursor: pointer; }
-.ac-langue button.on { background: var(--navy); color: #fff; }
-.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; font-size: .95rem; padding: 13px 24px; border-radius: 6px; transition: transform .15s; white-space: nowrap; text-decoration: none; }
-.ac-btn:hover { transform: translateY(-1px); }
-.ac-rouge { background: var(--red); color: #fff; box-shadow: 3px 3px 0 var(--navy); }
-.ac-burger { display: none; width: 40px; height: 40px; border: 1.5px solid #e2dbcf; border-radius: 8px; background: none; cursor: pointer; place-items: center; }
-.ac-burger i { display: block; width: 18px; height: 2px; background: var(--navy); box-shadow: 0 -6px 0 var(--navy), 0 6px 0 var(--navy); }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; border: 2.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 5px 11px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
 .ac-menu { display: none; }
-.ac-entete :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-@media (max-width: 1060px) { .ac-nav { gap: 20px; } .ac-barre { gap: 18px; } }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
 @media (max-width: 900px) {
   .ac-wrap { padding: 0 20px; }
   .ac-barre { height: 64px; gap: 12px; }
@@ -58,9 +62,10 @@ a { color: inherit; }
   .ac-logo svg { width: 22px; height: 26px; }
   .ac-nav, .ac-btn-entete { display: none; }
   .ac-burger { display: grid; }
-  .ac-menu:not([hidden]) { display: grid; gap: 4px; padding: 8px 20px 18px; border-top: 1px solid #e2dbcf; background: var(--cream); }
-  .ac-menu a { padding: 10px 0; font-weight: 500; border-bottom: 1px solid #e2dbcf; color: var(--navy); text-decoration: none; }
-  .ac-menu .ac-btn { margin-top: 10px; border-bottom: none; padding: 13px 24px; color: #fff; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
 }
 @media (max-width: 370px) { .ac-langue button { padding: 5px 8px; } }
 
