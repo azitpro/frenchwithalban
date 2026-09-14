@@ -1,24 +1,25 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { CSSProperties, ReactNode, PointerEvent as ReactPointerEvent, MouseEvent as ReactMouseEvent } from 'react';
+import type { CSSProperties, ReactNode, PointerEvent as ReactPointerEvent, MouseEvent as ReactMouseEvent, SVGProps } from 'react';
 import { EMPTY_SCHEDULE, withDefaults } from '@/lib/schedule';
 import type { Schedule } from '@/lib/schedule';
 import {
   DAY_END_MIN, DAY_START_MIN, DEFAULT_SETTINGS, EMPTY_PLANNING, EVENT_COLORS, EVENT_TITLE_MAX, JOURNAL_ITEM_MAX, JOURNAL_MAX_ITEMS,
-  RETENTION_WEEKS, ROUNDING_OPTIONS, ROUTINE_COLORS, WEEKDAY_NAMES,
+  JOURNAL_NOTES_MAX, RETENTION_WEEKS, ROUNDING_OPTIONS, ROUTINE_COLORS, WEEKDAY_NAMES,
   addDays, addEvent, addRoutine, addSlot, deleteEvent, deleteOccurrence, deleteRoutine, eventRef, eventsForWeek,
-  fmtDuration, fmtTime, lessonsForWeek, nowInParis, occurrenceRef, occurrencesForWeek, retentionStart, setJournal, setRounding,
+  fmtDuration, fmtTime, lessonsForWeek, normalizeNotes, nowInParis, occurrenceRef, occurrencesForWeek, retentionStart, setJournal, setRounding,
   updateEvent, updateOccurrence, updateRoutine, weekDates, weekStartOf, weeklyQuotas,
 } from '@/lib/planning';
 import type {
-  EventInput, Lesson, Occurrence, PlacementDefaults, Planning, PlanningEvent, PreplyBusy, Routine, RoundingMin, Scope,
+  EventInput, JournalEntry, Lesson, Occurrence, PlacementDefaults, Planning, PlanningEvent, PreplyBusy, Routine, RoundingMin, Scope,
 } from '@/lib/planning';
 
 /* ======================= réglages ======================= */
 
 const K = 1.1; // pixels par minute à l'écran (réduit à l'impression)
 const DURATIONS = [25, 50, 60];
+const INK = '#1b1340';
 
 type Dialog =
   | { type: 'place'; date: string; startMin: number; mode: 'routine' | 'event' }
@@ -29,6 +30,8 @@ type Dialog =
 
 /** Bloc personnel affiché dans la grille : occurrence de routine ou événement ponctuel. */
 type Bloc = { key: string; startMin: number; endMin: number; occ?: Occurrence; event?: PlanningEvent };
+
+const EMPTY_ENTRY: JournalEntry = { ref: '', items: [] };
 
 /* ======================= utilitaires d'affichage ======================= */
 
@@ -59,12 +62,15 @@ const toMinutes = (value: string) => {
   return Number.isFinite(h) && Number.isFinite(m) ? h * 60 + m : NaN;
 };
 
-/** Texte foncé sur les couleurs claires (l'or, par exemple), blanc sinon. */
+/** Texte foncé sur les couleurs claires (citron vert, jaune…), blanc sinon. */
 function textOn(hex: string): string {
   const n = parseInt(hex.slice(1), 16);
   const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-  return 0.299 * r + 0.587 * g + 0.114 * b > 150 ? '#0d2b45' : '#ffffff';
+  return 0.299 * r + 0.587 * g + 0.114 * b > 150 ? INK : '#ffffff';
 }
+
+/** Paragraphes d'un journal (séparés par une ligne vide). */
+const paragraphs = (notes: string) => notes.split(/\n{2,}/).filter((p) => p.trim());
 
 /** Répartit en colonnes les blocs (routines et événements) qui se chevauchent entre eux. */
 function laneLayout(blocs: Bloc[]): Map<string, { lane: number; lanes: number }> {
@@ -96,6 +102,18 @@ async function fetchPlanning(): Promise<{ planning: Planning; revision: number }
   const data = await res.json().catch(() => null);
   if (!res.ok || !data?.planning || !Number.isInteger(data.revision)) throw new Error(data?.error || 'Chargement impossible.');
   return data;
+}
+
+/** Hexagone tricolore du logo (bandes découpées à la main, rendu identique partout). */
+function HexDrapeau(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 28" aria-hidden="true" focusable="false" {...props}>
+      <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395" />
+      <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff" />
+      <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939" />
+      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke={INK} strokeWidth="1.8" strokeLinejoin="round" />
+    </svg>
+  );
 }
 
 /* ======================= page ======================= */
@@ -215,18 +233,10 @@ export default function PlanningPersonnel() {
   const events = useMemo(() => eventsForWeek(weekStart, planning), [weekStart, planning]);
   const quotas = useMemo(() => weeklyQuotas(planning, occurrences), [planning, occurrences]);
   const routineById = useMemo(() => new Map(planning.routines.map((r) => [r.id, r])), [planning.routines]);
-  const journal = useMemo(() => new Map((planning.journal ?? []).map((j) => [j.ref, j.items])), [planning.journal]);
+  const journal = useMemo(() => new Map((planning.journal ?? []).map((j) => [j.ref, j])), [planning.journal]);
   const rounding = planning.settings?.countRoundingMin ?? DEFAULT_SETTINGS.countRoundingMin;
   const oldestWeek = retentionStart(today);
   const isEnded = (date: string, endMin: number) => date < clock.date || (date === clock.date && endMin <= clock.minutes);
-
-  /* ---------- clavier : Échap ferme la fenêtre ---------- */
-  useEffect(() => {
-    if (!dialog) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setDialog(null); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [dialog]);
 
   /* ---------- PDF : nom de fichier proposé = titre de la page pendant l'impression ---------- */
   useEffect(() => {
@@ -338,7 +348,13 @@ export default function PlanningPersonnel() {
       <style>{CSS}</style>
 
       <header className="pp-barre">
-        <h1>Planning personnel</h1>
+        <div className="pp-logo">
+          <a href="/admin" aria-label="Retour à l’administration" title="Administration"><HexDrapeau /></a>
+          <div>
+            <small>French with Alban</small>
+            <h1>Planning personnel</h1>
+          </div>
+        </div>
         <div className="pp-semaine">
           <button className="pp-fleche" onClick={() => goToWeek(addDays(weekStart, -7))} disabled={!canGoBack}
             aria-label="Semaine précédente" title={canGoBack ? undefined : `Les semaines passées sont conservées ${RETENTION_WEEKS / 52 === 1 ? '12 mois' : `${RETENTION_WEEKS} semaines`}.`}>‹</button>
@@ -437,7 +453,7 @@ export default function PlanningPersonnel() {
               : `${filledCount} / ${endedBlocs.length} créneau${endedBlocs.length > 1 ? 'x' : ''} terminé${endedBlocs.length > 1 ? 's' : ''} renseigné${filledCount > 1 ? 's' : ''}`}</span>
             <a href="#bilan">Voir le bilan ↓</a>
           </div>
-          <h2>Quotas de la semaine</h2>
+          <h2><HexDrapeau className="pp-h2-hex" />Quotas de la semaine</h2>
           <p className="pp-sous">Remis à zéro chaque lundi. Les minutes couvertes par un cours ne comptent pas. Les événements ponctuels ne comptent dans aucun quota.</p>
           <label className="pp-arrondi">
             <span>Arrondi du décompte</span>
@@ -464,7 +480,7 @@ export default function PlanningPersonnel() {
                   <span className="pp-quota-obj">{fmtDuration(q.quotaMin)}</span>
                   <button className="pp-crayon" onClick={() => setDialog({ type: 'routine', routine: r })} aria-label={`Modifier ${r.name}`}>✎</button>
                 </div>
-                <div className="pp-jauge"><i style={{ width: `${pct}%`, background: q.overMin ? '#c0392b' : r.color }} /></div>
+                <div className="pp-jauge"><i style={{ width: `${pct}%`, background: q.overMin ? '#ff5fa2' : r.color }} /></div>
                 <div className="pp-chiffres">
                   <span>Placé {fmtDuration(q.placedMin)}</span>
                   {q.overMin
@@ -478,12 +494,12 @@ export default function PlanningPersonnel() {
             );
           })}
           <div className="pp-legende">
-            <span><i style={{ background: '#0d2b45' }} />Cours (lecture seule)</span>
-            <span><i style={{ background: '#0d2b45', boxShadow: 'inset 0 -4px 0 #c9972a' }} />Créneau occupé Preply</span>
-            <span><i style={{ background: '#3f7d5c' }} />↻ routine hebdomadaire · sans ↻ : ponctuelle</span>
+            <span><i style={{ background: INK }} />Cours (lecture seule)</span>
+            <span><i style={{ background: INK, boxShadow: 'inset 0 -4px 0 #ffe45c' }} />Créneau occupé Preply</span>
+            <span><i style={{ background: '#c8f560' }} />↻ routine hebdomadaire · sans ↻ : ponctuelle</span>
             <span><i className="pp-legende-evenement" />◆ événement ponctuel, hors routine</span>
             <span><i className="pp-legende-conflit" />Routine écrasée par un cours</span>
-            <span><b className="pp-legende-fait">✓ 2</b>Lignes notées dans « Ce que j’ai fait »</span>
+            <span><b className="pp-legende-fait">✓ 2 ✎</b>Lignes « Ce que j’ai fait » · ✎ journal</span>
           </div>
         </aside>
       </div>
@@ -522,14 +538,14 @@ export default function PlanningPersonnel() {
           occ={dialog.occ}
           initialDuration={dialog.durationMin}
           routine={routineById.get(dialog.occ.routineId)}
-          items={journal.get(occurrenceRef(dialog.occ)) ?? []}
+          entry={journal.get(occurrenceRef(dialog.occ)) ?? EMPTY_ENTRY}
           ended={isEnded(dialog.occ.date, dialog.occ.endMin)}
           onCancel={() => setDialog(null)}
-          onSave={(values, scope, items) => {
+          onSave={(values, scope, items, notes) => {
             const occ = dialog.occ;
             setDialog(null);
             // le bilan d'abord : en cas de scission de la série, il suit la nouvelle série
-            let next = setJournal(planning, occurrenceRef(occ), items);
+            let next = setJournal(planning, occurrenceRef(occ), items, notes);
             const moved = values.date !== occ.date || values.startMin !== occ.startMin || values.durationMin !== occ.durationMin;
             if (moved) next = updateOccurrence(next, occ, values, scope);
             persist(next);
@@ -541,13 +557,13 @@ export default function PlanningPersonnel() {
         <EventDialog
           dates={dates}
           event={dialog.event}
-          items={journal.get(eventRef(dialog.event.id)) ?? []}
+          entry={journal.get(eventRef(dialog.event.id)) ?? EMPTY_ENTRY}
           ended={isEnded(dialog.event.date, dialog.event.startMin + dialog.event.durationMin)}
           onCancel={() => setDialog(null)}
-          onSave={(values, items) => {
+          onSave={(values, items, notes) => {
             const id = dialog.event.id;
             setDialog(null);
-            persist(setJournal(updateEvent(planning, id, values), eventRef(id), items));
+            persist(setJournal(updateEvent(planning, id, values), eventRef(id), items, notes));
           }}
           onDelete={() => { setDialog(null); persist(deleteEvent(planning, dialog.event.id)); }}
         />
@@ -571,6 +587,14 @@ export default function PlanningPersonnel() {
 
 /* ======================= colonne d'un jour ======================= */
 
+function faitBadge(entry: JournalEntry | undefined) {
+  const count = entry?.items.length ?? 0;
+  const parts = [count > 0 ? `✓ ${count}` : '', entry?.notes ? '✎' : ''].filter(Boolean);
+  if (!parts.length) return null;
+  const title = [count > 0 ? `${count} ligne${count > 1 ? 's' : ''} dans « Ce que j’ai fait »` : '', entry?.notes ? 'journal rempli' : ''].filter(Boolean).join(' · ');
+  return <span className="pp-fait" title={title}>{parts.join(' ')}</span>;
+}
+
 function DayColumn(props: {
   date: string;
   isToday: boolean;
@@ -578,7 +602,7 @@ function DayColumn(props: {
   occurrences: Occurrence[];
   events: PlanningEvent[];
   routineById: Map<string, Routine>;
-  journal: Map<string, string[]>;
+  journal: Map<string, JournalEntry>;
   resize: { occ: Occurrence; durationMin: number } | null;
   onColumnClick: (e: ReactMouseEvent<HTMLDivElement>, date: string) => void;
   onEdit: (occ: Occurrence) => void;
@@ -600,7 +624,6 @@ function DayColumn(props: {
     const e = Math.min(end, DAY_END_MIN);
     return { visible: e > s, top: s - DAY_START_MIN, height: e - s, cutTop: start < DAY_START_MIN, cutBottom: end > DAY_END_MIN };
   };
-  const faitBadge = (count: number) => (count > 0 ? <span className="pp-fait" title={`${count} ligne${count > 1 ? 's' : ''} dans « Ce que j’ai fait »`}>✓ {count}</span> : null);
 
   return (
     <div className={`pp-jour ${props.isToday ? 'pp-auj' : ''}`} onClick={(e) => props.onColumnClick(e, date)}>
@@ -627,7 +650,7 @@ function DayColumn(props: {
               <div className="pp-nom">{o.kind === 'weekly' ? '↻ ' : ''}{r.name}</div>
               <div className="pp-heure">{fmtTime(o.startMin)}–{fmtTime(o.startMin + duration)}</div>
               {pos.cutBottom && <span className="pp-coupe pp-coupe-bas">↓ {fmtTime(o.startMin + duration)}</span>}
-              {faitBadge(journal.get(occurrenceRef(o))?.length ?? 0)}
+              {faitBadge(journal.get(occurrenceRef(o)))}
               <div
                 className="pp-poignee"
                 onClick={(e) => e.stopPropagation()}
@@ -665,7 +688,7 @@ function DayColumn(props: {
             <div className="pp-nom">◆ {ev.title}</div>
             <div className="pp-heure">{fmtTime(ev.startMin)}–{fmtTime(end)}</div>
             {pos.cutBottom && <span className="pp-coupe pp-coupe-bas">↓ {fmtTime(end)}</span>}
-            {faitBadge(journal.get(eventRef(ev.id))?.length ?? 0)}
+            {faitBadge(journal.get(eventRef(ev.id)))}
           </div>
         );
       })}
@@ -697,12 +720,16 @@ function MobileDay(props: {
   occurrences: Occurrence[];
   events: PlanningEvent[];
   routineById: Map<string, Routine>;
-  journal: Map<string, string[]>;
+  journal: Map<string, JournalEntry>;
   onEdit: (occ: Occurrence) => void;
   onEditEvent: (event: PlanningEvent) => void;
 }) {
   type Item = { start: number; key: string; node: ReactNode };
-  const fait = (count: number) => (count > 0 ? <em className="pp-item-fait">✓ {count} ligne{count > 1 ? 's' : ''} notée{count > 1 ? 's' : ''}</em> : null);
+  const fait = (entry: JournalEntry | undefined) => {
+    const count = entry?.items.length ?? 0;
+    const parts = [count > 0 ? `✓ ${count} ligne${count > 1 ? 's' : ''} notée${count > 1 ? 's' : ''}` : '', entry?.notes ? '✎ journal' : ''].filter(Boolean);
+    return parts.length ? <em className="pp-item-fait">{parts.join(' · ')}</em> : null;
+  };
   const items: Item[] = [
     ...props.lessons.map((l) => ({
       start: l.startMin,
@@ -726,7 +753,7 @@ function MobileDay(props: {
               <b>{o.kind === 'weekly' ? '↻ ' : ''}{r.name}</b>
               <span>{o.kind === 'weekly' ? 'Routine hebdomadaire' : 'Routine ponctuelle'}</span>
               {o.displacedMin > 0 && <em>⚠ {fmtDuration(o.displacedMin)} déplacée{plural(o.displacedMin)} par un cours</em>}
-              {fait(props.journal.get(occurrenceRef(o))?.length ?? 0)}
+              {fait(props.journal.get(occurrenceRef(o)))}
             </div>
           </button>
         ),
@@ -741,7 +768,7 @@ function MobileDay(props: {
           <div>
             <b>◆ {ev.title}</b>
             <span>Événement ponctuel</span>
-            {fait(props.journal.get(eventRef(ev.id))?.length ?? 0)}
+            {fait(props.journal.get(eventRef(ev.id)))}
           </div>
         </button>
       ),
@@ -765,7 +792,7 @@ function WeekReport(props: {
   occurrences: Occurrence[];
   events: PlanningEvent[];
   routineById: Map<string, Routine>;
-  journal: Map<string, string[]>;
+  journal: Map<string, JournalEntry>;
   isEnded: (date: string, endMin: number) => boolean;
   onOpenOcc: (occ: Occurrence) => void;
   onOpenEvent: (event: PlanningEvent) => void;
@@ -776,7 +803,7 @@ function WeekReport(props: {
     for (const l of props.lessons.filter((x) => x.date === date)) {
       lignes.push({
         key: `c-${l.source}-${l.startMin}`, startMin: l.startMin, endMin: l.endMin,
-        node: <div className="pp-bilan-titre pp-bilan-cours"><i style={{ background: '#0d2b45' }} /><span>{l.source === 'preply' ? 'Occupé (Preply)' : `Cours · ${l.label}`}</span></div>,
+        node: <div className="pp-bilan-titre pp-bilan-cours"><i style={{ background: INK }} /><span>{l.source === 'preply' ? 'Occupé (Preply)' : `Cours · ${l.label}`}</span></div>,
       });
     }
     for (const o of props.occurrences.filter((x) => x.date === date)) {
@@ -785,7 +812,7 @@ function WeekReport(props: {
       lignes.push({
         key: `r-${o.slotId}`, startMin: o.startMin, endMin: o.endMin,
         node: (
-          <Entree items={props.journal.get(occurrenceRef(o)) ?? []} ended={props.isEnded(o.date, o.endMin)} onOpen={() => props.onOpenOcc(o)}
+          <Entree entry={props.journal.get(occurrenceRef(o))} ended={props.isEnded(o.date, o.endMin)} onOpen={() => props.onOpenOcc(o)}
             color={r.color} title={r.name} tag={o.kind === 'weekly' ? 'routine hebdomadaire' : 'routine ponctuelle'} />
         ),
       });
@@ -794,7 +821,7 @@ function WeekReport(props: {
       lignes.push({
         key: `e-${ev.id}`, startMin: ev.startMin, endMin: ev.startMin + ev.durationMin,
         node: (
-          <Entree items={props.journal.get(eventRef(ev.id)) ?? []} ended={props.isEnded(ev.date, ev.startMin + ev.durationMin)} onOpen={() => props.onOpenEvent(ev)}
+          <Entree entry={props.journal.get(eventRef(ev.id))} ended={props.isEnded(ev.date, ev.startMin + ev.durationMin)} onOpen={() => props.onOpenEvent(ev)}
             color={ev.color} title={`◆ ${ev.title}`} tag="événement" />
         ),
       });
@@ -806,9 +833,9 @@ function WeekReport(props: {
   return (
     <section className="pp-bilan" id="bilan" aria-label="Bilan de la semaine">
       <div className="pp-bilan-tete">
-        <h2>Bilan de la semaine</h2>
+        <h2><HexDrapeau className="pp-h2-hex" />Bilan de la semaine</h2>
         <span className="pp-bilan-semaine">{props.label}</span>
-        <p>Heure par heure, avec ce que vous avez noté dans chaque créneau. Ce bilan figure aussi dans le PDF. Les semaines passées restent disponibles 12 mois.</p>
+        <p>Heure par heure, avec ce que vous avez fait et votre journal pour chaque créneau. Ce bilan figure aussi dans le PDF. Les semaines passées restent disponibles 12 mois.</p>
       </div>
       {jours.length === 0 && <p className="pp-vide">Rien de prévu cette semaine.</p>}
       <div className="pp-bilan-jours">
@@ -828,7 +855,9 @@ function WeekReport(props: {
   );
 }
 
-function Entree(props: { items: string[]; ended: boolean; onOpen: () => void; color: string; title: string; tag: string }) {
+function Entree(props: { entry?: JournalEntry; ended: boolean; onOpen: () => void; color: string; title: string; tag: string }) {
+  const items = props.entry?.items ?? [];
+  const notes = props.entry?.notes ?? '';
   return (
     <>
       <div className="pp-bilan-titre">
@@ -837,8 +866,13 @@ function Entree(props: { items: string[]; ended: boolean; onOpen: () => void; co
         </button>
         <small>{props.tag}</small>
       </div>
-      {props.items.length > 0 && <ul>{props.items.map((it, k) => <li key={k}>{it}</li>)}</ul>}
-      {props.items.length === 0 && props.ended && (
+      {items.length > 0 && <ul>{items.map((it, k) => <li key={k}>{it}</li>)}</ul>}
+      {notes && (
+        <div className="pp-bilan-notes">
+          {paragraphs(notes).map((p, k) => <p key={k}>{p}</p>)}
+        </div>
+      )}
+      {items.length === 0 && !notes && props.ended && (
         <button type="button" className="pp-a-completer" onClick={props.onOpen}>À compléter</button>
       )}
     </>
@@ -867,10 +901,19 @@ function validTiming(startMin: number, durationMin: number): string {
   return '';
 }
 
-function Modal({ title, children, onCancel }: { title: string; children: ReactNode; onCancel: () => void }) {
+/** Fenêtre modale : Échap ou clic sur le fond appellent onCancel (qui peut demander confirmation). */
+function Modal({ title, children, onCancel, large }: { title: string; children: ReactNode; onCancel: () => void; large?: boolean }) {
+  const cancelRef = useRef(onCancel);
+  useEffect(() => { cancelRef.current = onCancel; }, [onCancel]);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') cancelRef.current(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
   return (
-    <div className="pp-voile" onClick={onCancel}>
-      <div className="pp-dlg" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
+    // mousedown plutôt que click : une sélection de texte qui déborde de la fenêtre ne la ferme pas
+    <div className="pp-voile" onMouseDown={(e) => { if (e.target === e.currentTarget) onCancel(); }}>
+      <div className={`pp-dlg ${large ? 'pp-dlg-large' : ''}`} role="dialog" aria-modal="true" aria-label={title}>
         <h3>{title}</h3>
         {children}
       </div>
@@ -887,9 +930,10 @@ function DaySelect({ dates, value, onChange }: { dates: string[]; value: string;
 }
 
 function ColorPicker({ colors, value, onChange }: { colors: string[]; value: string; onChange: (c: string) => void }) {
+  const list = colors.includes(value) ? colors : [...colors, value]; // une couleur d'avant reste sélectionnable
   return (
     <div className="pp-couleurs">
-      {colors.map((c) => (
+      {list.map((c) => (
         <button type="button" key={c} className={c === value ? 'pp-on' : ''} style={{ background: c }} onClick={() => onChange(c)} aria-label={`Couleur ${c}`} />
       ))}
     </div>
@@ -908,8 +952,11 @@ function JournalEditor(props: { items: string[]; onChange: (items: string[]) => 
   };
   return (
     <div className="pp-champ pp-journal-zone">
-      <label htmlFor="pp-journal-saisie">Ce que j’ai fait</label>
-      {!props.ended && <p className="pp-note-dlg">Ce créneau n’est pas encore terminé : vous pourrez compléter la liste ensuite.</p>}
+      <div className="pp-section-tete">
+        <label htmlFor="pp-journal-saisie">Ce que j’ai fait</label>
+        <small>une action par ligne</small>
+      </div>
+      {!props.ended && <p className="pp-note-dlg">Ce créneau n’est pas encore terminé : vous pourrez compléter ensuite.</p>}
       {items.length > 0 && (
         <ul className="pp-journal">
           {items.map((it, i) => (
@@ -931,7 +978,25 @@ function JournalEditor(props: { items: string[]; onChange: (items: string[]) => 
   );
 }
 
+/** Journal libre, sur plusieurs paragraphes (une ligne vide sépare deux paragraphes). */
+function NotesEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const long = value.length > JOURNAL_NOTES_MAX * 0.8;
+  return (
+    <div className="pp-champ pp-journal-zone pp-notes-zone">
+      <div className="pp-section-tete">
+        <label htmlFor="pp-journal-notes">Journal</label>
+        <small>notes libres · laissez une ligne vide entre deux paragraphes</small>
+      </div>
+      <textarea id="pp-journal-notes" className="pp-inp pp-notes" value={value} maxLength={JOURNAL_NOTES_MAX} rows={8}
+        placeholder={'Comment ça s’est passé, ce que vous avez appris, ce qu’il reste à faire…\n\nUn autre paragraphe si besoin.'}
+        onChange={(e) => onChange(e.target.value)} />
+      {long && <small className="pp-compteur">{value.length.toLocaleString('fr-FR')} / {JOURNAL_NOTES_MAX.toLocaleString('fr-FR')} caractères</small>}
+    </div>
+  );
+}
+
 const withDraft = (items: string[], draft: string) => (draft.trim() ? [...items, draft.trim()] : items);
+const ABANDON = 'Abandonner les modifications non enregistrées ?';
 
 function PlaceDialog(props: {
   dates: string[];
@@ -1027,10 +1092,10 @@ function EditDialog(props: {
   occ: Occurrence;
   initialDuration?: number;
   routine?: Routine;
-  items: string[];
+  entry: JournalEntry;
   ended: boolean;
   onCancel: () => void;
-  onSave: (values: { date: string; startMin: number; durationMin: number }, scope: Scope, items: string[]) => void;
+  onSave: (values: { date: string; startMin: number; durationMin: number }, scope: Scope, items: string[], notes: string) => void;
   onDelete: (scope: Scope) => void;
 }) {
   const { occ } = props;
@@ -1038,30 +1103,38 @@ function EditDialog(props: {
   const [start, setStart] = useState(fmtTime(occ.startMin));
   const [durationMin, setDurationMin] = useState(props.initialDuration ?? occ.durationMin);
   const [scope, setScope] = useState<Scope>('this');
-  const [items, setItems] = useState(props.items);
+  const [items, setItems] = useState(props.entry.items);
   const [draft, setDraft] = useState('');
+  const [notes, setNotes] = useState(props.entry.notes ?? '');
   const weekly = occ.kind === 'weekly';
   const startMin = toMinutes(start);
   const error = validTiming(startMin, durationMin);
 
+  const dirty = date !== occ.date || startMin !== occ.startMin || durationMin !== occ.durationMin || !!draft.trim()
+    || JSON.stringify(items) !== JSON.stringify(props.entry.items) || normalizeNotes(notes) !== (props.entry.notes ?? '');
+  const annuler = () => { if (!dirty || window.confirm(ABANDON)) props.onCancel(); };
+
   const deleteLabel = !weekly ? 'Supprimer' : scope === 'this' ? 'Supprimer cette semaine' : 'Supprimer cette semaine et les suivantes';
   const confirmDelete = () => {
     const perdu = withDraft(items, draft).length;
-    if (perdu && !window.confirm(`Ce créneau a ${perdu} ligne${perdu > 1 ? 's' : ''} dans « Ce que j’ai fait ». Elle${perdu > 1 ? 's seront supprimées' : ' sera supprimée'} aussi. Continuer ?`)) return;
+    const journalPerdu = normalizeNotes(notes) ? ' et le journal' : '';
+    if ((perdu || journalPerdu) && !window.confirm(`Ce créneau a ${perdu ? `${perdu} ligne${perdu > 1 ? 's' : ''} dans « Ce que j’ai fait »` : 'du contenu'}${journalPerdu}. Tout sera supprimé. Continuer ?`)) return;
     props.onDelete(scope);
   };
 
   return (
-    <Modal title={weekly ? 'Modifier un créneau hebdomadaire' : 'Modifier un créneau'} onCancel={props.onCancel}>
+    <Modal title={weekly ? 'Modifier un créneau hebdomadaire' : 'Modifier un créneau'} onCancel={annuler} large>
       <p className="pp-info-dlg">
         {weekly ? '↻ ' : ''}{props.routine?.name} · {weekly ? `chaque ${WEEKDAY_NAMES[props.dates.indexOf(occ.date)]?.toLowerCase() ?? ''}` : 'ponctuel'}
         {occ.moved ? ' · déplacé cette semaine' : ''}
         {occ.displacedMin > 0 ? ` · ${fmtDuration(occ.displacedMin)} écrasées par un cours` : ''}
       </p>
-      <div className="pp-champ"><label>Jour</label><DaySelect dates={props.dates} value={date} onChange={setDate} /></div>
-      <div className="pp-deux">
-        <div className="pp-champ"><label>Début</label><input className="pp-inp" type="time" step={60} value={start} onChange={(e) => setStart(e.target.value)} /></div>
-        <div className="pp-champ"><label>Fin</label><div className="pp-inp pp-lecture">{error ? '—' : fmtTime(startMin + durationMin)}</div></div>
+      <div className="pp-horaires">
+        <div className="pp-champ"><label>Jour</label><DaySelect dates={props.dates} value={date} onChange={setDate} /></div>
+        <div className="pp-deux">
+          <div className="pp-champ"><label>Début</label><input className="pp-inp" type="time" step={60} value={start} onChange={(e) => setStart(e.target.value)} /></div>
+          <div className="pp-champ"><label>Fin</label><div className="pp-inp pp-lecture">{error ? '—' : fmtTime(startMin + durationMin)}</div></div>
+        </div>
       </div>
       <div className="pp-champ"><label>Durée</label><DurationPicker value={durationMin} onChange={setDurationMin} /></div>
       {weekly && (
@@ -1071,11 +1144,12 @@ function EditDialog(props: {
         </div>
       )}
       <JournalEditor items={items} onChange={setItems} draft={draft} onDraft={setDraft} ended={props.ended} />
+      <NotesEditor value={notes} onChange={setNotes} />
       {error && <p className="pp-erreur-dlg">{error}</p>}
       <div className="pp-act">
         <button className="pp-btn pp-rouge" onClick={confirmDelete}>{deleteLabel}</button>
-        <button className="pp-btn" onClick={props.onCancel}>Annuler</button>
-        <button className="pp-btn pp-plein" disabled={!!error} onClick={() => props.onSave({ date, startMin, durationMin }, scope, withDraft(items, draft))}>Enregistrer</button>
+        <button className="pp-btn" onClick={annuler}>Annuler</button>
+        <button className="pp-btn pp-plein" disabled={!!error} onClick={() => props.onSave({ date, startMin, durationMin }, scope, withDraft(items, draft), notes)}>Enregistrer</button>
       </div>
     </Modal>
   );
@@ -1084,10 +1158,10 @@ function EditDialog(props: {
 function EventDialog(props: {
   dates: string[];
   event: PlanningEvent;
-  items: string[];
+  entry: JournalEntry;
   ended: boolean;
   onCancel: () => void;
-  onSave: (values: EventInput, items: string[]) => void;
+  onSave: (values: EventInput, items: string[], notes: string) => void;
   onDelete: () => void;
 }) {
   const ev = props.event;
@@ -1096,39 +1170,46 @@ function EventDialog(props: {
   const [date, setDate] = useState(ev.date);
   const [start, setStart] = useState(fmtTime(ev.startMin));
   const [durationMin, setDurationMin] = useState(ev.durationMin);
-  const [items, setItems] = useState(props.items);
+  const [items, setItems] = useState(props.entry.items);
   const [draft, setDraft] = useState('');
+  const [notes, setNotes] = useState(props.entry.notes ?? '');
   const startMin = toMinutes(start);
   const timingError = validTiming(startMin, durationMin);
   const error = !title.trim() ? 'Donnez un titre à l’événement.' : timingError;
-  const colors = EVENT_COLORS.includes(ev.color) ? EVENT_COLORS : [...EVENT_COLORS, ev.color];
+
+  const dirty = title !== ev.title || color !== ev.color || date !== ev.date || startMin !== ev.startMin || durationMin !== ev.durationMin || !!draft.trim()
+    || JSON.stringify(items) !== JSON.stringify(props.entry.items) || normalizeNotes(notes) !== (props.entry.notes ?? '');
+  const annuler = () => { if (!dirty || window.confirm(ABANDON)) props.onCancel(); };
 
   const confirmDelete = () => {
     const perdu = withDraft(items, draft).length;
-    const detail = perdu ? ` et ses ${perdu} ligne${perdu > 1 ? 's' : ''} dans « Ce que j’ai fait »` : '';
-    if (window.confirm(`Supprimer « ${ev.title} »${detail} ?`)) props.onDelete();
+    const details = [perdu ? `ses ${perdu} ligne${perdu > 1 ? 's' : ''} dans « Ce que j’ai fait »` : '', normalizeNotes(notes) ? 'son journal' : ''].filter(Boolean).join(' et ');
+    if (window.confirm(`Supprimer « ${ev.title} »${details ? ` avec ${details}` : ''} ?`)) props.onDelete();
   };
 
   return (
-    <Modal title="Modifier l’événement" onCancel={props.onCancel}>
+    <Modal title="Modifier l’événement" onCancel={annuler} large>
       <p className="pp-info-dlg">◆ Événement ponctuel · ne compte dans aucun quota</p>
       <div className="pp-champ"><label htmlFor="pp-titre-evenement">Titre</label>
         <input id="pp-titre-evenement" className="pp-inp" value={title} maxLength={EVENT_TITLE_MAX} onChange={(e) => setTitle(e.target.value)} />
       </div>
-      <div className="pp-champ"><label>Couleur</label><ColorPicker colors={colors} value={color} onChange={setColor} /></div>
-      <div className="pp-champ"><label>Jour</label><DaySelect dates={props.dates} value={date} onChange={setDate} /></div>
-      <div className="pp-deux">
-        <div className="pp-champ"><label>Début</label><input className="pp-inp" type="time" step={60} value={start} onChange={(e) => setStart(e.target.value)} /></div>
-        <div className="pp-champ"><label>Fin</label><div className="pp-inp pp-lecture">{timingError ? '—' : fmtTime(startMin + durationMin)}</div></div>
+      <div className="pp-champ"><label>Couleur</label><ColorPicker colors={EVENT_COLORS} value={color} onChange={setColor} /></div>
+      <div className="pp-horaires">
+        <div className="pp-champ"><label>Jour</label><DaySelect dates={props.dates} value={date} onChange={setDate} /></div>
+        <div className="pp-deux">
+          <div className="pp-champ"><label>Début</label><input className="pp-inp" type="time" step={60} value={start} onChange={(e) => setStart(e.target.value)} /></div>
+          <div className="pp-champ"><label>Fin</label><div className="pp-inp pp-lecture">{timingError ? '—' : fmtTime(startMin + durationMin)}</div></div>
+        </div>
       </div>
       <div className="pp-champ"><label>Durée</label><DurationPicker value={durationMin} onChange={setDurationMin} /></div>
       <JournalEditor items={items} onChange={setItems} draft={draft} onDraft={setDraft} ended={props.ended} />
+      <NotesEditor value={notes} onChange={setNotes} />
       {error && <p className="pp-erreur-dlg">{error}</p>}
       <div className="pp-act">
         <button className="pp-btn pp-rouge" onClick={confirmDelete}>Supprimer</button>
-        <button className="pp-btn" onClick={props.onCancel}>Annuler</button>
+        <button className="pp-btn" onClick={annuler}>Annuler</button>
         <button className="pp-btn pp-plein" disabled={!!error}
-          onClick={() => props.onSave({ title: title.trim(), color, date, startMin, durationMin }, withDraft(items, draft))}>Enregistrer</button>
+          onClick={() => props.onSave({ title: title.trim(), color, date, startMin, durationMin }, withDraft(items, draft), notes)}>Enregistrer</button>
       </div>
     </Modal>
   );
@@ -1163,7 +1244,7 @@ function RoutineDialog(props: {
       <div className="pp-act">
         {r && (
           <button className="pp-btn pp-rouge" onClick={() => {
-            const detail = props.slotCount ? ` et ses ${props.slotCount} créneau${props.slotCount > 1 ? 'x' : ''} (bilans compris)` : '';
+            const detail = props.slotCount ? ` et ses ${props.slotCount} créneau${props.slotCount > 1 ? 'x' : ''} (bilans et journaux compris)` : '';
             if (window.confirm(`Supprimer « ${r.name} »${detail} ? Cette action est définitive.`)) props.onDelete();
           }}>Supprimer</button>
         )}
@@ -1176,189 +1257,224 @@ function RoutineDialog(props: {
   );
 }
 
-/* ======================= styles ======================= */
+/* ======================= styles (style acidulé du site) ======================= */
 
 const CSS = `
-.pp{--navy:#0d2b45;--gold:#c9972a;--cream:#faf7f2;--cream-dark:#f0ece4;--border:#ddd8ce;--red:#c0392b;--soft:#666;
-  min-height:100vh;background:var(--cream);color:var(--navy);font-family:Inter,system-ui,sans-serif;font-size:14px}
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap');
+.pp{--ink:#1b1340;--soft:#564f70;--bg:#fff7ee;--lime:#c8f560;--pink:#ff5fa2;--rose:#c81d64;--aqua:#3ee0c6;--lemon:#ffe45c;--orange:#ff8a3d;--violet:#7c5cff;
+  --ligne:#efe6d8;--ligne-h:#e2d6c2;--titre:'Bricolage Grotesque',Inter,system-ui,sans-serif;
+  min-height:100vh;color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:14px;color-scheme:light;
+  background:radial-gradient(circle at 3% 0%,rgba(200,245,96,.42) 0,transparent 26%),radial-gradient(circle at 100% 26%,rgba(62,224,198,.2) 0,transparent 24%),radial-gradient(circle at 0% 100%,rgba(255,228,92,.32) 0,transparent 28%),var(--bg)}
 .pp *{box-sizing:border-box}
 .pp button{font-family:inherit;cursor:pointer}
+.pp :focus-visible{outline:3px solid var(--violet);outline-offset:2px}
 .pp-etat{padding:40px;text-align:center;color:var(--soft)}
 
-.pp-barre{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 22px;border-bottom:3px solid var(--navy)}
-.pp-barre h1{font-family:Fraunces,Georgia,serif;font-size:1.35rem;font-weight:700;margin:0 auto 0 0}
+/* ---------- barre du haut ---------- */
+.pp-barre{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;padding:12px 22px;background:rgba(255,255,255,.96);border-bottom:3px solid var(--ink)}
+.pp-logo{display:flex;align-items:center;gap:12px;margin-right:auto;min-width:0}
+.pp-logo a{display:block;line-height:0}
+.pp-logo svg{width:32px;height:38px;rotate:-12deg;filter:drop-shadow(2px 3px 0 var(--ink))}
+.pp-logo small{display:block;font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+.pp-barre h1{font-family:var(--titre);font-size:1.5rem;font-weight:800;letter-spacing:-.025em;line-height:1.05;margin:0}
 .pp-semaine{display:flex;align-items:center;gap:8px}
-.pp-fleche{width:32px;height:32px;border:1px solid var(--border);background:#fff;font-size:1.05rem;color:var(--navy)}
-.pp-fleche:disabled{opacity:.35;cursor:not-allowed}
-.pp-titre-semaine{font-weight:600;min-width:260px;text-align:center}
-.pp-btn{border:1.5px solid var(--navy);background:transparent;color:var(--navy);padding:8px 14px;font-weight:600;font-size:.8rem}
-.pp-btn:disabled{opacity:.4;cursor:default}
-.pp-plein{background:var(--navy);color:var(--cream);box-shadow:3px 3px 0 var(--gold)}
-.pp-or{border-color:var(--gold);color:#8a6614}
-.pp-rouge{border-color:var(--red);color:var(--red);margin-right:auto}
-.pp-filet{height:2px;background:var(--gold)}
-.pp-impression-titre{display:none}
+.pp-fleche{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;color:var(--ink);font-size:1.2rem;line-height:1;box-shadow:2px 2px 0 var(--ink)}
+.pp-fleche:hover:not(:disabled){background:var(--lemon)}
+.pp-fleche:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
+.pp-titre-semaine{font-family:var(--titre);font-weight:700;font-size:1rem;min-width:250px;text-align:center}
+.pp-btn{border:2.5px solid var(--ink);background:#fff;color:var(--ink);padding:7px 15px;border-radius:99px;font-weight:700;font-size:.8rem;box-shadow:2px 2px 0 var(--ink);transition:translate .12s,box-shadow .12s}
+.pp-btn:hover:not(:disabled){translate:-1px -1px;box-shadow:3px 3px 0 var(--ink)}
+.pp-btn:disabled{opacity:.4;cursor:default;box-shadow:none}
+.pp-plein{background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--pink)}
+.pp-plein:hover:not(:disabled){box-shadow:4px 4px 0 var(--pink)}
+.pp-or{background:var(--lemon)}
+.pp-rouge{background:#ffe1ee;margin-right:auto}
+.pp-filet,.pp-impression-titre{display:none}
 
-.pp-messages{padding:10px 22px 0}
-.pp-messages p{margin:0 0 6px;padding:8px 12px;font-size:.82rem;border-left:3px solid}
-.pp-erreur{background:#fdecea;border-color:var(--red);color:var(--red)}
-.pp-avert{background:#fdf6e6;border-color:var(--gold);color:#8a6614}
-.pp-info{background:#fff;border-color:var(--border);color:var(--soft)}
+.pp-messages{padding:14px 22px 0;display:grid;gap:8px}
+.pp-messages p{margin:0;padding:9px 14px;font-size:.84rem;border:2px solid var(--ink);border-radius:12px;box-shadow:2px 2px 0 var(--ink)}
+.pp-erreur{background:#ffe1ee;color:var(--ink)}
+.pp-avert{background:#fff4c2;color:var(--ink)}
+.pp-info{background:#fff;color:var(--soft)}
 
-.pp-corps{display:grid;grid-template-columns:1fr 290px}
-.pp-grille-zone{padding:12px 10px 20px 0;border-right:1px solid var(--border);min-width:0}
+/* ---------- grille ---------- */
+.pp-corps{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;padding:20px 22px;align-items:start}
+.pp-grille-zone{background:#fff;border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:10px 12px 14px 0;min-width:0}
 .pp-entetes,.pp-grille{display:grid;grid-template-columns:52px repeat(7,minmax(0,1fr))}
-.pp-entetes>div{text-align:center;font-size:.76rem;font-weight:600;padding:4px 0 8px}
-.pp-entetes b{display:block;font-family:Fraunces,Georgia,serif;font-size:1.15rem}
-.pp-entetes .pp-auj{color:var(--red)}
+.pp-entetes>div{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);padding:2px 0 8px}
+.pp-entetes b{font-family:var(--titre);font-size:1.25rem;font-weight:800;letter-spacing:0;color:var(--ink);line-height:1.2;padding:0 8px;border:2px solid transparent;border-radius:10px}
+.pp-entetes .pp-auj{color:var(--ink)}
+.pp-entetes .pp-auj b{background:var(--lime);border-color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
 .pp-heures{position:relative;height:calc(var(--total) * var(--k) * 1px)}
-.pp-heures span{position:absolute;right:8px;top:calc(var(--s) * var(--k) * 1px);transform:translateY(-50%);font-size:.66rem;color:var(--soft)}
-.pp-jour{position:relative;height:calc(var(--total) * var(--k) * 1px);border-left:1px solid var(--border);cursor:copy;
-  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(#ebe5d9 1px,transparent 1px);
+.pp-heures span{position:absolute;right:8px;top:calc(var(--s) * var(--k) * 1px);transform:translateY(-50%);font-size:.66rem;font-weight:600;color:var(--soft)}
+.pp-jour{position:relative;height:calc(var(--total) * var(--k) * 1px);border-left:1.5px solid var(--ligne);cursor:copy;
+  background-image:linear-gradient(var(--ligne-h) 1px,transparent 1px),linear-gradient(var(--ligne) 1px,transparent 1px);
   background-size:100% calc(60 * var(--k) * 1px),100% calc(30 * var(--k) * 1px)}
-.pp-jour.pp-auj{background-color:rgba(201,151,42,.07)}
+.pp-jour.pp-auj{background-color:rgba(200,245,96,.16)}
 
 .pp-bloc{position:absolute;top:calc(var(--s) * var(--k) * 1px);height:calc(var(--d) * var(--k) * 1px);padding:2px 6px;
-  font-size:.68rem;line-height:1.25;overflow:hidden;border-radius:2px;cursor:pointer}
-.pp-nom{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pp-heure{font-size:.62rem;opacity:.9;white-space:nowrap}
+  font-size:.68rem;line-height:1.25;overflow:hidden;border-radius:7px;border:1.5px solid var(--ink);cursor:pointer}
+.pp-nom{font-family:var(--titre);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-heure{font-size:.62rem;font-weight:500;opacity:.92;white-space:nowrap}
 .pp-routine{z-index:1;left:calc(3px + (100% - 6px) * var(--lane) / var(--lanes));width:calc((100% - 6px) / var(--lanes) - 2px)}
-.pp-routine:hover{filter:brightness(1.06)}
-.pp-evenement{border-radius:6px;box-shadow:inset 3px 0 0 rgba(255,255,255,.75);
-  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.14) 0 6px,transparent 6px 12px)}
-.pp-fait{position:absolute;right:3px;bottom:8px;font-size:.56rem;font-weight:700;line-height:1.3;background:rgba(255,255,255,.92);color:var(--navy);padding:0 4px;border-radius:6px;pointer-events:none}
-.pp-conflit{opacity:.42;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.4) 0 4px,transparent 4px 9px)}
+.pp-routine:hover{filter:brightness(1.05);z-index:2}
+.pp-evenement{border-radius:12px;border-width:2px;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.3) 0 6px,transparent 6px 12px)}
+.pp-fait{position:absolute;right:3px;bottom:8px;font-size:.56rem;font-weight:700;line-height:1.3;background:#fff;color:var(--ink);border:1.5px solid var(--ink);padding:0 4px;border-radius:99px;pointer-events:none}
+.pp-conflit{opacity:.45;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.5) 0 4px,transparent 4px 9px)}
 .pp-conflit .pp-nom{text-decoration:line-through}
-.pp-badge{position:absolute;z-index:4;top:calc(var(--s) * var(--k) * 1px - 7px);left:calc(5px + (100% - 6px) * var(--lane) / var(--lanes));
-  font-size:.58rem;font-weight:700;background:var(--red);color:#fff;padding:1px 5px;border-radius:8px;white-space:nowrap;pointer-events:none}
-.pp-poignee{position:absolute;left:0;right:0;bottom:0;height:6px;cursor:ns-resize;background:rgba(0,0,0,.18);touch-action:none}
+.pp-badge{position:absolute;z-index:4;top:calc(var(--s) * var(--k) * 1px - 8px);left:calc(5px + (100% - 6px) * var(--lane) / var(--lanes));
+  font-size:.58rem;font-weight:700;background:var(--pink);color:#fff;border:1.5px solid var(--ink);padding:0 6px;border-radius:99px;white-space:nowrap;pointer-events:none}
+.pp-poignee{position:absolute;left:0;right:0;bottom:0;height:6px;cursor:ns-resize;background:rgba(27,19,64,.22);touch-action:none}
 .pp-coupe{position:absolute;right:3px;top:1px;font-size:.55rem;font-weight:700}
 .pp-coupe-bas{top:auto;bottom:6px}
-.pp-cours{z-index:3;left:3px;right:3px;background:var(--navy);color:#fff;cursor:default;box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.pp-cours{z-index:3;left:3px;right:3px;background:var(--ink);color:#fff;cursor:default}
 .pp-decale{left:22%}
-.pp-preply{box-shadow:inset 0 -3px 0 var(--gold)}
-.pp-src{display:inline-block;margin-left:4px;padding:0 4px;border-radius:2px;background:var(--gold);color:var(--navy);font-size:.52rem;letter-spacing:.06em;text-transform:uppercase}
+.pp-preply{box-shadow:inset 0 -3px 0 var(--lemon)}
+.pp-src{display:inline-block;margin-left:4px;padding:0 5px;border-radius:99px;background:var(--lemon);color:var(--ink);font-family:Inter,sans-serif;font-size:.5rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 
-.pp-panneau{padding:18px 20px}
-.pp-panneau h2{font-family:Fraunces,Georgia,serif;font-size:1.05rem;margin:0 0 4px}
-.pp-resume{display:grid;gap:2px;margin:0 0 16px;padding:9px 11px;background:#fff;border:1px solid var(--border);border-left:3px solid #3f7d5c;font-size:.76rem}
-.pp-resume b{font-size:.8rem}
-.pp-resume span{color:var(--soft)}
-.pp-resume a{color:var(--navy);font-weight:600;font-size:.74rem}
-.pp-sous{font-size:.72rem;color:var(--soft);margin:0 0 14px}
-.pp-vide{font-size:.8rem;color:var(--soft)}
+/* ---------- panneau ---------- */
+.pp-panneau{background:#fff;border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:16px 18px}
+.pp-panneau h2,.pp-bilan-tete h2{display:flex;align-items:center;gap:10px;font-family:var(--titre);font-size:1.25rem;font-weight:800;letter-spacing:-.02em;margin:0 0 4px}
+.pp-h2-hex{width:22px;height:26px;flex:none;rotate:-12deg;filter:drop-shadow(1.5px 2px 0 var(--ink))}
+.pp-resume{display:grid;gap:2px;margin:0 0 16px;padding:10px 12px;background:var(--lime);border:2.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 var(--ink);font-size:.78rem}
+.pp-resume b{font-family:var(--titre);font-size:.95rem;font-weight:800}
+.pp-resume a{color:var(--ink);font-weight:700;font-size:.76rem}
+.pp-sous{font-size:.74rem;color:var(--soft);margin:0 0 14px;line-height:1.45}
+.pp-vide{font-size:.82rem;color:var(--soft)}
 .pp-arrondi{display:block;margin:0 0 14px}
-.pp-arrondi>span{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:5px}
-.pp-arrondi select{background:#fff;padding:6px 8px;font-size:.8rem}
-.pp-arrondi small{display:block;font-size:.68rem;color:var(--soft);margin-top:5px;line-height:1.35}
+.pp-arrondi>span{display:block;font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-bottom:5px}
+.pp-arrondi select{padding:6px 8px;font-size:.8rem}
+.pp-arrondi small{display:block;font-size:.7rem;color:var(--soft);margin-top:5px;line-height:1.35}
 .pp-arrondi-impression{display:none}
-.pp-quota{padding:11px 0;border-top:1px solid var(--border)}
-.pp-quota-tete{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.86rem}
-.pp-pastille-couleur{width:12px;height:12px;border-radius:3px;flex:none}
+.pp-quota{padding:12px 0;border-top:2px dashed var(--ligne-h)}
+.pp-quota-tete{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.88rem}
+.pp-pastille-couleur{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--ink);flex:none}
 .pp-quota-nom{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pp-quota-obj{font-size:.72rem;color:var(--soft);font-weight:500}
-.pp-crayon{border:none;background:none;color:var(--soft);font-size:.9rem;padding:0 2px}
-.pp-jauge{height:7px;background:var(--cream-dark);margin:8px 0 6px;position:relative;overflow:hidden}
-.pp-jauge i{position:absolute;left:0;top:0;bottom:0}
-.pp-chiffres{display:flex;justify-content:space-between;font-size:.74rem}
-.pp-reste{font-weight:600}
-.pp-depasse{color:var(--red);font-weight:700}
-.pp-deplace{margin-top:5px;font-size:.7rem;color:#8a6614;background:#fdf6e6;border-left:2px solid var(--gold);padding:3px 7px}
-.pp-legende{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:.7rem;color:var(--soft);display:grid;gap:6px}
-.pp-legende span{display:flex;align-items:center;gap:7px}
-.pp-legende i{width:16px;height:11px;display:inline-block;border-radius:2px}
-.pp-legende-conflit{background:#3f7d5c;opacity:.42;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.4) 0 3px,transparent 3px 7px)}
-.pp-legende-evenement{background:#546e7a;border-radius:4px !important;box-shadow:inset 2px 0 0 rgba(255,255,255,.75)}
-.pp-legende-fait{font-size:.6rem;background:#fff;border:1px solid var(--border);color:var(--navy);padding:0 4px;border-radius:6px}
+.pp-quota-obj{font-size:.72rem;color:var(--soft);font-weight:600}
+.pp-crayon{border:none;background:none;color:var(--ink);font-size:.95rem;padding:0 2px}
+.pp-jauge{height:11px;background:#fff;border:2px solid var(--ink);border-radius:99px;margin:8px 0 6px;position:relative;overflow:hidden}
+.pp-jauge i{position:absolute;left:0;top:0;bottom:0;border-right:2px solid var(--ink)}
+.pp-chiffres{display:flex;justify-content:space-between;font-size:.76rem}
+.pp-reste{font-weight:700}
+.pp-depasse{color:var(--rose);font-weight:800}
+.pp-deplace{margin-top:6px;font-size:.72rem;background:#fff4c2;border:1.5px solid var(--ink);border-radius:8px;padding:3px 8px}
+.pp-legende{margin-top:14px;padding-top:12px;border-top:2px dashed var(--ligne-h);font-size:.72rem;color:var(--soft);display:grid;gap:7px}
+.pp-legende span{display:flex;align-items:center;gap:8px}
+.pp-legende i{width:18px;height:12px;display:inline-block;border-radius:4px;border:1.5px solid var(--ink);flex:none}
+.pp-legende-conflit{background:#c8f560;opacity:.5;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.55) 0 3px,transparent 3px 7px)}
+.pp-legende-evenement{background:#b197fc;border-radius:7px !important;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 3px,transparent 3px 6px)}
+.pp-legende-fait{font-size:.6rem;background:#fff;border:1.5px solid var(--ink);color:var(--ink);padding:0 5px;border-radius:99px;white-space:nowrap}
 
 /* ---------- bilan heure par heure ---------- */
-.pp-bilan{padding:20px 22px 34px;border-top:3px solid var(--navy);scroll-margin-top:10px}
+.pp-bilan{margin:0 22px 34px;background:#fff;border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:18px 20px 22px;scroll-margin-top:90px}
 .pp-bilan-tete{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;margin-bottom:14px}
-.pp-bilan-tete h2{font-family:Fraunces,Georgia,serif;font-size:1.15rem;margin:0}
-.pp-bilan-semaine{font-weight:600;font-size:.84rem}
-.pp-bilan-tete p{flex-basis:100%;margin:2px 0 0;font-size:.74rem;color:var(--soft)}
-.pp-bilan-jours{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;align-items:start}
-.pp-bilan-jour{background:#fff;border:1px solid var(--border);border-top:3px solid var(--navy);padding:10px 12px;break-inside:avoid}
-.pp-bilan-jour h3{font-family:Fraunces,Georgia,serif;font-size:.92rem;margin:0 0 4px}
-.pp-bilan-ligne{display:grid;grid-template-columns:88px minmax(0,1fr);gap:2px 10px;padding:6px 0;border-top:1px dashed #e6dfd2;font-size:.8rem;break-inside:avoid}
+.pp-bilan-tete h2{margin:0;align-self:center}
+.pp-bilan-semaine{font-weight:700;font-size:.86rem;padding:2px 10px;border:2px solid var(--ink);border-radius:99px;background:var(--lemon)}
+.pp-bilan-tete p{flex-basis:100%;margin:4px 0 0;font-size:.76rem;color:var(--soft)}
+.pp-bilan-jours{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;align-items:start}
+.pp-bilan-jour{background:#fff;border:2.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 var(--ink);overflow:hidden}
+.pp-bilan-jour h3{font-family:var(--titre);font-size:1rem;font-weight:800;margin:0;padding:7px 12px;background:var(--lime);border-bottom:2.5px solid var(--ink)}
+.pp-bilan-ligne{display:grid;grid-template-columns:88px minmax(0,1fr);gap:2px 10px;padding:8px 12px;border-top:1.5px dashed var(--ligne-h);font-size:.82rem;break-inside:avoid}
 .pp-bilan-jour h3+.pp-bilan-ligne{border-top:none}
 .pp-bilan-h{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
-.pp-bilan-titre{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;font-weight:600;min-width:0}
-.pp-bilan-titre i{width:10px;height:10px;border-radius:2px;flex:none;display:inline-block}
+.pp-bilan-titre{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;font-weight:700;min-width:0}
+.pp-bilan-titre i{width:12px;height:12px;border-radius:4px;border:1.5px solid var(--ink);flex:none;display:inline-block}
 .pp-bilan-titre small{font-weight:500;color:var(--soft);font-size:.68rem}
-.pp-bilan-cours{color:var(--soft);font-weight:500}
+.pp-bilan-cours{color:var(--soft);font-weight:600}
 .pp-bilan-ouvrir{border:none;background:none;padding:0;font:inherit;color:inherit;text-align:left;display:inline-flex;align-items:center;gap:6px}
 .pp-bilan-ouvrir:hover span{text-decoration:underline}
-.pp-bilan-ligne ul{grid-column:2;margin:3px 0 0;padding-left:17px}
+.pp-bilan-ligne ul{grid-column:2;margin:4px 0 0;padding-left:18px}
 .pp-bilan-ligne li{margin:1px 0;line-height:1.4;overflow-wrap:anywhere}
-.pp-a-completer{grid-column:2;justify-self:start;margin-top:3px;border:1px dashed var(--gold);background:#fdf6e6;color:#8a6614;font-size:.68rem;font-weight:700;padding:1px 8px}
+.pp-bilan-notes{grid-column:2;margin-top:6px;padding:7px 11px;background:var(--bg);border-left:4px solid var(--violet);border-radius:0 10px 10px 0}
+.pp-bilan-notes p{margin:0;white-space:pre-line;line-height:1.5;overflow-wrap:anywhere}
+.pp-bilan-notes p+p{margin-top:7px}
+.pp-a-completer{grid-column:2;justify-self:start;margin-top:4px;border:1.5px dashed var(--ink);background:var(--lemon);color:var(--ink);font-size:.68rem;font-weight:700;padding:1px 9px;border-radius:99px}
 
 .pp-mobile{display:none}
 
-.pp-voile{position:fixed;inset:0;z-index:50;background:rgba(13,43,69,.35);display:grid;place-items:center;padding:16px}
-.pp-dlg{background:#fff;border:1px solid var(--border);border-top:3px solid var(--navy);width:100%;max-width:420px;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 12px 32px rgba(13,43,69,.2)}
-.pp-dlg h3{font-family:Fraunces,Georgia,serif;font-size:1.02rem;margin:0 0 12px}
-.pp-onglets{display:flex;margin:0 0 14px;border:1.5px solid var(--navy)}
-.pp-onglets button{flex:1;border:none;background:#fff;color:var(--navy);padding:7px 6px;font-weight:600;font-size:.8rem}
-.pp-onglets button.pp-on{background:var(--navy);color:#fff}
+/* ---------- fenêtres ---------- */
+.pp-voile{position:fixed;inset:0;z-index:50;background:rgba(27,19,64,.42);display:grid;place-items:center;padding:16px}
+.pp-dlg{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);width:100%;max-width:440px;max-height:92vh;overflow:auto;padding:20px 22px}
+.pp-dlg-large{max-width:640px}
+.pp-dlg h3{font-family:var(--titre);font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin:0 0 12px}
+.pp-onglets{display:flex;gap:3px;margin:0 0 14px;padding:3px;border:2.5px solid var(--ink);border-radius:99px;box-shadow:2px 2px 0 var(--ink)}
+.pp-onglets button{flex:1;border:none;background:none;color:var(--ink);padding:6px;border-radius:99px;font-weight:700;font-size:.8rem}
+.pp-onglets button.pp-on{background:var(--ink);color:#fff}
 .pp-champ{margin-bottom:12px}
-.pp-champ>label{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:5px}
-.pp-inp{width:100%;border:1.5px solid var(--border);padding:7px 10px;font:500 .86rem Inter,system-ui,sans-serif;background:var(--cream);color:var(--navy)}
-.pp-lecture{color:var(--soft)}
+.pp-champ>label:not(.pp-radio),.pp-section-tete label{display:block;font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-bottom:5px}
+.pp-inp{width:100%;border:2px solid var(--ink);border-radius:10px;padding:8px 11px;font:500 .88rem Inter,system-ui,sans-serif;background:#fff;color:var(--ink)}
+.pp-lecture{color:var(--soft);background:var(--bg)}
 .pp-deux{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pp-horaires{display:grid;grid-template-columns:1fr;gap:0}
 .pp-puces{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.pp-puce{border:1.5px solid var(--border);padding:5px 10px;font-size:.78rem;font-weight:600;background:var(--cream);color:var(--navy)}
-.pp-puce.pp-on{border-color:var(--navy);background:var(--navy);color:#fff}
+.pp-puce{border:2px solid var(--ink);padding:5px 11px;border-radius:99px;font-size:.78rem;font-weight:700;background:#fff;color:var(--ink)}
+.pp-puce.pp-on{background:var(--ink);color:#fff}
 .pp-libre{font-size:.78rem;color:var(--soft);display:flex;align-items:center;gap:4px}
-.pp-libre input{width:64px;border:1.5px solid var(--border);padding:4px 6px;font:500 .8rem Inter,system-ui,sans-serif}
-.pp-radio{display:flex;gap:8px;align-items:flex-start;font-size:.82rem;margin-bottom:7px;line-height:1.35;cursor:pointer}
-.pp-radio input{margin-top:3px;accent-color:var(--navy)}
-.pp-radio small{display:block;color:var(--soft);font-size:.7rem}
-.pp-couleurs{display:flex;gap:8px;flex-wrap:wrap}
-.pp-couleurs button{width:24px;height:24px;border-radius:50%;border:none}
-.pp-couleurs button.pp-on{outline:2px solid var(--navy);outline-offset:2px}
-.pp-info-dlg{font-size:.76rem;color:var(--soft);background:var(--cream);padding:8px 10px;margin:0 0 12px;border-left:3px solid var(--gold)}
-.pp-journal-zone{padding-top:12px;border-top:1px solid var(--border)}
-.pp-note-dlg{font-size:.72rem;color:var(--soft);margin:0 0 6px}
-.pp-journal{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:4px}
-.pp-journal li{display:flex;gap:8px;align-items:flex-start;background:var(--cream);border-left:3px solid #3f7d5c;padding:5px 8px;font-size:.82rem;line-height:1.35}
+.pp-libre input{width:66px;border:2px solid var(--ink);border-radius:8px;padding:4px 6px;font:500 .8rem Inter,system-ui,sans-serif}
+.pp-radio{display:flex;gap:8px;align-items:flex-start;font-size:.84rem;margin-bottom:7px;line-height:1.35;cursor:pointer}
+.pp-radio input{margin-top:3px;accent-color:var(--violet)}
+.pp-radio small{display:block;color:var(--soft);font-size:.72rem}
+.pp-couleurs{display:flex;gap:9px;flex-wrap:wrap}
+.pp-couleurs button{width:28px;height:28px;border-radius:50%;border:2px solid var(--ink)}
+.pp-couleurs button.pp-on{outline:3px solid var(--violet);outline-offset:2px}
+.pp-info-dlg{font-size:.78rem;color:var(--soft);background:var(--bg);padding:8px 11px;margin:0 0 12px;border:2px solid var(--ink);border-left:6px solid var(--violet);border-radius:10px}
+.pp-journal-zone{margin:14px 0 0;padding:12px 14px;border:2.5px solid var(--ink);border-radius:14px;background:#fbfff0}
+.pp-notes-zone{background:#f6f2ff}
+.pp-section-tete{display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap;margin-bottom:6px}
+.pp-section-tete label{font-family:var(--titre);font-size:1.02rem;font-weight:800;letter-spacing:-.01em;text-transform:none;color:var(--ink);margin:0}
+.pp-section-tete small{font-size:.72rem;color:var(--soft)}
+.pp-note-dlg{font-size:.74rem;color:var(--soft);margin:0 0 6px}
+.pp-journal{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:5px}
+.pp-journal li{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1.5px solid var(--ink);border-left:6px solid var(--lime);border-radius:8px;padding:5px 8px;font-size:.84rem;line-height:1.35}
 .pp-journal li span{flex:1;min-width:0;overflow-wrap:anywhere}
-.pp-journal li button{border:none;background:none;color:var(--soft);font-size:1.05rem;line-height:1;padding:0 2px}
+.pp-journal li button{border:none;background:none;color:var(--ink);font-size:1.1rem;line-height:1;padding:0 2px}
 .pp-journal-ajout{display:flex;gap:6px}
 .pp-journal-ajout .pp-btn{flex:none}
-.pp-erreur-dlg{font-size:.76rem;color:var(--red);margin:0 0 8px}
-.pp-act{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}
+.pp-notes{min-height:190px;resize:vertical;line-height:1.6;font-size:.92rem}
+.pp-compteur{display:block;text-align:right;font-size:.7rem;color:var(--soft);margin-top:4px}
+.pp-erreur-dlg{font-size:.78rem;font-weight:600;color:var(--rose);margin:10px 0 0}
+.pp-act{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+
+@media (prefers-reduced-motion:reduce){.pp-btn{transition:none}}
+
+/* ---------- tablette ---------- */
+@media (max-width:1100px){
+  .pp-corps{grid-template-columns:minmax(0,1fr) 260px;gap:16px}
+  .pp-titre-semaine{min-width:0}
+}
 
 /* ---------- mobile : liste par jour ---------- */
 @media (max-width:720px){
-  .pp-barre{padding:12px 14px;gap:8px}
-  .pp-barre h1{flex-basis:100%;font-size:1.15rem}
+  .pp-barre{position:static;padding:12px 14px;gap:8px}
+  .pp-logo{flex-basis:100%}
+  .pp-barre h1{font-size:1.25rem}
   .pp-semaine{flex-basis:100%;justify-content:space-between}
-  .pp-titre-semaine{min-width:0;font-size:.82rem}
+  .pp-titre-semaine{font-size:.86rem}
   .pp-barre .pp-btn{flex:1 1 40%;padding:8px 6px;font-size:.74rem}
-  .pp-corps{grid-template-columns:1fr}
+  .pp-messages{padding:12px 12px 0}
+  .pp-corps{grid-template-columns:1fr;padding:12px;gap:14px}
   .pp-grille-zone{display:none}
   .pp-mobile{display:block;position:relative;padding-bottom:70px}
-  .pp-panneau{border-top:1px solid var(--border)}
-  .pp-jours{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:10px 12px;border-bottom:1px solid var(--border)}
-  .pp-jours button{border:1px solid var(--border);background:#fff;color:var(--navy);padding:6px 0;font-size:.64rem;font-weight:600}
-  .pp-jours button b{display:block;font-family:Fraunces,Georgia,serif;font-size:.95rem}
-  .pp-jours button.pp-auj{color:var(--red)}
-  .pp-jours button.pp-on{background:var(--navy);color:#fff;border-color:var(--navy)}
-  .pp-liste{padding:10px 12px;display:grid;gap:8px}
-  .pp-item{width:100%;display:flex;gap:10px;text-align:left;background:#fff;border:1px solid var(--border);border-left:5px solid var(--border);padding:9px 10px;color:var(--navy);font:inherit}
-  .pp-item-h{font-size:.72rem;font-weight:700;min-width:84px}
-  .pp-item b{display:block;font-size:.86rem}
-  .pp-item span{display:block;font-size:.7rem;color:var(--soft)}
-  .pp-item em{display:block;font-style:normal;font-size:.68rem;font-weight:700;color:var(--red);margin-top:2px}
-  .pp-item em.pp-item-fait{color:#2e6b4a}
-  .pp-item-cours{background:var(--navy);color:#fff;border-color:var(--navy)}
-  .pp-item-cours span{color:rgba(255,255,255,.72)}
+  .pp-jours{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:0 0 10px}
+  .pp-jours button{border:2px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);padding:5px 0;font-size:.62rem;font-weight:700;text-transform:uppercase}
+  .pp-jours button b{display:block;font-family:var(--titre);font-size:1rem;font-weight:800}
+  .pp-jours button.pp-auj{background:var(--lime)}
+  .pp-jours button.pp-on{background:var(--ink);color:#fff}
+  .pp-liste{display:grid;gap:8px}
+  .pp-item{width:100%;display:flex;gap:10px;text-align:left;background:#fff;border:2px solid var(--ink);border-left:8px solid var(--ink);border-radius:12px;padding:9px 10px;color:var(--ink);font:inherit;box-shadow:2px 2px 0 var(--ink)}
+  .pp-item-h{font-size:.74rem;font-weight:700;min-width:84px}
+  .pp-item b{display:block;font-family:var(--titre);font-size:.95rem;font-weight:800}
+  .pp-item span{display:block;font-size:.72rem;color:var(--soft)}
+  .pp-item em{display:block;font-style:normal;font-size:.7rem;font-weight:700;color:var(--rose);margin-top:2px}
+  .pp-item em.pp-item-fait{color:#2d7a3e}
+  .pp-item-cours{background:var(--ink);color:#fff}
+  .pp-item-cours span{color:rgba(255,255,255,.75)}
   .pp-item-conflit b{text-decoration:line-through;opacity:.6}
-  .pp-fab{position:absolute;right:14px;bottom:10px;width:50px;height:50px;border-radius:50%;border:none;background:var(--navy);color:#fff;font-size:1.6rem;box-shadow:3px 3px 0 var(--gold)}
-  .pp-bilan{padding:16px 12px 28px}
+  .pp-fab{position:absolute;right:6px;bottom:6px;width:54px;height:54px;border-radius:50%;border:3px solid var(--ink);background:var(--pink);color:#fff;font-size:1.7rem;font-weight:700;box-shadow:3px 3px 0 var(--ink)}
+  .pp-bilan{margin:0 12px 24px;padding:14px 12px 16px}
   .pp-bilan-jours{grid-template-columns:minmax(0,1fr)}
   .pp-bilan-ligne{grid-template-columns:78px minmax(0,1fr)}
+  .pp-dlg{padding:16px 16px}
 }
 
 /* ---------- impression : page 1 = semaine en A4 paysage, pages suivantes = bilan ---------- */
@@ -1367,35 +1483,41 @@ const CSS = `
   .pp{min-height:0;font-size:10px;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff}
   .pp-barre,.pp-messages,.pp-mobile,.pp-voile,.pp-crayon,.pp-poignee,.pp-arrondi,.pp-resume,.pp-a-completer{display:none !important}
   .pp-arrondi-impression{display:block;font-size:8.5px;color:var(--soft);margin:-8px 0 6px}
-  .pp-filet{order:0}
-  .pp-impression-titre{display:block;font-family:Inter,system-ui,sans-serif;font-size:11px;padding:0 0 4px;border-bottom:2px solid var(--navy);margin-bottom:0}
-  .pp-impression-titre strong{font-family:Fraunces,Georgia,serif}
-  .pp-corps{display:grid !important;grid-template-columns:minmax(0,1fr) 62mm !important}
-  .pp-grille-zone{display:block !important;padding:4px 6px 0 0}
+  .pp-impression-titre{display:block;font-family:var(--titre);font-size:12px;font-weight:600;padding:0 0 4px;border-bottom:2px solid var(--ink)}
+  .pp-impression-titre strong{font-weight:800}
+  .pp-corps{display:grid !important;grid-template-columns:minmax(0,1fr) 62mm !important;gap:0;padding:0}
+  .pp-grille-zone{display:block !important;padding:4px 6px 0 0;border:none;border-radius:0;box-shadow:none}
   .pp-grille{--k:.66 !important}
-  .pp-entetes>div{padding:2px 0 4px;font-size:9px}
-  .pp-entetes b{font-size:12px}
-  .pp-bloc{font-size:8px;padding:1px 3px}
+  .pp-entetes>div{padding:2px 0 3px;font-size:8px;gap:0}
+  .pp-entetes b{font-size:11px;padding:0 5px;border-width:1.5px}
+  .pp-entetes .pp-auj b{box-shadow:none}
+  .pp-bloc{font-size:8px;padding:1px 3px;border-width:1px;border-radius:4px}
   .pp-heure{font-size:7px}
-  .pp-badge{font-size:7px}
-  .pp-fait{font-size:6.5px;bottom:2px}
-  .pp-panneau{display:block !important;padding:6px 3mm 0 8px;border-top:none !important;min-width:0;overflow:hidden}
-  .pp-chiffres{flex-wrap:wrap;gap:0 6px}
+  .pp-badge{font-size:7px;border-width:1px}
+  .pp-fait{font-size:6.5px;bottom:2px;border-width:1px}
+  .pp-panneau{display:block !important;padding:6px 3mm 0 8px;border:none;border-radius:0;box-shadow:none;min-width:0;overflow:hidden}
   .pp-panneau h2{font-size:12px}
+  .pp-h2-hex{width:12px;height:14px}
   .pp-sous{font-size:8px;margin-bottom:8px}
+  .pp-chiffres{flex-wrap:wrap;gap:0 6px}
   .pp-quota{padding:6px 0;break-inside:avoid}
   .pp-quota-tete{font-size:10px}
+  .pp-jauge{height:7px;border-width:1.5px;margin:4px 0}
   .pp-chiffres,.pp-deplace,.pp-legende{font-size:8.5px}
-  .pp-bilan{break-before:page;border-top:2px solid var(--navy);padding:4px 0 0}
+  .pp-legende i{border-width:1px}
+  .pp-bilan{break-before:page;margin:0;padding:4px 0 0;border:none;border-top:2px solid var(--ink);border-radius:0;box-shadow:none}
   .pp-bilan-tete{margin-bottom:6px}
   .pp-bilan-tete h2{font-size:13px}
-  .pp-bilan-semaine{font-size:10px}
+  .pp-bilan-semaine{font-size:9px;padding:0 6px;border-width:1.5px}
   .pp-bilan-tete p{display:none}
   .pp-bilan-jours{display:block;column-count:3;column-gap:5mm}
-  .pp-bilan-jour{margin:0 0 4mm;padding:5px 7px;border-color:#cfc8bb}
-  .pp-bilan-jour h3{font-size:10px}
-  .pp-bilan-ligne{grid-template-columns:58px minmax(0,1fr);font-size:8.5px;padding:3px 0;gap:1px 6px}
+  .pp-bilan-jour{margin:0 0 4mm;border-width:1.5px;border-radius:6px;box-shadow:none;break-inside:auto}
+  .pp-bilan-jour h3{font-size:10px;padding:3px 7px;border-bottom-width:1.5px;break-after:avoid}
+  .pp-bilan-ligne{grid-template-columns:58px minmax(0,1fr);font-size:8.5px;padding:3px 7px;gap:1px 6px}
   .pp-bilan-titre small{font-size:7px}
+  .pp-bilan-titre i{width:8px;height:8px;border-width:1px}
+  .pp-bilan-notes{padding:3px 6px;border-left-width:2.5px;margin-top:3px}
+  .pp-bilan-notes p+p{margin-top:3px}
   .pp-bilan-ouvrir{cursor:default}
 }
 `;

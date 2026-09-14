@@ -54,10 +54,10 @@ export type PlanningEvent = {
 };
 
 /**
- * Bilan d'un créneau : « ce que j'ai fait ».
+ * Bilan d'un créneau : « ce que j'ai fait » (liste courte) et journal libre (plusieurs paragraphes possibles).
  * ref = « e:<idÉvénement> » pour un événement, « r:<idCréneau>:<lundi> » pour une occurrence de routine.
  */
-export type JournalEntry = { ref: string; items: string[] };
+export type JournalEntry = { ref: string; items: string[]; notes?: string };
 
 /** Pas d'arrondi du décompte : 0 = minutes exactes. */
 export type RoundingMin = 0 | 15 | 30;
@@ -92,14 +92,18 @@ export const ROUNDING_OPTIONS: Array<{ value: RoundingMin; label: string }> = [
 export const DAY_START_MIN = 7 * 60;
 export const DAY_END_MIN = 22 * 60;
 export const WEEKDAY_NAMES = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-export const ROUTINE_COLORS = ['#3f7d5c', '#c9972a', '#7b3f9d', '#1f7a8c', '#b5543a', '#8d6e63', '#5c6bc0', '#2e8b57'];
-export const EVENT_COLORS = ['#546e7a', '#c2185b', '#00897b', '#ef6c00', '#3949ab', '#6d4c41'];
+// couleurs du style acidulé ; les routines existantes gardent la couleur enregistrée
+export const ROUTINE_COLORS = ['#c8f560', '#ff5fa2', '#3ee0c6', '#ffe45c', '#ff8a3d', '#7c5cff', '#4dabf7', '#2fbf71'];
+export const EVENT_COLORS = ['#b197fc', '#4dabf7', '#ff8a3d', '#3ee0c6', '#ff5fa2', '#ffe45c'];
 
 /** Durée de conservation des semaines passées (événements, bilans, créneaux terminés). */
 export const RETENTION_WEEKS = 52;
 export const EVENT_TITLE_MAX = 80;
 export const JOURNAL_ITEM_MAX = 200;
 export const JOURNAL_MAX_ITEMS = 30;
+/** Journal libre d'un créneau, et total pour tout le planning (le document Redis doit rester léger). */
+export const JOURNAL_NOTES_MAX = 10000;
+export const JOURNAL_NOTES_TOTAL_MAX = 600000;
 
 /* ======================= dates ======================= */
 // Dates en chaînes AAAA-MM-JJ, calculées en UTC : les changements d'heure n'ont aucun effet.
@@ -335,11 +339,29 @@ export function journalItems(planning: Planning, ref: string): string[] {
   return (planning.journal ?? []).find((j) => j.ref === ref)?.items ?? [];
 }
 
-/** Remplace la liste « ce que j'ai fait » d'un créneau ; une liste vide efface le bilan. */
-export function setJournal(p: Planning, ref: string, items: string[]): Planning {
+/** Journal libre d'un créneau (chaîne vide s'il n'y a rien). */
+export function journalNotes(planning: Planning, ref: string): string {
+  return (planning.journal ?? []).find((j) => j.ref === ref)?.notes ?? '';
+}
+
+/** Fins de ligne unifiées, espaces de fin retirés, au plus une ligne vide entre deux paragraphes. */
+export function normalizeNotes(text: string): string {
+  return text.replace(/\r\n?/g, '\n').replace(/[ \t]+$/gm, '').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+/**
+ * Remplace le bilan d'un créneau. `notes` absent : le journal existant est conservé.
+ * Liste et journal vides : le bilan est effacé.
+ */
+export function setJournal(p: Planning, ref: string, items: string[], notes?: string): Planning {
   const clean = items.map((s) => s.trim()).filter(Boolean);
+  const previous = (p.journal ?? []).find((j) => j.ref === ref);
+  const text = normalizeNotes(notes ?? previous?.notes ?? '');
   const others = (p.journal ?? []).filter((j) => j.ref !== ref);
-  return { ...p, journal: clean.length ? [...others, { ref, items: clean }] : others };
+  if (!clean.length && !text) return { ...p, journal: others };
+  const entry: JournalEntry = { ref, items: clean };
+  if (text) entry.notes = text;
+  return { ...p, journal: [...others, entry] };
 }
 
 /* ======================= quotas ======================= */
@@ -627,22 +649,33 @@ export function validatePlanning(raw: unknown): Result {
   const eventIds = new Set(events.map((e) => e.id));
 
   const journal: JournalEntry[] = [];
+  let totalNotes = 0;
   for (const j of journalIn as Record<string, unknown>[]) {
     const ref = parseRef(j?.ref);
-    if (!ref || !Array.isArray(j.items)) return { ok: false, error: 'Bilan invalide.' };
-    if (j.items.length > JOURNAL_MAX_ITEMS) return { ok: false, error: `Bilan trop long (${JOURNAL_MAX_ITEMS} lignes au plus).` };
+    const itemsIn = j?.items ?? [];
+    if (!ref || !Array.isArray(itemsIn)) return { ok: false, error: 'Bilan invalide.' };
+    if (itemsIn.length > JOURNAL_MAX_ITEMS) return { ok: false, error: `Bilan trop long (${JOURNAL_MAX_ITEMS} lignes au plus).` };
     const items: string[] = [];
-    for (const item of j.items) {
+    for (const item of itemsIn) {
       if (typeof item !== 'string') return { ok: false, error: 'Bilan invalide.' };
       const text = item.trim();
       if (text.length > JOURNAL_ITEM_MAX) return { ok: false, error: `Ligne de bilan trop longue (${JOURNAL_ITEM_MAX} caractères au plus).` };
       if (text) items.push(text);
     }
+    if (j.notes !== undefined && typeof j.notes !== 'string') return { ok: false, error: 'Journal invalide.' };
+    const notes = normalizeNotes((j.notes as string | undefined) ?? '');
+    if (notes.length > JOURNAL_NOTES_MAX) return { ok: false, error: `Journal trop long (${JOURNAL_NOTES_MAX.toLocaleString('fr-FR')} caractères au plus par créneau).` };
     // bilan d'un créneau ou d'un événement disparu, ou vide : simplement ignoré
     const alive = ref.kind === 'e' ? eventIds.has(ref.eventId) : slotIds.has(ref.slotId);
-    if (!alive || items.length === 0) continue;
+    if (!alive || (items.length === 0 && !notes)) continue;
     if (journal.some((x) => x.ref === j.ref)) return { ok: false, error: 'Bilan en double pour un même créneau.' };
-    journal.push({ ref: j.ref as string, items });
+    totalNotes += notes.length;
+    if (totalNotes > JOURNAL_NOTES_TOTAL_MAX) {
+      return { ok: false, error: 'Le journal a atteint sa taille maximale : raccourcissez d’anciennes notes avant d’en ajouter.' };
+    }
+    const entry: JournalEntry = { ref: j.ref as string, items };
+    if (notes) entry.notes = notes;
+    journal.push(entry);
   }
 
   const settings: PlanningSettings = { countRoundingMin };
