@@ -68,6 +68,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://frenchwithalban.com/genre_terminaison.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
       <loc>https://frenchwithalban.com/salutations.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
