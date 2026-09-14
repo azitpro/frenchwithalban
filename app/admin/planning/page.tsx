@@ -323,7 +323,18 @@ export default function PlanningPersonnel() {
   }
 
   /* ---------- rendu ---------- */
-  if (loading) return <div className="pp"><style>{CSS}</style><p className="pp-etat">Chargement du planning…</p></div>;
+  if (loading) {
+    // même écran de chargement que la page publique des créneaux
+    return (
+      <div className="pp">
+        <style>{CSS}</style>
+        <div className="pp-chargement" role="status">
+          <HexDrapeau className="pp-chargement-hex" />
+          <span>Chargement du planning…</span>
+        </div>
+      </div>
+    );
+  }
   if (fatal) {
     return (
       <div className="pp">
@@ -1269,6 +1280,11 @@ const CSS = `
 .pp button{font-family:inherit;cursor:pointer}
 .pp :focus-visible{outline:3px solid var(--violet);outline-offset:2px}
 .pp-etat{padding:40px;text-align:center;color:var(--soft)}
+.pp-chargement{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+.pp-chargement-hex{width:54px;height:63px;animation:pp-tourne 1.1s cubic-bezier(.6,.05,.3,.95) infinite}
+.pp-chargement span{font-family:var(--titre);font-weight:700;font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;opacity:.6}
+@keyframes pp-tourne{to{rotate:360deg}}
+@media (prefers-reduced-motion:reduce){.pp-chargement-hex{animation-duration:3s}}
 
 /* ---------- barre du haut ---------- */
 .pp-barre{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;padding:12px 22px;background:rgba(255,255,255,.96);border-bottom:3px solid var(--ink)}
