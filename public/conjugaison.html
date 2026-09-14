@@ -6,366 +6,297 @@
 <title>Conjugaison — French with Alban</title>
 <meta name="description" content="Testez votre conjugaison : 28 verbes irréguliers français au présent, imparfait et passé composé. Exercice interactif noté, correction immédiate.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #faf7f2;
-  --cream-dark: #f0ece4;
-  --navy: #0d2b45;
-  --red: #c0392b;
-  --gold: #c9972a;
-  --border: #ddd8ce;
-  --text-soft: #666;
-  --green: #2e7d4f;
-  --green-soft: #e8f4ed;
-  --red-soft: #fbeae8;
-  --teal: #0d8f80;
-  --teal-soft: #e0f3f1;
-  --olive: #6f9e2f;
-  --olive-soft: #f0f5e8;
-  --orange: #d98218;
-  --orange-soft: #fdf3e3;
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --ok-fond: #ecffc4; --faux-fond: #ffe1ee; --demi-fond: #fff4c2; --rose-texte: #c81d64;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  min-height: 100vh;
-  background: #ffffff;
-  font-family: 'Inter', sans-serif;
-  color: var(--navy);
-  display: flex;
-  flex-direction: column;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre. Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). */
+.suite > :nth-child(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ (mêmes règles que les autres pages) ---------- */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
 }
 
-/* HEADER — identique aux autres pages ressources */
-header {
-  width: 100%;
-  padding: 28px 48px;
-    border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: #ffffff;
-  position: sticky; top: 0; z-index: 100;
-}
-.logo {
-  display: flex; align-items: center; gap: 12px;
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 600;
-  color: var(--navy); white-space: nowrap; text-decoration: none;
-}
-.logo .red { color: var(--red); }
-nav { display: flex; gap: 44px; }
-nav a {
-  font-size: 1.05rem; font-weight: 500;
-  color: var(--navy); text-decoration: none; transition: color 0.2s;
-}
-nav a:hover { color: var(--red); }
-
-.gold-line { height: 2px; background: var(--gold); }
-
-/* MAIN */
+/* ---------- MISE EN PAGE ---------- */
 main {
-  flex: 1; display: flex; justify-content: center;
-  padding: 48px 20px 64px;
+  flex: 1; padding: 40px 20px 72px;
+  background:
+    radial-gradient(circle at 6% 6%, rgba(200,245,96,.55) 0, transparent 26%),
+    radial-gradient(circle at 96% 20%, rgba(255,95,162,.26) 0, transparent 24%),
+    radial-gradient(circle at 4% 80%, rgba(62,224,198,.26) 0, transparent 24%),
+    radial-gradient(circle at 96% 92%, rgba(255,228,92,.42) 0, transparent 24%);
 }
-.app { width: 100%; max-width: 640px; }
+.app { width: 100%; max-width: 720px; margin: 0 auto; }
 
-/* MASTHEAD */
-.masthead {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 24px; padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
-.masthead h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.8rem; font-weight: 400; margin: 0; color: var(--navy);
-}
-.masthead .tag {
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--red);
-}
+/* ---------- EN-TÊTE DU TEST ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 18px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.pastille { display: inline-block; padding: 4px 13px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .76rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(odd) { rotate: -2.5deg; }
+.pastille:nth-child(even) { rotate: 2deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.6rem; line-height: 1; letter-spacing: -0.035em; margin-bottom: 14px; }
+h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; border-radius: 12px; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); display: inline-block; rotate: -2deg; }
+.lead { color: var(--soft); font-size: 1.08rem; margin-bottom: 28px; max-width: 580px; }
 
-/* CARD */
-.card {
-  background: var(--cream-dark);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--navy);
-  padding: 32px;
-}
+/* ---------- CARTE PRINCIPALE ---------- */
+.card { background: #fff; border: 3px solid var(--ink); border-radius: 24px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 32px 32px; }
+.section-label { font-family: 'Bricolage Grotesque', sans-serif; font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-bottom: 10px; }
 
-/* HOME */
-.home h2 {
-  font-family: 'Fraunces', serif; font-size: 1.2rem;
-  font-weight: 600; margin: 0 0 8px; color: var(--navy);
-}
-.home p.lede {
-  font-size: 0.88rem; line-height: 1.6; color: var(--text-soft);
-  font-weight: 300; margin: 0 0 24px;
-}
-.mode-choice {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;
-}
-.mode-btn {
-  border: 1.5px solid var(--navy); background: transparent;
-  padding: 16px 10px; text-align: center; cursor: pointer;
-  font-family: 'Inter', sans-serif; transition: all 0.15s;
-}
-.mode-btn .num {
-  display: block; font-family: 'DM Serif Display', serif;
-  font-size: 2rem; color: var(--navy);
-}
-.mode-btn .lbl {
-  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--text-soft);
-}
-.mode-btn:hover, .mode-btn.selected {
-  background: var(--navy); color: var(--cream);
-  box-shadow: 3px 3px 0 var(--red);
-}
-.mode-btn:hover .num, .mode-btn.selected .num { color: var(--cream); }
-.mode-btn:hover .lbl, .mode-btn.selected .lbl { color: var(--gold); }
+/* ---------- ÉCRAN D'ACCUEIL ---------- */
+.home h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.8rem; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 8px; }
+.home p.lede { color: var(--soft); font-size: .98rem; margin-bottom: 26px; }
+.mode-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 26px; }
+.mode-btn { display: flex; flex-direction: column; align-items: center; padding: 14px 10px 12px; background: #fff; border: 3px solid var(--ink); border-radius: 16px; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: translate .12s, box-shadow .12s, background .15s; }
+.mode-btn .num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.4rem; line-height: 1; }
+.mode-btn .lbl { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); margin-top: 4px; }
+.mode-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); background: var(--bg); }
+.mode-btn.selected { background: var(--lime); }
+.mode-btn.selected .lbl { color: var(--ink); }
 
-.section-label {
-  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--red); margin-bottom: 10px;
-}
+.tense-picker { margin-bottom: 26px; }
+.tense-choice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tense-btn { padding: 9px 6px; background: #fff; border: 2.5px solid var(--ink); border-radius: 99px; cursor: pointer; font-weight: 700; font-size: .88rem; transition: background .15s; }
+.tense-btn:hover:not(.selected) { background: var(--bg); }
+.tense-btn.selected { background: var(--ink); color: #fff; box-shadow: 3px 3px 0 var(--pink); }
+.tense-btn.selected::before { content: '✓ '; }
 
-/* TENSE PICKER */
-.tense-picker { margin-bottom: 24px; }
-.tense-choice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.tense-btn {
-  border: 1.5px solid var(--border); background: var(--cream);
-  padding: 11px 6px; text-align: center; cursor: pointer;
-  font-size: 0.76rem; font-weight: 500; color: var(--text-soft);
-  transition: all 0.15s;
-}
-.tense-btn.selected {
-  background: var(--navy); color: var(--cream); border-color: var(--navy);
-}
-.tense-btn:hover:not(.selected) { border-color: var(--navy); color: var(--navy); }
+.verb-picker { margin-bottom: 28px; }
+.verb-picker-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.verb-picker-toggle { padding: 2px 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--lemon); font-size: .8rem; font-weight: 700; cursor: pointer; }
+.verb-all-btn { width: 100%; text-align: left; padding: 12px 16px; background: var(--bg); border: 2.5px solid var(--ink); border-radius: 14px; font-size: .95rem; color: var(--soft); cursor: pointer; }
+.verb-all-btn b { color: var(--ink); font-weight: 700; }
+.verb-grid-wrap { border: 2.5px solid var(--ink); border-radius: 14px; padding: 12px 14px; background: var(--bg); }
+.verb-grid-actions { display: flex; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px dashed rgba(27,19,64,.25); }
+.verb-grid-actions button { padding: 1px 10px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .78rem; font-weight: 600; cursor: pointer; }
+.verb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px 10px; max-height: 250px; overflow-y: auto; }
+.verb-chip { display: flex; align-items: center; gap: 8px; padding: 5px 6px; border-radius: 8px; cursor: pointer; font-size: .92rem; font-weight: 500; }
+.verb-chip:hover { background: #fff; }
+.verb-chip input { accent-color: var(--violet); width: 16px; height: 16px; flex-shrink: 0; }
 
-/* VERB PICKER */
-.verb-picker { margin-bottom: 24px; }
-.verb-picker-head {
-  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
-}
-.verb-picker-toggle {
-  font-size: 0.74rem; color: var(--red); cursor: pointer;
-  text-decoration: underline; background: none; border: none;
-  font-family: 'Inter', sans-serif; font-weight: 500;
-}
-.verb-all-btn {
-  width: 100%; text-align: left; padding: 12px 14px;
-  border: 1.5px solid var(--border); background: var(--cream);
-  font-size: 0.84rem; color: var(--text-soft); cursor: pointer;
-  font-family: 'Inter', sans-serif;
-}
-.verb-all-btn b { color: var(--navy); font-weight: 600; }
-.verb-grid-wrap { border: 1.5px solid var(--border); padding: 12px; background: var(--cream); }
-.verb-grid-actions { display: flex; gap: 14px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed var(--border); }
-.verb-grid-actions button {
-  background: none; border: none; padding: 0; font-size: 0.74rem;
-  color: var(--text-soft); text-decoration: underline; cursor: pointer;
-  font-family: 'Inter', sans-serif;
-}
-.verb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; max-height: 240px; overflow-y: auto; }
-.verb-chip { display: flex; align-items: center; gap: 8px; padding: 6px 4px; cursor: pointer; font-size: 0.84rem; }
-.verb-chip:hover { background: var(--cream-dark); }
-.verb-chip input { accent-color: var(--navy); width: 14px; height: 14px; flex-shrink: 0; }
+.start-btn { width: 100%; padding: 15px; background: var(--pink); color: #fff; border: 3px solid var(--ink); border-radius: 99px; font-weight: 800; font-size: 1.05rem; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: translate .12s, box-shadow .12s; }
+.start-btn:hover:not(:disabled) { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); }
+.start-btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
 
-/* START BTN */
-.start-btn {
-  width: 100%; padding: 14px; background: var(--red); color: var(--cream);
-  border: none; font-family: 'Inter', sans-serif; font-weight: 600;
-  font-size: 0.92rem; cursor: pointer; letter-spacing: 0.04em;
-  box-shadow: 4px 4px 0 var(--navy); transition: all 0.15s;
-}
-.start-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--navy); }
-.start-btn:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
-
-/* QUIZ */
-.quiz-top {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 16px; font-size: 0.78rem; color: var(--text-soft);
-}
-.progress-track {
-  height: 3px; background: var(--border); margin-bottom: 28px; overflow: hidden;
-}
-.progress-fill { height: 100%; background: var(--red); transition: width 0.25s ease; }
-.prompt-eyebrow {
-  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em;
-  color: var(--gold); margin-bottom: 6px; font-weight: 600;
-}
-.prompt-verb {
-  font-family: 'DM Serif Display', serif;
-  font-size: 2.4rem; margin: 0 0 4px; line-height: 1.1; color: var(--navy);
-}
-.prompt-verb .pronoun { color: var(--text-soft); font-size: 1.6rem; }
+/* ---------- QUESTION ---------- */
+.quiz-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; font-size: .88rem; font-weight: 700; }
+.quiz-top span { padding: 1px 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--bg); }
+.progress-track { height: 16px; background: #fff; border: 2.5px solid var(--ink); border-radius: 99px; margin-bottom: 24px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--pink); border-right: 2.5px solid var(--ink); transition: width .25s ease; }
+.progress-fill[style="width:0%"] { border-right: none; }
+.prompt-eyebrow { display: inline-block; padding: 2px 12px; border: 2px solid var(--ink); border-radius: 99px; font-size: .78rem; font-weight: 700; letter-spacing: .04em; margin-bottom: 10px; rotate: -1.5deg; background: var(--lime); }
+.prompt-eyebrow.t-imparfait { background: var(--aqua); }
+.prompt-eyebrow.t-passeCompose { background: var(--lemon); }
+.prompt-verb { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3rem; line-height: 1.05; letter-spacing: -.025em; }
+.prompt-verb .pronoun { color: var(--violet); font-size: .7em; }
 
 .field { margin-top: 20px; }
-.field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-soft); margin-bottom: 6px; }
-.field .opt { font-weight: 300; }
-.field input {
-  width: 100%; padding: 12px 14px;
-  border: 1.5px solid var(--border); background: var(--cream);
-  font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--navy);
-  outline: none; transition: border-color 0.15s;
-}
-.field input:focus { border-color: var(--navy); }
-.field input.ok { border-color: var(--green); background: var(--green-soft); }
-.field input.bad { border-color: var(--red); background: var(--red-soft); }
-.field input.half { border-color: var(--gold); background: var(--orange-soft); }
+.field label { display: block; font-size: .88rem; font-weight: 700; margin-bottom: 6px; }
+.field .opt { font-weight: 500; color: var(--soft); }
+.field input, .rewrite input { width: 100%; padding: 12px 16px; border: 2.5px solid var(--ink); border-radius: 14px; background: #fff; font-size: 1.1rem; outline: none; transition: box-shadow .12s; }
+.field input:focus, .rewrite input:focus { box-shadow: 3px 3px 0 var(--violet); }
+.field input:disabled { color: var(--ink); -webkit-text-fill-color: var(--ink); opacity: 1; }
+.field input.ok, .rewrite input.done { background: var(--ok-fond); }
+.field input.bad { background: var(--faux-fond); }
+.field input.half { background: var(--demi-fond); }
 
-.accent-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
-.accent-btn {
-  width: 30px; height: 30px; border: 1.5px solid var(--border);
-  background: var(--cream); font-size: 0.9rem; color: var(--navy);
-  cursor: pointer; transition: all 0.15s;
-}
-.accent-btn:hover { border-color: var(--navy); background: var(--cream-dark); }
-.accent-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.accent-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.accent-btn { width: 34px; height: 34px; border: 2px solid var(--ink); border-radius: 9px; background: var(--bg); font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: translate .1s, background .1s; }
+.accent-btn:hover:not(:disabled) { background: var(--lemon); translate: -1px -1px; }
+.accent-btn:disabled { opacity: .3; cursor: not-allowed; box-shadow: none; }
 
-/* REWRITE */
-.rewrite {
-  margin-top: 18px; padding: 16px;
-  border: 1.5px dashed var(--navy); background: var(--cream);
-}
-.rewrite .rw-label {
-  font-size: 0.78rem; font-weight: 600; color: var(--navy); margin-bottom: 4px;
-}
-.rewrite .rw-hint {
-  font-size: 0.74rem; font-weight: 300; color: var(--text-soft); margin-bottom: 10px;
-}
-.rewrite input {
-  width: 100%; padding: 11px 14px;
-  border: 1.5px solid var(--border); background: var(--cream-dark);
-  font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--navy); outline: none;
-}
-.rewrite input:focus { border-color: var(--navy); }
-.rewrite input.done { border-color: var(--green); background: var(--green-soft); }
-.rw-msg { margin-top: 8px; font-size: 0.78rem; font-weight: 600; min-height: 1.1em; }
-.rw-msg.ok { color: var(--green); }
-.rw-msg.wait { color: var(--text-soft); font-weight: 400; }
+.rewrite { margin-top: 18px; padding: 16px 18px; border: 2.5px dashed var(--ink); border-radius: 16px; background: var(--bg); }
+.rewrite .rw-label { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.05rem; }
+.rewrite .rw-hint { font-size: .85rem; color: var(--soft); margin-bottom: 10px; }
+.rw-msg { margin-top: 8px; font-size: .88rem; font-weight: 700; min-height: 1.2em; }
+.rw-msg.ok { color: #2d7a3e; }
+.rw-msg.wait { color: var(--soft); font-weight: 500; }
 
-.actions { display: flex; gap: 10px; margin-top: 24px; }
-.btn { flex: 1; padding: 13px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1.5px solid var(--navy); transition: all 0.15s; }
-.btn-primary { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--red); }
-.btn-primary:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--red); }
-.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
-.btn-ghost { background: transparent; color: var(--text-soft); border-color: var(--border); }
-.btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
+.actions { display: flex; gap: 12px; margin-top: 24px; }
+.btn { flex: 1; padding: 13px; border: 3px solid var(--ink); border-radius: 99px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: translate .12s, box-shadow .12s; }
+.btn-primary { background: var(--ink); color: #fff; box-shadow: 4px 4px 0 var(--pink); }
+.btn-primary:hover:not(:disabled) { translate: -1px -1px; box-shadow: 5px 5px 0 var(--pink); }
+.btn-primary:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; }
+.btn-ghost { background: #fff; color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.btn-ghost:hover { translate: -1px -1px; background: var(--lemon); }
 
-.feedback { margin-top: 16px; padding: 14px 16px; font-size: 0.88rem; line-height: 1.5; border-left: 3px solid; }
-.feedback.ok { background: var(--green-soft); color: #1e5c35; border-color: var(--green); }
-.feedback.bad { background: var(--red-soft); color: #8b2a20; border-color: var(--red); }
-.feedback.half { background: var(--orange-soft); color: #8a5a10; border-color: var(--gold); }
-.feedback b { font-weight: 600; }
+.feedback { margin-top: 18px; padding: 12px 16px; border: 2.5px solid var(--ink); border-radius: 14px; font-size: .95rem; line-height: 1.5; box-shadow: 3px 3px 0 var(--ink); }
+.feedback.ok { background: var(--ok-fond); }
+.feedback.bad { background: var(--faux-fond); }
+.feedback.half { background: var(--demi-fond); }
+.feedback b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; }
 
-/* RESULT */
-.result h2 { font-family: 'Fraunces', serif; font-size: 1rem; margin: 0 0 4px; color: var(--text-soft); font-weight: 400; }
-.result .score { font-family: 'DM Serif Display', serif; font-size: 3.5rem; margin: 4px 0 8px; color: var(--navy); }
-.result .score span { font-size: 1.5rem; color: var(--text-soft); }
-.result .capped { font-size: 0.74rem; color: var(--text-soft); font-style: italic; margin: -4px 0 10px; }
-.mention {
-  display: inline-block; font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 24px;
-  border: 1.5px solid;
-}
-.m-revoir { background: var(--red-soft); color: var(--red); border-color: var(--red); }
-.m-assezbien { background: var(--orange-soft); color: var(--orange); border-color: var(--orange); }
-.m-bien { background: var(--olive-soft); color: #566e28; border-color: var(--olive); }
-.m-tresbien { background: var(--green-soft); color: var(--green); border-color: var(--green); }
-.m-parfait { background: var(--teal-soft); color: var(--teal); border-color: var(--teal); }
+/* ---------- RÉSULTAT ---------- */
+.result h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: .9rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+.result .score { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 5rem; line-height: 1; letter-spacing: -.04em; margin: 6px 0 10px; }
+.result .score span { font-size: .4em; color: var(--soft); letter-spacing: 0; }
+.result .capped { font-size: .85rem; color: var(--soft); font-style: italic; margin: -4px 0 10px; }
+.mention { display: inline-block; padding: 5px 16px; margin-bottom: 24px; border: 3px solid var(--ink); border-radius: 99px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.15rem; font-weight: 800; box-shadow: 3px 3px 0 var(--ink); rotate: -2deg; }
+.m-revoir { background: var(--pink); color: #fff; }
+.m-assezbien { background: var(--lemon); }
+.m-bien { background: var(--aqua); }
+.m-tresbien { background: var(--lime); }
+.m-parfait { background: var(--violet); color: #fff; }
 
-.breakdown { border-top: 1px dashed var(--border); padding-top: 14px; margin-top: 6px; max-height: 260px; overflow-y: auto; }
-.breakdown-row { display: flex; justify-content: space-between; gap: 10px; font-size: 0.82rem; padding: 6px 0; border-bottom: 1px solid var(--border); }
-.breakdown-row .bv { color: var(--navy); }
-.breakdown-row .status { flex-shrink: 0; font-weight: 600; }
-.status.yes { color: var(--green); }
-.status.half { color: var(--gold); }
-.status.no { color: var(--red); }
+.breakdown { margin-top: 4px; padding: 6px 14px; border: 2.5px solid var(--ink); border-radius: 16px; background: var(--bg); max-height: 320px; overflow-y: auto; }
+.breakdown-row { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; font-size: .92rem; border-bottom: 2px dashed rgba(27,19,64,.18); }
+.breakdown-row:last-child { border-bottom: none; }
+.breakdown-row .bv { min-width: 0; overflow-wrap: anywhere; }
+.breakdown-row .status { flex-shrink: 0; font-weight: 800; text-align: right; }
+.tag-temps { color: var(--soft); font-style: italic; }
+.bonus { color: var(--violet); font-weight: 700; }
+.status.yes { color: #2d7a3e; }
+.status.half { color: #9a6b00; }
+.status.no { color: var(--rose-texte); }
 
-/* FOOTER */
-footer {
-  width: 100%;
-  background: var(--navy); padding: 28px 48px;
-  border-top: 3px solid var(--gold);
-  display: flex; justify-content: space-between; align-items: center;
-}
-.footer-logo { font-family: 'Fraunces', serif; font-size: 0.9rem; font-weight: 400; color: var(--cream); }
-.footer-copy { font-size: 0.7rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: .72rem; font-weight: 300; color: rgba(250,247,242,.4); }
+.footer-copy a { color: rgba(250,247,242,.6); }
+
+@media (prefers-reduced-motion: reduce) { .mode-btn, .start-btn, .btn, .accent-btn, .progress-fill, .fil { transition: none; } }
 
 @media (max-width: 720px) {
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
-  .logo { font-size: 1.3rem; }
-  nav { gap: 24px; }
-  main { padding: 32px 16px 48px; }
-  .card { padding: 24px 20px; }
-  footer { padding: 22px 20px; }
+  main { padding: 26px 16px 56px; }
+  h1 { font-size: 2.6rem; }
+  .lead { font-size: 1rem; margin-bottom: 22px; }
+  .card { padding: 22px 18px 24px; border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); }
+  .home h2 { font-size: 1.5rem; }
+  .tense-choice { grid-template-columns: 1fr; }
+  .verb-grid { grid-template-columns: repeat(2, 1fr); }
+  .prompt-verb { font-size: 2.3rem; }
+  .actions { flex-wrap: wrap; }
+  .result .score { font-size: 4rem; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-
-/* ===== MOBILE ===== */
-@media (max-width: 720px) {
-  .section-label, .mode-btn .lbl { font-size: 0.7rem; }
+@media (max-width: 380px) {
+  h1 { font-size: 2.2rem; }
+  .accent-btn { width: 31px; height: 31px; }
+  .actions .btn { flex-basis: 100%; }
 }
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
-}
-.logo-al { color: var(--red); }
-@media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
-}
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="hex-tri" viewBox="0 0 30 35">
-    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
-    <g clip-path="url(#clip-hex)">
-      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-    </g>
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
   </symbol>
 </svg>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
 <main>
 <div class="app">
-  <div class="masthead">
-    <h1>Conjugaison</h1>
-    <span class="tag">Verbes irréguliers</span>
+  <a class="fil t" href="/ressources.html#a1-a2" data-fr="← Ressources · Faux débutant" data-en="← Resources · Elementary">← Ressources · Faux débutant</a>
+  <div class="pastilles suite">
+    <span class="pastille t" data-fr="Test" data-en="Test">Test</span>
+    <span class="pastille t" data-fr="Verbes irréguliers" data-en="Irregular verbs">Verbes irréguliers</span>
+    <span class="pastille">A1 – A2</span>
   </div>
-  <div class="card" id="cardRoot"></div>
+  <h1 class="t" data-html="1" data-fr="Test de &lt;mark&gt;conjugaison&lt;/mark&gt;" data-en="&lt;mark&gt;Conjugation&lt;/mark&gt; test">Test de <mark>conjugaison</mark></h1>
+  <p class="lead t"
+     data-fr="28 verbes irréguliers — présent, imparfait, passé composé. Correction immédiate, note sur 10 ou 20."
+     data-en="28 irregular verbs — présent, imparfait, passé composé. Instant feedback, scored out of 10 or 20.">28 verbes irréguliers — présent, imparfait, passé composé. Correction immédiate, note sur 10 ou 20.</p>
+  <div class="card" id="cardRoot" aria-live="polite"></div>
 </div>
 </main>
 
 <footer>
   <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
@@ -421,7 +352,50 @@ function stripAccents(s){ return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"
 function baseConj(s){ return s.trim().toLowerCase().replace(/^(je|j'|j|tu|il|elle|on|nous|vous|ils|elles)\s*['\s]+/,"").replace(/\s+/g," ").trim(); }
 function normEn(s){ return stripAccents(s.trim().toLowerCase()).replace(/^to\s+/,"").replace(/[().,]/g,"").replace(/\s+/g," ").trim(); }
 function levenshtein(a,b){ const m=a.length,n=b.length,d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]); for(let j=0;j<=n;j++) d[0][j]=j; for(let i=1;i<=m;i++) for(let j=1;j<=n;j++) d[i][j]=a[i-1]===b[j-1]?d[i-1][j-1]:1+Math.min(d[i-1][j-1],d[i-1][j],d[i][j-1]); return d[m][n]; }
-function translationApprox(guess,correct){ if(!guess.trim()) return false; const g=normEn(guess),opts=normEn(correct).split("/").map(x=>x.trim()).filter(Boolean); for(const opt of opts){ if(g===opt||opt.includes(g)||g.includes(opt)) return true; if(levenshtein(g,opt)<=Math.max(1,Math.floor(opt.length*0.25))) return true; } return false; }
+/* --- traduction : début --- */
+/* La traduction accepte aussi les formes conjuguées : « I was », « you were », « I took », « I have taken »,
+   « I was taking », « I used to drink »… Le temps et la personne ne sont pas exigés : seul le verbe compte. */
+const EN_IRREGULIERS = {
+  be:["am","is","are","was","were","been","being"], have:["has","had","having"], go:["goes","went","gone","going"],
+  make:["makes","made","making"], do:["does","did","done","doing"], can:["could"], must:[],
+  know:["knows","knew","known","knowing"], come:["comes","came","coming"], hold:["holds","held","holding"],
+  read:["reads","read","reading"], say:["says","said","saying"], see:["sees","saw","seen","seeing"],
+  drink:["drinks","drank","drunk","drinking"], write:["writes","wrote","written","writing"], sleep:["sleeps","slept","sleeping"],
+  leave:["leaves","left","leaving"], put:["puts","put","putting"], take:["takes","took","taken","taking"], drive:["drives","drove","driven","driving"],
+};
+const AUXILIAIRES_EN = /^(will|would|used to|did|does|do|have|has|had|am|is|are|was|were)\s+(?=\S)/;
+function formesVerbeEn(base){
+  if(EN_IRREGULIERS[base]) return [base,...EN_IRREGULIERS[base]];
+  const radical=base.endsWith("e")?base.slice(0,-1):base;   /* verbes réguliers : receive → receives, received, receiving */
+  return [base,base+"s",radical+"ed",radical+"ing"];
+}
+function formesTraduction(en){
+  const formes=new Set();
+  for(const option of en.replace(/\(.*?\)/g,"").split("/")){
+    const mots=normEn(option).split(" ").filter(Boolean);
+    if(!mots.length) continue;
+    const reste=mots.slice(1).join(" ");                     /* be able to, have to, go out */
+    for(const f of formesVerbeEn(mots[0])) formes.add(reste?f+" "+reste:f);
+  }
+  return formes;
+}
+function reponseEnSansPronom(s){
+  return normEn(s).replace(/’/g,"'").replace(/\bi'm\b/g,"i am").replace(/'re\b/g," are").replace(/'ve\b/g," have").replace(/'s\b/g," is").replace(/'d\b/g," had")
+    .replace(/^(you all|i|you|he|she|it|we|they|one)\s+/,"").trim();
+}
+function translationApprox(guess,correct){
+  if(!guess.trim()) return false;
+  const g=normEn(guess),opts=normEn(correct).split("/").map(x=>x.trim()).filter(Boolean);
+  for(const opt of opts){ if(g===opt||opt.includes(g)||g.includes(opt)) return true; if(levenshtein(g,opt)<=Math.max(1,Math.floor(opt.length*0.25))) return true; }
+  const formes=formesTraduction(correct), sansPronom=reponseEnSansPronom(guess);
+  for(const c of [sansPronom, sansPronom.replace(AUXILIAIRES_EN,"")]){
+    if(!c) continue;
+    if(formes.has(c)) return true;
+    for(const f of formes) if(f.length>=5 && levenshtein(c,f)<=1) return true;   /* une faute de frappe tolérée sur les formes longues */
+  }
+  return false;
+}
+/* --- traduction : fin --- */
 
 /* Statut de la conjugaison : exact (1 pt) / accent (0,5 pt) / wrong (0 pt) */
 function conjStatus(given, answer){
@@ -473,6 +447,64 @@ function goHome(){ state.screen="home"; render(); }
 
 let showVerbPicker=false;
 
+/* ---------- textes de l'interface (les verbes, formes et temps restent en français) ---------- */
+let LANG = "fr";
+const TXT = {
+  titreAccueil:   {fr:"Verbes irréguliers", en:"Irregular verbs"},
+  lede:           {fr:"Conjugue le verbe demandé. Ajoute la traduction en anglais pour un bonus de +0,1 point. Une erreur d'accent vaut 0,5 point.",
+                   en:"Conjugate the verb shown. Add the English translation for a +0.1 point bonus. An accent mistake is worth 0.5 points."},
+  nbQuestions:    {fr:"Nombre de questions", en:"Number of questions"},
+  questions:      {fr:"questions", en:"questions"},
+  temps:          {fr:"Temps verbaux", en:"Tenses"},
+  verbesInclus:   {fr:"Verbes inclus", en:"Verbs included"},
+  fermer:         {fr:"Fermer", en:"Close"},
+  choisir:        {fr:"Choisir", en:"Choose"},
+  toutCocher:     {fr:"Tout cocher", en:"Select all"},
+  toutDecocher:   {fr:"Tout décocher", en:"Clear all"},
+  commencer:      {fr:"Commencer le test", en:"Start the test"},
+  score:          {fr:"Score : ", en:"Score: "},
+  formeConj:      {fr:"Forme conjuguée", en:"Conjugated form"},
+  traduction:     {fr:"Traduction", en:"Translation"},
+  optionnel:      {fr:"(optionnel, +0,1 pt)", en:"(optional, +0.1 pt)"},
+  rwLabel:        {fr:"Réécris la forme correcte pour continuer", en:"Type the correct form to continue"},
+  rwHint:         {fr:"Accents compris — cette réécriture ne rapporte pas de point.", en:"Accents included — this doesn't earn any points."},
+  attente:        {fr:"En attente…", en:"Waiting…"},
+  note:           {fr:"✓ C'est noté — tu peux continuer.", en:"✓ Got it — you can continue."},
+  valider:        {fr:"Valider", en:"Check"},
+  suivant:        {fr:"Suivant", en:"Next"},
+  voirResultat:   {fr:"Voir le résultat", en:"See the result"},
+  resultat:       {fr:"Résultat", en:"Result"},
+  refaire:        {fr:"Refaire un test", en:"Take another test"},
+  accueil:        {fr:"Accueil", en:"Settings"},
+  transOk:        {fr:"Traduction correcte (+0,1). ", en:"Correct translation (+0.1). "},
+  bonus:          {fr:"+0,1", en:"+0.1"},
+};
+const EYEBROW_EN = { present:"Conjugate in the présent", imparfait:"Conjugate in the imparfait", passeCompose:"Conjugate in the passé composé" };
+const MENTION_EN = { "parfait !":"perfect!", "très bien":"very good", "bien":"good", "assez bien":"fairly good", "à revoir":"needs work" };
+function t(cle){ return TXT[cle][LANG]; }
+function eyebrow(tense){ return LANG==="fr" ? TENSE_META[tense].eyebrow : EYEBROW_EN[tense]; }
+function resumeVerbes(){
+  const n=state.selectedVerbs.size, total=VERBS.length;
+  if(LANG==="fr") return n===total?`<b>Tous les verbes</b> (${total})`:`<b>${n} verbe${n>1?'s':''}</b> sur ${total}`;
+  return n===total?`<b>All verbs</b> (${total})`:`<b>${n} verb${n>1?'s':''}</b> out of ${total}`;
+}
+function messageCorrection(r,pDisp){
+  const forme=`<b>${pDisp} ${r.answer}</b>`;
+  let msg;
+  if(LANG==="fr"){
+    if(r.status==="exact") msg=`Correct — ${forme}. `;
+    else if(r.status==="accent") msg=`Presque : attention aux accents. La forme exacte est ${forme} (0,5 pt). `;
+    else msg=`La bonne forme est ${forme}. `;
+    msg+=r.gaveTranslation?(r.correctTrans?t("transOk"):`Traduction attendue : <b>${r.en}</b>.`):`Traduction : <b>${r.en}</b>.`;
+  }else{
+    if(r.status==="exact") msg=`Correct — ${forme}. `;
+    else if(r.status==="accent") msg=`Almost: watch the accents. The exact form is ${forme} (0.5 pt). `;
+    else msg=`The correct form is ${forme}. `;
+    msg+=r.gaveTranslation?(r.correctTrans?t("transOk"):`Expected translation: <b>${r.en}</b>.`):`Translation: <b>${r.en}</b>.`;
+  }
+  return msg;
+}
+
 /* Mise à jour sans re-render : évite que la liste des verbes remonte en haut */
 function updateVerbUI(){
   const sb=document.getElementById("startBtn");
@@ -485,31 +517,31 @@ function render(){
   if(state.screen==="home"){
     root.innerHTML=`
       <div class="home">
-        <h2>Verbes irréguliers</h2>
-        <p class="lede">Conjugue le verbe demandé. Ajoute la traduction en anglais pour un bonus de +0,1 point. Une erreur d'accent vaut 0,5 point.</p>
-        <div class="section-label">Nombre de questions</div>
+        <h2>${t("titreAccueil")}</h2>
+        <p class="lede">${t("lede")}</p>
+        <div class="section-label">${t("nbQuestions")}</div>
         <div class="mode-choice">
-          <button class="mode-btn ${state.selectedCount===10?'selected':''}" data-count="10"><span class="num">10</span><span class="lbl">questions</span></button>
-          <button class="mode-btn ${state.selectedCount===20?'selected':''}" data-count="20"><span class="num">20</span><span class="lbl">questions</span></button>
+          <button class="mode-btn ${state.selectedCount===10?'selected':''}" data-count="10" aria-pressed="${state.selectedCount===10}"><span class="num">10</span><span class="lbl">${t("questions")}</span></button>
+          <button class="mode-btn ${state.selectedCount===20?'selected':''}" data-count="20" aria-pressed="${state.selectedCount===20}"><span class="num">20</span><span class="lbl">${t("questions")}</span></button>
         </div>
         <div class="tense-picker">
-          <div class="section-label">Temps verbaux</div>
-          <div class="tense-choice">${Object.keys(TENSE_META).map(t=>`<button class="tense-btn ${state.selectedTenses.has(t)?'selected':''}" data-tense="${t}">${TENSE_META[t].label}</button>`).join("")}</div>
+          <div class="section-label">${t("temps")}</div>
+          <div class="tense-choice">${Object.keys(TENSE_META).map(tn=>`<button class="tense-btn ${state.selectedTenses.has(tn)?'selected':''}" data-tense="${tn}" aria-pressed="${state.selectedTenses.has(tn)}">${TENSE_META[tn].label}</button>`).join("")}</div>
         </div>
         <div class="verb-picker">
           <div class="verb-picker-head">
-            <div class="section-label" style="margin:0">Verbes inclus</div>
-            <button class="verb-picker-toggle" id="vpToggle">${showVerbPicker?'Fermer':'Choisir'}</button>
+            <div class="section-label" style="margin:0">${t("verbesInclus")}</div>
+            <button class="verb-picker-toggle" id="vpToggle" aria-expanded="${showVerbPicker}">${showVerbPicker?t("fermer"):t("choisir")}</button>
           </div>
-          ${showVerbPicker?`<div class="verb-grid-wrap"><div class="verb-grid-actions"><button id="selAll">Tout cocher</button><button id="selNone">Tout décocher</button></div><div class="verb-grid">${VERBS.map(v=>`<label class="verb-chip"><input type="checkbox" data-verb="${v.inf}" ${state.selectedVerbs.has(v.inf)?'checked':''}><span>${v.inf}</span></label>`).join("")}</div></div>`
-          :`<button class="verb-all-btn" id="vpSummary">${state.selectedVerbs.size===VERBS.length?`<b>Tous les verbes</b> (${VERBS.length})`:`<b>${state.selectedVerbs.size} verbe${state.selectedVerbs.size>1?'s':''}</b> sur ${VERBS.length}`}</button>`}
+          ${showVerbPicker?`<div class="verb-grid-wrap"><div class="verb-grid-actions"><button id="selAll">${t("toutCocher")}</button><button id="selNone">${t("toutDecocher")}</button></div><div class="verb-grid">${VERBS.map(v=>`<label class="verb-chip"><input type="checkbox" data-verb="${v.inf}" ${state.selectedVerbs.has(v.inf)?'checked':''}><span>${v.inf}</span></label>`).join("")}</div></div>`
+          :`<button class="verb-all-btn" id="vpSummary">${resumeVerbes()}</button>`}
         </div>
-        <button class="start-btn" id="startBtn" ${(state.selectedVerbs.size===0||state.selectedTenses.size===0)?'disabled':''}>Commencer le test</button>
+        <button class="start-btn" id="startBtn" ${(state.selectedVerbs.size===0||state.selectedTenses.size===0)?'disabled':''}>${t("commencer")}</button>
       </div>`;
 
     root.querySelectorAll(".mode-btn").forEach(b=>b.addEventListener("click",()=>{state.selectedCount=parseInt(b.dataset.count);render();}));
     document.getElementById("startBtn").addEventListener("click",()=>startQuiz(state.selectedCount));
-    root.querySelectorAll(".tense-btn").forEach(b=>b.addEventListener("click",()=>{const t=b.dataset.tense;if(state.selectedTenses.has(t)){if(state.selectedTenses.size>1)state.selectedTenses.delete(t);}else state.selectedTenses.add(t);render();}));
+    root.querySelectorAll(".tense-btn").forEach(b=>b.addEventListener("click",()=>{const tn=b.dataset.tense;if(state.selectedTenses.has(tn)){if(state.selectedTenses.size>1)state.selectedTenses.delete(tn);}else state.selectedTenses.add(tn);render();}));
     document.getElementById("vpToggle").addEventListener("click",()=>{showVerbPicker=!showVerbPicker;render();});
     const vpSummary=document.getElementById("vpSummary");
     if(vpSummary) vpSummary.addEventListener("click",()=>{showVerbPicker=true;render();});
@@ -526,21 +558,21 @@ function render(){
     const r=state.answered?state.results[state.results.length-1]:null;
     const needRewrite=state.answered && r.status!=="exact";
     root.innerHTML=`
-      <div class="quiz-top"><span>Question ${num} / ${total}</span><span>Score : ${cappedScore()}</span></div>
+      <div class="quiz-top"><span>Question ${num} / ${total}</span><span>${t("score")}${cappedScore()}</span></div>
       <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
-      <div class="prompt-eyebrow">${TENSE_META[q.tense].eyebrow}</div>
+      <div class="prompt-eyebrow t-${q.tense}">${eyebrow(q.tense)}</div>
       <div class="prompt-verb"><span class="pronoun">${pDisp}</span> ${q.inf}</div>
-      <div class="field"><label for="ci">Forme conjuguée</label><input type="text" id="ci" autocomplete="off" ${state.answered?'disabled':''} placeholder="${pDisp}..."><div class="accent-row" id="accentRow">${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}" ${state.answered?'disabled':''}>${c}</button>`).join("")}</div></div>
-      <div class="field"><label for="ti">Traduction <span class="opt">(optionnel, +0,1 pt)</span></label><input type="text" id="ti" autocomplete="off" ${state.answered?'disabled':''} placeholder="to ..."></div>
+      <div class="field"><label for="ci">${t("formeConj")}</label><input type="text" id="ci" autocomplete="off" autocapitalize="off" spellcheck="false" ${state.answered?'disabled':''} placeholder="${pDisp}..."><div class="accent-row" id="accentRow">${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}" ${state.answered?'disabled':''}>${c}</button>`).join("")}</div></div>
+      <div class="field"><label for="ti">${t("traduction")} <span class="opt">${t("optionnel")}</span></label><input type="text" id="ti" autocomplete="off" autocapitalize="off" spellcheck="false" ${state.answered?'disabled':''} placeholder="to ..."></div>
       <div id="fb"></div>
       ${needRewrite?`<div class="rewrite">
-        <div class="rw-label">Réécris la forme correcte pour continuer</div>
-        <div class="rw-hint">Accents compris — cette réécriture ne rapporte pas de point.</div>
-        <input type="text" id="rw" autocomplete="off" placeholder="${q.answer}">
-        <div class="accent-row" id="rwAccents">${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}">${c}</button>`).join("")}</div>
-        <div class="rw-msg wait" id="rwMsg">En attente…</div>
+        <div class="rw-label">${t("rwLabel")}</div>
+        <div class="rw-hint">${t("rwHint")}</div>
+        <input type="text" id="rw" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${q.answer}" ${state.rewriteDone?'disabled class="done"':''}>
+        <div class="accent-row" id="rwAccents">${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}" ${state.rewriteDone?'disabled':''}>${c}</button>`).join("")}</div>
+        <div class="rw-msg ${state.rewriteDone?'ok':'wait'}" id="rwMsg">${state.rewriteDone?t("note"):t("attente")}</div>
       </div>`:``}
-      <div class="actions">${state.answered?`<button class="btn btn-primary" id="nextBtn" ${needRewrite&&!state.rewriteDone?'disabled':''}>${num===total?'Voir le résultat':'Suivant'}</button>`:`<button class="btn btn-primary" id="submitBtn">Valider</button>`}</div>`;
+      <div class="actions">${state.answered?`<button class="btn btn-primary" id="nextBtn" ${needRewrite&&!state.rewriteDone?'disabled':''}>${num===total?t("voirResultat"):t("suivant")}</button>`:`<button class="btn btn-primary" id="submitBtn">${t("valider")}</button>`}</div>`;
 
     const ci=document.getElementById("ci"),ti=document.getElementById("ti");
     if(!state.answered){
@@ -554,30 +586,25 @@ function render(){
       ci.value=r.given;
       ci.className = r.status==="exact" ? "ok" : (r.status==="accent" ? "half" : "bad");
       if(r.gaveTranslation) ti.className=r.correctTrans?"ok":"bad";
-      let msg;
-      if(r.status==="exact") msg=`Correct — <b>${pDisp} ${r.answer}</b>. `;
-      else if(r.status==="accent") msg=`Presque : attention aux accents. La forme exacte est <b>${pDisp} ${r.answer}</b> (0,5 pt). `;
-      else msg=`La bonne forme est <b>${pDisp} ${r.answer}</b>. `;
-      msg+=r.gaveTranslation?(r.correctTrans?`Traduction correcte (+0,1). `:`Traduction attendue : <b>${r.en}</b>.`):`Traduction : <b>${r.en}</b>.`;
       const fbCls = r.status==="exact" ? "ok" : (r.status==="accent" ? "half" : "bad");
-      document.getElementById("fb").innerHTML=`<div class="feedback ${fbCls}">${msg}</div>`;
+      document.getElementById("fb").innerHTML=`<div class="feedback ${fbCls}">${messageCorrection(r,pDisp)}</div>`;
 
       const nextBtn=document.getElementById("nextBtn");
       nextBtn.addEventListener("click",()=>{ if(!nextBtn.disabled) nextQ(); });
 
       if(needRewrite){
         const rw=document.getElementById("rw"), rwMsg=document.getElementById("rwMsg");
-        rw.focus();
+        if(state.rewriteDone){ rw.value=q.answer; nextBtn.focus(); } else rw.focus();
         const check=()=>{
           if(state.rewriteDone) return;
           if(conjStatus(rw.value,q.answer)==="exact"){
             state.rewriteDone=true;
             rw.classList.add("done"); rw.disabled=true;
-            rwMsg.className="rw-msg ok"; rwMsg.textContent="✓ C'est noté — tu peux continuer.";
+            rwMsg.className="rw-msg ok"; rwMsg.textContent=t("note");
             document.querySelectorAll("#rwAccents .accent-btn").forEach(b=>b.disabled=true);
             nextBtn.disabled=false;
           }else{
-            rwMsg.className="rw-msg wait"; rwMsg.textContent="En attente…";
+            rwMsg.className="rw-msg wait"; rwMsg.textContent=t("attente");
           }
         };
         rw.addEventListener("input",check);
@@ -592,20 +619,20 @@ function render(){
     const total=state.questions.length, raw=Math.round(state.totalScore*100)/100, score=cappedScore(), pct=(score/total)*100, m=mention(pct);
     root.innerHTML=`
       <div class="result">
-        <h2>Résultat</h2>
+        <h2>${t("resultat")}</h2>
         <div class="score">${score} <span>/ ${total}</span></div>
-        ${raw>score?`<div class="capped">Note brute : ${raw} — plafonnée à ${total}.</div>`:``}
-        <span class="mention ${m.cls}">${m.label}</span>
+        ${raw>score?`<div class="capped">${LANG==="fr"?`Note brute : ${raw} — plafonnée à ${total}.`:`Raw score: ${raw} — capped at ${total}.`}</div>`:``}
+        <span class="mention ${m.cls}">${LANG==="fr"?m.label:MENTION_EN[m.label]}</span>
         <div class="actions" style="margin-top:0;margin-bottom:20px;">
-          <button class="btn btn-primary" id="retryBtn">Refaire un test</button>
-          <button class="btn btn-ghost" id="homeBtn">Accueil</button>
+          <button class="btn btn-primary" id="retryBtn">${t("refaire")}</button>
+          <button class="btn btn-ghost" id="homeBtn">${t("accueil")}</button>
         </div>
         <div class="breakdown">${state.results.map(r=>{
           const pDisp=pronounLabel(r.pronoun,r.answer);
-          const tTag=r.tense!=='present'?` <span style="color:var(--text-soft);font-style:italic;">(${TENSE_META[r.tense].label.toLowerCase()})</span>`:'';
+          const tTag=r.tense!=='present'?` <span class="tag-temps">(${TENSE_META[r.tense].label.toLowerCase()})</span>`:'';
           const cls=r.status==="exact"?"yes":(r.status==="accent"?"half":"no");
           const mark=r.status==="exact"?'✓':(r.status==="accent"?'~ '+r.answer:'✗ '+r.answer);
-          const bonus=r.correctTrans?' <span style="color:var(--gold)">+0,1</span>':'';
+          const bonus=r.correctTrans?` <span class="bonus">${t("bonus")}</span>`:'';
           return`<div class="breakdown-row"><span class="bv">${pDisp} ${r.inf} → ${r.given||'—'}${tTag}${bonus}</span><span class="status ${cls}">${mark}</span></div>`;
         }).join("")}</div>
       </div>`;
@@ -614,7 +641,47 @@ function render(){
     return;
   }
 }
-render();
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+const btnFr=document.getElementById("btn-fr"), btnEn=document.getElementById("btn-en");
+const burger=document.querySelector(".ac-burger"), menu=document.getElementById("ac-menu");
+const LIBELLES = {
+  nav: { fr:"Navigation principale", en:"Main navigation" },
+  langue: { fr:"Choix de la langue", en:"Language" },
+  ouvrir: { fr:"Ouvrir le menu", en:"Open menu" },
+  fermer: { fr:"Fermer le menu", en:"Close menu" },
+  titre: { fr:"Conjugaison — French with Alban", en:"Conjugation test — French with Alban" }
+};
+function majBurger(){ const ouvert=!menu.hidden; burger.setAttribute("aria-expanded",String(ouvert)); burger.setAttribute("aria-label",LIBELLES[ouvert?"fermer":"ouvrir"][LANG]); }
+burger.addEventListener("click",()=>{ menu.hidden=!menu.hidden; majBurger(); });
+
+/* ---------- langue : même mécanisme que les autres pages ; la saisie en cours est conservée ---------- */
+function appliquer(lang){
+  LANG=lang;
+  document.querySelectorAll(".t").forEach(el=>{
+    const txt=el.getAttribute("data-"+lang);
+    if(txt===null) return;
+    if(el.getAttribute("data-html")) el.innerHTML=txt; else el.textContent=txt;
+  });
+  document.documentElement.lang=lang;
+  document.title=LIBELLES.titre[lang];
+  btnFr.classList.toggle("on",lang==="fr"); btnEn.classList.toggle("on",lang==="en");
+  btnFr.setAttribute("aria-pressed",String(lang==="fr")); btnEn.setAttribute("aria-pressed",String(lang==="en"));
+  document.querySelector(".ac-nav").setAttribute("aria-label",LIBELLES.nav[lang]);
+  document.querySelector(".ac-langue").setAttribute("aria-label",LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem("fwa-lang",lang); } catch(e) {}
+  const saisies={}; ["ci","ti","rw"].forEach(id=>{ const el=document.getElementById(id); if(el&&!el.disabled) saisies[id]=el.value; });
+  render();
+  Object.keys(saisies).forEach(id=>{ const el=document.getElementById(id); if(el&&!el.disabled) el.value=saisies[id]; });
+}
+
+let choix=null;
+try { const enr=localStorage.getItem("fwa-lang"); if(enr==="fr"||enr==="en") choix=enr; } catch(e) {}
+if(!choix) choix=(navigator.language||"fr").toLowerCase().indexOf("fr")===0?"fr":"en";
+appliquer(choix);
+btnFr.addEventListener("click",()=>appliquer("fr"));
+btnEn.addEventListener("click",()=>appliquer("en"));
 </script>
 </body>
 </html>
