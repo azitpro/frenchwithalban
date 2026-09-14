@@ -6,392 +6,552 @@
 <title>Mots interrogatifs — French with Alban</title>
 <meta name="description" content="Les mots interrogatifs français : combien, comment, pourquoi, qui, quand, où, que, quel. Explications et 2 exercices interactifs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #faf7f2;
-  --cream-dark: #f0ece4;
-  --navy: #0d2b45;
-  --red: #c0392b;
-  --gold: #c9972a;
-  --border: #ddd8ce;
-  --text-soft: #666;
-  --green: #2e7d4f;
-  --green-soft: #e8f4ed;
-  --red-soft: #fbeae8;
-  --royal-blue: #1a56a0;
-  --pink: #c94f7c;
-  --yellow: #a8650a;
-  --purple: #7b4fa0;
-  --orange: #d4770a;
-  --info-blue: #1a56a0;
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
-.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
 
-header {
-  padding: 28px 48px; border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%; box-sizing: border-box;
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
 }
-h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 24px; }
-
-.toggle-row { display: flex; gap: 8px; margin-bottom: 20px; }
-.toggle-btn {
-  padding: 9px 20px; border: 1.5px solid var(--navy); background: transparent;
-  color: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.82rem;
-  font-weight: 500; cursor: pointer; transition: all 0.15s;
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
 }
-.toggle-btn.active { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--gold); }
-.toggle-btn:hover:not(.active) { background: var(--cream-dark); }
 
-table.vocab-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; table-layout: fixed; }
-table.vocab-table tr { border-bottom: 1px solid var(--border); }
-table.vocab-table tr:nth-child(even) { background: var(--cream-dark); }
-table.vocab-table td { padding: 12px 16px; font-size: 0.9rem; vertical-align: top; transition: opacity 0.2s; }
-.fr-cell { font-weight: 700; color: var(--navy); width: 34%; }
-.fr-cell .note { font-weight: 400; font-style: italic; color: var(--text-soft); font-size: 0.76rem; display: block; margin-top: 2px; }
-.pho-cell { font-style: italic; font-weight: 300; color: var(--red); font-size: 0.78rem; width: 30%; }
-.en-cell { font-style: italic; font-weight: 300; color: var(--text-soft); width: 36%; }
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 680px; margin: -6px 0 26px; font-size: 1.05rem; }
+.intro strong { color: var(--ink); }
+b, strong { font-weight: 700; }
+
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--aqua); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
+
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px 28px; rotate: 2deg; }
+.apercu-question { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2rem; line-height: 1.08; letter-spacing: -.02em; margin-bottom: 20px; padding-right: 70px; }
+.apercu-mots { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 12px; }
+.apercu-mots li { padding: 4px 14px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem; box-shadow: 3px 3px 0 var(--ink); }
+.apercu-mots li:nth-child(odd) { rotate: -2deg; }
+.apercu-mots li:nth-child(even) { rotate: 2deg; }
+.autocollant { position: absolute; top: -20px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
+
+/* ---------- TABLEAU DES MOTS (généré par le script) ---------- */
+.toggle-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.toggle-btn { font: 700 .9rem 'Inter', sans-serif; padding: 7px 18px; border-radius: 99px; border: 2.5px solid var(--ink); background: #fff; color: var(--ink); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.toggle-btn:hover:not(.active) { background: var(--lemon); }
+.toggle-btn.active { background: var(--ink); color: #fff; box-shadow: 2px 2px 0 var(--violet); }
+.vocab { display: grid; gap: 10px; }
+.vocab-ligne { display: grid; grid-template-columns: 1.15fr 1fr 1.15fr; gap: 4px 20px; align-items: baseline; padding: 12px 18px; background: #fff; border: 2.5px solid var(--ink); border-left: 12px solid var(--c); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); }
+.vocab-ligne > div { transition: opacity .2s; min-width: 0; }
+.fr-cell { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.22rem; line-height: 1.2; }
+.fr-cell .note { display: block; font-family: 'Inter', sans-serif; font-weight: 500; font-style: italic; font-size: .8rem; color: var(--soft); margin-top: 3px; line-height: 1.35; }
+.pho-cell { color: var(--violet); font-weight: 600; font-size: .95rem; }
+.en-cell { font-style: italic; color: var(--soft); }
 .hidden-col { opacity: 0; pointer-events: none; }
 
-.hex-icon { flex-shrink: 0; margin-right: 8px; vertical-align: middle; margin-top: -3px; }
+/* ---------- EXEMPLES ---------- */
+.exemples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.exemples.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.exemples.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.exemple { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+.formule { background: var(--c); color: var(--c-texte); border-bottom: 3px solid var(--ink); padding: 12px 18px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.08rem; line-height: 1.25; }
+.formule b { font-weight: 800; font-size: 1.3em; }
+.lignes { padding: 14px 18px 16px; display: grid; gap: 8px; }
+.ligne { font-size: 1.08rem; line-height: 1.45; }
+.ligne img { display: inline-block; width: 20px; height: 20px; object-fit: contain; vertical-align: -3px; margin-right: 6px; }
+.ligne strong { font-weight: 800; background: var(--c); color: var(--c-texte); border: 2px solid var(--ink); border-radius: 7px; padding: 0 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
-/* EXPLANATION SECTIONS */
-.explain-block { margin-bottom: 40px; }
-.explain-title { display: flex; align-items: center; font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
-.explain-body { font-size: 0.88rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 16px; }
-.explain-body strong { color: var(--navy); }
+/* ---------- ENCADRÉS ---------- */
+.encadre { display: flex; gap: 16px; align-items: flex-start; margin: 28px 0 0; padding: 16px 20px; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); }
+.encadre + .encadre { margin-top: 16px; }
+.encadre-attention { background: #ffe1ee; }
+.encadre-info { background: var(--lemon); }
+.encadre .marque { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--ink); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; }
+.encadre-attention .marque { background: var(--pink); }
+.encadre p { padding-top: 4px; }
+.encadre p b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.08rem; }
+.encadre s { text-decoration-thickness: 2px; text-decoration-color: #e0337f; }
 
-.example-card {
-  background: var(--cream-dark); border: 1px solid var(--border);
-  padding: 14px 18px; margin-bottom: 10px;
-}
-.example-card { border-left: none; }
-.example-card.c-formal { background: #e8ecf3; border-color: #c7d0e0; }
-.example-card.c-standard { background: var(--green-soft); border-color: #b8dcc5; }
-.example-card.c-informal { background: #fdf1e3; border-color: #f0d4a8; }
-.example-card.c-masc-sg { background: #e3ecf7; border-color: #b9cde8; }
-.example-card.c-fem-sg { background: #f7e6ee; border-color: #eabdd2; }
-.example-card.c-masc-pl { background: #faf1dc; border-color: #ecd9a3; }
-.example-card.c-esceque { background: #faf1dc; border-color: #ecd9a3; }
-.example-label.c-esceque { color: var(--yellow); }
-.ex-line.c-esceque { color: var(--yellow); }
-.example-card.c-fem-pl { background: #f0e6f5; border-color: #d5bce3; }
+/* ---------- EXERCICES ---------- */
+.ex-card { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; }
+.start-screen { text-align: center; padding: 14px 0; }
+.start-screen p { font-size: 1.05rem; color: var(--soft); margin-bottom: 18px; }
+.btn { font: 700 1rem 'Inter', sans-serif; padding: 12px 22px; border-radius: 99px; border: 2.5px solid var(--ink); cursor: pointer; transition: translate .15s, box-shadow .15s; }
+.btn-primary { background: var(--pink); color: #fff; box-shadow: 3px 3px 0 var(--ink); width: 100%; max-width: 240px; margin: 0 auto; display: block; }
+.btn-primary:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
 
-.example-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-.example-label.c-formal { color: var(--navy); }
-.example-label.c-standard { color: var(--green); }
-.example-label.c-informal { color: var(--orange); }
-.example-label.c-masc-sg { color: var(--royal-blue); }
-.example-label.c-fem-sg { color: var(--pink); }
-.example-label.c-masc-pl { color: var(--yellow); }
-.example-label.c-fem-pl { color: var(--purple); }
-
-.ex-line { font-size: 0.95rem; color: var(--navy); line-height: 1.9; }
-.ex-line.c-formal { color: var(--navy); }
-.ex-line.c-standard { color: var(--green); }
-.ex-line.c-informal { color: var(--orange); }
-.ex-line.c-masc-sg { color: var(--royal-blue); }
-.ex-line.c-fem-sg { color: var(--pink); }
-.ex-line.c-masc-pl { color: var(--yellow); }
-.ex-line.c-fem-pl { color: var(--purple); }
-.ex-line strong { font-weight: 700; }
-.ex-line img { width: 18px; height: 18px; object-fit: contain; vertical-align: middle; margin-right: 6px; margin-top: -2px; }
-.ex-line .tag { font-size: 0.72rem; color: var(--text-soft); font-style: italic; margin-left: 6px; }
-
-.note-box {
-  background: #eaf0f8; border: none; border-radius: 4px 16px 16px 16px;
-  padding: 12px 16px; font-size: 0.84rem; color: var(--navy); line-height: 1.6; margin-top: 12px;
-  display: flex; align-items: flex-start; gap: 10px; position: relative;
-}
-.note-box b { color: var(--navy); }
-.note-box .info-hex { flex-shrink: 0; margin-top: 2px; }
-
-.warning-box {
-  background: var(--red-soft); border: none; border-radius: 4px 16px 16px 16px;
-  padding: 12px 16px; font-size: 0.84rem; color: var(--red); line-height: 1.6; margin-top: 12px;
-  display: flex; align-items: flex-start; gap: 10px; position: relative;
-  box-shadow: inset 0 0 0 1px rgba(192, 57, 43, 0.35);
-}
-.warning-box b { color: var(--red); }
-.warning-box .warn-hex { flex-shrink: 0; margin-top: 2px; }
-
-.ex-block { margin-bottom: 56px; padding-top: 32px; border-top: 2px solid var(--border); }
-.ex-title { display: flex; align-items: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
-.ex-desc { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 20px; }
-
-.ex-card { background: var(--cream-dark); border: 1px solid var(--border); border-top: 3px solid var(--navy); padding: 28px; }
-
-.start-screen { text-align: center; padding: 20px 0; }
-.start-screen p { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 20px; }
-
-.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 20px; }
-.match-col { display: flex; flex-direction: column; gap: 8px; }
-.match-item {
-  padding: 12px 14px; border: 1.5px solid var(--border); background: var(--cream);
-  font-size: 0.85rem; font-weight: 500; color: var(--navy); cursor: pointer;
-  transition: all 0.15s; text-align: center;
-}
-.match-item:hover { border-color: var(--navy); }
-.match-item.selected { border-color: var(--navy); background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--gold); }
-.match-item.matched { border-color: var(--green); background: var(--green-soft); color: var(--green); cursor: default; pointer-events: none; }
-.match-item.wrong-flash { border-color: var(--red); background: var(--red-soft); color: var(--red); }
-
-.btn { padding: 13px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1.5px solid var(--navy); transition: all 0.15s; }
-.btn-primary { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--red); width: 100%; max-width: 220px; margin: 0 auto; display: block; }
-.btn-primary:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--red); }
+.match-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; margin-bottom: 8px; }
+.match-col { display: flex; flex-direction: column; gap: 10px; }
+.match-item { padding: 10px 12px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--bg); font-weight: 600; font-size: .95rem; line-height: 1.35; color: var(--ink); cursor: pointer; text-align: center; box-shadow: 2px 2px 0 var(--ink); transition: background .15s, translate .12s; overflow-wrap: anywhere; }
+.match-item:hover { background: var(--lemon); translate: -1px -1px; }
+.match-item.selected { background: var(--ink); color: #fff; box-shadow: 3px 3px 0 var(--violet); }
+.match-item.matched { background: #ecffc4; border-color: #6f9a12; color: #3d5a00; box-shadow: none; cursor: default; pointer-events: none; }
+.match-item.matched::after { content: ' ✓'; font-weight: 800; }
+.match-item.wrong-flash { background: #ffe1ee; border-color: #e0337f; color: #b0105a; animation: secousse .3s; }
+@keyframes secousse { 25% { translate: -4px 0; } 75% { translate: 4px 0; } }
 
 .ex-result { text-align: center; }
-.ex-result .score { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--navy); margin: 8px 0; }
-.mention { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 20px; border: 1.5px solid; }
-.m-revoir { background: var(--red-soft); color: var(--red); border-color: var(--red); }
-.m-passable { background: #fdf3e3; color: #9a6c1a; border-color: #c9972a; }
-.m-assezbien { background: #f0f5e8; color: #5a6e28; border-color: #8a9e3a; }
-.m-bien { background: var(--green-soft); color: var(--green); border-color: var(--green); }
-.m-tresbien { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+.ex-result .score { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.2rem; line-height: 1.1; margin: 4px 0 10px; }
+.mention { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 14px; margin-bottom: 22px; border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 2px 2px 0 var(--ink); }
+.m-revoir { background: #ffe1ee; color: #b0105a; }
+.m-passable { background: var(--orange); color: var(--ink); }
+.m-assezbien { background: var(--lemon); color: var(--ink); }
+.m-bien { background: var(--lime); color: var(--ink); }
+.m-tresbien { background: var(--violet); color: #fff; }
 
-.ex-progress { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 16px; display: flex; justify-content: space-between; }
-.ex-prompt { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--navy); margin-bottom: 20px; text-align: center; }
+.ex-progress { font-size: .88rem; font-weight: 600; color: var(--soft); margin-bottom: 14px; display: flex; justify-content: space-between; gap: 12px; }
+.ex-prompt { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1.15; letter-spacing: -.01em; margin-bottom: 20px; text-align: center; }
 
 .type-field { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-.type-field input {
-  width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
-  background: var(--cream); font-family: 'Inter', sans-serif; font-size: 1rem;
-  color: var(--navy); outline: none;
-}
-.type-field input:focus { border-color: var(--navy); }
-.type-field input.ok { border-color: var(--green); background: var(--green-soft); }
-.type-field input.bad { border-color: var(--red); background: var(--red-soft); }
-.accent-row { display: flex; flex-wrap: wrap; gap: 5px; }
-.accent-btn {
-  width: 30px; height: 30px; border: 1.5px solid var(--border); background: var(--cream);
-  font-size: 0.9rem; color: var(--navy); cursor: pointer; transition: all 0.15s;
-}
-.accent-btn:hover { border-color: var(--navy); background: var(--cream-dark); }
+.type-field input { width: 100%; padding: 12px 14px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--bg); font: 500 1.05rem 'Inter', sans-serif; color: var(--ink); outline: none; }
+.type-field input:focus { box-shadow: 3px 3px 0 var(--violet); }
+.type-field input.ok { border-color: #6f9a12; background: #ecffc4; }
+.type-field input.bad { border-color: #e0337f; background: #ffe1ee; }
+.accent-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.accent-btn { width: 34px; height: 34px; border: 2px solid var(--ink); border-radius: 9px; background: #fff; font: 600 1rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; transition: background .15s; }
+.accent-btn:hover { background: var(--lemon); }
+#ex2Feedback:not(:empty) { margin-bottom: 16px; }
+.feedback { margin-top: 14px; padding: 10px 14px; font-size: .95rem; font-weight: 600; border: 2.5px solid var(--ink); border-radius: 12px; }
+.feedback.ok { background: #ecffc4; }
+.feedback.bad { background: #ffe1ee; }
 
-.feedback { margin-top: 14px; padding: 12px 14px; font-size: 0.85rem; border-left: 3px solid; }
-.feedback.ok { background: var(--green-soft); color: #1e5c35; border-color: var(--green); }
-.feedback.bad { background: var(--red-soft); color: #8b2a20; border-color: var(--red); }
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
 
-footer {
-  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
-  display: flex; justify-content: space-between; align-items: center;
+@media (prefers-reduced-motion: reduce) { .fil, .toggle-btn, .btn, .match-item, .vocab-ligne > div { transition: none; } .match-item.wrong-flash { animation: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 460px; rotate: 1deg; }
+  h1 { font-size: 3.4rem; }
+  .exemples, .exemples.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-.footer-nav { display: flex; gap: 20px; }
-.footer-btn {
-  font-size: 0.8rem; font-weight: 500; color: var(--cream);
-  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
-}
-.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
-.footer-copy { font-size: 0.72rem; color: rgba(250,247,242,0.4); }
-
-/* ===== MOBILE ===== */
-/* en-tête : styles repris des attributs en ligne, pour être pilotables en media query */
-.logo { display: flex; align-items: center; gap: 10px; }
-.logo-name { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
-.logo-al { color: var(--red); }
-nav { display: flex; gap: 44px; align-items: center; }
-nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
-nav a:hover { opacity: 1; }
-
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
-  .logo svg { width: 26px; height: 30px; }
-  .logo-name { font-size: 1.3rem; }
-  nav { gap: 22px; }
-  nav a { font-size: 0.95rem; }
-  .wrap { padding-left: 16px; padding-right: 16px; }
+  .wrap { padding: 0 20px; }
+  section { padding: 38px 0; }
+  .hero { padding: 30px 0 18px; }
+  h1 { font-size: 2.7rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 20px 22px; }
+  .apercu-question { font-size: 1.55rem; padding-right: 56px; }
+  .apercu-mots li { font-size: 1.08rem; padding: 3px 11px; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .exemples, .exemples.g2, .exemples.g4 { grid-template-columns: 1fr; gap: 18px; }
+  .vocab-ligne { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 10px 14px; }
+  .vocab-ligne .en-cell { grid-column: 1 / -1; }
+  .ex-card { padding: 20px 16px; }
+  .match-grid { gap: 12px; }
+  .match-item { font-size: .86rem; padding: 9px 8px; }
+  .ex-prompt { font-size: 1.5rem; }
+  .ex-result .score { font-size: 2.6rem; }
+  .encadre { padding: 14px 16px; gap: 12px; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
 @media (max-width: 400px) {
-  header { padding: 14px 16px; }
-  .logo-name { font-size: 1.12rem; }
-  nav { gap: 16px; }
-  nav a { font-size: 0.88rem; }
+  h1 { font-size: 2.2rem; }
+  .vocab-ligne { grid-template-columns: 1fr; }
+  .encadre .marque { width: 30px; height: 30px; font-size: 1rem; }
 }
-
-@media (max-width: 720px) {
-  h1 { font-size: 1.5rem; margin: 28px 0 18px; }
-  .ex-card { padding: 20px 16px; }
-  .toggle-btn { padding: 9px 14px; font-size: 0.78rem; }
-  table.vocab-table td { padding: 9px 6px; font-size: 0.86rem; }
-}
-
-.gold-line { height: 2px; background: var(--gold); width: 100%; }
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
-}
-.logo-al { color: var(--red); }
-@media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
-}
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
 </style>
 </head>
 <body>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="wrap">
-<h1>Mots interrogatifs</h1>
+<!-- Les mots interrogatifs et les phrases d'exemple restent en français dans la version anglaise :
+     seules les consignes et les explications sont traduites. Les explications étaient à l'origine
+     en anglais (conservées mot pour mot dans data-en) ; la version française est ajoutée. -->
+<main class="page suite-sections">
 
-<div class="toggle-row">
-  <button class="toggle-btn" data-mode="fr">Français</button>
-  <button class="toggle-btn" data-mode="en">Anglais</button>
-  <button class="toggle-btn active" data-mode="both">Les deux</button>
-</div>
-
-<table class="vocab-table" id="vocabTable"></table>
-
-<!-- EXPLANATION: QUE / QU'EST-CE QUE / QUOI -->
-<div class="explain-block">
-  <div class="explain-title">
-    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hx1"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx1)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx1)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx1)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    Que / Qu'est-ce que / Quoi
-  </div>
-  <p class="explain-body">These three all mean <strong>"what"</strong>, but they differ in <strong>register</strong> (formality) rather than meaning:</p>
-
-  <div class="example-card c-formal">
-    <div class="example-label c-formal">Que — formal, with inversion</div>
-    <div class="ex-line c-formal"><img src="/coq.png"> <strong>Que</strong> fais-tu ?</div>
-    <div class="ex-line c-formal"><img src="/coq.png"> <strong>Que</strong> manges-tu ?</div>
-  </div>
-
-  <div class="example-card c-standard">
-    <div class="example-label c-standard">Qu'est-ce que — standard, everyday</div>
-    <div class="ex-line c-standard"><img src="/coq.png"> <strong>Qu'est-ce que</strong> tu fais ?</div>
-    <div class="ex-line c-standard"><img src="/coq.png"> <strong>Qu'est-ce que</strong> tu manges ?</div>
-  </div>
-
-  <div class="example-card c-informal">
-    <div class="example-label c-informal">Quoi — informal, casual</div>
-    <div class="ex-line c-informal"><img src="/coq.png"> Tu fais <strong>quoi</strong> ?</div>
-    <div class="ex-line c-informal"><img src="/coq.png"> Tu manges <strong>quoi</strong> ?</div>
-  </div>
-
-  <div class="warning-box">
-    <svg class="warn-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">!</text></svg>
-    <span><b>Quoi always goes at the end of the sentence.</b> You can't say "Quoi tu fais ?" — only "Tu fais <strong>quoi</strong> ?"</span>
-  </div>
-</div>
-
-<!-- EXPLANATION: EST-CE QUE -->
-<div class="explain-block">
-  <div class="explain-title">
-    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hxEQ"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hxEQ)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hxEQ)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hxEQ)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    Est-ce que
-  </div>
-  <p class="explain-body">"Est-ce que" doesn't translate to a single English word — it's a <strong>question marker</strong> placed before a statement to turn it into a question, without needing to invert the subject and verb.</p>
-
-  <div class="example-card c-esceque">
-    <div class="example-label c-esceque">Statement → Question</div>
-    <div class="ex-line c-esceque"><img src="/coq.png"> Tu parles français. → <strong>Est-ce que</strong> tu parles français ?</div>
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a1-a2" data-fr="← Ressources · Faux débutant" data-en="← Resources · Elementary">← Ressources · Faux débutant</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+          <span class="pastille t" data-fr="2 exercices" data-en="2 exercises">2 exercices</span>
+          <span class="pastille">A1–A2</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Mots &lt;mark&gt;interrogatifs&lt;/mark&gt;"
+            data-en="&lt;mark&gt;Mots interrogatifs&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;Question words&lt;/span&gt;">Mots <mark>interrogatifs</mark></h1>
+        <p class="lead t"
+           data-fr="Combien, comment, pourquoi, qui, quand, où, que, quel : les mots pour poser une question, expliqués, avec 2 exercices interactifs."
+           data-en="Combien, comment, pourquoi, qui, quand, où, que, quel: the words for asking a question, explained, with 2 interactive exercises.">Combien, comment, pourquoi, qui, quand, où, que, quel : les mots pour poser une question, expliqués, avec 2 exercices interactifs.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant">Quoi ?</span>
+        <div class="apercu-question">Est-ce que tu parles français ?</div>
+        <ul class="apercu-mots suite">
+          <li>Combien ?</li>
+          <li>Comment ?</li>
+          <li>Pourquoi ?</li>
+          <li>Qui ?</li>
+          <li>Quand ?</li>
+          <li>Où ?</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
-  <div class="example-card c-esceque">
-    <div class="example-label c-esceque">Combined with other question words</div>
-    <div class="ex-line c-esceque"><img src="/coq.png"> Où <strong>est-ce que</strong> tu habites ?</div>
-    <div class="ex-line c-esceque"><img src="/coq.png"> Quand <strong>est-ce que</strong> tu arrives ?</div>
-  </div>
+  <!-- ===== LES MOTS ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Les mots à connaître" data-en="The words to know">Les mots à connaître</h2>
+      </div>
+      <p class="intro t" data-fr="Choisissez ce qui s'affiche : cachez une colonne pour vous tester." data-en="Choose what is displayed: hide a column to test yourself.">Choisissez ce qui s'affiche : cachez une colonne pour vous tester.</p>
 
-  <div class="note-box">
-    <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
-    <span><b>This is where "Qu'est-ce que" comes from:</b> it's literally <em>Que</em> + <em>est-ce que</em> combined into one expression.</span>
-  </div>
-  <div class="note-box" style="margin-top: 8px;">
-    <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
-    <span><b>"Est-ce que" is optional</b> — you could also just raise your intonation at the end of a statement ("Tu parles français ?"). But "est-ce que" is very commonly used, both in speech and writing, since it avoids the need for inversion.</span>
-  </div>
-</div>
+      <div class="toggle-row">
+        <button type="button" class="toggle-btn t" data-mode="fr" data-fr="Français" data-en="French">Français</button>
+        <button type="button" class="toggle-btn t" data-mode="en" data-fr="Anglais" data-en="English">Anglais</button>
+        <button type="button" class="toggle-btn active t" data-mode="both" data-fr="Les deux" data-en="Both">Les deux</button>
+      </div>
 
-<!-- EXPLANATION: QUEL / QUELLE / QUELS / QUELLES -->
-<div class="explain-block">
-  <div class="explain-title">
-    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hx2"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx2)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx2)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx2)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    Quel / Quelle / Quels / Quelles
-  </div>
-  <p class="explain-body">Unlike que/quoi, these forms don't change with formality — they change based on <strong>gender and number</strong> of the noun that follows.</p>
+      <div class="vocab suite" id="vocabTable" role="table"></div>
+    </div>
+  </section>
 
-  <div class="example-card c-masc-sg">
-    <div class="example-label c-masc-sg">Quel — masculine singular</div>
-    <div class="ex-line c-masc-sg"><img src="/coq.png"> <strong>Quel</strong> jour sommes-nous ?</div>
-  </div>
+  <!-- ===== QUE / QU'EST-CE QUE / QUOI ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2>Que / Qu'est-ce que / Quoi</h2>
+      </div>
+      <p class="intro t" data-html="1"
+         data-fr="Ces trois formes veulent toutes dire &lt;strong&gt;« what »&lt;/strong&gt; en anglais, mais elles se distinguent par le &lt;strong&gt;registre&lt;/strong&gt; (le niveau de langue), pas par le sens :"
+         data-en="These three all mean &lt;strong&gt;&quot;what&quot;&lt;/strong&gt;, but they differ in &lt;strong&gt;register&lt;/strong&gt; (formality) rather than meaning:">Ces trois formes veulent toutes dire <strong>« what »</strong> en anglais, mais elles se distinguent par le <strong>registre</strong> (le niveau de langue), pas par le sens :</p>
 
-  <div class="example-card c-fem-sg">
-    <div class="example-label c-fem-sg">Quelle — feminine singular</div>
-    <div class="ex-line c-fem-sg"><img src="/coq.png"> <strong>Quelle</strong> heure est-il ?</div>
-  </div>
+      <div class="exemples suite">
+        <div class="exemple">
+          <div class="formule t" data-html="1" data-fr="&lt;b&gt;Que&lt;/b&gt; — soutenu, avec inversion" data-en="&lt;b&gt;Que&lt;/b&gt; — formal, with inversion"><b>Que</b> — soutenu, avec inversion</div>
+          <div class="lignes">
+            <p class="ligne"><img src="/coq.png" alt=""> <strong>Que</strong> fais-tu ?</p>
+            <p class="ligne"><img src="/coq.png" alt=""> <strong>Que</strong> manges-tu ?</p>
+          </div>
+        </div>
+        <div class="exemple">
+          <div class="formule t" data-html="1" data-fr="&lt;b&gt;Qu'est-ce que&lt;/b&gt; — courant, de tous les jours" data-en="&lt;b&gt;Qu'est-ce que&lt;/b&gt; — standard, everyday"><b>Qu'est-ce que</b> — courant, de tous les jours</div>
+          <div class="lignes">
+            <p class="ligne"><img src="/coq.png" alt=""> <strong>Qu'est-ce que</strong> tu fais ?</p>
+            <p class="ligne"><img src="/coq.png" alt=""> <strong>Qu'est-ce que</strong> tu manges ?</p>
+          </div>
+        </div>
+        <div class="exemple">
+          <div class="formule t" data-html="1" data-fr="&lt;b&gt;Quoi&lt;/b&gt; — familier, décontracté" data-en="&lt;b&gt;Quoi&lt;/b&gt; — informal, casual"><b>Quoi</b> — familier, décontracté</div>
+          <div class="lignes">
+            <p class="ligne"><img src="/coq.png" alt=""> Tu fais <strong>quoi</strong> ?</p>
+            <p class="ligne"><img src="/coq.png" alt=""> Tu manges <strong>quoi</strong> ?</p>
+          </div>
+        </div>
+      </div>
 
-  <div class="example-card c-masc-pl">
-    <div class="example-label c-masc-pl">Quels — masculine plural</div>
-    <div class="ex-line c-masc-pl"><img src="/coq.png"> <strong>Quels</strong> sports pratiques-tu ?</div>
-  </div>
+      <div class="encadre encadre-attention">
+        <span class="marque" aria-hidden="true">!</span>
+        <p class="t" data-html="1"
+           data-fr="&lt;b&gt;Quoi se place toujours à la fin de la phrase.&lt;/b&gt; On ne peut pas dire « &lt;s&gt;Quoi tu fais ?&lt;/s&gt; », seulement « Tu fais &lt;strong&gt;quoi&lt;/strong&gt; ? »"
+           data-en="&lt;b&gt;Quoi always goes at the end of the sentence.&lt;/b&gt; You can't say &quot;&lt;s&gt;Quoi tu fais ?&lt;/s&gt;&quot; — only &quot;Tu fais &lt;strong&gt;quoi&lt;/strong&gt; ?&quot;"><b>Quoi se place toujours à la fin de la phrase.</b> On ne peut pas dire « <s>Quoi tu fais ?</s> », seulement « Tu fais <strong>quoi</strong> ? »</p>
+      </div>
+    </div>
+  </section>
 
-  <div class="example-card c-fem-pl">
-    <div class="example-label c-fem-pl">Quelles — feminine plural</div>
-    <div class="ex-line c-fem-pl"><img src="/coq.png"> <strong>Quelles</strong> langues parles-tu ?</div>
-  </div>
+  <!-- ===== EST-CE QUE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2>Est-ce que</h2>
+      </div>
+      <p class="intro t" data-html="1"
+         data-fr="« Est-ce que » ne se traduit pas par un seul mot anglais : c'est une &lt;strong&gt;marque de question&lt;/strong&gt;, placée devant une affirmation pour la transformer en question, sans inverser le sujet et le verbe."
+         data-en="&quot;Est-ce que&quot; doesn't translate to a single English word — it's a &lt;strong&gt;question marker&lt;/strong&gt; placed before a statement to turn it into a question, without needing to invert the subject and verb.">« Est-ce que » ne se traduit pas par un seul mot anglais : c'est une <strong>marque de question</strong>, placée devant une affirmation pour la transformer en question, sans inverser le sujet et le verbe.</p>
 
-  <div class="note-box">
-    <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
-    <span><b>Word order is flexible.</b> You can also place the question word at the end: <em>"Nous sommes quel jour ?"</em> or <em>"Il est quelle heure ?"</em> instead of the inverted form above — both are correct and commonly used.</span>
-  </div>
-  <div class="note-box" style="margin-top: 8px;">
-    <svg class="info-hex" width="16" height="19" viewBox="0 0 24 28"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="var(--info-blue)" stroke="var(--info-blue)" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="15">i</text></svg>
-    <span><b>Same pronunciation.</b> All four forms — quel, quelle, quels, quelles — sound identical when spoken (/kɛl/). Only the spelling changes, based on the noun's gender and number.</span>
-  </div>
-</div>
+      <div class="exemples g2 suite">
+        <div class="exemple">
+          <div class="formule t" data-fr="Affirmation → Question" data-en="Statement → Question">Affirmation → Question</div>
+          <div class="lignes">
+            <p class="ligne"><img src="/coq.png" alt=""> Tu parles français. → <strong>Est-ce que</strong> tu parles français ?</p>
+          </div>
+        </div>
+        <div class="exemple">
+          <div class="formule t" data-fr="Avec d'autres mots interrogatifs" data-en="Combined with other question words">Avec d'autres mots interrogatifs</div>
+          <div class="lignes">
+            <p class="ligne"><img src="/coq.png" alt=""> Où <strong>est-ce que</strong> tu habites ?</p>
+            <p class="ligne"><img src="/coq.png" alt=""> Quand <strong>est-ce que</strong> tu arrives ?</p>
+          </div>
+        </div>
+      </div>
 
-<!-- EXERCISE 1: MATCHING -->
-<div class="ex-block">
-  <div class="ex-title">
-    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hx3"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx3)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx3)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx3)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    Exercice 1 — Associer les mots
-  </div>
-  <div class="ex-desc">Cliquez un mot français, puis sa traduction anglaise correspondante.</div>
-  <div class="ex-card" id="exRoot"></div>
-</div>
+      <div class="encadre encadre-info">
+        <span class="marque" aria-hidden="true">i</span>
+        <p class="t" data-html="1"
+           data-fr="&lt;b&gt;C'est de là que vient « Qu'est-ce que » :&lt;/b&gt; c'est littéralement &lt;em&gt;Que&lt;/em&gt; + &lt;em&gt;est-ce que&lt;/em&gt;, réunis en une seule expression."
+           data-en="&lt;b&gt;This is where &quot;Qu'est-ce que&quot; comes from:&lt;/b&gt; it's literally &lt;em&gt;Que&lt;/em&gt; + &lt;em&gt;est-ce que&lt;/em&gt; combined into one expression."><b>C'est de là que vient « Qu'est-ce que » :</b> c'est littéralement <em>Que</em> + <em>est-ce que</em>, réunis en une seule expression.</p>
+      </div>
+      <div class="encadre encadre-info">
+        <span class="marque" aria-hidden="true">i</span>
+        <p class="t" data-html="1"
+           data-fr="&lt;b&gt;« Est-ce que » est facultatif&lt;/b&gt; : on peut aussi simplement monter l'intonation à la fin d'une affirmation (« Tu parles français ? »). Mais « est-ce que » est très courant, à l'oral comme à l'écrit, car il évite l'inversion."
+           data-en="&lt;b&gt;&quot;Est-ce que&quot; is optional&lt;/b&gt; — you could also just raise your intonation at the end of a statement (&quot;Tu parles français ?&quot;). But &quot;est-ce que&quot; is very commonly used, both in speech and writing, since it avoids the need for inversion."><b>« Est-ce que » est facultatif</b> : on peut aussi simplement monter l'intonation à la fin d'une affirmation (« Tu parles français ? »). Mais « est-ce que » est très courant, à l'oral comme à l'écrit, car il évite l'inversion.</p>
+      </div>
+    </div>
+  </section>
 
-<!-- EXERCISE 2: TYPED ANSWERS -->
-<div class="ex-block">
-  <div class="ex-title">
-    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hx4"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx4)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx4)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx4)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    Exercice 2 — Traduction écrite
-  </div>
-  <div class="ex-desc">Écrivez le mot français correspondant. Plusieurs réponses sont parfois acceptées.</div>
-  <div class="ex-card" id="ex2Root"></div>
-</div>
-</div>
+  <!-- ===== QUEL / QUELLE / QUELS / QUELLES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2>Quel / Quelle / Quels / Quelles</h2>
+      </div>
+      <p class="intro t" data-html="1"
+         data-fr="Contrairement à que/quoi, ces formes ne changent pas selon le niveau de langue : elles varient selon le &lt;strong&gt;genre et le nombre&lt;/strong&gt; du nom qui suit."
+         data-en="Unlike que/quoi, these forms don't change with formality — they change based on &lt;strong&gt;gender and number&lt;/strong&gt; of the noun that follows.">Contrairement à que/quoi, ces formes ne changent pas selon le niveau de langue : elles varient selon le <strong>genre et le nombre</strong> du nom qui suit.</p>
+
+      <div class="exemples g4 suite">
+        <div class="exemple">
+          <div class="formule t" data-html="1" data-fr="&lt;b&gt;Quel&lt;/b&gt; — masculin singulier" data-en="&lt;b&gt;Quel&lt;/b&gt; — masculine singular"><b>Quel</b> — masculin singulier</div>
+          <div class="lignes"><p class="ligne"><img src="/coq.png" alt=""> <strong>Quel</strong> jour sommes-nous ?</p></div>
+        </div>
+        <div class="exemple">
+          <div class="formule t" data-html="1" data-fr="&lt;b&gt;Quelle&lt;/b&gt; — féminin singulier" data-en="&lt;b&gt;Quelle&lt;/b&gt; — feminine singular"><b>Quelle</b> — féminin singulier</div>
+          <div class="lignes"><p class="ligne"><img src="/coq.png" alt=""> <strong>Quelle</strong> heure est-il ?</p></div>
+        </div>
+        <div class="exemple">
+          <div class="formule t" data-html="1" data-fr="&lt;b&gt;Quels&lt;/b&gt; — masculin pluriel" data-en="&lt;b&gt;Quels&lt;/b&gt; — masculine plural"><b>Quels</b> — masculin pluriel</div>
+          <div class="lignes"><p class="ligne"><img src="/coq.png" alt=""> <strong>Quels</strong> sports pratiques-tu ?</p></div>
+        </div>
+        <div class="exemple">
+          <div class="formule t" data-html="1" data-fr="&lt;b&gt;Quelles&lt;/b&gt; — féminin pluriel" data-en="&lt;b&gt;Quelles&lt;/b&gt; — feminine plural"><b>Quelles</b> — féminin pluriel</div>
+          <div class="lignes"><p class="ligne"><img src="/coq.png" alt=""> <strong>Quelles</strong> langues parles-tu ?</p></div>
+        </div>
+      </div>
+
+      <div class="encadre encadre-info">
+        <span class="marque" aria-hidden="true">i</span>
+        <p class="t" data-html="1"
+           data-fr="&lt;b&gt;L'ordre des mots est souple.&lt;/b&gt; On peut aussi placer le mot interrogatif à la fin : &lt;em&gt;« Nous sommes quel jour ? »&lt;/em&gt; ou &lt;em&gt;« Il est quelle heure ? »&lt;/em&gt; au lieu de la forme avec inversion ci-dessus. Les deux sont corrects et très utilisés."
+           data-en="&lt;b&gt;Word order is flexible.&lt;/b&gt; You can also place the question word at the end: &lt;em&gt;&quot;Nous sommes quel jour ?&quot;&lt;/em&gt; or &lt;em&gt;&quot;Il est quelle heure ?&quot;&lt;/em&gt; instead of the inverted form above — both are correct and commonly used."><b>L'ordre des mots est souple.</b> On peut aussi placer le mot interrogatif à la fin : <em>« Nous sommes quel jour ? »</em> ou <em>« Il est quelle heure ? »</em> au lieu de la forme avec inversion ci-dessus. Les deux sont corrects et très utilisés.</p>
+      </div>
+      <div class="encadre encadre-info">
+        <span class="marque" aria-hidden="true">i</span>
+        <p class="t" data-html="1"
+           data-fr="&lt;b&gt;Même prononciation.&lt;/b&gt; Les quatre formes (quel, quelle, quels, quelles) se prononcent de la même façon : /kɛl/. Seule l'orthographe change, selon le genre et le nombre du nom."
+           data-en="&lt;b&gt;Same pronunciation.&lt;/b&gt; All four forms — quel, quelle, quels, quelles — sound identical when spoken (/kɛl/). Only the spelling changes, based on the noun's gender and number."><b>Même prononciation.</b> Les quatre formes (quel, quelle, quels, quelles) se prononcent de la même façon : /kɛl/. Seule l'orthographe change, selon le genre et le nombre du nom.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXERCICE 1 : ASSOCIER ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 1 — Associer les mots" data-en="Exercise 1 — Match the words">Exercice 1 — Associer les mots</h2>
+      </div>
+      <p class="intro t" data-fr="Cliquez un mot français, puis sa traduction anglaise correspondante." data-en="Click a French word, then its matching English translation.">Cliquez un mot français, puis sa traduction anglaise correspondante.</p>
+      <div class="ex-card" id="exRoot"></div>
+    </div>
+  </section>
+
+  <!-- ===== EXERCICE 2 : TRADUCTION ÉCRITE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 2 — Traduction écrite" data-en="Exercise 2 — Written translation">Exercice 2 — Traduction écrite</h2>
+      </div>
+      <p class="intro t" data-fr="Écrivez le mot français correspondant. Plusieurs réponses sont parfois acceptées." data-en="Type the matching French word. Sometimes more than one answer is accepted.">Écrivez le mot français correspondant. Plusieurs réponses sont parfois acceptées.</p>
+      <div class="ex-card" id="ex2Root"></div>
+    </div>
+  </section>
+
+</main>
 
 <footer>
-  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
   <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Mots interrogatifs — French with Alban', en: 'Question words (mots interrogatifs) — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* textes alternatifs des illustrations : le français est dans alt, l'anglais dans data-alt-en */
+document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.setAttribute('data-alt-fr', img.alt); });
+
+/* ---------- textes d'interface des exercices (FR / EN) ----------
+   Les mots français et leurs traductions anglaises (WORDS) ne changent pas avec la langue. */
+var TXT = {
+  fr: { paires: 'paires à associer.', commencer: 'Commencer', recommencer: 'Recommencer', erreur: 'erreur', erreurs: 'erreurs', associes: 'associés',
+        motsAlea: 'mots, ordre aléatoire.', mot: 'Mot', score: 'Score :', placeholder: 'Votre réponse...', valider: 'Valider', correct: 'Correct !', attendue: 'Réponse attendue :',
+        'm-revoir': 'à revoir', 'm-passable': 'passable', 'm-assezbien': 'assez bien', 'm-bien': 'bien', 'm-tresbien': 'très bien' },
+  en: { paires: 'pairs to match.', commencer: 'Start', recommencer: 'Start again', erreur: 'mistake', erreurs: 'mistakes', associes: 'matched',
+        motsAlea: 'words, in random order.', mot: 'Word', score: 'Score:', placeholder: 'Your answer...', valider: 'Check', correct: 'Correct!', attendue: 'Expected answer:',
+        'm-revoir': 'needs review', 'm-passable': 'pass', 'm-assezbien': 'fairly good', 'm-bien': 'good', 'm-tresbien': 'very good' }
+};
+function tx(cle) { return TXT[LANG][cle]; }
+/* précisions du tableau : l'original anglais est gardé pour la version anglaise */
+var NOTES_FR = {
+  '(what + verb)': '(« what » + verbe)',
+  '(which / what + noun)': '(« which / what » + nom)',
+  '(turns a statement into a question)': '(transforme une affirmation en question)'
+};
+
 const WORDS = [
   { fr: "Combien", note: "", pho: "/kɔ̃.bjɛ̃/", en: "How much / How many", accepted: ["combien"] },
   { fr: "Comment", note: "", pho: "/kɔ.mɑ̃/", en: "How", accepted: ["comment"] },
@@ -406,11 +566,11 @@ const WORDS = [
 
 function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
 function mention(pct) {
-  if(pct<50) return {label:"à revoir",cls:"m-revoir"};
-  if(pct<60) return {label:"passable",cls:"m-passable"};
-  if(pct<70) return {label:"assez bien",cls:"m-assezbien"};
-  if(pct<80) return {label:"bien",cls:"m-bien"};
-  return {label:"très bien",cls:"m-tresbien"};
+  if(pct<50) return {label:tx("m-revoir"),cls:"m-revoir"};
+  if(pct<60) return {label:tx("m-passable"),cls:"m-passable"};
+  if(pct<70) return {label:tx("m-assezbien"),cls:"m-assezbien"};
+  if(pct<80) return {label:tx("m-bien"),cls:"m-bien"};
+  return {label:tx("m-tresbien"),cls:"m-tresbien"};
 }
 function stripAccents(s){ return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
 function normalize(s){ return stripAccents(s.trim().toLowerCase()).replace(/[().]/g, ""); }
@@ -424,11 +584,11 @@ function answerMatches(given, accepted) {
 /* VOCAB TABLE */
 const table = document.getElementById('vocabTable');
 table.innerHTML = WORDS.map(w => `
-  <tr>
-    <td class="fr-cell">${w.fr}${w.note ? `<span class="note">${w.note}</span>` : ''}</td>
-    <td class="pho-cell">${w.pho}</td>
-    <td class="en-cell">${w.en}</td>
-  </tr>`).join('');
+  <div class="vocab-ligne" role="row">
+    <div class="fr-cell" role="cell">${w.fr}${w.note ? `<span class="note t" data-fr="${NOTES_FR[w.note]}" data-en="${w.note}">${w.note}</span>` : ''}</div>
+    <div class="pho-cell" role="cell">${w.pho}</div>
+    <div class="en-cell" role="cell">${w.en}</div>
+  </div>`).join('');
 
 document.querySelectorAll('.toggle-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -452,7 +612,7 @@ function renderEx() {
   const root = document.getElementById('exRoot');
 
   if (!started) {
-    root.innerHTML = `<div class="start-screen"><p>${WORDS.length} paires à associer.</p><button class="btn btn-primary" id="startBtn">Commencer</button></div>`;
+    root.innerHTML = `<div class="start-screen"><p>${WORDS.length} ${tx('paires')}</p><button class="btn btn-primary" id="startBtn">${tx('commencer')}</button></div>`;
     document.getElementById('startBtn').onclick = () => {
       started = true;
       WORDS.forEach(w => w.matched = false);
@@ -472,14 +632,14 @@ function renderEx() {
     const m = mention(pct);
     root.innerHTML = `<div class="ex-result">
       <div class="score">${matchedCount} / ${WORDS.length}</div>
-      <span class="mention ${m.cls}">${m.label}${wrongAttempts > 0 ? ` — ${wrongAttempts} erreur${wrongAttempts>1?'s':''}` : ''}</span><br>
-      <button class="btn btn-primary" id="retryBtn">Recommencer</button></div>`;
+      <span class="mention ${m.cls}">${m.label}${wrongAttempts > 0 ? ` — ${wrongAttempts} ${tx(wrongAttempts>1?'erreurs':'erreur')}` : ''}</span><br>
+      <button class="btn btn-primary" id="retryBtn">${tx('recommencer')}</button></div>`;
     document.getElementById('retryBtn').onclick = () => { started = false; renderEx(); };
     return;
   }
 
   root.innerHTML = `
-    <div class="ex-progress" style="justify-content:center;">${matchedCount} / ${WORDS.length} associés</div>
+    <div class="ex-progress" style="justify-content:center;">${matchedCount} / ${WORDS.length} ${tx('associes')}</div>
     <div class="match-grid">
       <div class="match-col" id="leftCol">
         ${leftOrder.map(fr => {
@@ -536,7 +696,7 @@ function renderEx2() {
   const root = document.getElementById('ex2Root');
 
   if (!ex2Started) {
-    root.innerHTML = `<div class="start-screen"><p>${WORDS.length} mots, ordre aléatoire.</p><button class="btn btn-primary" id="ex2Start">Commencer</button></div>`;
+    root.innerHTML = `<div class="start-screen"><p>${WORDS.length} ${tx('motsAlea')}</p><button class="btn btn-primary" id="ex2Start">${tx('commencer')}</button></div>`;
     document.getElementById('ex2Start').onclick = () => {
       ex2Started = true;
       ex2Order = shuffle(WORDS);
@@ -553,21 +713,21 @@ function renderEx2() {
     root.innerHTML = `<div class="ex-result">
       <div class="score">${ex2Score} / ${ex2Order.length}</div>
       <span class="mention ${m.cls}">${m.label} — ${pct}%</span><br>
-      <button class="btn btn-primary" id="ex2Retry">Recommencer</button></div>`;
+      <button class="btn btn-primary" id="ex2Retry">${tx('recommencer')}</button></div>`;
     document.getElementById('ex2Retry').onclick = () => { ex2Started = false; renderEx2(); };
     return;
   }
 
   const q = ex2Order[ex2Idx];
   root.innerHTML = `
-    <div class="ex-progress"><span>Mot ${ex2Idx+1} / ${ex2Order.length}</span><span>Score : ${ex2Score}</span></div>
+    <div class="ex-progress"><span>${tx('mot')} ${ex2Idx+1} / ${ex2Order.length}</span><span>${tx('score')} ${ex2Score}</span></div>
     <div class="ex-prompt">${q.en}</div>
     <div class="type-field">
-      <input type="text" id="ex2Input" autocomplete="off" placeholder="Votre réponse...">
+      <input type="text" id="ex2Input" autocomplete="off" placeholder="${tx('placeholder')}">
       <div class="accent-row">${ACCENTS.map(c=>`<button type="button" class="accent-btn" data-char="${c}">${c}</button>`).join('')}</div>
     </div>
     <div id="ex2Feedback"></div>
-    <button class="btn btn-primary" id="ex2Submit">Valider</button>`;
+    <button class="btn btn-primary" id="ex2Submit">${tx('valider')}</button>`;
 
   const input = document.getElementById('ex2Input');
   input.focus();
@@ -584,8 +744,8 @@ function renderEx2() {
     if (correct) ex2Score++;
     input.classList.add(correct ? 'ok' : 'bad');
     const msg = correct
-      ? 'Correct !'
-      : `Réponse attendue : <b>${q.accepted.filter(a => !a.includes("qu'est")).join(' / ')}</b>`;
+      ? tx('correct')
+      : `${tx('attendue')} <b>${q.accepted.filter(a => !a.includes("qu'est")).join(' / ')}</b>`;
     document.getElementById('ex2Feedback').innerHTML = `<div class="feedback ${correct?'ok':'bad'}">${msg}</div>`;
     setTimeout(() => { ex2Answered = false; ex2Idx++; renderEx2(); }, 1300);
   }
@@ -594,6 +754,51 @@ function renderEx2() {
   input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
 }
 renderEx2();
+
+/* au changement de langue : les exercices sont ré-affichés dans la nouvelle langue,
+   sans perdre la progression, le mot sélectionné ni la saisie en cours */
+function rafraichirExercices() {
+  renderEx();
+  if (selectedLeft) document.querySelectorAll('#leftCol .match-item').forEach(function (e) { if (e.dataset.fr === selectedLeft) e.classList.add('selected'); });
+  if (ex2Answered) return; // correction affichée : la question suivante s'affichera dans la nouvelle langue
+  var saisie = document.getElementById('ex2Input');
+  var valeur = saisie ? saisie.value : null;
+  renderEx2();
+  var nouvelle = document.getElementById('ex2Input');
+  if (valeur !== null && nouvelle) nouvelle.value = valeur;
+}
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.alt = img.getAttribute('data-alt-' + lang); });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+  rafraichirExercices();
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
 </script>
 </body>
 </html>

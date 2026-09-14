@@ -6,190 +6,374 @@
 <title>Les saisons et les mois — French with Alban</title>
 <meta name="description" content="Les quatre saisons et les douze mois de l'année en français, illustrés et avec leur prononciation.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#0d2b45;
-    --rouge:#c0392b;
-    --or:#c9972a;
-    --creme:#faf7f2;
-    --gris-texte:#4a5568;
-    --bordure:#e6e0d6;
-    --rose-fem:#c2185b;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Inter',sans-serif;color:var(--navy);background:#ffffff;line-height:1.7;-webkit-font-smoothing:antialiased;}
-
-  header{
-    width:100%;background:#ffffff;border-bottom:3px solid var(--navy);
-    padding:28px 48px;display:flex;align-items:center;justify-content:space-between;
-    position:sticky;top:0;z-index:100;
-  }
-  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
-  .logo .fw{color:var(--navy);}
-  .logo .al{color:var(--rouge);}
-  nav{display:flex;gap:44px;}
-  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
-  nav a:hover{color:var(--rouge);}
-  .gold-line{height:2px;background:var(--or);width:100%;}
-
-  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
-
-  .hero{background:var(--creme);width:100%;padding:64px 24px 56px;text-align:center;border-bottom:1px solid var(--bordure);}
-  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;margin-bottom:16px;}
-  .hero p{max-width:640px;margin:0 auto;font-size:1.1rem;color:var(--gris-texte);}
-  .hero .compteur{display:inline-block;margin-top:24px;font-family:'Fraunces',serif;font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;color:var(--or);}
-
-  section{padding:56px 0;border-bottom:1px solid var(--bordure);}
-  section:last-of-type{border-bottom:none;}
-
-  h2{font-family:'Fraunces',serif;font-size:1.85rem;font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:20px;}
-  h3{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;display:flex;align-items:center;gap:12px;margin:32px 0 14px;}
-  .hex{flex-shrink:0;}
-  h2 .hex{width:26px;height:30px;}
-  h3 .hex{width:20px;height:23px;}
-  .intro{color:var(--gris-texte);margin-bottom:20px;}
-
-  /* ---------- ILLUSTRATIONS ---------- */
-    .illus-grid{
-    display:grid;grid-template-columns:repeat(2,1fr);
-    gap:36px 32px;margin:28px 0;justify-items:center;
-  }
-  .illus{display:inline-block;padding:10px;background:var(--creme);border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);line-height:0;}
-  .illus img{display:block;width:100%;max-width:320px;}
-  .illus-label{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;color:var(--navy);text-align:center;margin-top:14px;line-height:1.4;}
-  .illus-label .fem{color:var(--rose-fem);}
-  .mois-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:28px 0;}
-  .mois{background:var(--creme);border:1px solid var(--bordure);border-top:2px solid var(--navy);padding:16px 18px;text-align:center;}
-  .mois .nom{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--navy);}
-  .mois .phon{display:block;font-size:.85rem;margin-top:4px;}
-  .illus-label .phon{display:block;color:var(--rouge);font-family:'Inter',sans-serif;font-size:.82rem;font-weight:400;margin-top:2px;}
-
-  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
-  footer a{color:#fff;text-decoration:underline;}
-
-  @media (max-width:720px){
-    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
-    .logo{font-size:1.3rem;}
-    nav{gap:24px;}
-    .hero h1{font-size:2.1rem;}
-        .illus-grid{grid-template-columns:1fr;gap:28px;}
-    .mois-grid{grid-template-columns:repeat(2,1fr);}
-    .illus{box-shadow:4px 4px 0 var(--navy);padding:7px;}
-    footer{padding:28px 20px;}
-  }
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
-.logo-al { color: var(--rouge); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+b, strong { font-weight: 700; }
+
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--aqua); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
+
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px 26px; rotate: 2deg; }
+.apercu-question { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.3rem; line-height: 1.05; letter-spacing: -.02em; margin-bottom: 18px; padding-right: 64px; }
+.apercu-reponses { list-style: none; display: grid; gap: 10px; }
+.apercu-reponses li { display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 8px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.35rem; box-shadow: 3px 3px 0 var(--ink); }
+.apercu-reponses li:nth-child(even) { margin-left: 22px; }
+.apercu-reponses img { width: 46px; height: 46px; flex: none; border-radius: 10px; border: 2px solid var(--ink); object-fit: cover; }
+.autocollant { position: absolute; top: -20px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
+
+/* ---------- CARTES ILLUSTRÉES ---------- */
+.grille { display: grid; gap: 24px; }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.carte { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; transition: translate .18s, box-shadow .18s; }
+.carte:hover { translate: -3px -3px; box-shadow: 8px 8px 0 var(--ink); }
+.carte img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-bottom: 3px solid var(--ink); }
+.carte figcaption { padding: 12px 16px 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; flex: 1; }
+.mot { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.45rem; line-height: 1.12; letter-spacing: -0.015em; }
+.phon { display: inline-block; padding: 1px 10px; border: 2px solid var(--ink); border-radius: 99px; background: var(--c); color: var(--c-texte); font-size: .85rem; font-weight: 600; white-space: nowrap; }
+.g4 .mot { font-size: 1.25rem; }
+
+/* ---------- LES MOIS ---------- */
+.mots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.mots li { list-style: none; display: flex; flex-direction: column; gap: 2px; padding: 10px 14px; background: #fff; border: 2.5px solid var(--ink); border-left: 10px solid var(--c); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); }
+.mots b { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.15rem; font-weight: 700; }
+.mots span { font-size: .88rem; color: var(--soft); }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+@media (prefers-reduced-motion: reduce) { .carte, .fil { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 440px; rotate: 1deg; }
+  h1 { font-size: 3.6rem; }
+  .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mots { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
+  .wrap { padding: 0 20px; }
+  section { padding: 38px 0; }
+  .hero { padding: 30px 0 18px; }
+  h1 { font-size: 2.9rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 20px 20px; }
+  .apercu-question { font-size: 1.8rem; }
+  .apercu-reponses li { font-size: 1.12rem; }
+  .apercu-reponses li:nth-child(even) { margin-left: 12px; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .grille { gap: 16px; }
+  .carte figcaption { padding: 10px 12px 12px; }
+  .mot, .g4 .mot { font-size: 1.12rem; }
+  .phon { font-size: .76rem; padding: 0 8px; }
+  .mots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
+@media (max-width: 400px) {
+  h1 { font-size: 2.45rem; }
+  .mots li { padding: 8px 10px; }
+  .mots b { font-size: 1.05rem; }
+}
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="hex-tri" viewBox="-1 -1 32 37">
-    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
-    <g clip-path="url(#clip-hex)">
-      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-    </g>
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
-  </symbol>
-  <symbol id="hex-warn" viewBox="0 0 30 35">
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#c0392b"/>
-    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="19" font-weight="700" fill="#fff">!</text>
-  </symbol>
-  <symbol id="hex-info" viewBox="0 0 30 35">
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#0d2b45"/>
-    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="18" font-weight="700" fill="#fff">i</text>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
   </symbol>
 </svg>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="hero">
-  <h1>Les saisons et les mois</h1>
-</div>
+<!-- Les noms des saisons et des mois et leurs prononciations restent en français dans la version anglaise :
+     seules les consignes et les titres sont traduits. -->
+<main class="page suite-sections">
 
-<div class="wrap">
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a0" data-fr="← Ressources · Débutant complet" data-en="← Resources · Complete beginner">← Ressources · Débutant complet</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          <span class="pastille t" data-fr="Illustré" data-en="Illustrated">Illustré</span>
+          <span class="pastille">A0</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Les &lt;mark&gt;saisons&lt;/mark&gt; et les mois"
+            data-en="Les &lt;mark&gt;saisons&lt;/mark&gt; et les mois &lt;span class=&quot;petit&quot;&gt;Seasons and months&lt;/span&gt;">Les <mark>saisons</mark> et les mois</h1>
+        <p class="lead t"
+           data-fr="Les quatre saisons illustrées et les douze mois, avec leur prononciation."
+           data-en="The four seasons illustrated and the twelve months, with pronunciation.">Les quatre saisons illustrées et les douze mois, avec leur prononciation.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant t" data-fr="12 mois" data-en="12 months">12 mois</span>
+        <div class="apercu-question t" data-fr="Les quatre saisons" data-en="The four seasons">Les quatre saisons</div>
+        <ul class="apercu-reponses suite">
+          <li><img src="/img/printemps.png" alt="" width="46" height="46">le printemps</li>
+          <li><img src="/img/ete.png" alt="" width="46" height="46">l'été</li>
+          <li><img src="/img/automne.png" alt="" width="46" height="46">l'automne</li>
+          <li><img src="/img/hiver.png" alt="" width="46" height="46">l'hiver</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-  <!-- ===================== LES COULEURS ===================== -->
+  <!-- ===== LES QUATRE SAISONS ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les quatre saisons</h2>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Les quatre saisons" data-en="The four seasons">Les quatre saisons</h2>
+      </div>
 
-    <div class="illus-grid">
-      <figure>
-        <div class="illus"><img src="/img/printemps.png" alt="Paysage de campagne au printemps, arbre en fleurs"></div>
-        <figcaption class="illus-label">le printemps<span class="phon">/lə pʁɛ̃tɑ̃/</span></figcaption>
-      </figure>
-      <figure>
-        <div class="illus"><img src="/img/ete.png" alt="Bord de mer méditerranéen en été"></div>
-        <figcaption class="illus-label">l'été<span class="phon">/lete/</span></figcaption>
-      </figure>
-      <figure>
-        <div class="illus"><img src="/img/automne.png" alt="Village au bord d'une rivière en automne"></div>
-        <figcaption class="illus-label">l'automne<span class="phon">/lotɔn/</span></figcaption>
-      </figure>
-      <figure>
-        <div class="illus"><img src="/img/hiver.png" alt="Paysage de montagne enneigé en hiver"></div>
-        <figcaption class="illus-label">l'hiver<span class="phon">/livɛʁ/</span></figcaption>
-      </figure>
+      <div class="grille g4 suite">
+        <figure class="carte">
+          <img src="/img/printemps.png" width="700" height="700" loading="lazy" alt="Paysage de campagne au printemps, arbre en fleurs" data-alt-en="Countryside landscape in spring, with a tree in blossom">
+          <figcaption><span class="mot">le printemps</span><span class="phon">/lə pʁɛ̃tɑ̃/</span></figcaption>
+        </figure>
+        <figure class="carte">
+          <img src="/img/ete.png" width="700" height="700" loading="lazy" alt="Bord de mer méditerranéen en été" data-alt-en="Mediterranean seaside in summer">
+          <figcaption><span class="mot">l'été</span><span class="phon">/lete/</span></figcaption>
+        </figure>
+        <figure class="carte">
+          <img src="/img/automne.png" width="700" height="700" loading="lazy" alt="Village au bord d'une rivière en automne" data-alt-en="Riverside village in autumn">
+          <figcaption><span class="mot">l'automne</span><span class="phon">/lotɔn/</span></figcaption>
+        </figure>
+        <figure class="carte">
+          <img src="/img/hiver.png" width="700" height="700" loading="lazy" alt="Paysage de montagne enneigé en hiver" data-alt-en="Snowy mountain landscape in winter">
+          <figcaption><span class="mot">l'hiver</span><span class="phon">/livɛʁ/</span></figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 
+  <!-- ===== LES MOIS DE L'ANNÉE ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les mois de l'année</h2>
-    <div class="mois-grid">
-      <div class="mois"><span class="nom">janvier</span><span class="phon">/ʒɑ̃vje/</span></div>
-      <div class="mois"><span class="nom">février</span><span class="phon">/fevʁije/</span></div>
-      <div class="mois"><span class="nom">mars</span><span class="phon">/maʁs/</span></div>
-      <div class="mois"><span class="nom">avril</span><span class="phon">/avʁil/</span></div>
-      <div class="mois"><span class="nom">mai</span><span class="phon">/mɛ/</span></div>
-      <div class="mois"><span class="nom">juin</span><span class="phon">/ʒɥɛ̃/</span></div>
-      <div class="mois"><span class="nom">juillet</span><span class="phon">/ʒɥijɛ/</span></div>
-      <div class="mois"><span class="nom">août</span><span class="phon">/ut/</span></div>
-      <div class="mois"><span class="nom">septembre</span><span class="phon">/sɛptɑ̃bʁ/</span></div>
-      <div class="mois"><span class="nom">octobre</span><span class="phon">/ɔktɔbʁ/</span></div>
-      <div class="mois"><span class="nom">novembre</span><span class="phon">/nɔvɑ̃bʁ/</span></div>
-      <div class="mois"><span class="nom">décembre</span><span class="phon">/desɑ̃bʁ/</span></div>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Les mois de l'année" data-en="The months of the year">Les mois de l'année</h2>
+      </div>
+
+      <ul class="mots suite">
+        <li><b>janvier</b><span>/ʒɑ̃vje/</span></li>
+        <li><b>février</b><span>/fevʁije/</span></li>
+        <li><b>mars</b><span>/maʁs/</span></li>
+        <li><b>avril</b><span>/avʁil/</span></li>
+        <li><b>mai</b><span>/mɛ/</span></li>
+        <li><b>juin</b><span>/ʒɥɛ̃/</span></li>
+        <li><b>juillet</b><span>/ʒɥijɛ/</span></li>
+        <li><b>août</b><span>/ut/</span></li>
+        <li><b>septembre</b><span>/sɛptɑ̃bʁ/</span></li>
+        <li><b>octobre</b><span>/ɔktɔbʁ/</span></li>
+        <li><b>novembre</b><span>/nɔvɑ̃bʁ/</span></li>
+        <li><b>décembre</b><span>/desɑ̃bʁ/</span></li>
+      </ul>
     </div>
   </section>
 
-</div>
+</main>
 
 <footer>
-  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
-  <p style="margin-top:10px;font-size:.82rem;opacity:.7;">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></p>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
+<script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
 
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Les saisons et les mois — French with Alban', en: 'Seasons and months (les saisons et les mois) — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* textes alternatifs des illustrations : le français est dans alt, l'anglais dans data-alt-en */
+document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.setAttribute('data-alt-fr', img.alt); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.alt = img.getAttribute('data-alt-' + lang); });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
 </body>
 </html>

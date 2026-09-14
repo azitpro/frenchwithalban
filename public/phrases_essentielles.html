@@ -6,195 +6,356 @@
 <title>Phrases essentielles — French with Alban</title>
 <meta name="description" content="12 phrases indispensables pour voyager en France : se faire comprendre, demander son chemin, réserver une table.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #faf7f2;
-  --cream-dark: #f0ece4;
-  --navy: #0d2b45;
-  --red: #c0392b;
-  --gold: #c9972a;
-  --border: #ddd8ce;
-  --text-soft: #666;
-  --green: #2e7d4f;
-  --green-soft: #e8f4ed;
-  --red-soft: #fbeae8;
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
-.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
 
-header {
-  padding: 28px 48px; border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%; box-sizing: border-box;
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
 }
-h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 24px; }
-
-.toggle-row { display: flex; gap: 8px; margin-bottom: 20px; }
-.toggle-btn {
-  padding: 9px 20px; border: 1.5px solid var(--navy); background: transparent;
-  color: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.82rem;
-  font-weight: 500; cursor: pointer; transition: all 0.15s;
-}
-.toggle-btn.active { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--gold); }
-.toggle-btn:hover:not(.active) { background: var(--cream-dark); }
-
-table.vocab-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; table-layout: fixed; }
-table.vocab-table tr { border-bottom: 1px solid var(--border); }
-table.vocab-table tr:nth-child(even) { background: var(--cream-dark); }
-table.vocab-table td { padding: 12px 16px; font-size: 0.92rem; vertical-align: top; transition: opacity 0.2s; }
-table.vocab-table .fr-cell { font-weight: 700; color: var(--navy); width: 38%; }
-table.vocab-table .pho-cell { font-style: italic; font-weight: 300; color: var(--red); font-size: 0.8rem; width: 30%; }
-table.vocab-table .en-cell { font-style: italic; font-weight: 300; color: var(--text-soft); width: 32%; }
-.hidden-col { opacity: 0; pointer-events: none; }
-
-/* EXERCISE */
-.ex-block { padding-top: 40px; }
-.ex-desc { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 24px; }
-
-.ex-card {
-  background: var(--cream-dark); border: 1px solid var(--border);
-  border-top: 3px solid var(--navy); padding: 28px;
-}
-.ex-progress { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 12px; display: flex; justify-content: space-between; }
-.ex-prompt {
-  font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--navy);
-  margin-bottom: 20px; text-align: center; line-height: 1.3;
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
 }
 
-.option-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-.option-item {
-  padding: 12px 16px; border: 1.5px solid var(--border); background: var(--cream);
-  font-size: 0.9rem; font-weight: 500; color: var(--navy); cursor: pointer;
-  transition: all 0.15s;
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
 }
-.option-item:hover { border-color: var(--navy); }
-.option-item.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); }
-.option-item.wrong { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 680px; margin: -6px 0 26px; font-size: 1.05rem; }
+b, strong { font-weight: 700; }
+
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--aqua); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
+
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px 26px; rotate: 2deg; }
+.apercu-question { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.1rem; line-height: 1.05; letter-spacing: -.02em; margin-bottom: 18px; padding-right: 64px; }
+.apercu-reponses { list-style: none; display: grid; gap: 10px; }
+.apercu-reponses li { display: flex; align-items: center; gap: 12px; padding: 8px 14px 8px 8px; border: 2.5px solid var(--ink); border-radius: 14px; background: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.2rem; line-height: 1.2; box-shadow: 3px 3px 0 var(--ink); }
+.apercu-reponses li::before { content: ''; flex: none; width: 30px; height: 30px; border: 2.5px solid var(--ink); border-radius: 50%; background: var(--c); }
+.apercu-reponses li.juste { background: #ecffc4; }
+.apercu-reponses li.juste::before { content: '✓'; display: grid; place-items: center; background: var(--lime); font-size: 1rem; font-weight: 800; }
+.apercu-reponses li:nth-child(2) { margin-left: 22px; }
+.autocollant { position: absolute; top: -20px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
+
+/* ---------- LES 12 PHRASES ---------- */
+.bascule { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+.bascule-label { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: .8rem; color: var(--soft); }
+.bascule-boutons { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: #fff; border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 var(--ink); }
+.toggle-btn { border: none; background: none; padding: 6px 16px; border-radius: 99px; font: 700 .9rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; transition: background .15s; }
+.toggle-btn:hover:not(.active) { background: var(--lemon); }
+.toggle-btn.active { background: var(--ink); color: #fff; }
+
+.phrases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.phrase-carte { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 18px 16px; background: #fff; border: 3px solid var(--ink); border-left: 12px solid var(--c); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); }
+.fr-cell { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem; line-height: 1.2; letter-spacing: -0.01em; }
+.pho-cell { padding: 1px 10px; border: 2px solid var(--ink); border-radius: 10px; background: var(--c); color: var(--c-texte); font-size: .85rem; font-weight: 600; }
+.en-cell { color: var(--soft); font-style: italic; font-size: .98rem; }
+/* colonne masquée : l'emplacement reste visible (hachures) pour s'auto-évaluer */
+.hidden-col { color: transparent !important; background: repeating-linear-gradient(-45deg, rgba(27,19,64,.1) 0 6px, transparent 6px 12px) !important; border-radius: 8px; pointer-events: none; user-select: none; }
+.pho-cell.hidden-col { border-style: dashed; }
+
+/* ---------- EXERCICE ---------- */
+.ex-card { max-width: 860px; background: #fff; border: 3px solid var(--ink); border-radius: 24px; box-shadow: 8px 8px 0 var(--ink); padding: 28px; }
+.ex-progress { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.ex-progress span { padding: 2px 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--bg); font-size: .85rem; font-weight: 700; }
+.ex-progress span:last-child { background: var(--lime); }
+.ex-prompt { margin-bottom: 22px; padding: 16px 20px; background: var(--lemon); border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); rotate: -.6deg; text-align: center; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.8rem; line-height: 1.2; letter-spacing: -0.015em; }
+.option-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.option-item { padding: 10px 14px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--bg); color: var(--ink); box-shadow: 2px 2px 0 var(--ink); font: 600 1rem/1.35 'Inter', sans-serif; text-align: left; cursor: pointer; transition: translate .12s, background .12s; }
+.option-item:hover { translate: -1px -1px; background: var(--lemon); }
+.option-item.correct { background: #ecffc4; border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink), inset 0 0 0 3px var(--lime); font-weight: 800; }
+.option-item.wrong { background: #ffe1ee; box-shadow: 3px 3px 0 var(--ink), inset 0 0 0 3px var(--pink); text-decoration: line-through; text-decoration-color: #e0337f; text-decoration-thickness: 2px; }
 .option-item.disabled { pointer-events: none; }
-.option-item.faded { opacity: 0.4; }
+.option-item.faded { opacity: .45; }
 
-.btn { padding: 13px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1.5px solid var(--navy); transition: all 0.15s; width: 100%; max-width: 220px; margin: 0 auto; display: block; }
-.btn-primary { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--red); }
-.btn-primary:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--red); }
+.btn { display: block; margin: 0 auto; padding: 12px 30px; border: 2.5px solid var(--ink); border-radius: 99px; font: 700 1rem 'Inter', sans-serif; cursor: pointer; transition: translate .15s, box-shadow .15s; }
+.btn-primary { background: var(--pink); color: #fff; box-shadow: 3px 3px 0 var(--ink); }
+.btn-primary:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
 
-.start-screen { text-align: center; padding: 20px 0; }
-.start-screen p { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 20px; }
+.start-screen { text-align: center; padding: 12px 0; }
+.start-screen p { color: var(--soft); margin-bottom: 20px; }
 
 .ex-result { text-align: center; }
-.ex-result .score { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--navy); margin: 8px 0; }
-.mention { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 20px; border: 1.5px solid; }
-.m-revoir { background: var(--red-soft); color: var(--red); border-color: var(--red); }
-.m-passable { background: #fdf3e3; color: #9a6c1a; border-color: #c9972a; }
-.m-assezbien { background: #f0f5e8; color: #5a6e28; border-color: #8a9e3a; }
-.m-bien { background: var(--green-soft); color: var(--green); border-color: var(--green); }
-.m-tresbien { background: var(--navy); color: var(--cream); border-color: var(--navy); }
-
-/* ===== MOBILE ===== */
-/* en-tête : styles repris des attributs en ligne, pour être pilotables en media query */
-.logo { display: flex; align-items: center; gap: 10px; }
-.logo-name { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
-.logo-al { color: var(--red); }
-nav { display: flex; gap: 44px; align-items: center; }
-nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
-nav a:hover { opacity: 1; }
-
-@media (max-width: 720px) {
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
-  .logo svg { width: 26px; height: 30px; }
-  .logo-name { font-size: 1.3rem; }
-  nav { gap: 22px; }
-  nav a { font-size: 0.95rem; }
-  .wrap { padding-left: 16px; padding-right: 16px; }
-}
-@media (max-width: 400px) {
-  header { padding: 14px 16px; }
-  .logo-name { font-size: 1.12rem; }
-  nav { gap: 16px; }
-  nav a { font-size: 0.88rem; }
-}
-
-@media (max-width: 720px) {
-  h1 { font-size: 1.5rem; margin: 28px 0 18px; }
-  .ex-card { padding: 20px 16px; }
-  .toggle-btn { padding: 9px 14px; font-size: 0.78rem; }
-  table.vocab-table td { padding: 9px 6px; font-size: 0.86rem; }
-  .option-item { padding: 11px 13px; font-size: 0.86rem; }
-}
-
-.gold-line { height: 2px; background: var(--gold); width: 100%; }
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
-}
-.logo-al { color: var(--red); }
-@media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
-}
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
-
+.ex-result .score { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.5rem; line-height: 1; letter-spacing: -.04em; margin: 6px 0 16px; }
+.mention { display: inline-block; padding: 5px 16px; margin-bottom: 24px; border: 3px solid var(--ink); border-radius: 99px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.15rem; font-weight: 800; box-shadow: 3px 3px 0 var(--ink); rotate: -2deg; }
+.m-revoir { background: var(--pink); color: #fff; }
+.m-passable { background: var(--orange); color: #fff; }
+.m-assezbien { background: var(--lemon); }
+.m-bien { background: var(--aqua); }
+.m-tresbien { background: var(--lime); }
 
 /* ---------- PIED DE PAGE (charte du site) ---------- */
-footer {
-  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
-  display: flex; justify-content: space-between; align-items: center;
-}
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
 .footer-copy a { color: rgba(250,247,242,0.6); }
+
+@media (prefers-reduced-motion: reduce) { .fil, .toggle-btn, .option-item, .btn { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 460px; rotate: 1deg; }
+  h1 { font-size: 3.6rem; }
+}
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+  section { padding: 38px 0; }
+  .hero { padding: 30px 0 18px; }
+  h1 { font-size: 2.9rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 20px 20px; }
+  .apercu-question { font-size: 1.6rem; }
+  .apercu-reponses li { font-size: 1.05rem; }
+  .apercu-reponses li:nth-child(2) { margin-left: 12px; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .phrases { grid-template-columns: 1fr; gap: 12px; }
+  .fr-cell { font-size: 1.15rem; }
+  .pho-cell { font-size: .8rem; }
+  .ex-card { padding: 20px 16px; box-shadow: 5px 5px 0 var(--ink); }
+  .ex-prompt { font-size: 1.35rem; padding: 12px 14px; }
+  .option-list { grid-template-columns: 1fr; gap: 8px; }
+  .option-item { font-size: .95rem; padding: 9px 12px; }
+  .ex-result .score { font-size: 3.4rem; }
   footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-.footer-nav { display: flex; gap: 20px; }
-.footer-btn {
-  font-size: 0.8rem; font-weight: 500; color: var(--cream);
-  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
+@media (max-width: 400px) {
+  h1 { font-size: 2.45rem; }
+  .apercu-reponses li:nth-child(2) { margin-left: 0; }
+  .toggle-btn { padding: 6px 11px; font-size: .85rem; }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="wrap">
-<h1>Phrases essentielles</h1>
+<!-- Les phrases enseignées et leur prononciation restent en français dans la version anglaise ;
+     la traduction anglaise des phrases fait partie de la leçon et de l'exercice. -->
+<main class="page suite-sections">
 
-<div class="toggle-row">
-  <button class="toggle-btn" data-mode="fr">Français</button>
-  <button class="toggle-btn" data-mode="en">Anglais</button>
-  <button class="toggle-btn active" data-mode="both">Les deux</button>
-</div>
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a0" data-fr="← Ressources · Débutant complet" data-en="← Resources · Complete beginner">← Ressources · Débutant complet</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          <span class="pastille t" data-fr="Exercice" data-en="Exercise">Exercice</span>
+          <span class="pastille">A0</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Phrases &lt;mark&gt;essentielles&lt;/mark&gt;"
+            data-en="&lt;mark&gt;Phrases essentielles&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;Essential phrases&lt;/span&gt;">Phrases <mark>essentielles</mark></h1>
+        <p class="lead t"
+           data-fr="12 phrases indispensables pour voyager en France : se faire comprendre, demander son chemin, réserver une table."
+           data-en="12 must-know phrases for travelling in France: making yourself understood, asking the way, booking a table.">12 phrases indispensables pour voyager en France : se faire comprendre, demander son chemin, réserver une table.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant">12 phrases</span>
+        <div class="apercu-question">Do you speak English?</div>
+        <ul class="apercu-reponses suite">
+          <li>Je ne comprends pas</li>
+          <li class="juste">Est-ce que vous parlez anglais ?</li>
+          <li>Combien ça coûte ?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-<table class="vocab-table" id="phraseTable"></table>
+  <!-- ===== LES 12 PHRASES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Les 12 phrases" data-en="The 12 phrases">Les 12 phrases</h2>
+      </div>
 
-<div class="ex-block">
-  <div class="ex-desc">La phrase s'affiche en anglais — choisissez la bonne traduction française parmi les 12 options.</div>
-  <div class="ex-card" id="exRoot"></div>
-</div>
-</div>
+      <div class="bascule toggle-row">
+        <span class="bascule-label t" data-fr="Afficher" data-en="Show">Afficher</span>
+        <div class="bascule-boutons">
+          <button type="button" class="toggle-btn t" data-mode="fr" data-fr="Français" data-en="French">Français</button>
+          <button type="button" class="toggle-btn t" data-mode="en" data-fr="Anglais" data-en="English">Anglais</button>
+          <button type="button" class="toggle-btn active t" data-mode="both" data-fr="Les deux" data-en="Both">Les deux</button>
+        </div>
+      </div>
+
+      <div class="phrases suite" id="phraseTable"></div>
+    </div>
+  </section>
+
+  <!-- ===== EXERCICE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="À vous !" data-en="Your turn!">À vous !</h2>
+      </div>
+      <p class="intro ex-desc t"
+         data-fr="La phrase s'affiche en anglais — choisissez la bonne traduction française parmi les 12 options."
+         data-en="The sentence is shown in English — pick the correct French translation from the 12 options.">La phrase s'affiche en anglais — choisissez la bonne traduction française parmi les 12 options.</p>
+      <div class="ex-card" id="exRoot" aria-live="polite"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+</footer>
 
 <script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Phrases essentielles — French with Alban', en: 'Essential phrases (phrases essentielles) — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* ---------- phrases et exercice ---------- */
 const PHRASES = [
   { fr: "Je ne parle pas bien français", pho: "/ʒə nə paʁl pa bjɛ̃ fʁɑ̃.sɛ/", en: "I don't speak French well" },
   { fr: "Est-ce que vous parlez anglais ?", pho: "/ɛs kə vu paʁ.le ɑ̃.glɛ/", en: "Do you speak English?" },
@@ -219,8 +380,19 @@ function mention(pct) {
   return {label:"très bien",cls:"m-tresbien"};
 }
 
+/* textes de l'interface de l'exercice (les phrases restent en français) */
+const TEXTES = {
+  debut: { fr: " phrases, ordre aléatoire. Les 12 options restent affichées à chaque question.", en: " phrases, random order. All 12 options stay on screen for every question." },
+  commencer: { fr: "Commencer", en: "Start" },
+  recommencer: { fr: "Recommencer", en: "Start again" },
+  question: { fr: "Question ", en: "Question " },
+  score: { fr: "Score : ", en: "Score: " }
+};
+const MENTION_EN = { "à revoir": "needs work", "passable": "pass", "assez bien": "fairly good", "bien": "good", "très bien": "very good" };
+function tx(cle) { return TEXTES[cle][LANG]; }
+
 const table = document.getElementById('phraseTable');
-table.innerHTML = PHRASES.map(p => `<tr><td class="fr-cell">${p.fr}</td><td class="pho-cell">${p.pho}</td><td class="en-cell">${p.en}</td></tr>`).join('');
+table.innerHTML = PHRASES.map(p => `<div class="phrase-carte"><div class="fr-cell">${p.fr}</div><div class="pho-cell">${p.pho}</div><div class="en-cell">${p.en}</div></div>`).join('');
 
 document.querySelectorAll('.toggle-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -240,7 +412,7 @@ function render() {
   const root = document.getElementById('exRoot');
 
   if (!started) {
-    root.innerHTML = `<div class="start-screen"><p>${PHRASES.length} phrases, ordre aléatoire. Les 12 options restent affichées à chaque question.</p><button class="btn btn-primary" id="startBtn">Commencer</button></div>`;
+    root.innerHTML = `<div class="start-screen"><p>${PHRASES.length}${tx('debut')}</p><button type="button" class="btn btn-primary" id="startBtn">${tx('commencer')}</button></div>`;
     document.getElementById('startBtn').onclick = () => { started = true; order = shuffle(PHRASES); idx = 0; score = 0; render(); };
     return;
   }
@@ -250,17 +422,17 @@ function render() {
     const m = mention(pct);
     root.innerHTML = `<div class="ex-result">
       <div class="score">${score} / ${order.length}</div>
-      <span class="mention ${m.cls}">${m.label} — ${pct}%</span><br>
-      <button class="btn btn-primary" id="retryBtn">Recommencer</button></div>`;
+      <span class="mention ${m.cls}">${LANG === 'fr' ? m.label : MENTION_EN[m.label]} — ${pct}%</span><br>
+      <button type="button" class="btn btn-primary" id="retryBtn">${tx('recommencer')}</button></div>`;
     document.getElementById('retryBtn').onclick = () => { started = false; render(); };
     return;
   }
 
   const q = order[idx];
   root.innerHTML = `
-    <div class="ex-progress"><span>Question ${idx+1} / ${order.length}</span><span>Score : ${score}</span></div>
+    <div class="ex-progress"><span>${tx('question')}${idx+1} / ${order.length}</span><span>${tx('score')}${score}</span></div>
     <div class="ex-prompt">${q.en}</div>
-    <div class="option-list">${optionsList.map(o => `<div class="option-item" data-fr="${o.replace(/"/g,'&quot;')}">${o}</div>`).join('')}</div>`;
+    <div class="option-list">${optionsList.map(o => `<button type="button" class="option-item" data-fr="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div>`;
 
   root.querySelectorAll('.option-item').forEach(opt => {
     opt.addEventListener('click', () => {
@@ -278,13 +450,39 @@ function render() {
     });
   });
 }
-render();
-</script>
-<footer>
-  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
-  <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
-</footer>
 
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+  // l'exercice est re-rendu dans la nouvelle langue, sans perdre la progression
+  // (pendant l'affichage de la correction, le rendu suivant se fera à la question suivante)
+  if (!answered) render();
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
 </body>
 </html>

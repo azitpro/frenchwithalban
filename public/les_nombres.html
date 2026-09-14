@@ -6,278 +6,372 @@
 <title>Les nombres en français — French Numbers 1 to 100 Explained</title>
 <meta name="description" content="French numbers 70 to 99 explained: soixante-dix, quatre-vingts, quatre-vingt-dix. Les nombres en français de 1 à 100, avec prononciation et exercices.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #faf7f2;
-  --cream-dark: #f0ece4;
-  --navy: #0d2b45;
-  --red: #c0392b;
-  --gold: #c9972a;
-  --border: #ddd8ce;
-  --text-soft: #666;
-  --green: #2e7d4f;
-  --green-soft: #e8f4ed;
-  --red-soft: #fbeae8;
-  --info-blue: #1a56a0;
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
-.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
 
-header {
-  padding: 28px 48px; border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%; box-sizing: border-box;
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
 }
-h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 24px; }
-
-.section-head { display: flex; align-items: center; gap: 8px; margin: 32px 0 12px; }
-.section-head h2 { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); }
-.hex-icon { flex-shrink: 0; }
-
-.num-grid { column-count: 2; column-gap: 20px; margin-bottom: 8px; }
-.num-item { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); break-inside: avoid; -webkit-column-break-inside: avoid; }
-.num-n { color: var(--text-soft); min-width: 26px; flex-shrink: 0; font-size: 0.76rem; text-align: right; white-space: nowrap; }
-.num-word { font-weight: 700; color: var(--navy); flex: 1; font-size: 0.86rem; }
-.num-pho { color: var(--red); font-style: italic; font-size: 0.74rem; white-space: nowrap; }
-
-.subgroup-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 14px 0 4px; }
-
-.note-box {
-  background: #eaf0f8; border: none; border-radius: 4px 16px 16px 16px;
-  padding: 12px 16px; font-size: 0.84rem; color: var(--navy); line-height: 1.6; margin-top: 12px;
-  display: flex; align-items: flex-start; gap: 10px;
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
 }
-.note-box b { color: var(--navy); }
-.note-box .info-hex { flex-shrink: 0; margin-top: 2px; }
 
-.ex-block { margin-bottom: 56px; padding-top: 32px; border-top: 2px solid var(--border); }
-.ex-title { display: flex; align-items: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
-.ex-desc { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 20px; }
-.ex-card { background: var(--cream-dark); border: 1px solid var(--border); border-top: 3px solid var(--navy); padding: 28px; }
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(255,95,162,.26) 0, transparent 20%),
+    radial-gradient(circle at 3% 46%, rgba(62,224,198,.26) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 680px; margin: -6px 0 26px; font-size: 1.05rem; }
+.sous-titre { display: flex; align-items: center; gap: 10px; margin: 42px 0 18px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.45rem; line-height: 1.2; }
+.sous-titre::after { content: ''; flex: 1; border-top: 2.5px dashed rgba(27,19,64,.25); }
+.sous-titre .hex-penche { width: 22px; height: 26px; filter: drop-shadow(1.5px 2px 0 var(--ink)); }
+b, strong { font-weight: 700; }
 
-.start-screen { text-align: center; padding: 20px 0; }
-.start-screen p { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 20px; }
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
 
-.btn { padding: 13px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1.5px solid var(--navy); transition: all 0.15s; }
-.btn-primary { background: var(--navy); color: var(--cream); box-shadow: 3px 3px 0 var(--red); width: 100%; max-width: 220px; margin: 0 auto; display: block; }
-.btn-primary:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--red); }
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
 
-.ex-result { text-align: center; }
-.ex-result .score { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--navy); margin: 8px 0; }
-.mention { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 20px; border: 1.5px solid; }
-.m-revoir { background: var(--red-soft); color: var(--red); border-color: var(--red); }
-.m-passable { background: #fdf3e3; color: #9a6c1a; border-color: #c9972a; }
-.m-assezbien { background: #f0f5e8; color: #5a6e28; border-color: #8a9e3a; }
-.m-bien { background: var(--green-soft); color: var(--green); border-color: var(--green); }
-.m-tresbien { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+/* aperçu décoratif : 70, 80, 90 */
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px 26px; rotate: 2deg; }
+.apercu-lignes { list-style: none; display: grid; gap: 12px; }
+.apercu-lignes li { display: flex; align-items: center; gap: 14px; padding: 8px 14px 8px 8px; border: 2.5px solid var(--ink); border-radius: 14px; background: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.45rem; line-height: 1.15; box-shadow: 3px 3px 0 var(--ink); }
+.apercu-lignes li:nth-child(2) { margin-left: 22px; }
+.apercu-lignes span { flex: none; min-width: 58px; padding: 4px 8px; text-align: center; border: 2.5px solid var(--ink); border-radius: 10px; background: var(--c); color: var(--c-texte); font-weight: 800; }
+.autocollant { position: absolute; top: -20px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
 
-.ex-progress { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 16px; display: flex; justify-content: space-between; }
-.ex-prompt { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--navy); margin-bottom: 20px; text-align: center; }
+/* ---------- GRILLES DE NOMBRES (générées par le script) ----------
+   la pastille du chiffre prend la couleur de sa section (ordre officiel) */
+.num-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); gap: 12px; }
+.num-item { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 12px; padding: 8px 12px 8px 8px; background: #fff; border: 2.5px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); }
+.num-n { grid-row: 1 / 3; min-width: 48px; height: 46px; padding: 0 8px; display: grid; place-items: center; background: var(--c); color: var(--c-texte); border: 2.5px solid var(--ink); border-radius: 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.25rem; line-height: 1; white-space: nowrap; rotate: -4deg; }
+.num-word { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.12rem; line-height: 1.15; overflow-wrap: anywhere; }
+.num-pho { font-size: .85rem; color: var(--soft); line-height: 1.3; overflow-wrap: anywhere; }
+#bigRoot .num-grid { grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); }
+.subgroup-label { display: flex; align-items: center; gap: 10px; margin: 30px 0 14px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.25rem; line-height: 1.2; }
+.subgroup-label::after { content: ''; flex: 1; border-top: 2.5px dashed rgba(27,19,64,.25); }
+.titre-section + .subgroup-label { margin-top: 0; }
 
+/* ---------- 70 À 99 ---------- */
+.n7099 em { font-style: italic; font-weight: 600; box-shadow: inset 0 -.42em 0 rgba(255,228,92,.75); }
+.n7099-regles { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.n7099-regles li { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 20px; }
+.n7099-regles li b { display: block; width: fit-content; margin-bottom: 10px; padding: 2px 12px; background: var(--c); color: var(--c-texte); border: 2.5px solid var(--ink); border-radius: 12px; box-shadow: 2px 2px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.35rem; white-space: nowrap; rotate: -2deg; }
+.n7099-erreurs { list-style: none; display: grid; gap: 12px; }
+.n7099-erreurs li { position: relative; padding: 14px 18px 14px 66px; background: #ffe1ee; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); }
+.n7099-erreurs li::before { content: '!'; position: absolute; left: 16px; top: 13px; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--pink); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; }
+
+/* ---------- ENCADRÉS ---------- */
+.encadre { display: flex; gap: 16px; align-items: flex-start; margin: 28px 0 0; padding: 16px 20px; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); }
+.encadre-info { background: var(--lemon); }
+.encadre .marque { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--ink); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; }
+.encadre strong { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.1rem; margin-bottom: 2px; }
+.encadre em { box-shadow: none; font-weight: 700; }
+
+/* ---------- EXERCICES (rendu du script) ---------- */
+.ex-card { max-width: 680px; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 32px; }
+.start-screen { text-align: center; padding: 10px 0; }
+.start-screen p { color: var(--soft); margin-bottom: 20px; }
+.btn { font: 700 1rem 'Inter', sans-serif; padding: 12px 22px; border-radius: 99px; border: 2.5px solid var(--ink); cursor: pointer; transition: translate .15s, box-shadow .15s; }
+.btn-primary { display: block; width: 100%; max-width: 240px; margin: 0 auto; background: var(--ink); color: #fff; box-shadow: 4px 4px 0 var(--c); }
+.btn-primary:hover { translate: -1px -1px; box-shadow: 5px 5px 0 var(--c); }
+.ex-progress { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; font-size: .85rem; font-weight: 700; }
+.ex-progress span { padding: 2px 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--bg); }
+.ex-progress span:last-child { background: var(--c); color: var(--c-texte); }
+.ex-prompt { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.4rem; line-height: 1.1; letter-spacing: -0.02em; text-align: center; margin-bottom: 22px; overflow-wrap: anywhere; }
+/* exercice 1 : le nombre en lettres (taille imposée en ligne par le script, agrandie ici) */
+#ex1Root .ex-prompt { font-size: 2.2rem !important; }
 .type-field { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-.type-field input {
-  width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
-  background: var(--cream); font-family: 'Inter', sans-serif; font-size: 1rem;
-  color: var(--navy); outline: none; text-align: center;
+.type-field input { width: 100%; padding: 12px 14px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--bg); font: 600 1.15rem 'Inter', sans-serif; color: var(--ink); text-align: center; box-shadow: inset 2px 2px 0 rgba(27,19,64,.08); }
+.type-field input:focus { outline: 3px solid var(--violet); outline-offset: 2px; }
+.type-field input.ok { background: #ecffc4; border-color: var(--ink); }
+.type-field input.bad { background: #ffe1ee; border-color: var(--ink); }
+.feedback { margin: 0 0 16px; padding: 10px 14px; border: 2.5px solid var(--ink); border-radius: 14px; font-weight: 600; box-shadow: 3px 3px 0 var(--ink); }
+.feedback.ok { background: var(--lime); }
+.feedback.bad { background: #ffe1ee; }
+.feedback b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; }
+.ex-result { text-align: center; }
+.ex-result .score { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.4rem; line-height: 1.1; margin: 4px 0 12px; }
+.mention { display: inline-block; margin-bottom: 22px; padding: 4px 14px; border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 2px 2px 0 var(--ink); font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; rotate: -2deg; }
+.m-revoir { background: var(--pink); color: #fff; }
+.m-passable { background: var(--orange); color: #fff; }
+.m-assezbien { background: var(--lemon); color: var(--ink); }
+.m-bien { background: var(--aqua); color: var(--ink); }
+.m-tresbien { background: var(--lime); color: var(--ink); }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+@media (prefers-reduced-motion: reduce) { .fil, .btn { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 440px; rotate: 1deg; }
+  h1 { font-size: 3.6rem; }
+  .n7099-regles { grid-template-columns: 1fr; gap: 16px; }
 }
-.type-field input:focus { border-color: var(--navy); }
-.type-field input.ok { border-color: var(--green); background: var(--green-soft); }
-.type-field input.bad { border-color: var(--red); background: var(--red-soft); }
-
-.feedback { margin-top: 14px; padding: 12px 14px; font-size: 0.85rem; border-left: 3px solid; }
-.feedback.ok { background: var(--green-soft); color: #1e5c35; border-color: var(--green); }
-.feedback.bad { background: var(--red-soft); color: #8b2a20; border-color: var(--red); }
-
-footer {
-  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
-  display: flex; justify-content: space-between; align-items: center;
-}
-.footer-nav { display: flex; gap: 20px; }
-.footer-btn {
-  font-size: 0.8rem; font-weight: 500; color: var(--cream);
-  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
-}
-.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
-.footer-copy { font-size: 0.72rem; color: rgba(250,247,242,0.4); }
-
-/* ===== MOBILE ===== */
-/* en-tête : styles repris des attributs en ligne, pour être pilotables en media query */
-.logo { display: flex; align-items: center; gap: 10px; }
-.logo-name { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
-.logo-al { color: var(--red); }
-nav { display: flex; gap: 44px; align-items: center; }
-nav a { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em; color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
-nav a:hover { opacity: 1; }
-
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
-  .logo svg { width: 26px; height: 30px; }
-  .logo-name { font-size: 1.3rem; }
-  nav { gap: 22px; }
-  nav a { font-size: 0.95rem; }
-  .wrap { padding-left: 16px; padding-right: 16px; }
+  .wrap { padding: 0 20px; }
+  section { padding: 38px 0; }
+  .hero { padding: 30px 0 18px; }
+  h1 { font-size: 2.9rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 20px 20px; }
+  .apercu-lignes li { font-size: 1.15rem; gap: 10px; }
+  .apercu-lignes li:nth-child(2) { margin-left: 12px; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .num-grid { gap: 10px; }
+  .n7099-erreurs li { padding: 12px 14px 12px 58px; }
+  .n7099-erreurs li::before { left: 12px; width: 32px; height: 32px; }
+  .ex-card { padding: 22px 18px; border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); }
+  .ex-prompt { font-size: 2.6rem; }
+  #ex1Root .ex-prompt { font-size: 1.7rem !important; }
+  .ex-result .score { font-size: 2.8rem; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
 @media (max-width: 400px) {
-  header { padding: 14px 16px; }
-  .logo-name { font-size: 1.12rem; }
-  nav { gap: 16px; }
-  nav a { font-size: 0.88rem; }
-}
-
-@media (max-width: 720px) {
-  h1 { font-size: 1.5rem; margin: 28px 0 18px; }
-  .ex-card { padding: 20px 16px; }
-  .num-grid { column-gap: 14px; }
-}
-@media (max-width: 560px) { .num-grid { column-count: 1; } }
-
-.gold-line { height: 2px; background: var(--gold); width: 100%; }
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
-}
-.logo-al { color: var(--red); }
-@media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
-}
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
-
-/* ===== SECTION 70-99 ===== */
-.n7099 { margin: 8px 0 4px; }
-.n7099 p { font-size: 0.9rem; line-height: 1.7; color: var(--navy); margin: 0 0 12px; }
-.n7099 ul { list-style: none; margin: 0 0 8px; padding: 0; }
-.n7099 li {
-  font-size: 0.88rem; line-height: 1.65; color: var(--navy);
-  background: var(--cream-dark); border-left: 3px solid var(--gold);
-  padding: 9px 14px; margin-bottom: 6px;
-}
-.n7099 li b { font-weight: 700; }
-.n7099 .n7099-erreurs li { border-left-color: var(--red); }
-.n7099 .note-box { margin-top: 4px; }
-
-/* ===== SÉLECTEUR DE LANGUE ===== */
-.langues { position: fixed; right: 22px; bottom: 22px; z-index: 500; display: flex; flex-direction: column; gap: 10px; }
-.lang-btn { width: 46px; height: 54px; padding: 0; border: none; background: none; cursor: pointer; line-height: 0; opacity: .45; transition: opacity .2s, transform .2s; filter: drop-shadow(2px 2px 0 rgba(13,43,69,.25)); }
-.lang-btn:hover { opacity: .85; transform: translateY(-2px); }
-.lang-btn.actif { opacity: 1; filter: none; }
-.lang-btn svg { width: 100%; height: 100%; display: block; }
-.lang-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-@media (max-width: 720px) {
-  .langues { right: 14px; bottom: 14px; flex-direction: row; }
-  .lang-btn { width: 38px; height: 45px; }
+  h1 { font-size: 2.45rem; }
+  .apercu-lignes li { font-size: 1rem; }
+  .apercu-lignes span { min-width: 48px; }
+  .n7099-regles li b { font-size: 1.15rem; }
+  #bigRoot .num-n { font-size: 1.05rem; }
 }
 </style>
 </head>
 <body>
 
-<div class="langues" role="group" aria-label="Langue">
-  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
-    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
-      <g clip-path="url(#hxFR)">
-        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-      </g>
-      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
-    </svg>
-  </button>
-  <button type="button" class="lang-btn" id="btn-en" title="English">
-    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
-      <g clip-path="url(#hxEN)">
-        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
-        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
-        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
-        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
-        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
-        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
-        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
-        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
-      </g>
-      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
-    </svg>
-  </button>
-</div>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html" class="t" data-fr="Retour" data-en="Back">Retour</a>
-    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
-  </nav>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="wrap">
-<h1 class="t" data-fr="Les nombres" data-en="French numbers">Les nombres</h1>
+<!-- Les nombres, leur écriture et leur prononciation restent en français dans la version anglaise :
+     seules les consignes et les explications sont traduites. -->
+<main class="page suite-sections">
 
-<div id="vocabRoot"></div>
-
-<section class="n7099" id="nombres-70-99">
-  <div class="section-head"><svg class="hex-icon" width="12" height="14" viewBox="0 0 24 28" aria-hidden="true"><defs><clipPath id="hx7099"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hx7099)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hx7099)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hx7099)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg><h2 class="t" data-fr="Pourquoi les nombres de 70 à 99 sont différents" data-en="Why French numbers 70 to 99 are different">Pourquoi les nombres de 70 à 99 sont différents</h2></div>
-  <p class="t" data-fr="Le français n'a pas de mot simple pour 70, 80 ou 90. Il les construit à partir de nombres plus petits." data-en="French has no single word for 70, 80 or 90. It builds them from smaller numbers.">Le français n'a pas de mot simple pour 70, 80 ou 90. Il les construit à partir de nombres plus petits.</p>
-  <ul class="n7099-regles">
-    <li class="t" data-html="1" data-fr="<b>70 = 60 + 10</b> → <em>soixante-dix</em>. 71 se dit <em>soixante et onze</em>, 72 <em>soixante-douze</em>, jusqu'à 79 <em>soixante-dix-neuf</em>." data-en="<b>70 = 60 + 10</b> → <em>soixante-dix</em>. 71 is <em>soixante et onze</em>, 72 is <em>soixante-douze</em>, up to 79, <em>soixante-dix-neuf</em>."><b>70 = 60 + 10</b> → <em>soixante-dix</em>. 71 se dit <em>soixante et onze</em>, 72 <em>soixante-douze</em>, jusqu'à 79 <em>soixante-dix-neuf</em>.</li>
-    <li class="t" data-html="1" data-fr="<b>80 = 4 × 20</b> → <em>quatre-vingts</em>. C'est la trace d'un ancien système qui comptait par vingtaines." data-en="<b>80 = 4 × 20</b> → <em>quatre-vingts</em>. It is a trace of an older system that counted in twenties."><b>80 = 4 × 20</b> → <em>quatre-vingts</em>. C'est la trace d'un ancien système qui comptait par vingtaines.</li>
-    <li class="t" data-html="1" data-fr="<b>90 = 4 × 20 + 10</b> → <em>quatre-vingt-dix</em>. 91 se dit <em>quatre-vingt-onze</em>, jusqu'à 99 <em>quatre-vingt-dix-neuf</em>." data-en="<b>90 = 4 × 20 + 10</b> → <em>quatre-vingt-dix</em>. 91 is <em>quatre-vingt-onze</em>, up to 99, <em>quatre-vingt-dix-neuf</em>."><b>90 = 4 × 20 + 10</b> → <em>quatre-vingt-dix</em>. 91 se dit <em>quatre-vingt-onze</em>, jusqu'à 99 <em>quatre-vingt-dix-neuf</em>.</li>
-  </ul>
-  <div class="subgroup-label t" data-fr="Erreurs fréquentes" data-en="Common mistakes">Erreurs fréquentes</div>
-  <ul class="n7099-erreurs">
-    <li class="t" data-html="1" data-fr="« Et » n'apparaît que dans 21, 31, 41, 51, 61 et 71. On dit donc <em>soixante-douze</em>, et non « soixante et douze ». De même, 81 se dit <em>quatre-vingt-un</em> et 91 <em>quatre-vingt-onze</em>." data-en="“Et” only appears in 21, 31, 41, 51, 61 and 71. So 72 is <em>soixante-douze</em>, not “soixante et douze”. Likewise, 81 is <em>quatre-vingt-un</em> and 91 is <em>quatre-vingt-onze</em>.">« Et » n'apparaît que dans 21, 31, 41, 51, 61 et 71. On dit donc <em>soixante-douze</em>, et non « soixante et douze ». De même, 81 se dit <em>quatre-vingt-un</em> et 91 <em>quatre-vingt-onze</em>.</li>
-    <li class="t" data-html="1" data-fr="<em>Quatre-vingts</em> ne prend un s que s'il termine le nombre : <em>quatre-vingts</em>, mais <em>quatre-vingt-un</em>." data-en="<em>Quatre-vingts</em> only takes an s at the end of the number: <em>quatre-vingts</em>, but <em>quatre-vingt-un</em>."><em>Quatre-vingts</em> ne prend un s que s'il termine le nombre : <em>quatre-vingts</em>, mais <em>quatre-vingt-un</em>.</li>
-    <li class="t" data-html="1" data-fr="« Soixante et onze » et « soixante-et-onze » sont toutes deux correctes : depuis la réforme de l'orthographe de 1990, les traits d'union sont admis partout." data-en="<em>Soixante et onze</em> and <em>soixante-et-onze</em> are both correct. Since the 1990 spelling reform, hyphens are allowed throughout.">« Soixante et onze » et « soixante-et-onze » sont toutes deux correctes : depuis la réforme de l'orthographe de 1990, les traits d'union sont admis partout.</li>
-  </ul>
-  <div class="subgroup-label t" data-fr="Belgique et Suisse" data-en="Belgium and Switzerland">Belgique et Suisse</div>
-  <div class="note-box"><span class="t" data-html="1" data-fr="En Belgique et en Suisse romande, 70 se dit <em>septante</em> et 90 <em>nonante</em>. Pour 80, la Belgique garde <em>quatre-vingts</em> ; une partie de la Suisse (Vaud, le Valais et Fribourg) dit <em>huitante</em>. En France, seules les formes <em>soixante-dix</em>, <em>quatre-vingts</em> et <em>quatre-vingt-dix</em> sont en usage." data-en="In Belgium and French-speaking Switzerland, 70 is <em>septante</em> and 90 is <em>nonante</em>. For 80, Belgium keeps <em>quatre-vingts</em>, while part of Switzerland (Vaud, Valais and Fribourg) says <em>huitante</em>. In France, only <em>soixante-dix</em>, <em>quatre-vingts</em> and <em>quatre-vingt-dix</em> are used.">En Belgique et en Suisse romande, 70 se dit <em>septante</em> et 90 <em>nonante</em>. Pour 80, la Belgique garde <em>quatre-vingts</em> ; une partie de la Suisse (Vaud, le Valais et Fribourg) dit <em>huitante</em>. En France, seules les formes <em>soixante-dix</em>, <em>quatre-vingts</em> et <em>quatre-vingt-dix</em> sont en usage.</span></div>
-</section>
-
-<div id="bigRoot"></div>
-
-
-<!-- EXERCISE 1: WORD → DIGIT -->
-<div class="ex-block">
-  <div class="ex-title">
-    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hxE1"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hxE1)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hxE1)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hxE1)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    &nbsp;<span class="t" data-fr="Exercice 1 — Écriture en chiffres" data-en="Exercise 1 — Write it in digits">Exercice 1 — Écriture en chiffres</span>
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a0" data-fr="← Ressources · Débutant complet" data-en="← Resources · Complete beginner">← Ressources · Débutant complet</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          <span class="pastille t" data-fr="Exercices" data-en="Exercises">Exercices</span>
+          <span class="pastille">A0</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Les &lt;mark&gt;nombres&lt;/mark&gt;"
+            data-en="&lt;mark&gt;French&lt;/mark&gt; numbers">Les <mark>nombres</mark></h1>
+        <p class="lead t"
+           data-fr="De 1 à 1 milliard, avec le détail de 60 à 99 et deux exercices."
+           data-en="From 1 to a billion, with the tricky 60 to 99 explained, plus two exercises.">De 1 à 1 milliard, avec le détail de 60 à 99 et deux exercices.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant">4 × 20</span>
+        <ul class="apercu-lignes suite">
+          <li><span>70</span>soixante-dix</li>
+          <li><span>80</span>quatre-vingts</li>
+          <li><span>90</span>quatre-vingt-dix</li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <div class="ex-desc t" data-fr="Le nombre s'affiche en lettres — écrivez-le en chiffres." data-en="The number appears in words. Write it in digits.">Le nombre s'affiche en lettres — écrivez-le en chiffres.</div>
-  <div class="ex-card" id="ex1Root"></div>
-</div>
 
-<!-- EXERCISE 2: DIGIT → WORD -->
-<div class="ex-block">
-  <div class="ex-title">
-    <svg class="hex-icon" width="14" height="16" viewBox="0 0 24 28"><defs><clipPath id="hxE2"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hxE2)"/><rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hxE2)"/><rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hxE2)"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>
-    &nbsp;<span class="t" data-fr="Exercice 2 — Écriture en lettres" data-en="Exercise 2 — Write it in words">Exercice 2 — Écriture en lettres</span>
-  </div>
-  <div class="ex-desc t" data-fr="Le nombre s'affiche en chiffres (1 à 100) — écrivez-le en toutes lettres." data-en="The number appears in digits (1 to 100). Write it out in words.">Le nombre s'affiche en chiffres (1 à 100) — écrivez-le en toutes lettres.</div>
-  <div class="ex-card" id="ex2Root"></div>
-</div>
-</div>
+  <!-- ===== 1 À 19, 20 À 29, DIZAINES, 60 À 99 (titres et grilles générés par le script) ===== -->
+  <section><div class="wrap" id="vocab-1-19"></div></section>
+  <section><div class="wrap" id="vocab-20-29"></div></section>
+  <section><div class="wrap" id="vocab-dizaines"></div></section>
+  <section><div class="wrap" id="vocab-60-99"></div></section>
+
+  <!-- ===== POURQUOI 70 À 99 ===== -->
+  <section class="n7099" id="nombres-70-99">
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Pourquoi les nombres de 70 à 99 sont différents" data-en="Why French numbers 70 to 99 are different">Pourquoi les nombres de 70 à 99 sont différents</h2>
+      </div>
+      <p class="intro t" data-fr="Le français n'a pas de mot simple pour 70, 80 ou 90. Il les construit à partir de nombres plus petits." data-en="French has no single word for 70, 80 or 90. It builds them from smaller numbers.">Le français n'a pas de mot simple pour 70, 80 ou 90. Il les construit à partir de nombres plus petits.</p>
+      <ul class="n7099-regles suite">
+        <li class="t" data-html="1" data-fr="&lt;b&gt;70 = 60 + 10&lt;/b&gt; → &lt;em&gt;soixante-dix&lt;/em&gt;. 71 se dit &lt;em&gt;soixante et onze&lt;/em&gt;, 72 &lt;em&gt;soixante-douze&lt;/em&gt;, jusqu'à 79 &lt;em&gt;soixante-dix-neuf&lt;/em&gt;." data-en="&lt;b&gt;70 = 60 + 10&lt;/b&gt; → &lt;em&gt;soixante-dix&lt;/em&gt;. 71 is &lt;em&gt;soixante et onze&lt;/em&gt;, 72 is &lt;em&gt;soixante-douze&lt;/em&gt;, up to 79, &lt;em&gt;soixante-dix-neuf&lt;/em&gt;."><b>70 = 60 + 10</b> → <em>soixante-dix</em>. 71 se dit <em>soixante et onze</em>, 72 <em>soixante-douze</em>, jusqu'à 79 <em>soixante-dix-neuf</em>.</li>
+        <li class="t" data-html="1" data-fr="&lt;b&gt;80 = 4 × 20&lt;/b&gt; → &lt;em&gt;quatre-vingts&lt;/em&gt;. C'est la trace d'un ancien système qui comptait par vingtaines." data-en="&lt;b&gt;80 = 4 × 20&lt;/b&gt; → &lt;em&gt;quatre-vingts&lt;/em&gt;. It is a trace of an older system that counted in twenties."><b>80 = 4 × 20</b> → <em>quatre-vingts</em>. C'est la trace d'un ancien système qui comptait par vingtaines.</li>
+        <li class="t" data-html="1" data-fr="&lt;b&gt;90 = 4 × 20 + 10&lt;/b&gt; → &lt;em&gt;quatre-vingt-dix&lt;/em&gt;. 91 se dit &lt;em&gt;quatre-vingt-onze&lt;/em&gt;, jusqu'à 99 &lt;em&gt;quatre-vingt-dix-neuf&lt;/em&gt;." data-en="&lt;b&gt;90 = 4 × 20 + 10&lt;/b&gt; → &lt;em&gt;quatre-vingt-dix&lt;/em&gt;. 91 is &lt;em&gt;quatre-vingt-onze&lt;/em&gt;, up to 99, &lt;em&gt;quatre-vingt-dix-neuf&lt;/em&gt;."><b>90 = 4 × 20 + 10</b> → <em>quatre-vingt-dix</em>. 91 se dit <em>quatre-vingt-onze</em>, jusqu'à 99 <em>quatre-vingt-dix-neuf</em>.</li>
+      </ul>
+
+      <h3 class="sous-titre"><svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg><span class="t" data-fr="Erreurs fréquentes" data-en="Common mistakes">Erreurs fréquentes</span></h3>
+      <ul class="n7099-erreurs">
+        <li class="t" data-html="1" data-fr="« Et » n'apparaît que dans 21, 31, 41, 51, 61 et 71. On dit donc &lt;em&gt;soixante-douze&lt;/em&gt;, et non « soixante et douze ». De même, 81 se dit &lt;em&gt;quatre-vingt-un&lt;/em&gt; et 91 &lt;em&gt;quatre-vingt-onze&lt;/em&gt;." data-en="“Et” only appears in 21, 31, 41, 51, 61 and 71. So 72 is &lt;em&gt;soixante-douze&lt;/em&gt;, not “soixante et douze”. Likewise, 81 is &lt;em&gt;quatre-vingt-un&lt;/em&gt; and 91 is &lt;em&gt;quatre-vingt-onze&lt;/em&gt;.">« Et » n'apparaît que dans 21, 31, 41, 51, 61 et 71. On dit donc <em>soixante-douze</em>, et non « soixante et douze ». De même, 81 se dit <em>quatre-vingt-un</em> et 91 <em>quatre-vingt-onze</em>.</li>
+        <li class="t" data-html="1" data-fr="&lt;em&gt;Quatre-vingts&lt;/em&gt; ne prend un s que s'il termine le nombre : &lt;em&gt;quatre-vingts&lt;/em&gt;, mais &lt;em&gt;quatre-vingt-un&lt;/em&gt;." data-en="&lt;em&gt;Quatre-vingts&lt;/em&gt; only takes an s at the end of the number: &lt;em&gt;quatre-vingts&lt;/em&gt;, but &lt;em&gt;quatre-vingt-un&lt;/em&gt;."><em>Quatre-vingts</em> ne prend un s que s'il termine le nombre : <em>quatre-vingts</em>, mais <em>quatre-vingt-un</em>.</li>
+        <li class="t" data-html="1" data-fr="« Soixante et onze » et « soixante-et-onze » sont toutes deux correctes : depuis la réforme de l'orthographe de 1990, les traits d'union sont admis partout." data-en="&lt;em&gt;Soixante et onze&lt;/em&gt; and &lt;em&gt;soixante-et-onze&lt;/em&gt; are both correct. Since the 1990 spelling reform, hyphens are allowed throughout.">« Soixante et onze » et « soixante-et-onze » sont toutes deux correctes : depuis la réforme de l'orthographe de 1990, les traits d'union sont admis partout.</li>
+      </ul>
+
+      <div class="encadre encadre-info">
+        <span class="marque" aria-hidden="true">i</span>
+        <div>
+          <strong class="t" data-fr="Belgique et Suisse" data-en="Belgium and Switzerland">Belgique et Suisse</strong>
+          <p><span class="t" data-html="1" data-fr="En Belgique et en Suisse romande, 70 se dit &lt;em&gt;septante&lt;/em&gt; et 90 &lt;em&gt;nonante&lt;/em&gt;. Pour 80, la Belgique garde &lt;em&gt;quatre-vingts&lt;/em&gt; ; une partie de la Suisse (Vaud, le Valais et Fribourg) dit &lt;em&gt;huitante&lt;/em&gt;. En France, seules les formes &lt;em&gt;soixante-dix&lt;/em&gt;, &lt;em&gt;quatre-vingts&lt;/em&gt; et &lt;em&gt;quatre-vingt-dix&lt;/em&gt; sont en usage." data-en="In Belgium and French-speaking Switzerland, 70 is &lt;em&gt;septante&lt;/em&gt; and 90 is &lt;em&gt;nonante&lt;/em&gt;. For 80, Belgium keeps &lt;em&gt;quatre-vingts&lt;/em&gt;, while part of Switzerland (Vaud, Valais and Fribourg) says &lt;em&gt;huitante&lt;/em&gt;. In France, only &lt;em&gt;soixante-dix&lt;/em&gt;, &lt;em&gt;quatre-vingts&lt;/em&gt; and &lt;em&gt;quatre-vingt-dix&lt;/em&gt; are used.">En Belgique et en Suisse romande, 70 se dit <em>septante</em> et 90 <em>nonante</em>. Pour 80, la Belgique garde <em>quatre-vingts</em> ; une partie de la Suisse (Vaud, le Valais et Fribourg) dit <em>huitante</em>. En France, seules les formes <em>soixante-dix</em>, <em>quatre-vingts</em> et <em>quatre-vingt-dix</em> sont en usage.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LES GRANDS NOMBRES (titre et grille générés par le script) ===== -->
+  <section><div class="wrap" id="bigRoot"></div></section>
+
+  <!-- ===== EXERCICE 1 : LETTRES → CHIFFRES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 1 — Écriture en chiffres" data-en="Exercise 1 — Write it in digits">Exercice 1 — Écriture en chiffres</h2>
+      </div>
+      <p class="intro t" data-fr="Le nombre s'affiche en lettres — écrivez-le en chiffres." data-en="The number appears in words. Write it in digits.">Le nombre s'affiche en lettres — écrivez-le en chiffres.</p>
+      <div class="ex-card" id="ex1Root"></div>
+    </div>
+  </section>
+
+  <!-- ===== EXERCICE 2 : CHIFFRES → LETTRES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 2 — Écriture en lettres" data-en="Exercise 2 — Write it in words">Exercice 2 — Écriture en lettres</h2>
+      </div>
+      <p class="intro t" data-fr="Le nombre s'affiche en chiffres (1 à 100) — écrivez-le en toutes lettres." data-en="The number appears in digits (1 to 100). Write it out in words.">Le nombre s'affiche en chiffres (1 à 100) — écrivez-le en toutes lettres.</p>
+      <div class="ex-card" id="ex2Root"></div>
+    </div>
+  </section>
+
+</main>
 
 <footer>
-  <div class="footer-nav"><a href="/" class="footer-btn t" data-fr="Accueil" data-en="Home">Accueil</a></div>
   <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
@@ -324,8 +418,9 @@ const BIG_NUMBERS = [
   ["10 000","dix mille","/di.mil/"], ["1 000 000","un million","/œ̃.mil.jɔ̃/"], ["1 000 000 000","un milliard","/œ̃.mil.jaʁ/"],
 ];
 
+/* hexagone penché des titres de section (symbole #hex-drapeau de l'en-tête) */
 function hexSvg() {
-  return `<svg class="hex-icon" width="12" height="14" viewBox="0 0 24 28"><defs><clipPath id="hx${Math.random().toString(36).slice(2,8)}"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs><rect x="0" y="0" width="8" height="28" fill="#002395"/><rect x="8" y="0" width="8" height="28" fill="#fff"/><rect x="16" y="0" width="8" height="28" fill="#ED2939"/><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/></svg>`;
+  return `<svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>`;
 }
 
 function renderNumGrid(data) {
@@ -357,18 +452,14 @@ var TXT = {
 };
 function T(k) { return (TXT[LANG] && TXT[LANG][k]) || TXT.fr[k]; }
 
+/* chaque groupe de nombres remplit sa propre section (titre à hexagone + grille),
+   pour que les sections suivent l'ordre officiel des couleurs */
 function renderVocab() {
-  document.getElementById('vocabRoot').innerHTML = `
-  <div class="section-head">${hexSvg()}<h2>${T('s1')}</h2></div>
-  ${renderNumGrid(ONES_TEENS)}
-
-  <div class="section-head">${hexSvg()}<h2>${T('s2')}</h2></div>
-  ${renderNumGrid(TWENTIES)}
-
-  <div class="section-head">${hexSvg()}<h2>${T('s3')}</h2></div>
-  ${renderNumGrid(TENS)}
-
-  <div class="section-head">${hexSvg()}<h2>${T('s4')}</h2></div>
+  const titre = (k) => `<div class="titre-section">${hexSvg()}<h2>${T(k)}</h2></div>`;
+  document.getElementById('vocab-1-19').innerHTML = `${titre('s1')}${renderNumGrid(ONES_TEENS)}`;
+  document.getElementById('vocab-20-29').innerHTML = `${titre('s2')}${renderNumGrid(TWENTIES)}`;
+  document.getElementById('vocab-dizaines').innerHTML = `${titre('s3')}${renderNumGrid(TENS)}`;
+  document.getElementById('vocab-60-99').innerHTML = `${titre('s4')}
   <div class="subgroup-label">60 – 69</div>
   ${renderNumGrid(SIXTIES)}
   <div class="subgroup-label">70 – 79</div>
@@ -379,10 +470,7 @@ function renderVocab() {
   ${renderNumGrid(NINETIES)}
 `;
   // les grands nombres viennent après la section 70-99, dans leur propre conteneur
-  document.getElementById('bigRoot').innerHTML = `
-  <div class="section-head">${hexSvg()}<h2>${T('s5')}</h2></div>
-  ${renderNumGrid(BIG_NUMBERS)}
-`;
+  document.getElementById('bigRoot').innerHTML = `${titre('s5')}${renderNumGrid(BIG_NUMBERS)}`;
 }
 
 /* ===== NUMBER <-> WORD LOGIC (1-100) ===== */
@@ -536,6 +624,22 @@ function renderEx2(noFocus) {
 var btnFr = document.getElementById('btn-fr');
 var btnEn = document.getElementById('btn-en');
 
+/* en-tête : menu mobile et libellés d'accessibilité */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
 // redessine un exercice dans l'autre langue sans perdre la saisie en cours
 function redessiner(inputId, render) {
   var champ = document.getElementById(inputId);
@@ -553,10 +657,13 @@ function appliquer(lang) {
     if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
   });
   document.documentElement.lang = lang;
-  btnFr.classList.toggle('actif', lang === 'fr');
-  btnEn.classList.toggle('actif', lang === 'en');
-  btnFr.querySelector('.cadre').setAttribute('stroke', lang === 'fr' ? '#c9972a' : '#0d2b45');
-  btnEn.querySelector('.cadre').setAttribute('stroke', lang === 'en' ? '#c9972a' : '#0d2b45');
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
   try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
   renderVocab();
   // une question déjà validée passera d'elle-même à la suivante, dans la nouvelle langue

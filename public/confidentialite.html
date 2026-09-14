@@ -8,298 +8,457 @@
 <meta name="robots" content="noindex, follow">
 <link rel="icon" href="/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--cream:#faf7f2;--cream-dark:#f0ece4;--navy:#0d2b45;--red:#c0392b;--gold:#c9972a;--border:#ddd8ce;--text-soft:#666;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--cream);font-family:'Inter',sans-serif;color:var(--navy);}
-header{padding:28px 48px;border-bottom:3px solid var(--navy);display:flex;justify-content:space-between;align-items:center;background:var(--cream);width:100%;}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
-.logo-text{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:700;color:var(--navy);letter-spacing:-0.01em;}
-.logo-text .red{color:var(--red);}
-nav{display:flex;gap:44px;align-items:center;}
-nav a{font-size:1.05rem;font-weight:500;letter-spacing:0.03em;color:var(--navy);text-decoration:none;opacity:.65;transition:opacity .2s;}
-nav a:hover{opacity:1;}
-.nav-cta{padding:11px 26px;background:var(--red);color:var(--cream)!important;opacity:1!important;font-weight:600!important;box-shadow:3px 3px 0 var(--navy);}
-.gold-line{height:2px;background:var(--gold);width:100%;}
-.langues{position:fixed;right:22px;bottom:22px;z-index:500;display:flex;flex-direction:column;gap:10px;}
-.lang-btn{width:46px;height:54px;padding:0;border:none;background:none;cursor:pointer;line-height:0;opacity:.45;transition:opacity .2s,transform .2s;filter:drop-shadow(2px 2px 0 rgba(13,43,69,.25));}
-.lang-btn:hover{opacity:.85;transform:translateY(-2px);}
-.lang-btn.actif{opacity:1;filter:none;}
-.lang-btn svg{width:100%;height:100%;display:block;}
-.lang-btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
-.page-header{padding:56px 64px 36px;border-bottom:1px solid var(--border);}
-.page-header h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;margin-bottom:10px;}
-.page-header p{font-size:.95rem;font-weight:300;color:var(--text-soft);}
-.content{padding:52px 64px 80px;max-width:860px;}
-section{margin-bottom:42px;}
-h2{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:600;display:flex;align-items:center;gap:13px;margin-bottom:14px;}
-h2 .hex{width:22px;height:26px;flex-shrink:0;}
-p{font-size:.95rem;font-weight:300;line-height:1.8;color:var(--text-soft);}
-p+p{margin-top:12px;}
-p strong{font-weight:600;color:var(--navy);}
-ul{margin:12px 0 0 20px;}
-li{font-size:.95rem;font-weight:300;line-height:1.8;color:var(--text-soft);margin-bottom:6px;}
-li strong{font-weight:600;color:var(--navy);}
-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.92rem;}
-th{background:var(--navy);color:#fff;font-family:'Fraunces',serif;font-weight:600;text-align:left;padding:11px 16px;}
-td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-soft);font-weight:300;}
-td:first-child{font-weight:600;color:var(--navy);}
-tr:nth-child(even) td{background:var(--cream-dark);}
-.encadre{background:var(--cream-dark);border-left:3px solid var(--gold);padding:18px 22px;margin-top:16px;}
-.encadre p{margin:0;}
-footer{background:var(--navy);padding:28px 48px;border-top:4px solid var(--gold);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
-.footer-logo{display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif;font-size:1rem;color:var(--cream);}
-.footer-copy{font-size:.72rem;font-weight:300;color:rgba(250,247,242,.4);letter-spacing:.04em;}
-.footer-copy a{color:rgba(250,247,242,.6);}
-@media (max-width:860px){
-  html,body{overflow-x:hidden;max-width:100%;}
-  header{padding:18px 20px;flex-direction:column;align-items:flex-start;gap:14px;}
-  .logo-text{font-size:1.25rem;}
-  nav{gap:14px 16px;flex-wrap:wrap;width:100%;}
-  nav a{font-size:.88rem;}
-  .nav-cta{padding:8px 16px;margin-left:auto;}
-  .page-header{padding:32px 20px 22px;}
-  .page-header h1{font-size:2rem;}
-  .content{padding:36px 20px 56px;}
-  footer{padding:22px 20px;flex-direction:column;text-align:center;}
-  .langues{right:14px;bottom:14px;flex-direction:row;}
-  .lang-btn{width:38px;height:45px;}
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE (page juridique : texte long, largeur de lecture) ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
+  padding-bottom: 72px;
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+b, strong { font-weight: 700; }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 48px 0 30px; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.6rem; line-height: 1; letter-spacing: -0.035em; margin-bottom: 18px; overflow-wrap: break-word; }
+.maj { display: inline-block; padding: 4px 14px; border: 2.5px solid var(--ink); border-radius: 99px; background: var(--lime); font-weight: 700; font-size: .85rem; box-shadow: 2px 2px 0 var(--ink); rotate: -2deg; }
+
+/* ---------- FEUILLE DE LECTURE ---------- */
+.feuille { background: #fff; border: 3px solid var(--ink); border-radius: 22px; box-shadow: 8px 8px 0 var(--ink); padding: 10px 52px 18px; }
+.feuille > section { padding: 32px 0; }
+.feuille > section + section { border-top: 2.5px dashed rgba(27,19,64,.18); }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 30px; height: 35px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.6rem; line-height: 1.15; letter-spacing: -0.015em; }
+/* surligneur de la couleur de la section (ordre officiel) */
+h2 span { background: linear-gradient(transparent 58%, color-mix(in srgb, var(--c) 65%, transparent) 58%); padding: 0 .08em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.feuille p { line-height: 1.75; }
+.feuille p + p, .feuille ul + p { margin-top: 14px; }
+
+/* ---------- LISTES ---------- */
+.liste { list-style: none; display: grid; gap: 8px; margin-top: 14px; }
+.titre-section + .liste { margin-top: 0; }
+.liste li { position: relative; padding-left: 28px; line-height: 1.7; }
+/* puce : petit carré penché de la couleur de la section */
+.liste li::before { content: ''; position: absolute; left: 2px; top: .5em; width: 13px; height: 13px; background: var(--c); border: 2px solid var(--ink); border-radius: 4px; rotate: -12deg; }
+
+/* ---------- TABLEAUX ---------- */
+.tableau { width: 100%; border-collapse: separate; border-spacing: 0; border: 2.5px solid var(--ink); border-radius: 14px; overflow: hidden; margin-top: 18px; font-size: .95rem; }
+.titre-section + .tableau { margin-top: 0; }
+.tableau th { background: var(--ink); color: #fff; text-align: left; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.02rem; padding: 10px 16px; }
+.tableau td { padding: 11px 16px; vertical-align: top; line-height: 1.6; border-top: 2px solid rgba(27,19,64,.13); }
+.tableau tbody tr:first-child td { border-top: none; }
+.tableau td:first-child { font-weight: 700; }
+.tableau tbody tr:nth-child(even) td { background: var(--bg); }
+/* intitulé de colonne répété dans chaque case, visible seulement sur petit écran */
+.etiquette { display: none; }
+
+/* ---------- ENCADRÉ ---------- */
+.encadre { display: flex; gap: 16px; align-items: flex-start; margin: 22px 0 0; padding: 16px 20px; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); }
+.encadre-info { background: var(--lemon); }
+.encadre .marque { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--ink); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; }
+.encadre p { line-height: 1.65; min-width: 0; overflow-wrap: anywhere; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+  .page { padding-bottom: 48px; }
+  .hero { padding: 32px 0 22px; }
+  h1 { font-size: 2.6rem; }
+  .feuille { padding: 4px 22px 10px; border-radius: 18px; box-shadow: var(--shadow); }
+  .feuille > section { padding: 26px 0; }
+  h2 { font-size: 1.35rem; }
+  .hex-penche { width: 26px; height: 30px; }
+  .feuille p { line-height: 1.7; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+/* petits écrans : chaque ligne du tableau devient une fiche, avec l'intitulé de colonne au-dessus de chaque case */
+@media (max-width: 640px) {
+  .tableau, .tableau tbody, .tableau tr, .tableau td { display: block; width: 100%; }
+  .tableau thead { display: none; }
+  .tableau tbody tr + tr { border-top: 2.5px solid var(--ink); }
+  .tableau td { border-top: none; padding: 3px 14px; }
+  .tableau td:first-child { padding-top: 11px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.05rem; }
+  .tableau td:last-child { padding-bottom: 11px; }
+  .etiquette { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+  .encadre { padding: 14px 16px; gap: 12px; }
+  .encadre .marque { width: 30px; height: 30px; font-size: 1rem; }
+}
+@media (max-width: 400px) {
+  .wrap { padding: 0 16px; }
+  h1 { font-size: 2.05rem; }
+  .feuille { padding: 2px 16px 8px; }
+  .titre-section { gap: 11px; }
+  .liste li { padding-left: 24px; }
 }
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="hex-tri" viewBox="0 0 24 28">
-    <clipPath id="clipHexA"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath>
-    <g clip-path="url(#clipHexA)">
-      <rect x="0" y="0" width="8" height="28" fill="#002395"/>
-      <rect x="8" y="0" width="8" height="28" fill="#ffffff"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939"/>
-    </g>
-    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
   </symbol>
 </svg>
 
-<div class="langues" role="group" aria-label="Langue">
-  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
-    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
-      <g clip-path="url(#hxFR)">
-        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-      </g>
-      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
-    </svg>
-  </button>
-  <button type="button" class="lang-btn" id="btn-en" title="English">
-    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
-      <g clip-path="url(#hxEN)">
-        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
-        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
-        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
-        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
-        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
-        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
-        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
-        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
-      </g>
-      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
-    </svg>
-  </button>
-</div>
-
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
-    <span class="logo-text">French with <span class="red">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
-    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
       <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
       <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
-    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
-    <a href="/reserver.html" class="nav-cta t" data-fr="Réserver" data-en="Book">Réserver</a>
-  </nav>
-</header>
-<div class="gold-line"></div>
-
-<div class="page-header">
-  <h1 class="t" data-fr="Politique de confidentialité" data-en="Privacy policy">Politique de confidentialité</h1>
-  <p class="t" data-fr="Dernière mise à jour : 10 septembre 2026" data-en="Last updated: 10 September 2026">Dernière mise à jour : 10 septembre 2026</p>
-</div>
-
-<div class="content">
-
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Responsable du traitement" data-en="Data controller">Responsable du traitement</span></h2>
-    <p class="t" data-html="1"
-       data-fr="<strong>Alban Zittel</strong>, entrepreneur individuel — SIREN 928 998 384, 1 place Louis XIV, 78450 Villepreux, France. Contact : azittelpro@gmail.com"
-       data-en="<strong>Alban Zittel</strong>, sole trader — SIREN 928 998 384, 1 place Louis XIV, 78450 Villepreux, France. Contact: azittelpro@gmail.com"><strong>Alban Zittel</strong>, entrepreneur individuel — SIREN 928 998 384, 1 place Louis XIV, 78450 Villepreux, France. Contact : azittelpro@gmail.com</p>
-  </section>
-
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Données collectées" data-en="Data collected">Données collectées</span></h2>
-    <p class="t"
-       data-fr="Seules les données strictement nécessaires sont collectées, et uniquement lorsque vous les fournissez volontairement."
-       data-en="Only strictly necessary data is collected, and only when you provide it voluntarily.">Seules les données strictement nécessaires sont collectées, et uniquement lorsque vous les fournissez volontairement.</p>
-    <table>
-      <tr>
-        <th class="t" data-fr="Origine" data-en="Source">Origine</th>
-        <th class="t" data-fr="Données" data-en="Data">Données</th>
-        <th class="t" data-fr="Finalité" data-en="Purpose">Finalité</th>
-      </tr>
-      <tr>
-        <td class="t" data-fr="Formulaire de réservation" data-en="Booking form">Formulaire de réservation</td>
-        <td class="t" data-fr="Prénom, adresse email, fuseau horaire, disponibilités, niveau, objectifs" data-en="First name, email address, time zone, availability, level, goals">Prénom, adresse email, fuseau horaire, disponibilités, niveau, objectifs</td>
-        <td class="t" data-fr="Répondre à votre demande et organiser un premier cours" data-en="Responding to your request and arranging a first lesson">Répondre à votre demande et organiser un premier cours</td>
-      </tr>
-      <tr>
-        <td class="t" data-fr="Paiement" data-en="Payment">Paiement</td>
-        <td class="t" data-fr="Nom, adresse email, montant. Les données bancaires ne transitent jamais par ce site." data-en="Name, email address, amount. Card details never pass through this site.">Nom, adresse email, montant. Les données bancaires ne transitent jamais par ce site.</td>
-        <td class="t" data-fr="Traitement du paiement et facturation" data-en="Processing payment and issuing invoices">Traitement du paiement et facturation</td>
-      </tr>
-      <tr>
-        <td class="t" data-fr="Mesure d'audience" data-en="Analytics">Mesure d'audience</td>
-        <td class="t" data-fr="Pages consultées, pays, type d'appareil — sans cookie ni identifiant personnel" data-en="Pages viewed, country, device type — without cookies or personal identifiers">Pages consultées, pays, type d'appareil — sans cookie ni identifiant personnel</td>
-        <td class="t" data-fr="Comprendre l'usage du site et l'améliorer" data-en="Understanding how the site is used and improving it">Comprendre l'usage du site et l'améliorer</td>
-      </tr>
-    </table>
-  </section>
-
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Base légale" data-en="Legal basis">Base légale</span></h2>
-    <ul>
-      <li class="t" data-html="1"
-          data-fr="<strong>Votre consentement</strong> lorsque vous remplissez volontairement le formulaire de contact."
-          data-en="<strong>Your consent</strong> when you voluntarily fill in the contact form."><strong>Votre consentement</strong> lorsque vous remplissez volontairement le formulaire de contact.</li>
-      <li class="t" data-html="1"
-          data-fr="<strong>L'exécution du contrat</strong> pour les données liées aux cours et aux paiements."
-          data-en="<strong>Performance of the contract</strong> for data relating to lessons and payments."><strong>L'exécution du contrat</strong> pour les données liées aux cours et aux paiements.</li>
-      <li class="t" data-html="1"
-          data-fr="<strong>L'obligation légale</strong> pour la conservation des factures."
-          data-en="<strong>Legal obligation</strong> for keeping invoices."><strong>L'obligation légale</strong> pour la conservation des factures.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Durée de conservation" data-en="Retention period">Durée de conservation</span></h2>
-    <table>
-      <tr>
-        <th class="t" data-fr="Donnée" data-en="Data">Donnée</th>
-        <th class="t" data-fr="Durée" data-en="Period">Durée</th>
-      </tr>
-      <tr><td class="t" data-fr="Demande sans suite" data-en="Enquiry with no follow-up">Demande sans suite</td><td class="t" data-fr="12 mois" data-en="12 months">12 mois</td></tr>
-      <tr><td class="t" data-fr="Élève actif" data-en="Active student">Élève actif</td><td class="t" data-fr="Durée de la relation, puis 3 ans" data-en="Duration of the relationship, then 3 years">Durée de la relation, puis 3 ans</td></tr>
-      <tr><td class="t" data-fr="Factures" data-en="Invoices">Factures</td><td class="t" data-fr="10 ans (obligation comptable)" data-en="10 years (accounting requirement)">10 ans (obligation comptable)</td></tr>
-      <tr><td class="t" data-fr="Mesure d'audience" data-en="Analytics">Mesure d'audience</td><td class="t" data-fr="Données agrégées, non nominatives" data-en="Aggregated, non-identifying data">Données agrégées, non nominatives</td></tr>
-    </table>
-  </section>
-
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Destinataires" data-en="Recipients">Destinataires</span></h2>
-    <p class="t"
-       data-fr="Vos données ne sont ni vendues, ni louées, ni transmises à des tiers à des fins commerciales. Seuls les prestataires techniques suivants y ont accès, dans la stricte mesure nécessaire au fonctionnement du service :"
-       data-en="Your data is never sold, rented or passed on to third parties for commercial purposes. Only the following technical providers have access to it, strictly as required for the service to operate:">Vos données ne sont ni vendues, ni louées, ni transmises à des tiers à des fins commerciales.</p>
-    <ul>
-      <li class="t" data-html="1"
-          data-fr="<strong>Vercel Inc.</strong> — hébergement du site et mesure d'audience."
-          data-en="<strong>Vercel Inc.</strong> — site hosting and analytics."><strong>Vercel Inc.</strong> — hébergement du site et mesure d'audience.</li>
-      <li class="t" data-html="1"
-          data-fr="<strong>Upstash</strong> — stockage des demandes de contact et du planning."
-          data-en="<strong>Upstash</strong> — storage of contact requests and scheduling data."><strong>Upstash</strong> — stockage des demandes de contact et du planning.</li>
-      <li class="t" data-html="1"
-          data-fr="<strong>Stripe</strong> — traitement des paiements. Stripe est certifié PCI-DSS."
-          data-en="<strong>Stripe</strong> — payment processing. Stripe is PCI-DSS certified."><strong>Stripe</strong> — traitement des paiements. Stripe est certifié PCI-DSS.</li>
-    </ul>
-    <p class="t"
-       data-fr="Certains de ces prestataires sont établis hors de l'Union européenne. Les transferts s'effectuent dans le cadre des clauses contractuelles types de la Commission européenne."
-       data-en="Some of these providers are established outside the European Union. Transfers are carried out under the European Commission's standard contractual clauses.">Certains de ces prestataires sont établis hors de l'Union européenne. Les transferts s'effectuent dans le cadre des clauses contractuelles types de la Commission européenne.</p>
-  </section>
-
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Cookies" data-en="Cookies">Cookies</span></h2>
-    <p class="t"
-       data-fr="Ce site n'utilise aucun cookie publicitaire ni traceur tiers. La mesure d'audience est effectuée sans cookie et sans identifiant personnel. Une seule information est enregistrée localement dans votre navigateur : la langue que vous choisissez, afin de ne pas avoir à la resélectionner. Elle ne quitte jamais votre appareil."
-       data-en="This site uses no advertising cookies and no third-party trackers. Analytics is carried out without cookies and without personal identifiers. Only one piece of information is stored locally in your browser: the language you choose, so you don't have to select it again. It never leaves your device.">Ce site n'utilise aucun cookie publicitaire ni traceur tiers.</p>
-  </section>
-
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Vos droits" data-en="Your rights">Vos droits</span></h2>
-    <p class="t"
-       data-fr="Conformément au Règlement général sur la protection des données, vous disposez des droits suivants sur vos données :"
-       data-en="Under the General Data Protection Regulation, you have the following rights over your data:">Conformément au Règlement général sur la protection des données, vous disposez des droits suivants sur vos données :</p>
-    <ul>
-      <li class="t" data-fr="Droit d'accès — savoir quelles données sont détenues" data-en="Right of access — to know what data is held">Droit d'accès — savoir quelles données sont détenues</li>
-      <li class="t" data-fr="Droit de rectification — corriger une information inexacte" data-en="Right to rectification — to correct inaccurate information">Droit de rectification — corriger une information inexacte</li>
-      <li class="t" data-fr="Droit à l'effacement — demander la suppression" data-en="Right to erasure — to request deletion">Droit à l'effacement — demander la suppression</li>
-      <li class="t" data-fr="Droit d'opposition et de limitation du traitement" data-en="Right to object and to restrict processing">Droit d'opposition et de limitation du traitement</li>
-      <li class="t" data-fr="Droit à la portabilité — récupérer vos données" data-en="Right to portability — to retrieve your data">Droit à la portabilité — récupérer vos données</li>
-    </ul>
-    <div class="encadre">
-      <p class="t" data-html="1"
-         data-fr="Pour exercer ces droits, écrivez à <strong>azittelpro@gmail.com</strong>. Une réponse vous sera apportée sous un mois. En cas de désaccord, vous pouvez saisir la CNIL — cnil.fr"
-         data-en="To exercise these rights, write to <strong>azittelpro@gmail.com</strong>. You will receive a reply within one month. If you disagree with the outcome, you may contact the CNIL — cnil.fr">Pour exercer ces droits, écrivez à <strong>azittelpro@gmail.com</strong>. Une réponse vous sera apportée sous un mois. En cas de désaccord, vous pouvez saisir la CNIL — cnil.fr</p>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
     </div>
-  </section>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
+</header>
 
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Sécurité" data-en="Security">Sécurité</span></h2>
-    <p class="t"
-       data-fr="Le site est servi exclusivement en HTTPS. L'accès à l'espace d'administration est protégé par mot de passe. Les données de paiement sont traitées par Stripe et ne sont jamais stockées sur ce site."
-       data-en="The site is served exclusively over HTTPS. Access to the administration area is password-protected. Payment data is handled by Stripe and is never stored on this site.">Le site est servi exclusivement en HTTPS. L'accès à l'espace d'administration est protégé par mot de passe. Les données de paiement sont traitées par Stripe et ne sont jamais stockées sur ce site.</p>
-  </section>
+<!-- Page juridique : textes repris mot pour mot (attributs data-fr / data-en inchangés). -->
+<main class="page">
 
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Modification" data-en="Changes">Modification</span></h2>
-    <p class="t"
-       data-fr="Cette politique peut évoluer. La date de dernière mise à jour figure en haut de cette page."
-       data-en="This policy may change. The date of the most recent update appears at the top of this page.">Cette politique peut évoluer. La date de dernière mise à jour figure en haut de cette page.</p>
-  </section>
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <h1 class="t" data-fr="Politique de confidentialité" data-en="Privacy policy">Politique de confidentialité</h1>
+      <p class="maj t" data-fr="Dernière mise à jour : 10 septembre 2026" data-en="Last updated: 10 September 2026">Dernière mise à jour : 10 septembre 2026</p>
+    </div>
+  </div>
 
-</div>
+  <div class="wrap">
+    <div class="feuille suite-sections">
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Responsable du traitement" data-en="Data controller">Responsable du traitement</span></h2>
+        </div>
+        <p class="t" data-html="1"
+           data-fr="<strong>Alban Zittel</strong>, entrepreneur individuel — SIREN 928 998 384, 1 place Louis XIV, 78450 Villepreux, France. Contact : azittelpro@gmail.com"
+           data-en="<strong>Alban Zittel</strong>, sole trader — SIREN 928 998 384, 1 place Louis XIV, 78450 Villepreux, France. Contact: azittelpro@gmail.com"><strong>Alban Zittel</strong>, entrepreneur individuel — SIREN 928 998 384, 1 place Louis XIV, 78450 Villepreux, France. Contact : azittelpro@gmail.com</p>
+      </section>
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Données collectées" data-en="Data collected">Données collectées</span></h2>
+        </div>
+        <p class="t"
+           data-fr="Seules les données strictement nécessaires sont collectées, et uniquement lorsque vous les fournissez volontairement."
+           data-en="Only strictly necessary data is collected, and only when you provide it voluntarily.">Seules les données strictement nécessaires sont collectées, et uniquement lorsque vous les fournissez volontairement.</p>
+        <table class="tableau">
+          <thead>
+            <tr>
+              <th class="t" data-fr="Origine" data-en="Source">Origine</th>
+              <th class="t" data-fr="Données" data-en="Data">Données</th>
+              <th class="t" data-fr="Finalité" data-en="Purpose">Finalité</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="t" data-fr="Formulaire de réservation" data-en="Booking form">Formulaire de réservation</td>
+              <td><span class="etiquette t" data-fr="Données" data-en="Data">Données</span><span class="t" data-fr="Prénom, adresse email, fuseau horaire, disponibilités, niveau, objectifs" data-en="First name, email address, time zone, availability, level, goals">Prénom, adresse email, fuseau horaire, disponibilités, niveau, objectifs</span></td>
+              <td><span class="etiquette t" data-fr="Finalité" data-en="Purpose">Finalité</span><span class="t" data-fr="Répondre à votre demande et organiser un premier cours" data-en="Responding to your request and arranging a first lesson">Répondre à votre demande et organiser un premier cours</span></td>
+            </tr>
+            <tr>
+              <td class="t" data-fr="Paiement" data-en="Payment">Paiement</td>
+              <td><span class="etiquette t" data-fr="Données" data-en="Data">Données</span><span class="t" data-fr="Nom, adresse email, montant. Les données bancaires ne transitent jamais par ce site." data-en="Name, email address, amount. Card details never pass through this site.">Nom, adresse email, montant. Les données bancaires ne transitent jamais par ce site.</span></td>
+              <td><span class="etiquette t" data-fr="Finalité" data-en="Purpose">Finalité</span><span class="t" data-fr="Traitement du paiement et facturation" data-en="Processing payment and issuing invoices">Traitement du paiement et facturation</span></td>
+            </tr>
+            <tr>
+              <td class="t" data-fr="Mesure d'audience" data-en="Analytics">Mesure d'audience</td>
+              <td><span class="etiquette t" data-fr="Données" data-en="Data">Données</span><span class="t" data-fr="Pages consultées, pays, type d'appareil — sans cookie ni identifiant personnel" data-en="Pages viewed, country, device type — without cookies or personal identifiers">Pages consultées, pays, type d'appareil — sans cookie ni identifiant personnel</span></td>
+              <td><span class="etiquette t" data-fr="Finalité" data-en="Purpose">Finalité</span><span class="t" data-fr="Comprendre l'usage du site et l'améliorer" data-en="Understanding how the site is used and improving it">Comprendre l'usage du site et l'améliorer</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Base légale" data-en="Legal basis">Base légale</span></h2>
+        </div>
+        <ul class="liste">
+          <li class="t" data-html="1"
+              data-fr="<strong>Votre consentement</strong> lorsque vous remplissez volontairement le formulaire de contact."
+              data-en="<strong>Your consent</strong> when you voluntarily fill in the contact form."><strong>Votre consentement</strong> lorsque vous remplissez volontairement le formulaire de contact.</li>
+          <li class="t" data-html="1"
+              data-fr="<strong>L'exécution du contrat</strong> pour les données liées aux cours et aux paiements."
+              data-en="<strong>Performance of the contract</strong> for data relating to lessons and payments."><strong>L'exécution du contrat</strong> pour les données liées aux cours et aux paiements.</li>
+          <li class="t" data-html="1"
+              data-fr="<strong>L'obligation légale</strong> pour la conservation des factures."
+              data-en="<strong>Legal obligation</strong> for keeping invoices."><strong>L'obligation légale</strong> pour la conservation des factures.</li>
+        </ul>
+      </section>
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Durée de conservation" data-en="Retention period">Durée de conservation</span></h2>
+        </div>
+        <table class="tableau">
+          <thead>
+            <tr>
+              <th class="t" data-fr="Donnée" data-en="Data">Donnée</th>
+              <th class="t" data-fr="Durée" data-en="Period">Durée</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="t" data-fr="Demande sans suite" data-en="Enquiry with no follow-up">Demande sans suite</td><td><span class="etiquette t" data-fr="Durée" data-en="Period">Durée</span><span class="t" data-fr="12 mois" data-en="12 months">12 mois</span></td></tr>
+            <tr><td class="t" data-fr="Élève actif" data-en="Active student">Élève actif</td><td><span class="etiquette t" data-fr="Durée" data-en="Period">Durée</span><span class="t" data-fr="Durée de la relation, puis 3 ans" data-en="Duration of the relationship, then 3 years">Durée de la relation, puis 3 ans</span></td></tr>
+            <tr><td class="t" data-fr="Factures" data-en="Invoices">Factures</td><td><span class="etiquette t" data-fr="Durée" data-en="Period">Durée</span><span class="t" data-fr="10 ans (obligation comptable)" data-en="10 years (accounting requirement)">10 ans (obligation comptable)</span></td></tr>
+            <tr><td class="t" data-fr="Mesure d'audience" data-en="Analytics">Mesure d'audience</td><td><span class="etiquette t" data-fr="Durée" data-en="Period">Durée</span><span class="t" data-fr="Données agrégées, non nominatives" data-en="Aggregated, non-identifying data">Données agrégées, non nominatives</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Destinataires" data-en="Recipients">Destinataires</span></h2>
+        </div>
+        <p class="t"
+           data-fr="Vos données ne sont ni vendues, ni louées, ni transmises à des tiers à des fins commerciales. Seuls les prestataires techniques suivants y ont accès, dans la stricte mesure nécessaire au fonctionnement du service :"
+           data-en="Your data is never sold, rented or passed on to third parties for commercial purposes. Only the following technical providers have access to it, strictly as required for the service to operate:">Vos données ne sont ni vendues, ni louées, ni transmises à des tiers à des fins commerciales. Seuls les prestataires techniques suivants y ont accès, dans la stricte mesure nécessaire au fonctionnement du service :</p>
+        <ul class="liste">
+          <li class="t" data-html="1"
+              data-fr="<strong>Vercel Inc.</strong> — hébergement du site et mesure d'audience."
+              data-en="<strong>Vercel Inc.</strong> — site hosting and analytics."><strong>Vercel Inc.</strong> — hébergement du site et mesure d'audience.</li>
+          <li class="t" data-html="1"
+              data-fr="<strong>Upstash</strong> — stockage des demandes de contact et du planning."
+              data-en="<strong>Upstash</strong> — storage of contact requests and scheduling data."><strong>Upstash</strong> — stockage des demandes de contact et du planning.</li>
+          <li class="t" data-html="1"
+              data-fr="<strong>Stripe</strong> — traitement des paiements. Stripe est certifié PCI-DSS."
+              data-en="<strong>Stripe</strong> — payment processing. Stripe is PCI-DSS certified."><strong>Stripe</strong> — traitement des paiements. Stripe est certifié PCI-DSS.</li>
+        </ul>
+        <p class="t"
+           data-fr="Certains de ces prestataires sont établis hors de l'Union européenne. Les transferts s'effectuent dans le cadre des clauses contractuelles types de la Commission européenne."
+           data-en="Some of these providers are established outside the European Union. Transfers are carried out under the European Commission's standard contractual clauses.">Certains de ces prestataires sont établis hors de l'Union européenne. Les transferts s'effectuent dans le cadre des clauses contractuelles types de la Commission européenne.</p>
+      </section>
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Cookies" data-en="Cookies">Cookies</span></h2>
+        </div>
+        <p class="t"
+           data-fr="Ce site n'utilise aucun cookie publicitaire ni traceur tiers. La mesure d'audience est effectuée sans cookie et sans identifiant personnel. Une seule information est enregistrée localement dans votre navigateur : la langue que vous choisissez, afin de ne pas avoir à la resélectionner. Elle ne quitte jamais votre appareil."
+           data-en="This site uses no advertising cookies and no third-party trackers. Analytics is carried out without cookies and without personal identifiers. Only one piece of information is stored locally in your browser: the language you choose, so you don't have to select it again. It never leaves your device.">Ce site n'utilise aucun cookie publicitaire ni traceur tiers. La mesure d'audience est effectuée sans cookie et sans identifiant personnel. Une seule information est enregistrée localement dans votre navigateur : la langue que vous choisissez, afin de ne pas avoir à la resélectionner. Elle ne quitte jamais votre appareil.</p>
+      </section>
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Vos droits" data-en="Your rights">Vos droits</span></h2>
+        </div>
+        <p class="t"
+           data-fr="Conformément au Règlement général sur la protection des données, vous disposez des droits suivants sur vos données :"
+           data-en="Under the General Data Protection Regulation, you have the following rights over your data:">Conformément au Règlement général sur la protection des données, vous disposez des droits suivants sur vos données :</p>
+        <ul class="liste">
+          <li class="t" data-fr="Droit d'accès — savoir quelles données sont détenues" data-en="Right of access — to know what data is held">Droit d'accès — savoir quelles données sont détenues</li>
+          <li class="t" data-fr="Droit de rectification — corriger une information inexacte" data-en="Right to rectification — to correct inaccurate information">Droit de rectification — corriger une information inexacte</li>
+          <li class="t" data-fr="Droit à l'effacement — demander la suppression" data-en="Right to erasure — to request deletion">Droit à l'effacement — demander la suppression</li>
+          <li class="t" data-fr="Droit d'opposition et de limitation du traitement" data-en="Right to object and to restrict processing">Droit d'opposition et de limitation du traitement</li>
+          <li class="t" data-fr="Droit à la portabilité — récupérer vos données" data-en="Right to portability — to retrieve your data">Droit à la portabilité — récupérer vos données</li>
+        </ul>
+        <div class="encadre encadre-info">
+          <span class="marque" aria-hidden="true">i</span>
+          <p class="t" data-html="1"
+             data-fr="Pour exercer ces droits, écrivez à <strong>azittelpro@gmail.com</strong>. Une réponse vous sera apportée sous un mois. En cas de désaccord, vous pouvez saisir la CNIL — cnil.fr"
+             data-en="To exercise these rights, write to <strong>azittelpro@gmail.com</strong>. You will receive a reply within one month. If you disagree with the outcome, you may contact the CNIL — cnil.fr">Pour exercer ces droits, écrivez à <strong>azittelpro@gmail.com</strong>. Une réponse vous sera apportée sous un mois. En cas de désaccord, vous pouvez saisir la CNIL — cnil.fr</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Sécurité" data-en="Security">Sécurité</span></h2>
+        </div>
+        <p class="t"
+           data-fr="Le site est servi exclusivement en HTTPS. L'accès à l'espace d'administration est protégé par mot de passe. Les données de paiement sont traitées par Stripe et ne sont jamais stockées sur ce site."
+           data-en="The site is served exclusively over HTTPS. Access to the administration area is password-protected. Payment data is handled by Stripe and is never stored on this site.">Le site est servi exclusivement en HTTPS. L'accès à l'espace d'administration est protégé par mot de passe. Les données de paiement sont traitées par Stripe et ne sont jamais stockées sur ce site.</p>
+      </section>
+
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Modification" data-en="Changes">Modification</span></h2>
+        </div>
+        <p class="t"
+           data-fr="Cette politique peut évoluer. La date de dernière mise à jour figure en haut de cette page."
+           data-en="This policy may change. The date of the most recent update appears at the top of this page.">Cette politique peut évoluer. La date de dernière mise à jour figure en haut de cette page.</p>
+      </section>
+
+    </div>
+  </div>
+
+</main>
 
 <footer>
-  <div class="footer-logo">
-    <svg width="18" height="22" viewBox="0 0 24 28">
-      <defs><clipPath id="hf"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hf)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hf)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hf)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#faf7f2" stroke-width="1.5"/>
-    </svg>
-    French with Alban
-  </div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
-var btnFr=document.getElementById('btn-fr'),btnEn=document.getElementById('btn-en');
-function appliquer(l){
-  document.querySelectorAll('.t').forEach(function(e){
-    var t=e.getAttribute('data-'+l); if(t===null)return;
-    if(e.getAttribute('data-html'))e.innerHTML=t; else e.textContent=t;
-  });
-  document.documentElement.lang=l;
-  btnFr.classList.toggle('actif',l==='fr'); btnEn.classList.toggle('actif',l==='en');
-  btnFr.querySelector('.cadre').setAttribute('stroke',l==='fr'?'#c9972a':'#0d2b45');
-  btnEn.querySelector('.cadre').setAttribute('stroke',l==='en'?'#c9972a':'#0d2b45');
-  try{localStorage.setItem('fwa-lang',l);}catch(e){}
-}
-var c=null;
-try{var r=localStorage.getItem('fwa-lang'); if(r==='fr'||r==='en')c=r;}catch(e){}
-if(!c)c=(navigator.language||'fr').toLowerCase().indexOf('fr')===0?'fr':'en';
-appliquer(c);
-btnFr.addEventListener('click',function(){appliquer('fr');});
-btnEn.addEventListener('click',function(){appliquer('en');});
-</script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
 
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Politique de confidentialité — French with Alban', en: 'Privacy policy — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* textes alternatifs des illustrations : le français est dans alt, l'anglais dans data-alt-en */
+document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.setAttribute('data-alt-fr', img.alt); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.alt = img.getAttribute('data-alt-' + lang); });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
 </body>
 </html>

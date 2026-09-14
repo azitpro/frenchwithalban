@@ -8,222 +8,342 @@
 <meta name="robots" content="noindex, follow">
 <link rel="icon" href="/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--cream:#faf7f2;--cream-dark:#f0ece4;--navy:#0d2b45;--red:#c0392b;--gold:#c9972a;--border:#ddd8ce;--text-soft:#666;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--cream);font-family:'Inter',sans-serif;color:var(--navy);}
-header{padding:28px 48px;border-bottom:3px solid var(--navy);display:flex;justify-content:space-between;align-items:center;background:var(--cream);width:100%;}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
-.logo-text{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:700;color:var(--navy);letter-spacing:-0.01em;}
-.logo-text .red{color:var(--red);}
-nav{display:flex;gap:44px;align-items:center;}
-nav a{font-size:1.05rem;font-weight:500;letter-spacing:0.03em;color:var(--navy);text-decoration:none;opacity:.65;transition:opacity .2s;}
-nav a:hover{opacity:1;}
-.nav-cta{padding:11px 26px;background:var(--red);color:var(--cream)!important;opacity:1!important;font-weight:600!important;box-shadow:3px 3px 0 var(--navy);}
-.gold-line{height:2px;background:var(--gold);width:100%;}
-.langues{position:fixed;right:22px;bottom:22px;z-index:500;display:flex;flex-direction:column;gap:10px;}
-.lang-btn{width:46px;height:54px;padding:0;border:none;background:none;cursor:pointer;line-height:0;opacity:.45;transition:opacity .2s,transform .2s;filter:drop-shadow(2px 2px 0 rgba(13,43,69,.25));}
-.lang-btn:hover{opacity:.85;transform:translateY(-2px);}
-.lang-btn.actif{opacity:1;filter:none;}
-.lang-btn svg{width:100%;height:100%;display:block;}
-.lang-btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
-.page-header{padding:56px 64px 36px;border-bottom:1px solid var(--border);}
-.page-header h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;margin-bottom:10px;}
-.page-header p{font-size:.95rem;font-weight:300;color:var(--text-soft);}
-.content{padding:52px 64px 80px;max-width:860px;}
-section{margin-bottom:42px;}
-h2{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:600;display:flex;align-items:center;gap:13px;margin-bottom:14px;}
-h2 .hex{width:22px;height:26px;flex-shrink:0;}
-p{font-size:.95rem;font-weight:300;line-height:1.8;color:var(--text-soft);}
-p+p{margin-top:12px;}
-p strong{font-weight:600;color:var(--navy);}
-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.92rem;}
-td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:top;}
-td:first-child{font-weight:600;color:var(--navy);width:34%;}
-td:last-child{color:var(--text-soft);font-weight:300;}
-tr:nth-child(even) td{background:var(--cream-dark);}
-footer{background:var(--navy);padding:28px 48px;border-top:4px solid var(--gold);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
-.footer-logo{display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif;font-size:1rem;color:var(--cream);}
-.footer-copy{font-size:.72rem;font-weight:300;color:rgba(250,247,242,.4);letter-spacing:.04em;}
-.footer-copy a{color:rgba(250,247,242,.6);}
-@media (max-width:860px){
-  html,body{overflow-x:hidden;max-width:100%;}
-  header{padding:18px 20px;flex-direction:column;align-items:flex-start;gap:14px;}
-  .logo-text{font-size:1.25rem;}
-  nav{gap:14px 16px;flex-wrap:wrap;width:100%;}
-  nav a{font-size:.88rem;}
-  .nav-cta{padding:8px 16px;margin-left:auto;}
-  .page-header{padding:32px 20px 22px;}
-  .page-header h1{font-size:2rem;}
-  .content{padding:36px 20px 56px;}
-  td:first-child{width:40%;}
-  footer{padding:22px 20px;flex-direction:column;text-align:center;}
-  .langues{right:14px;bottom:14px;flex-direction:row;}
-  .lang-btn{width:38px;height:45px;}
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE (page juridique : texte long, largeur de lecture) ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
+  padding-bottom: 72px;
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+b, strong { font-weight: 700; }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 48px 0 30px; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.6rem; line-height: 1; letter-spacing: -0.035em; margin-bottom: 18px; overflow-wrap: break-word; }
+.maj { display: inline-block; padding: 4px 14px; border: 2.5px solid var(--ink); border-radius: 99px; background: var(--lime); font-weight: 700; font-size: .85rem; box-shadow: 2px 2px 0 var(--ink); rotate: -2deg; }
+
+/* ---------- FEUILLE DE LECTURE ---------- */
+.feuille { background: #fff; border: 3px solid var(--ink); border-radius: 22px; box-shadow: 8px 8px 0 var(--ink); padding: 10px 52px 18px; }
+.feuille > section { padding: 32px 0; }
+.feuille > section + section { border-top: 2.5px dashed rgba(27,19,64,.18); }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 30px; height: 35px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.6rem; line-height: 1.15; letter-spacing: -0.015em; }
+/* surligneur de la couleur de la section (ordre officiel) */
+h2 span { background: linear-gradient(transparent 58%, color-mix(in srgb, var(--c) 65%, transparent) 58%); padding: 0 .08em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.feuille p { line-height: 1.75; }
+.feuille p + p { margin-top: 14px; }
+/* le lien du texte juridique garde son style en ligne d'origine (rouge) : on l'harmonise ici */
+.feuille a { color: var(--ink) !important; font-weight: 600; text-decoration-color: var(--pink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.feuille a:hover { background: var(--lemon); }
+
+/* ---------- FICHE « ÉDITEUR » (ancien tableau) ---------- */
+.fiche { border: 2.5px solid var(--ink); border-radius: 14px; overflow: hidden; }
+.fiche > div { display: grid; grid-template-columns: minmax(0, 34%) minmax(0, 1fr); }
+.fiche > div + div { border-top: 2px solid rgba(27,19,64,.13); }
+.fiche dt { padding: 10px 16px; font-weight: 700; background: var(--bg); border-right: 2px solid rgba(27,19,64,.13); }
+.fiche dd { padding: 10px 16px; overflow-wrap: anywhere; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+  .page { padding-bottom: 48px; }
+  .hero { padding: 32px 0 22px; }
+  h1 { font-size: 2.6rem; }
+  .feuille { padding: 4px 22px 10px; border-radius: 18px; box-shadow: var(--shadow); }
+  .feuille > section { padding: 26px 0; }
+  h2 { font-size: 1.35rem; }
+  .hex-penche { width: 26px; height: 30px; }
+  .feuille p { line-height: 1.7; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+@media (max-width: 560px) {
+  .fiche > div { grid-template-columns: 1fr; }
+  .fiche dt { padding: 9px 14px 0; background: none; border-right: none; font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+  .fiche dd { padding: 0 14px 9px; }
+}
+@media (max-width: 400px) {
+  .wrap { padding: 0 16px; }
+  h1 { font-size: 2.2rem; }
+  .feuille { padding: 2px 16px 8px; }
+  .titre-section { gap: 11px; }
 }
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="hex-tri" viewBox="0 0 24 28">
-    <clipPath id="clipHexA"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath>
-    <g clip-path="url(#clipHexA)">
-      <rect x="0" y="0" width="8" height="28" fill="#002395"/>
-      <rect x="8" y="0" width="8" height="28" fill="#ffffff"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939"/>
-    </g>
-    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
   </symbol>
 </svg>
 
-<div class="langues" role="group" aria-label="Langue">
-  <button type="button" class="lang-btn actif" id="btn-fr" title="Français">
-    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="hxFR"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
-      <g clip-path="url(#hxFR)">
-        <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-        <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-        <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-      </g>
-      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#c9972a" stroke-width="3" stroke-linejoin="round"/>
-    </svg>
-  </button>
-  <button type="button" class="lang-btn" id="btn-en" title="English">
-    <svg viewBox="-2 -2 34 39" xmlns="http://www.w3.org/2000/svg">
-      <defs><clipPath id="hxEN"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath></defs>
-      <g clip-path="url(#hxEN)">
-        <rect x="0" y="0" width="30" height="35" fill="#012169"/>
-        <line x1="0" y1="0" x2="30" y2="35" stroke="#ffffff" stroke-width="7"/>
-        <line x1="30" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="7"/>
-        <line x1="14.1" y1="18.3" x2="-0.9" y2="0.8" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="15.9" y1="18.3" x2="0.9" y2="35.8" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="15.9" y1="16.7" x2="30.9" y2="34.2" stroke="#C8102E" stroke-width="2.4"/>
-        <line x1="14.1" y1="16.7" x2="29.1" y2="-0.8" stroke="#C8102E" stroke-width="2.4"/>
-        <rect x="10.4" y="0" width="9.2" height="35" fill="#ffffff"/>
-        <rect x="0" y="12.9" width="30" height="9.2" fill="#ffffff"/>
-        <rect x="12.2" y="0" width="5.6" height="35" fill="#C8102E"/>
-        <rect x="0" y="14.7" width="30" height="5.6" fill="#C8102E"/>
-      </g>
-      <polygon class="cadre" points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="3" stroke-linejoin="round"/>
-    </svg>
-  </button>
-</div>
-
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" aria-hidden="true"><use href="#hex-tri"/></svg>
-    <span class="logo-text">French with <span class="red">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/" class="t" data-fr="Accueil" data-en="Home">Accueil</a>
-    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
       <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
       <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
     <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
-    <a href="/reserver.html" class="nav-cta t" data-fr="Réserver" data-en="Book">Réserver</a>
-  </nav>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="page-header">
-  <h1 class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</h1>
-  <p class="t" data-fr="Dernière mise à jour : 10 septembre 2026" data-en="Last updated: 10 September 2026">Dernière mise à jour : 10 septembre 2026</p>
-</div>
+<!-- Page juridique : textes repris mot pour mot (attributs data-fr / data-en inchangés). -->
+<main class="page">
 
-<div class="content">
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <h1 class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</h1>
+      <p class="maj t" data-fr="Dernière mise à jour : 10 septembre 2026" data-en="Last updated: 10 September 2026">Dernière mise à jour : 10 septembre 2026</p>
+    </div>
+  </div>
 
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Éditeur du site" data-en="Site publisher">Éditeur du site</span></h2>
-    <table>
-      <tr><td class="t" data-fr="Responsable" data-en="Publisher">Responsable</td><td>Alban Zittel</td></tr>
-      <tr><td class="t" data-fr="Statut" data-en="Legal status">Statut</td><td class="t" data-fr="Entrepreneur individuel — micro-entrepreneur" data-en="Sole trader — micro-entrepreneur (French status)">Entrepreneur individuel — micro-entrepreneur</td></tr>
-      <tr><td class="t" data-fr="Activité" data-en="Activity">Activité</td><td class="t" data-fr="Enseignement du français langue étrangère" data-en="Teaching French as a foreign language">Enseignement du français langue étrangère</td></tr>
-      <tr><td class="t" data-fr="Adresse" data-en="Address">Adresse</td><td>1 place Louis XIV, 78450 Villepreux, France</td></tr>
-      <tr><td>SIREN</td><td>928 998 384</td></tr>
-      <tr><td>SIRET</td><td>928 998 384 00012</td></tr>
-      <tr><td class="t" data-fr="Code APE" data-en="Activity code">Code APE</td><td>8559B — Autres enseignements</td></tr>
-      <tr><td class="t" data-fr="Immatriculation" data-en="Registered since">Immatriculation</td><td class="t" data-fr="16 mai 2024" data-en="16 May 2024">16 mai 2024</td></tr>
-      <tr><td class="t" data-fr="TVA" data-en="VAT">TVA</td><td class="t" data-fr="TVA non applicable, article 293 B du Code général des impôts" data-en="VAT not applicable, article 293 B of the French General Tax Code">TVA non applicable, article 293 B du Code général des impôts</td></tr>
-      <tr><td class="t" data-fr="Contact" data-en="Contact">Contact</td><td>azittelpro@gmail.com</td></tr>
-      <tr><td class="t" data-fr="Directeur de publication" data-en="Publication director">Directeur de publication</td><td>Alban Zittel</td></tr>
-    </table>
-  </section>
+  <div class="wrap">
+    <div class="feuille suite-sections">
 
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Hébergement" data-en="Hosting">Hébergement</span></h2>
-    <p class="t" data-html="1"
-       data-fr="Le site est hébergé par <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis. Site : vercel.com"
-       data-en="This site is hosted by <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, United States. Website: vercel.com">Le site est hébergé par <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis. Site : vercel.com</p>
-    <p class="t" data-html="1"
-       data-fr="Le nom de domaine est enregistré auprès d'<strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France."
-       data-en="The domain name is registered with <strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France.">Le nom de domaine est enregistré auprès d'<strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France.</p>
-  </section>
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Éditeur du site" data-en="Site publisher">Éditeur du site</span></h2>
+        </div>
+        <dl class="fiche">
+          <div><dt class="t" data-fr="Responsable" data-en="Publisher">Responsable</dt><dd>Alban Zittel</dd></div>
+          <div><dt class="t" data-fr="Statut" data-en="Legal status">Statut</dt><dd class="t" data-fr="Entrepreneur individuel — micro-entrepreneur" data-en="Sole trader — micro-entrepreneur (French status)">Entrepreneur individuel — micro-entrepreneur</dd></div>
+          <div><dt class="t" data-fr="Activité" data-en="Activity">Activité</dt><dd class="t" data-fr="Enseignement du français langue étrangère" data-en="Teaching French as a foreign language">Enseignement du français langue étrangère</dd></div>
+          <div><dt class="t" data-fr="Adresse" data-en="Address">Adresse</dt><dd>1 place Louis XIV, 78450 Villepreux, France</dd></div>
+          <div><dt>SIREN</dt><dd>928 998 384</dd></div>
+          <div><dt>SIRET</dt><dd>928 998 384 00012</dd></div>
+          <div><dt class="t" data-fr="Code APE" data-en="Activity code">Code APE</dt><dd>8559B — Autres enseignements</dd></div>
+          <div><dt class="t" data-fr="Immatriculation" data-en="Registered since">Immatriculation</dt><dd class="t" data-fr="16 mai 2024" data-en="16 May 2024">16 mai 2024</dd></div>
+          <div><dt class="t" data-fr="TVA" data-en="VAT">TVA</dt><dd class="t" data-fr="TVA non applicable, article 293 B du Code général des impôts" data-en="VAT not applicable, article 293 B of the French General Tax Code">TVA non applicable, article 293 B du Code général des impôts</dd></div>
+          <div><dt class="t" data-fr="Contact" data-en="Contact">Contact</dt><dd>azittelpro@gmail.com</dd></div>
+          <div><dt class="t" data-fr="Directeur de publication" data-en="Publication director">Directeur de publication</dt><dd>Alban Zittel</dd></div>
+        </dl>
+      </section>
 
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Propriété intellectuelle" data-en="Intellectual property">Propriété intellectuelle</span></h2>
-    <p class="t"
-       data-fr="L'ensemble des contenus de ce site — textes, fiches pédagogiques, exercices, illustrations, identité visuelle et code — est la propriété exclusive d'Alban Zittel, sauf mention contraire."
-       data-en="All content on this site — texts, teaching sheets, exercises, illustrations, visual identity and code — is the exclusive property of Alban Zittel, unless stated otherwise.">L'ensemble des contenus de ce site — textes, fiches pédagogiques, exercices, illustrations, identité visuelle et code — est la propriété exclusive d'Alban Zittel, sauf mention contraire.</p>
-    <p class="t"
-       data-fr="Les ressources sont librement consultables et utilisables à des fins personnelles d'apprentissage. Toute reproduction, diffusion ou exploitation commerciale, totale ou partielle, est interdite sans autorisation écrite préalable."
-       data-en="The resources may be freely consulted and used for personal learning purposes. Any reproduction, distribution or commercial use, in whole or in part, is prohibited without prior written permission.">Les ressources sont librement consultables et utilisables à des fins personnelles d'apprentissage. Toute reproduction, diffusion ou exploitation commerciale, totale ou partielle, est interdite sans autorisation écrite préalable.</p>
-  </section>
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Hébergement" data-en="Hosting">Hébergement</span></h2>
+        </div>
+        <p class="t" data-html="1"
+           data-fr="Le site est hébergé par <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis. Site : vercel.com"
+           data-en="This site is hosted by <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, United States. Website: vercel.com">Le site est hébergé par <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis. Site : vercel.com</p>
+        <p class="t" data-html="1"
+           data-fr="Le nom de domaine est enregistré auprès d'<strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France."
+           data-en="The domain name is registered with <strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France.">Le nom de domaine est enregistré auprès d'<strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France.</p>
+      </section>
 
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Responsabilité" data-en="Liability">Responsabilité</span></h2>
-    <p class="t"
-       data-fr="Les contenus pédagogiques sont proposés à titre informatif et éducatif. Malgré le soin apporté à leur rédaction, aucune garantie d'exhaustivité ou d'absence d'erreur ne peut être donnée. Toute remarque ou correction peut être signalée à l'adresse de contact."
-       data-en="The teaching content is provided for informational and educational purposes. Despite the care taken in writing it, no guarantee of completeness or accuracy can be given. Any comment or correction can be reported to the contact address.">Les contenus pédagogiques sont proposés à titre informatif et éducatif. Malgré le soin apporté à leur rédaction, aucune garantie d'exhaustivité ou d'absence d'erreur ne peut être donnée.</p>
-    <p class="t"
-       data-fr="Le site peut contenir des liens vers des sites tiers. Aucune responsabilité ne saurait être engagée quant à leur contenu ou à leurs pratiques."
-       data-en="This site may contain links to third-party websites. No liability can be accepted for their content or practices.">Le site peut contenir des liens vers des sites tiers. Aucune responsabilité ne saurait être engagée quant à leur contenu ou à leurs pratiques.</p>
-  </section>
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Propriété intellectuelle" data-en="Intellectual property">Propriété intellectuelle</span></h2>
+        </div>
+        <p class="t"
+           data-fr="L'ensemble des contenus de ce site — textes, fiches pédagogiques, exercices, illustrations, identité visuelle et code — est la propriété exclusive d'Alban Zittel, sauf mention contraire."
+           data-en="All content on this site — texts, teaching sheets, exercises, illustrations, visual identity and code — is the exclusive property of Alban Zittel, unless stated otherwise.">L'ensemble des contenus de ce site — textes, fiches pédagogiques, exercices, illustrations, identité visuelle et code — est la propriété exclusive d'Alban Zittel, sauf mention contraire.</p>
+        <p class="t"
+           data-fr="Les ressources sont librement consultables et utilisables à des fins personnelles d'apprentissage. Toute reproduction, diffusion ou exploitation commerciale, totale ou partielle, est interdite sans autorisation écrite préalable."
+           data-en="The resources may be freely consulted and used for personal learning purposes. Any reproduction, distribution or commercial use, in whole or in part, is prohibited without prior written permission.">Les ressources sont librement consultables et utilisables à des fins personnelles d'apprentissage. Toute reproduction, diffusion ou exploitation commerciale, totale ou partielle, est interdite sans autorisation écrite préalable.</p>
+      </section>
 
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg><span class="t" data-fr="Données personnelles" data-en="Personal data">Données personnelles</span></h2>
-    <p class="t" data-html="1"
-       data-fr="Le traitement des données personnelles est détaillé dans la <a href='/confidentialite.html' style='color:#c0392b'>politique de confidentialité</a>."
-       data-en="The processing of personal data is set out in the <a href='/confidentialite.html' style='color:#c0392b'>privacy policy</a>.">Le traitement des données personnelles est détaillé dans la <a href="/confidentialite.html" style="color:#c0392b">politique de confidentialité</a>.</p>
-  </section>
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Responsabilité" data-en="Liability">Responsabilité</span></h2>
+        </div>
+        <p class="t"
+           data-fr="Les contenus pédagogiques sont proposés à titre informatif et éducatif. Malgré le soin apporté à leur rédaction, aucune garantie d'exhaustivité ou d'absence d'erreur ne peut être donnée. Toute remarque ou correction peut être signalée à l'adresse de contact."
+           data-en="The teaching content is provided for informational and educational purposes. Despite the care taken in writing it, no guarantee of completeness or accuracy can be given. Any comment or correction can be reported to the contact address.">Les contenus pédagogiques sont proposés à titre informatif et éducatif. Malgré le soin apporté à leur rédaction, aucune garantie d'exhaustivité ou d'absence d'erreur ne peut être donnée. Toute remarque ou correction peut être signalée à l'adresse de contact.</p>
+        <p class="t"
+           data-fr="Le site peut contenir des liens vers des sites tiers. Aucune responsabilité ne saurait être engagée quant à leur contenu ou à leurs pratiques."
+           data-en="This site may contain links to third-party websites. No liability can be accepted for their content or practices.">Le site peut contenir des liens vers des sites tiers. Aucune responsabilité ne saurait être engagée quant à leur contenu ou à leurs pratiques.</p>
+      </section>
 
-</div>
+      <section>
+        <div class="titre-section">
+          <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+          <h2><span class="t" data-fr="Données personnelles" data-en="Personal data">Données personnelles</span></h2>
+        </div>
+        <p class="t" data-html="1"
+           data-fr="Le traitement des données personnelles est détaillé dans la <a href='/confidentialite.html' style='color:#c0392b'>politique de confidentialité</a>."
+           data-en="The processing of personal data is set out in the <a href='/confidentialite.html' style='color:#c0392b'>privacy policy</a>.">Le traitement des données personnelles est détaillé dans la <a href="/confidentialite.html" style="color:#c0392b">politique de confidentialité</a>.</p>
+      </section>
+
+    </div>
+  </div>
+
+</main>
 
 <footer>
-  <div class="footer-logo">
-    <svg width="18" height="22" viewBox="0 0 24 28">
-      <defs><clipPath id="hf"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hf)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hf)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hf)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#faf7f2" stroke-width="1.5"/>
-    </svg>
-    French with Alban
-  </div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
-var btnFr=document.getElementById('btn-fr'),btnEn=document.getElementById('btn-en');
-function appliquer(l){
-  document.querySelectorAll('.t').forEach(function(e){
-    var t=e.getAttribute('data-'+l); if(t===null)return;
-    if(e.getAttribute('data-html'))e.innerHTML=t; else e.textContent=t;
-  });
-  document.documentElement.lang=l;
-  btnFr.classList.toggle('actif',l==='fr'); btnEn.classList.toggle('actif',l==='en');
-  btnFr.querySelector('.cadre').setAttribute('stroke',l==='fr'?'#c9972a':'#0d2b45');
-  btnEn.querySelector('.cadre').setAttribute('stroke',l==='en'?'#c9972a':'#0d2b45');
-  try{localStorage.setItem('fwa-lang',l);}catch(e){}
-}
-var c=null;
-try{var r=localStorage.getItem('fwa-lang'); if(r==='fr'||r==='en')c=r;}catch(e){}
-if(!c)c=(navigator.language||'fr').toLowerCase().indexOf('fr')===0?'fr':'en';
-appliquer(c);
-btnFr.addEventListener('click',function(){appliquer('fr');});
-btnEn.addEventListener('click',function(){appliquer('en');});
-</script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
 
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Mentions légales — French with Alban', en: 'Legal notice — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* textes alternatifs des illustrations : le français est dans alt, l'anglais dans data-alt-en */
+document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.setAttribute('data-alt-fr', img.alt); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.alt = img.getAttribute('data-alt-' + lang); });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
 </body>
 </html>

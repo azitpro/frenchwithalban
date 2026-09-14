@@ -6,294 +6,526 @@
 <title>Réserver — French with Alban</title>
 <meta name="description" content="Réservez un cours particulier de français en ligne avec un professeur natif. Horaires flexibles, approche personnalisée.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #faf7f2;
-  --cream-dark: #f0ece4;
-  --navy: #0d2b45;
-  --red: #c0392b;
-  --gold: #c9972a;
-  --border: #ddd8ce;
-  --text-soft: #666;
-  --green: #2e7d4f;
-  --green-soft: #e8f4ed;
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--navy); padding: 0; margin: 0; }
-.wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 80px; }
-.gold-line { height: 2px; background: var(--gold); width: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
 
-header {
-  padding: 28px 48px; border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%; box-sizing: border-box;
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
 }
-h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--navy); margin: 40px 0 8px; }
-.subtitle { font-size: 0.9rem; color: var(--text-soft); margin-bottom: 32px; }
-
-.option-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 16px; margin-bottom: 40px; align-items: start; }
-.option-card { aspect-ratio: 1 / 1; justify-content: center; }
-.option-card.principal { border-top-color: var(--red); border-top-width: 4px; padding: 34px 32px; }
-.option-card.principal .option-title { font-size: 1.5rem; }
-.option-card.principal .option-desc { font-size: 0.95rem; }
-.option-card.principal .option-btn { padding: 14px 24px; font-size: 0.92rem; }
-.price-block { margin: 6px 0 4px; }
-.price-old { font-size: 1.15rem; color: var(--text-soft); text-decoration: line-through; margin-right: 10px; }
-.price-new { font-family: 'DM Serif Display', serif; font-size: 2.4rem; color: var(--navy); }
-.price-off { display: inline-block; margin-left: 10px; background: var(--red); color: var(--cream); font-size: 0.8rem; font-weight: 700; padding: 4px 10px; letter-spacing: 0.04em; vertical-align: middle; }
-.price-unit { font-size: 0.9rem; color: var(--text-soft); }
-.price-promo { font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-top: 6px; }
-@media (max-width: 720px) { .option-grid { grid-template-columns: 1fr; } }
-.option-card {
-  background: var(--cream-dark); border: 1px solid var(--border); border-top: 3px solid var(--navy);
-  padding: 24px; display: flex; flex-direction: column; gap: 10px;
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
 }
-.option-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
-.option-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); }
-.option-desc { font-size: 0.85rem; color: var(--text-soft); line-height: 1.6; flex: 1; }
-.option-btn {
-  display: inline-block; text-align: center; padding: 11px 20px;
-  background: var(--navy); color: var(--cream); text-decoration: none;
-  font-size: 0.84rem; font-weight: 600; box-shadow: 3px 3px 0 var(--red);
-  transition: all 0.15s; cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 4%, rgba(200,245,96,.55) 0, transparent 22%),
+    radial-gradient(circle at 97% 12%, rgba(255,95,162,.26) 0, transparent 22%),
+    radial-gradient(circle at 3% 60%, rgba(62,224,198,.24) 0, transparent 20%),
+    radial-gradient(circle at 98% 88%, rgba(255,228,92,.42) 0, transparent 22%);
+  overflow: hidden; padding-bottom: 64px;
 }
-.option-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--red); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant le titre (pas une étape : pas de numéro) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
 
-.fee-note { font-size: 0.76rem; color: var(--red); font-style: italic; margin-top: 4px; }
-.price-tag { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--navy); }
-.price-tag span { font-size: 0.9rem; color: var(--text-soft); font-family: 'Inter', sans-serif; }
+/* ---------- HÉROS ---------- */
+.hero { padding: 52px 0 34px; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 20px; }
+h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; border-radius: 12px; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); display: inline-block; rotate: -2deg; }
+.subtitle { font-size: 1.2rem; color: var(--soft); max-width: 560px; }
 
-.form-section { display: none; padding-top: 24px; border-top: 2px solid var(--border); }
+/* ---------- LES DEUX FAÇONS DE RÉSERVER ---------- */
+.option-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 32px; align-items: stretch; }
+.option-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px 28px; }
+.option-tag { display: inline-block; padding: 2px 12px; border: 2.5px solid var(--ink); border-radius: 99px; background: var(--c); color: var(--c-texte); font-size: .74rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); rotate: -2deg; }
+.option-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.7rem; line-height: 1.15; letter-spacing: -.02em; }
+.option-desc { color: var(--soft); }
+.fee-note { display: flex; gap: 10px; align-items: flex-start; padding: 10px 14px; background: #ffe1ee; border: 2px solid var(--ink); border-radius: 12px; font-size: .9rem; line-height: 1.45; color: var(--ink); }
+.fee-note::before { content: '!'; flex: none; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: var(--pink); color: #fff; border: 2px solid var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: .8rem; line-height: 1; margin-top: 1px; }
+.option-btn { display: inline-block; margin-top: auto; padding: 11px 22px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; color: var(--ink); font: 700 1rem 'Inter', sans-serif; text-decoration: none; text-align: center; box-shadow: 3px 3px 0 var(--ink); cursor: pointer; transition: translate .15s, box-shadow .15s, background .15s; }
+.option-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); background: var(--lemon); }
+
+/* option principale : contact direct, sur fond encre, avec le prix en direct */
+.option-card.principal { background: var(--ink); color: #fff; border-color: var(--ink); box-shadow: 8px 8px 0 var(--c); padding: 32px 36px 34px; }
+.option-card.principal .option-tag { border-color: #fff; box-shadow: none; }
+.option-card.principal .option-title { font-size: 2.3rem; }
+.option-card.principal .option-desc { color: rgba(255,255,255,.8); font-size: 1.05rem; }
+.price-block { margin: 4px 0 6px; }
+.price-ligne { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; }
+.price-old { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.7rem; font-weight: 700; color: rgba(255,255,255,.55); text-decoration: line-through; text-decoration-color: var(--pink); text-decoration-thickness: 3px; }
+.price-new { font-family: 'Bricolage Grotesque', sans-serif; font-size: 4.2rem; font-weight: 800; line-height: 1; letter-spacing: -.03em; }
+.price-off { display: inline-block; padding: 3px 12px; background: var(--lime); color: var(--ink); border: 2.5px solid #fff; border-radius: 99px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.1rem; line-height: 1.2; rotate: 6deg; }
+.price-unit { font-size: 1rem; color: rgba(255,255,255,.72); margin-top: 4px; }
+.price-promo { display: inline-block; margin-top: 8px; padding: 1px 10px; border-radius: 99px; background: var(--lemon); color: var(--ink); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.option-card.principal .option-btn { padding: 14px 30px; background: var(--pink); color: #fff; border: 3px solid #fff; font-weight: 800; font-size: 1.08rem; box-shadow: 4px 4px 0 var(--lime); }
+.option-card.principal .option-btn:hover { translate: -2px -2px; box-shadow: 6px 6px 0 var(--lime); background: var(--pink); }
+
+/* ---------- FORMULAIRE ---------- */
+.form-section { display: none; padding-top: 56px; scroll-margin-top: 80px; }
 .form-section.visible { display: block; }
-.form-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 20px; }
-
-.form-field { margin-bottom: 18px; }
-.form-field label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
-.form-field .optional-tag { font-weight: 400; font-style: italic; color: var(--text-soft); font-size: 0.76rem; }
+.form-carte { max-width: 780px; background: #fff; border: 3px solid var(--ink); border-radius: 24px; box-shadow: 7px 7px 0 var(--ink); padding: 30px 34px 32px; }
+#contactForm { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 22px; }
+.form-field { grid-column: 1 / -1; min-width: 0; }
+.form-field.demi { grid-column: auto; }
+.form-field label, .form-field .label { display: block; font-size: .95rem; font-weight: 700; color: var(--ink); margin-bottom: 7px; }
+.form-field .optional-tag { font-weight: 500; font-style: italic; color: var(--soft); font-size: .85rem; }
 .form-field input, .form-field select, .form-field textarea {
-  width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
-  background: var(--cream); font-family: 'Inter', sans-serif; font-size: 0.9rem;
-  color: var(--navy); outline: none;
+  display: block; width: 100%; padding: 11px 14px; border: 2.5px solid var(--ink); border-radius: 12px;
+  background: var(--bg); font: 400 1rem/1.45 'Inter', sans-serif; color: var(--ink);
+  transition: background .15s, box-shadow .15s;
 }
-.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--navy); }
-.form-field textarea { resize: vertical; min-height: 70px; }
+.form-field select {
+  -webkit-appearance: none; appearance: none; padding-right: 42px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1.5 1.5 7 7l5.5-5.5' fill='none' stroke='%231b1340' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center;
+}
+.form-field input::placeholder, .form-field textarea::placeholder { color: #8a84a0; opacity: 1; }
+.form-field input:hover, .form-field select:hover, .form-field textarea:hover { background-color: #fff; }
+/* focus bien visible : contour violet et ombre dure */
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: 3px solid var(--violet); outline-offset: 2px; background-color: #fff; box-shadow: 3px 3px 0 var(--ink); }
+.form-field textarea { resize: vertical; min-height: 96px; }
 
-.avail-grid { border: 1px solid var(--border); background: var(--cream); }
-.avail-row { display: grid; grid-template-columns: 90px repeat(5, 1fr); border-bottom: 1px solid var(--border); }
+/* grille des disponibilités (lignes générées en JS) */
+.avail-grid { border: 2.5px solid var(--ink); border-radius: 14px; background: #fff; overflow: hidden; }
+.avail-row { display: grid; grid-template-columns: minmax(84px, 1.3fr) repeat(5, minmax(0, 1fr)); border-bottom: 2px solid rgba(27,19,64,.14); }
 .avail-row:last-child { border-bottom: none; }
-.avail-row.header { background: var(--cream-dark); font-weight: 600; font-size: 0.72rem; text-align: center; }
-.avail-cell { padding: 8px 4px; text-align: center; border-left: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-.avail-cell:first-child { border-left: none; }
-.avail-label { padding: 8px 6px; font-size: 0.76rem; font-weight: 600; color: var(--navy); display: flex; align-items: center; }
-.avail-cell input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--navy); }
-.avail-error { color: var(--red); font-size: 0.78rem; margin-top: 6px; display: none; }
+.avail-row.header { background: var(--lemon); border-bottom: 2.5px solid var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: .9rem; text-align: center; }
+.avail-cell { display: flex; align-items: center; justify-content: center; padding: 9px 2px; text-align: center; border-left: 2px solid rgba(27,19,64,.14); min-width: 0; }
+.avail-row.header .avail-cell { border-left-color: rgba(27,19,64,.2); }
+.avail-row:not(.header) .avail-cell { cursor: pointer; transition: background .12s; }
+.avail-row:not(.header) .avail-cell:hover { background: #f4ffd9; }
+.avail-row:not(.header) .avail-cell:has(input:checked) { background: var(--lime); }
+.avail-label { display: flex; align-items: center; padding: 9px 10px; font-size: .88rem; font-weight: 700; color: var(--ink); min-width: 0; overflow-wrap: anywhere; line-height: 1.25; }
+.avail-cell input[type="checkbox"] { width: 20px; height: 20px; margin: 0; cursor: pointer; accent-color: var(--ink); }
+.avail-cell input[type="checkbox"]:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
+.avail-error { display: none; margin-top: 10px; padding: 6px 12px; background: #ffe1ee; border: 2px solid var(--ink); border-radius: 10px; color: var(--ink); font-size: .9rem; font-weight: 600; }
 .avail-error.visible { display: block; }
 
 .submit-btn {
-  padding: 13px; background: var(--navy); color: var(--cream); border: none;
-  font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer;
-  box-shadow: 3px 3px 0 var(--red); width: 100%; transition: all 0.15s;
+  grid-column: 1 / -1; width: 100%; margin-top: 6px; padding: 14px 20px;
+  background: var(--pink); color: #fff; border: 3px solid var(--ink); border-radius: 99px;
+  font: 800 1.1rem 'Inter', sans-serif; cursor: pointer; box-shadow: 4px 4px 0 var(--ink);
+  transition: translate .15s, box-shadow .15s;
 }
-.submit-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--red); }
+.submit-btn:hover:not(:disabled) { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); }
+.submit-btn:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+.submit-btn:disabled { background: #ffb3d3; color: var(--ink); cursor: wait; box-shadow: 2px 2px 0 var(--ink); translate: 2px 2px; }
 
-.confirm-msg {
-  background: var(--green-soft); border: 1px solid var(--green); padding: 16px;
-  color: var(--green); font-size: 0.9rem; text-align: center; margin-top: 16px;
-}
+.consent-note { grid-column: 1 / -1; font-size: .85rem; color: var(--soft); line-height: 1.6; text-align: center; }
+.consent-note a { color: var(--ink); font-weight: 600; text-decoration-color: var(--pink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 
-footer {
-  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
-  display: flex; justify-content: space-between; align-items: center;
-}
-.footer-nav { display: flex; gap: 20px; }
-.footer-btn {
-  font-size: 0.8rem; font-weight: 500; color: var(--cream);
-  text-decoration: none; opacity: 0.65; border-bottom: 1px solid rgba(250,247,242,0.3); padding-bottom: 2px;
-}
-.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--cream); }
-.footer-copy { font-size: 0.72rem; color: rgba(250,247,242,0.4); }
+/* messages après envoi : succès citron vert, erreur rose */
+.confirm-msg { display: flex; gap: 14px; align-items: center; margin-top: 24px; padding: 14px 20px; background: #ecffc4; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); color: var(--ink); font-weight: 600; }
+.confirm-msg::before { content: '✓'; flex: none; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: var(--lime); border: 2.5px solid var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; line-height: 1; }
+.confirm-msg.erreur { background: #ffe1ee; }
+.confirm-msg.erreur::before { content: '!'; background: var(--pink); color: #fff; }
+/* formulaire masqué après un envoi réussi : le message prend sa place */
+#contactForm[style*="none"] + #confirmMsg .confirm-msg { margin-top: 0; }
 
-/* ===== MOBILE ===== */
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: .72rem; font-weight: 300; color: rgba(250,247,242,.4); }
+.footer-copy a { color: rgba(250,247,242,.6); }
+
+@media (prefers-reduced-motion: reduce) { .option-btn, .submit-btn, .avail-cell, .form-field input, .form-field select, .form-field textarea { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  h1 { font-size: 3.6rem; }
+  .option-grid { gap: 26px; }
+  .option-card.principal { padding: 28px 28px 30px; }
+  .option-card.principal .option-title { font-size: 2rem; }
+}
+@media (max-width: 820px) {
+  .option-grid { grid-template-columns: 1fr; max-width: 560px; }
+}
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
-  .option-tag { font-size: 0.7rem; }
+  .wrap { padding: 0 20px; }
+  .hero { padding: 32px 0 24px; }
+  h1 { font-size: 2.9rem; }
+  .subtitle { font-size: 1.06rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .option-card { padding: 22px 20px 24px; }
+  .option-card.principal { padding: 24px 20px 26px; box-shadow: 6px 6px 0 var(--c); }
+  .option-card.principal .option-title { font-size: 1.8rem; }
+  .price-new { font-size: 3.2rem; }
+  .form-section { padding-top: 44px; scroll-margin-top: 70px; }
+  .form-carte { padding: 22px 18px 24px; border-radius: 20px; box-shadow: 5px 5px 0 var(--ink); }
+  #contactForm { grid-template-columns: 1fr; gap: 18px; }
+  .form-field.demi { grid-column: 1 / -1; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
+@media (max-width: 400px) {
+  h1 { font-size: 2.45rem; }
+  .form-carte { padding: 20px 12px 22px; }
+  .avail-row { grid-template-columns: minmax(70px, 1.2fr) repeat(5, minmax(0, 1fr)); }
+  .avail-label { padding: 8px 6px; font-size: .78rem; }
+  .avail-row.header { font-size: .8rem; }
+  .price-new { font-size: 2.9rem; }
 }
-.logo-al { color: var(--red); }
-@media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
-}
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
-
-.consent-note {
-  margin-top: 14px; font-size: .78rem; font-weight: 300;
-  color: var(--text-soft); line-height: 1.6; text-align: center;
-}
-.consent-note a { color: var(--red); }
 </style>
 </head>
 <body>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav style="display: flex; gap: 44px; align-items: center;">
-    <a href="/" style="font-size:1.05rem; font-weight:500; letter-spacing:0.03em; color:var(--navy); text-decoration:none; opacity:0.65;">Accueil</a>
-  </nav>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="wrap">
-<h1>Réserver un cours</h1>
-<div class="subtitle">Deux façons de commencer, selon ce qui vous convient.</div>
+<main class="page">
 
-<div class="option-grid">
-  <div class="option-card">
-    <div class="option-tag">Via Preply</div>
-    <div class="option-title">Réserver sur Preply</div>
-    <div class="option-desc">Plateforme sécurisée avec paiement intégré et système d'avis.</div>
-    <div class="fee-note">Des frais de service Preply s'appliquent, y compris pour l'élève.</div>
-    <a href="https://preply.com/fr/tuteur/3727337" target="_blank" class="option-btn">Voir mon profil Preply →</a>
-  </div>
-
-    <div class="option-card principal">
-    <div class="option-tag">Contact direct</div>
-    <div class="option-title">Me contacter</div>
-    <div class="option-desc">Sans frais de plateforme, tarif direct, et un échange avec moi avant le premier cours.</div>
-    <div class="price-block">
-      <span class="price-old" id="priceOld" style="display:none"></span>
-      <span class="price-new" id="priceNew">$38</span>
-      <span class="price-off" id="priceOff" style="display:none"></span>
-      <div class="price-unit" id="priceUnit">/ 50 min</div>
-      <div class="price-promo" style="display:none">Offre du moment</div>
-    </div>
-    <button class="option-btn" id="showFormBtn">Remplir le formulaire</button>
-  </div>
-</div>
-
-<div class="form-section" id="formSection">
-  <div class="form-title">Parlez-moi de vous</div>
-  <form id="contactForm">
-    <div class="form-field">
-      <label for="firstName">Prénom</label>
-      <input type="text" id="firstName" required>
-    </div>
-    <div class="form-field">
-      <label for="email">Email</label>
-      <input type="email" id="email" required>
-    </div>
-    <div class="form-field">
-      <label for="timezone">Fuseau horaire</label>
-      <select id="timezone" required>
-  <option value="UTC-12">UTC-12</option>
-  <option value="UTC-11">UTC-11</option>
-  <option value="UTC-10">UTC-10 (Hawaï)</option>
-  <option value="UTC-9">UTC-9 (Alaska)</option>
-  <option value="UTC-8">UTC-8 (Los Angeles)</option>
-  <option value="UTC-7">UTC-7 (Denver)</option>
-  <option value="UTC-6">UTC-6 (Chicago, Mexico)</option>
-  <option value="UTC-5">UTC-5 (New York, Toronto)</option>
-  <option value="UTC-4">UTC-4 (Santiago, Halifax)</option>
-  <option value="UTC-3">UTC-3 (Buenos Aires, São Paulo)</option>
-  <option value="UTC-2">UTC-2</option>
-  <option value="UTC-1">UTC-1 (Açores)</option>
-  <option value="UTC+0">UTC+0 (Londres, Lisbonne)</option>
-  <option value="UTC+1" selected>UTC+1 (Paris, Berlin, Madrid)</option>
-  <option value="UTC+2">UTC+2 (Le Caire, Athènes, Kiev)</option>
-  <option value="UTC+3">UTC+3 (Moscou, Istanbul)</option>
-  <option value="UTC+4">UTC+4 (Dubaï, Bakou)</option>
-  <option value="UTC+5">UTC+5 (Karachi, Tachkent)</option>
-  <option value="UTC+5:30">UTC+5:30 (Inde)</option>
-  <option value="UTC+6">UTC+6 (Dacca, Almaty)</option>
-  <option value="UTC+7">UTC+7 (Bangkok, Jakarta)</option>
-  <option value="UTC+8">UTC+8 (Pékin, Singapour)</option>
-  <option value="UTC+9">UTC+9 (Tokyo, Séoul)</option>
-  <option value="UTC+9:30">UTC+9:30 (Adélaïde)</option>
-  <option value="UTC+10">UTC+10 (Sydney)</option>
-  <option value="UTC+11">UTC+11</option>
-  <option value="UTC+12">UTC+12 (Auckland)</option>
-  <option value="UTC+13">UTC+13</option>
-  <option value="UTC+14">UTC+14</option>
-</select>
-    </div>
-    <div class="form-field">
-      <label>Disponibilités</label>
-      <div class="avail-grid" id="availGrid">
-        <div class="avail-row header">
-          <div></div>
-          <div class="avail-cell">Lun</div>
-          <div class="avail-cell">Mar</div>
-          <div class="avail-cell">Mer</div>
-          <div class="avail-cell">Jeu</div>
-          <div class="avail-cell">Ven</div>
-        </div>
-        <!-- rows generated by JS -->
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div class="pastilles suite">
+        <span class="pastille t" data-fr="Cours particuliers" data-en="One-to-one lessons">Cours particuliers</span>
+        <span class="pastille t" data-fr="En ligne" data-en="Online">En ligne</span>
+        <span class="pastille t" data-fr="Professeur natif" data-en="Native teacher">Professeur natif</span>
       </div>
-      <div class="avail-error" id="availError">Veuillez cocher au moins une disponibilité.</div>
+      <h1 class="t" data-html="1" data-fr="Réserver un &lt;mark&gt;cours&lt;/mark&gt;" data-en="Book a &lt;mark&gt;lesson&lt;/mark&gt;">Réserver un <mark>cours</mark></h1>
+      <p class="subtitle t" data-fr="Deux façons de commencer, selon ce qui vous convient." data-en="Two ways to get started, whichever suits you best.">Deux façons de commencer, selon ce qui vous convient.</p>
     </div>
-    <div class="form-field">
-      <label for="level">Niveau actuel estimé</label>
-      <select id="level" required>
-        <option value="Débutant complet (A0)">Débutant complet (A0)</option>
-        <option value="Débutant (A1–A2)">Débutant (A1–A2)</option>
-        <option value="Intermédiaire (B1–B2)">Intermédiaire (B1–B2)</option>
-        <option value="Avancé (C1–C2)">Avancé (C1–C2)</option>
-        <option value="Je ne sais pas">Je ne sais pas</option>
-      </select>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ===== LES DEUX OPTIONS (prix mis à jour en direct par /api/pricing) ===== -->
+    <div class="option-grid suite">
+      <div class="option-card">
+        <div class="option-tag t" data-fr="Via Preply" data-en="Via Preply">Via Preply</div>
+        <h2 class="option-title t" data-fr="Réserver sur Preply" data-en="Book on Preply">Réserver sur Preply</h2>
+        <p class="option-desc t" data-fr="Plateforme sécurisée avec paiement intégré et système d'avis." data-en="A secure platform with built-in payment and a review system.">Plateforme sécurisée avec paiement intégré et système d'avis.</p>
+        <p class="fee-note t" data-fr="Des frais de service Preply s'appliquent, y compris pour l'élève." data-en="Preply service fees apply, including for the student.">Des frais de service Preply s'appliquent, y compris pour l'élève.</p>
+        <a href="https://preply.com/fr/tuteur/3727337" target="_blank" class="option-btn t" data-fr="Voir mon profil Preply →" data-en="See my Preply profile →">Voir mon profil Preply →</a>
+      </div>
+
+      <div class="option-card principal">
+        <div class="option-tag t" data-fr="Contact direct" data-en="Direct contact">Contact direct</div>
+        <h2 class="option-title t" data-fr="Me contacter" data-en="Contact me">Me contacter</h2>
+        <p class="option-desc t" data-fr="Sans frais de plateforme, tarif direct, et un échange avec moi avant le premier cours." data-en="No platform fees, a direct rate, and a chat with me before the first lesson.">Sans frais de plateforme, tarif direct, et un échange avec moi avant le premier cours.</p>
+        <div class="price-block">
+          <div class="price-ligne">
+            <span class="price-old" id="priceOld" style="display:none"></span>
+            <span class="price-new" id="priceNew">$38</span>
+            <span class="price-off" id="priceOff" style="display:none"></span>
+          </div>
+          <div class="price-unit" id="priceUnit">/ 50 min</div>
+          <div class="price-promo t" style="display:none" data-fr="Offre du moment" data-en="Current offer">Offre du moment</div>
+        </div>
+        <button type="button" class="option-btn t" id="showFormBtn" aria-controls="formSection" data-fr="Remplir le formulaire" data-en="Fill in the form">Remplir le formulaire</button>
+      </div>
     </div>
-    <div class="form-field">
-      <label for="goals">Objectifs</label>
-      <textarea id="goals" required placeholder="Ex : voyage, travail, examen, conversation courante..."></textarea>
-    </div>
-    <div class="form-field">
-      <label for="priorities">Priorités</label>
-      <textarea id="priorities" required placeholder="Ex : grammaire, prononciation, vocabulaire..."></textarea>
-    </div>
-    <div class="form-field">
-      <label for="lessonsPerWeek">Nombre de cours par semaine souhaité</label>
-      <select id="lessonsPerWeek" required>
-        <option value="1">1 cours / semaine</option>
-        <option value="2">2 cours / semaine</option>
-        <option value="3">3 cours / semaine</option>
-      </select>
-    </div>
-    <div class="form-field">
-      <label for="other">Autre <span class="optional-tag">(optionnel)</span></label>
-      <textarea id="other" placeholder="Toute autre information utile..."></textarea>
-    </div>
-    <button type="submit" class="submit-btn">Envoyer</button>
-    <p class="consent-note">En envoyant ce formulaire, vous acceptez notre <a href="/confidentialite.html">politique de confidentialité</a>.</p>
-  </form>
-  <div id="confirmMsg"></div>
-</div>
-</div>
+
+    <!-- ===== FORMULAIRE (affiché au clic sur « Remplir le formulaire ») ===== -->
+    <section class="form-section" id="formSection">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="form-title t" data-fr="Parlez-moi de vous" data-en="Tell me about yourself">Parlez-moi de vous</h2>
+      </div>
+      <div class="form-carte">
+        <form id="contactForm">
+          <div class="form-field demi">
+            <label for="firstName" class="t" data-fr="Prénom" data-en="First name">Prénom</label>
+            <input type="text" id="firstName" required>
+          </div>
+          <div class="form-field demi">
+            <label for="email" class="t" data-fr="Email" data-en="Email">Email</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-field">
+            <label for="timezone" class="t" data-fr="Fuseau horaire" data-en="Time zone">Fuseau horaire</label>
+            <select id="timezone" required>
+              <option value="UTC-12">UTC-12</option>
+              <option value="UTC-11">UTC-11</option>
+              <option value="UTC-10" class="t" data-fr="UTC-10 (Hawaï)" data-en="UTC-10 (Hawaii)">UTC-10 (Hawaï)</option>
+              <option value="UTC-9" class="t" data-fr="UTC-9 (Alaska)" data-en="UTC-9 (Alaska)">UTC-9 (Alaska)</option>
+              <option value="UTC-8" class="t" data-fr="UTC-8 (Los Angeles)" data-en="UTC-8 (Los Angeles)">UTC-8 (Los Angeles)</option>
+              <option value="UTC-7" class="t" data-fr="UTC-7 (Denver)" data-en="UTC-7 (Denver)">UTC-7 (Denver)</option>
+              <option value="UTC-6" class="t" data-fr="UTC-6 (Chicago, Mexico)" data-en="UTC-6 (Chicago, Mexico City)">UTC-6 (Chicago, Mexico)</option>
+              <option value="UTC-5" class="t" data-fr="UTC-5 (New York, Toronto)" data-en="UTC-5 (New York, Toronto)">UTC-5 (New York, Toronto)</option>
+              <option value="UTC-4" class="t" data-fr="UTC-4 (Santiago, Halifax)" data-en="UTC-4 (Santiago, Halifax)">UTC-4 (Santiago, Halifax)</option>
+              <option value="UTC-3" class="t" data-fr="UTC-3 (Buenos Aires, São Paulo)" data-en="UTC-3 (Buenos Aires, São Paulo)">UTC-3 (Buenos Aires, São Paulo)</option>
+              <option value="UTC-2">UTC-2</option>
+              <option value="UTC-1" class="t" data-fr="UTC-1 (Açores)" data-en="UTC-1 (Azores)">UTC-1 (Açores)</option>
+              <option value="UTC+0" class="t" data-fr="UTC+0 (Londres, Lisbonne)" data-en="UTC+0 (London, Lisbon)">UTC+0 (Londres, Lisbonne)</option>
+              <option value="UTC+1" selected class="t" data-fr="UTC+1 (Paris, Berlin, Madrid)" data-en="UTC+1 (Paris, Berlin, Madrid)">UTC+1 (Paris, Berlin, Madrid)</option>
+              <option value="UTC+2" class="t" data-fr="UTC+2 (Le Caire, Athènes, Kiev)" data-en="UTC+2 (Cairo, Athens, Kyiv)">UTC+2 (Le Caire, Athènes, Kiev)</option>
+              <option value="UTC+3" class="t" data-fr="UTC+3 (Moscou, Istanbul)" data-en="UTC+3 (Moscow, Istanbul)">UTC+3 (Moscou, Istanbul)</option>
+              <option value="UTC+4" class="t" data-fr="UTC+4 (Dubaï, Bakou)" data-en="UTC+4 (Dubai, Baku)">UTC+4 (Dubaï, Bakou)</option>
+              <option value="UTC+5" class="t" data-fr="UTC+5 (Karachi, Tachkent)" data-en="UTC+5 (Karachi, Tashkent)">UTC+5 (Karachi, Tachkent)</option>
+              <option value="UTC+5:30" class="t" data-fr="UTC+5:30 (Inde)" data-en="UTC+5:30 (India)">UTC+5:30 (Inde)</option>
+              <option value="UTC+6" class="t" data-fr="UTC+6 (Dacca, Almaty)" data-en="UTC+6 (Dhaka, Almaty)">UTC+6 (Dacca, Almaty)</option>
+              <option value="UTC+7" class="t" data-fr="UTC+7 (Bangkok, Jakarta)" data-en="UTC+7 (Bangkok, Jakarta)">UTC+7 (Bangkok, Jakarta)</option>
+              <option value="UTC+8" class="t" data-fr="UTC+8 (Pékin, Singapour)" data-en="UTC+8 (Beijing, Singapore)">UTC+8 (Pékin, Singapour)</option>
+              <option value="UTC+9" class="t" data-fr="UTC+9 (Tokyo, Séoul)" data-en="UTC+9 (Tokyo, Seoul)">UTC+9 (Tokyo, Séoul)</option>
+              <option value="UTC+9:30" class="t" data-fr="UTC+9:30 (Adélaïde)" data-en="UTC+9:30 (Adelaide)">UTC+9:30 (Adélaïde)</option>
+              <option value="UTC+10" class="t" data-fr="UTC+10 (Sydney)" data-en="UTC+10 (Sydney)">UTC+10 (Sydney)</option>
+              <option value="UTC+11">UTC+11</option>
+              <option value="UTC+12" class="t" data-fr="UTC+12 (Auckland)" data-en="UTC+12 (Auckland)">UTC+12 (Auckland)</option>
+              <option value="UTC+13">UTC+13</option>
+              <option value="UTC+14">UTC+14</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label id="availLabel" class="t" data-fr="Disponibilités" data-en="Availability">Disponibilités</label>
+            <div class="avail-grid" id="availGrid" role="group" aria-labelledby="availLabel">
+              <div class="avail-row header" aria-hidden="true">
+                <div></div>
+                <div class="avail-cell t" data-fr="Lun" data-en="Mon">Lun</div>
+                <div class="avail-cell t" data-fr="Mar" data-en="Tue">Mar</div>
+                <div class="avail-cell t" data-fr="Mer" data-en="Wed">Mer</div>
+                <div class="avail-cell t" data-fr="Jeu" data-en="Thu">Jeu</div>
+                <div class="avail-cell t" data-fr="Ven" data-en="Fri">Ven</div>
+              </div>
+              <!-- rows generated by JS -->
+            </div>
+            <div class="avail-error t" id="availError" role="alert" data-fr="Veuillez cocher au moins une disponibilité." data-en="Please tick at least one time slot.">Veuillez cocher au moins une disponibilité.</div>
+          </div>
+          <div class="form-field">
+            <label for="level" class="t" data-fr="Niveau actuel estimé" data-en="Estimated current level">Niveau actuel estimé</label>
+            <select id="level" required>
+              <option value="Débutant complet (A0)" class="t" data-fr="Débutant complet (A0)" data-en="Complete beginner (A0)">Débutant complet (A0)</option>
+              <option value="Débutant (A1–A2)" class="t" data-fr="Débutant (A1–A2)" data-en="Beginner (A1–A2)">Débutant (A1–A2)</option>
+              <option value="Intermédiaire (B1–B2)" class="t" data-fr="Intermédiaire (B1–B2)" data-en="Intermediate (B1–B2)">Intermédiaire (B1–B2)</option>
+              <option value="Avancé (C1–C2)" class="t" data-fr="Avancé (C1–C2)" data-en="Advanced (C1–C2)">Avancé (C1–C2)</option>
+              <option value="Je ne sais pas" class="t" data-fr="Je ne sais pas" data-en="I don't know">Je ne sais pas</option>
+            </select>
+          </div>
+          <div class="form-field demi">
+            <label for="goals" class="t" data-fr="Objectifs" data-en="Goals">Objectifs</label>
+            <textarea id="goals" required class="t-ph" placeholder="Ex : voyage, travail, examen, conversation courante..." data-ph-fr="Ex : voyage, travail, examen, conversation courante..." data-ph-en="E.g. travel, work, an exam, everyday conversation..."></textarea>
+          </div>
+          <div class="form-field demi">
+            <label for="priorities" class="t" data-fr="Priorités" data-en="Priorities">Priorités</label>
+            <textarea id="priorities" required class="t-ph" placeholder="Ex : grammaire, prononciation, vocabulaire..." data-ph-fr="Ex : grammaire, prononciation, vocabulaire..." data-ph-en="E.g. grammar, pronunciation, vocabulary..."></textarea>
+          </div>
+          <div class="form-field">
+            <label for="lessonsPerWeek" class="t" data-fr="Nombre de cours par semaine souhaité" data-en="Number of lessons per week you'd like">Nombre de cours par semaine souhaité</label>
+            <select id="lessonsPerWeek" required>
+              <option value="1" class="t" data-fr="1 cours / semaine" data-en="1 lesson / week">1 cours / semaine</option>
+              <option value="2" class="t" data-fr="2 cours / semaine" data-en="2 lessons / week">2 cours / semaine</option>
+              <option value="3" class="t" data-fr="3 cours / semaine" data-en="3 lessons / week">3 cours / semaine</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="other"><span class="t" data-fr="Autre" data-en="Other">Autre</span> <span class="optional-tag t" data-fr="(optionnel)" data-en="(optional)">(optionnel)</span></label>
+            <textarea id="other" class="t-ph" placeholder="Toute autre information utile..." data-ph-fr="Toute autre information utile..." data-ph-en="Anything else that might be useful..."></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Envoyer</button>
+          <p class="consent-note t" data-html="1" data-fr="En envoyant ce formulaire, vous acceptez notre &lt;a href=&quot;/confidentialite.html&quot;&gt;politique de confidentialité&lt;/a&gt;." data-en="By sending this form, you accept our &lt;a href=&quot;/confidentialite.html&quot;&gt;privacy policy&lt;/a&gt;.">En envoyant ce formulaire, vous acceptez notre <a href="/confidentialite.html">politique de confidentialité</a>.</p>
+        </form>
+        <div id="confirmMsg" aria-live="polite"></div>
+      </div>
+    </section>
+
+  </div>
+</main>
 
 <footer>
-  <div class="footer-nav"><a href="/" class="footer-btn">Accueil</a></div>
   <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
-  /* Le prix affiché par défaut dans le HTML sert de repli si l'API ne répond pas.
-     Prix barré, pastille de remise et « Offre du moment » restent masqués tant
-     qu'une remise réelle n'a pas été confirmée par l'API. */
-  fetch('/api/pricing').then(function(r){ return r.json(); }).then(function(p){
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Réserver — French with Alban', en: 'Book a lesson — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* ---------- textes générés en JS (formulaire) ----------
+   Seul l'affichage est traduit : les valeurs envoyées à /api/leads restent en français. */
+var TXT = {
+  fr: {
+    periodes: ['Matin', 'Midi', 'Après-midi', 'Soir'],
+    jours: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'],
+    envoyer: 'Envoyer',
+    envoi: 'Envoi...',
+    merci: 'Merci ! Votre demande a bien été envoyée. Je vous recontacte rapidement.',
+    erreur: "Erreur d'envoi. Réessayez plus tard."
+  },
+  en: {
+    periodes: ['Morning', 'Midday', 'Afternoon', 'Evening'],
+    jours: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    envoyer: 'Send',
+    envoi: 'Sending...',
+    merci: "Thank you! Your request has been sent. I'll get back to you shortly.",
+    erreur: 'Sending failed. Please try again later.'
+  }
+};
+// état mémorisé pour ré-afficher bouton et message dans la bonne langue au changement de langue
+var envoiEnCours = false;
+var dernierMessage = null;   // null, 'merci' ou 'erreur'
+
+function afficherMessage() {
+  var zone = document.getElementById('confirmMsg');
+  if (dernierMessage === 'merci') zone.innerHTML = '<div class="confirm-msg">' + TXT[LANG].merci + '</div>';
+  else if (dernierMessage === 'erreur') zone.innerHTML = '<div class="confirm-msg erreur">' + TXT[LANG].erreur + '</div>';
+}
+function majFormulaire() {
+  document.querySelectorAll('#availGrid .avail-row:not(.header)').forEach(function (row, i) {
+    row.querySelector('.avail-label').textContent = TXT[LANG].periodes[i];
+    row.querySelectorAll('input[type="checkbox"]').forEach(function (cb, j) {
+      cb.setAttribute('aria-label', TXT[LANG].jours[j] + ' · ' + TXT[LANG].periodes[i]);
+    });
+  });
+  document.querySelector('.submit-btn').textContent = envoiEnCours ? TXT[LANG].envoi : TXT[LANG].envoyer;
+  afficherMessage();
+}
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.querySelectorAll('.t-ph').forEach(function (el) {
+    var ph = el.getAttribute('data-ph-' + lang);
+    if (ph !== null) el.placeholder = ph;
+  });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  majFormulaire();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+/* ---------- TARIF EN DIRECT ----------
+   Le prix affiché par défaut dans le HTML sert de repli si l'API ne répond pas.
+   Prix barré, pastille de remise et « Offre du moment » restent masqués tant
+   qu'une remise réelle n'a pas été confirmée par l'API. */
+fetch('/api/pricing').then(function(r){ return r.json(); }).then(function(p){
   var pct = Math.ceil((p.realPrice - p.discountPrice) / p.realPrice * 100);
   document.getElementById('priceOld').textContent = p.currency + p.realPrice;
   document.getElementById('priceNew').textContent = p.currency + p.discountPrice;
@@ -307,6 +539,8 @@ footer {
     if (promo) promo.style.display = '';
   }
 }).catch(function(){});
+
+/* ---------- FORMULAIRE ---------- */
 const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 const PERIODS = ['Matin', 'Midi', 'Après-midi', 'Soir'];
 
@@ -319,7 +553,8 @@ PERIODS.forEach(period => {
   label.textContent = period;
   row.appendChild(label);
   DAYS.forEach(day => {
-    const cell = document.createElement('div');
+    // cellule <label> : toute la case est cliquable
+    const cell = document.createElement('label');
     cell.className = 'avail-cell';
     const cb = document.createElement('input');
     cb.type = 'checkbox';
@@ -363,7 +598,8 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
 
   const submitBtn = e.target.querySelector('.submit-btn');
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Envoi...';
+  envoiEnCours = true;
+  submitBtn.textContent = TXT[LANG].envoi;
   try {
     const res = await fetch('/api/leads', {
       method: 'POST',
@@ -372,16 +608,31 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     });
     if (res.ok) {
       document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('confirmMsg').innerHTML = `<div class="confirm-msg">Merci ! Votre demande a bien été envoyée. Je vous recontacte rapidement.</div>`;
+      envoiEnCours = false;
+      dernierMessage = 'merci';
+      afficherMessage();
     } else {
       throw new Error();
     }
   } catch (err) {
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Envoyer';
-    document.getElementById('confirmMsg').innerHTML = `<div class="confirm-msg" style="background:#fbeae8;border-color:#c0392b;color:#c0392b;">Erreur d'envoi. Réessayez plus tard.</div>`;
+    envoiEnCours = false;
+    submitBtn.textContent = TXT[LANG].envoyer;
+    dernierMessage = 'erreur';
+    afficherMessage();
   }
 });
+
+/* ---------- langue au chargement ---------- */
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
 </script>
 </body>
 </html>

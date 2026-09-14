@@ -6,551 +6,657 @@
 <title>Les verbes irréguliers — French with Alban</title>
 <meta name="description" content="Les 24 verbes irréguliers essentiels au présent — être, avoir, aller, faire, pouvoir, vouloir. Tableaux complets avec code couleur.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #faf7f2;
-  --cream-dark: #f0ece4;
-  --navy: #0d2b45;
-  --red: #c0392b;
-  --gold: #c9972a;
-  --border: #ddd8ce;
-  --blue: #1a56a0;
-  --orange: #d4770a;
-  --text-soft: #666;
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #ffffff;
-  font-family: 'Inter', sans-serif;
-  color: var(--navy);
-  font-size: 11pt;
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
 }
-.page-wrap {
-  background: var(--cream);
-  max-width: 1200px;
-  margin: 0 auto;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.12);
-  min-height: 100vh;
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
 }
 
-/* HEADER */
-header {
-  padding: 0;
-  border-bottom: 3px solid var(--navy);
-  width: 100%;
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
 }
-.header-inner {
-  width: 100%;
-  padding: 32px 48px;
-  display: flex; justify-content: space-between; align-items: center;
-  box-sizing: border-box;
-}
-.logo {
-  display: flex; align-items: center; gap: 12px;
-  font-family: 'Fraunces', serif; font-size: 1.6rem;
-  font-weight: 700; color: var(--navy);
-}
-.logo .red { color: var(--red); }
-.page-title { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--navy); }
-.page-title .red { color: var(--red); }
-.gold-line { height: 2px; background: var(--gold); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 680px; margin: -6px 0 22px; font-size: 1.05rem; }
+b, strong { font-weight: 700; }
 
-/* SECTION HEADER */
-.section-head {
-  display: flex; align-items: center; gap: 9px;
-  margin: 24px 48px 14px;
-}
-.breadcrumb {
-  display: flex; align-items: center; gap: 8px;
-  margin: 20px 48px 0;
-  font-size: 0.78rem; color: var(--text-soft);
-}
-.crumb-link { color: var(--text-soft); text-decoration: none; }
-.crumb-link:hover { color: var(--navy); text-decoration: underline; }
-.crumb-sep { color: var(--border); }
-.crumb-current { color: var(--navy); font-weight: 500; }
-.section-head h2 {
-  font-family: 'Fraunces', serif; font-size: 1.15rem;
-  font-weight: 600; color: var(--navy);
-}
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
 
-/* GRID */
-.verb-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border);
-  margin: 0 48px 32px;
-}
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--aqua); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 540px; }
 
-.verb-block { background: var(--cream); padding: 18px 18px 14px; }
-.verb-block.alt { background: var(--cream-dark); }
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 28px 30px 26px; rotate: 2deg; }
+.apercu-inf { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.2rem; line-height: 1; letter-spacing: -.03em; margin-bottom: 16px; }
+.apercu-formes { list-style: none; display: grid; gap: 6px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.75rem; line-height: 1.3; }
+.apercu-formes .pron { display: inline-block; min-width: 3.4em; color: var(--soft); font-weight: 500; font-size: .8em; }
+.autocollant { position: absolute; top: -20px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
 
-.verb-inf {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.1rem; font-weight: 400;
-  color: var(--blue); margin-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 6px;
-}
+/* ---------- CODE COULEUR ----------
+   Signification d'origine conservée :
+   .f-b = partie régulière · .f-r = irrégularité à retenir · .f-o = radical modifié (lettres qui apparaissent ou changent au pluriel) · .f-s = remarque */
+.f-b { color: var(--ink); font-weight: 500; }
+.f-r { color: #e0337f; font-weight: 800; }
+.f-o { background: var(--orange); color: var(--ink); font-weight: 800; border-radius: 5px; padding: 0 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.f-s { color: var(--soft); font-style: italic; font-size: .85rem; }
 
-.conj-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-.conj-table td { padding: 3px 0; vertical-align: top; }
-.conj-table .pr { color: var(--text-soft); font-weight: 300; width: 42%; font-size: 0.78rem; }
-.f-b { color: var(--blue); font-weight: 400; }
-.f-r { color: var(--red); font-weight: 700; }
-.f-o { color: var(--orange); font-weight: 700; }
-.f-s { color: var(--text-soft); font-weight: 300; font-style: italic; font-size: 0.78rem; }
+.legende { display: flex; flex-wrap: wrap; gap: 12px 14px; margin-bottom: 30px; }
+.cle { display: flex; align-items: center; gap: 12px; padding: 7px 16px 7px 7px; background: #fff; border: 2.5px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); font-size: .93rem; font-weight: 600; line-height: 1.3; }
+.cle-ex { flex: none; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.2rem; padding: 2px 10px; background: var(--bg); border: 2px solid var(--ink); border-radius: 10px; white-space: nowrap; }
 
-.also-note {
-  margin-top: 12px; padding-top: 10px;
-  border-top: 1px dashed var(--border);
-  font-size: 0.74rem; font-weight: 300;
-  color: var(--text-soft); line-height: 1.6;
-}
-.also-note b { color: var(--navy); font-weight: 600; }
+/* ---------- CARTES DES VERBES ---------- */
+.verbes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.verbe { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; transition: translate .18s, box-shadow .18s; }
+.verbe:hover { translate: -3px -3px; box-shadow: 8px 8px 0 var(--ink); }
+.verb-inf { background: var(--c); color: var(--c-texte); border-bottom: 3px solid var(--ink); padding: 9px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem; line-height: 1.2; letter-spacing: .02em; }
+.conj-table { width: 100%; border-collapse: collapse; margin: 8px 0 10px; }
+.conj-table td { padding: 4px 16px 4px 0; font-size: 1.05rem; line-height: 1.35; vertical-align: baseline; }
+.conj-table td:first-child { padding-left: 16px; }
+.conj-table tr + tr td { border-top: 1.5px dashed rgba(27,19,64,.14); }
+.conj-table .pr { color: var(--soft); font-size: .84rem; width: 42%; white-space: nowrap; }
+.also-note { margin: auto 16px 14px; padding-top: 10px; border-top: 2.5px dashed rgba(27,19,64,.25); font-size: .88rem; color: var(--soft); line-height: 1.5; }
+.also-note b { color: var(--ink); font-weight: 700; }
 
-/* FOOTER */
-footer {
-  background: var(--navy); padding: 28px 48px;
-  border-top: 4px solid var(--gold);
-  display: flex; justify-content: space-between; align-items: center;
-}
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
 
-/* le lien d'en-tête n'avait aucune règle : il s'affichait en lien brut bleu souligné */
-.nav-btn {
-  font-size: 0.95rem; font-weight: 500; letter-spacing: 0.03em;
-  color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s;
+@media (prefers-reduced-motion: reduce) { .verbe, .fil { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 1040px) { .verbes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 420px; rotate: 1deg; }
+  h1 { font-size: 3.6rem; }
 }
-.nav-btn:hover { opacity: 1; }
-
-/* ===== MOBILE ===== */
-@media (max-width: 1040px) { .verb-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 800px)  { .verb-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 800px) { .verbes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
-  .header-inner {
-    flex-direction: column; align-items: flex-start; gap: 10px;
-    padding: 18px 16px;
-  }
-  .logo { font-size: 1.2rem; }
-  .logo svg { width: 22px; height: 26px; }
-  .header-right {
-    display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
-    width: 100%;
-  }
-  .page-title { font-size: 1.45rem; line-height: 1.2; }
-  .verb-block { padding: 14px 12px 12px; }
-  .conj-table { font-size: 0.8rem; }
-  .conj-table .pr { width: 38%; font-size: 0.74rem; }
-  .also-note { font-size: 0.82rem; }
+  .wrap { padding: 0 20px; }
+  section { padding: 38px 0; }
+  .hero { padding: 30px 0 18px; }
+  h1 { font-size: 2.9rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 22px 22px 20px; }
+  .apercu-inf { font-size: 2.5rem; }
+  .apercu-formes { font-size: 1.4rem; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .verbes { gap: 16px; }
+  .conj-table td { font-size: .98rem; padding-right: 10px; }
+  .conj-table td:first-child { padding-left: 12px; }
+  .conj-table .pr { font-size: .78rem; width: 40%; }
+  .verb-inf { padding: 8px 12px; font-size: 1.15rem; }
+  .also-note { margin: auto 12px 12px; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-@media (max-width: 430px) { .verb-grid { grid-template-columns: 1fr; } }
-
-/* ===== LOGO HARMONISE ===== */
-header {
-  padding: 28px 48px; border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%; box-sizing: border-box;
+@media (max-width: 480px) { .verbes { grid-template-columns: 1fr; } }
+@media (max-width: 400px) {
+  h1 { font-size: 2.45rem; }
 }
-nav { display: flex; gap: 44px; align-items: center; }
-nav a {
-  font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em;
-  color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s;
-}
-nav a:hover { opacity: 1; }
-.hero { padding: 48px 36px 32px; text-align: center; border-bottom: 1px solid var(--border); }
-.hero h1 {
-  font-family: 'DM Serif Display', serif; font-size: 2.4rem;
-  font-weight: 400; line-height: 1.15; color: var(--navy); margin: 0;
-}
-.hero h1 .red { color: var(--red); }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
-}
-.logo-al { color: var(--red); }
-@media (max-width: 720px) {
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
-  nav { gap: 22px; }
-  nav a { font-size: 0.95rem; }
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
-  .hero { padding: 30px 20px 22px; }
-  .hero h1 { font-size: 1.7rem; }
-}
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } nav { gap: 16px; } }
 </style>
 </head>
 <body>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="page-wrap">
+<!-- Les verbes, les pronoms et les formes conjuguées restent en français dans la version anglaise :
+     seuls les titres, la légende et les remarques sont traduits. -->
+<main class="page suite-sections">
 
-<div class="breadcrumb">
-  <a href="/" class="crumb-link">Accueil</a>
-  <span class="crumb-sep">/</span>
-  <a href="/ressources.html" class="crumb-link">Ressources</a>
-  <span class="crumb-sep">/</span>
-  <span class="crumb-current">Verbes irréguliers</span>
-</div>
-
-<div class="hero">
-  <h1>Les verbes <span class="red">irréguliers</span></h1>
-</div>
-
-<div class="section-head">
-  <svg width="14" height="17" viewBox="0 0 24 28">
-    <defs><clipPath id="h2"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-    <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h2)"/>
-    <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h2)"/>
-    <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h2)"/>
-    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-  </svg>
-  <h2>Conjugaison au présent</h2>
-</div>
-
-<div class="verb-grid">
-
-  <!-- ÊTRE -->
-  <div class="verb-block">
-    <div class="verb-inf">ÊTRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">suis</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">es</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">est</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-r">sommes</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-r">êtes</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">sont</span></td></tr>
-    </table>
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a1-a2" data-fr="← Ressources · Faux débutant" data-en="← Resources · Elementary">← Ressources · Faux débutant</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
+          <span class="pastille t" data-fr="Présent" data-en="Present tense">Présent</span>
+          <span class="pastille">A1–A2</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Les verbes &lt;mark&gt;irréguliers&lt;/mark&gt;"
+            data-en="&lt;mark&gt;Les verbes irréguliers&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;Irregular verbs&lt;/span&gt;">Les verbes <mark>irréguliers</mark></h1>
+        <p class="lead t"
+           data-fr="24 verbes essentiels au présent, avec un code couleur pour repérer les vraies irrégularités."
+           data-en="24 essential verbs in the present tense, colour-coded to show what is really irregular.">24 verbes essentiels au présent, avec un code couleur pour repérer les vraies irrégularités.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant t" data-fr="24 verbes" data-en="24 verbs">24 verbes</span>
+        <div class="apercu-inf">faire</div>
+        <ul class="apercu-formes">
+          <li><span class="pron">je</span><span class="f-b">fais</span></li>
+          <li><span class="pron">nous</span><span class="f-b">fai</span><span class="f-o">s</span><span class="f-b">ons</span></li>
+          <li><span class="pron">vous</span><span class="f-b">fai</span><span class="f-r">tes</span></li>
+          <li><span class="pron">ils</span><span class="f-r">font</span></li>
+        </ul>
+      </div>
+    </div>
   </div>
 
-  <!-- AVOIR -->
-  <div class="verb-block alt">
-    <div class="verb-inf">AVOIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">ai</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">as</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">a</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">avons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">avez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">ont</span></td></tr>
-    </table>
-  </div>
+  <!-- ===== CONJUGAISON AU PRÉSENT ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Conjugaison au présent" data-en="Present tense conjugation">Conjugaison au présent</h2>
+      </div>
+      <p class="intro t" data-fr="Le code couleur repère ce qui est vraiment irrégulier dans chaque forme." data-en="The colour code shows what is really irregular in each form.">Le code couleur repère ce qui est vraiment irrégulier dans chaque forme.</p>
 
-  <!-- ALLER -->
-  <div class="verb-block">
-    <div class="verb-inf">ALLER</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">vais</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">vas</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">va</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">allons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">allez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">vont</span></td></tr>
-    </table>
-  </div>
+      <!-- légende du code couleur (d'après les couleurs d'origine des tableaux) -->
+      <div class="legende">
+        <div class="cle"><span class="cle-ex"><span class="f-b">avons</span></span><span class="t" data-fr="Partie régulière" data-en="Regular part">Partie régulière</span></div>
+        <div class="cle"><span class="cle-ex"><span class="f-r">suis</span></span><span class="t" data-fr="Irrégularité à retenir" data-en="Irregular: learn it by heart">Irrégularité à retenir</span></div>
+        <div class="cle"><span class="cle-ex"><span class="f-b">b</span><span class="f-o">uv</span><span class="f-b">ons</span></span><span class="t" data-fr="Radical modifié au pluriel" data-en="Stem change in the plural">Radical modifié au pluriel</span></div>
+      </div>
 
-  <!-- FAIRE -->
-  <div class="verb-block alt">
-    <div class="verb-inf">FAIRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">fais</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">fais</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">fait</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">fai</span><span class="f-o">s</span><span class="f-b">ons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">fai</span><span class="f-r">tes</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">font</span></td></tr>
-    </table>
-  </div>
+      <div class="verbes suite">
 
-  <!-- POUVOIR -->
-  <div class="verb-block">
-    <div class="verb-inf">POUVOIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">peux</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">peux</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">peut</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">pouvons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">pouvez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">peuvent</span></td></tr>
-    </table>
-  </div>
+        <!-- ÊTRE -->
+        <div class="verbe">
+          <div class="verb-inf">ÊTRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">suis</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">es</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">est</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-r">sommes</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-r">êtes</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">sont</span></td></tr>
+          </table>
+        </div>
 
-  <!-- VOULOIR -->
-  <div class="verb-block alt">
-    <div class="verb-inf">VOULOIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">veux</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">veux</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">veut</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">voulons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">voulez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">veulent</span></td></tr>
-    </table>
-  </div>
+        <!-- AVOIR -->
+        <div class="verbe">
+          <div class="verb-inf">AVOIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">ai</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">as</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">a</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">avons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">avez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">ont</span></td></tr>
+          </table>
+        </div>
 
-  <!-- DEVOIR -->
-  <div class="verb-block">
-    <div class="verb-inf">DEVOIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">dois</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">dois</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">doit</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">devons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">devez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">doivent</span></td></tr>
-    </table>
-  </div>
+        <!-- ALLER -->
+        <div class="verbe">
+          <div class="verb-inf">ALLER</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">vais</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">vas</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">va</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">allons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">allez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">vont</span></td></tr>
+          </table>
+        </div>
 
-  <!-- SAVOIR -->
-  <div class="verb-block alt">
-    <div class="verb-inf">SAVOIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">sais</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">sais</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">sait</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">savons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">savez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">savent</span></td></tr>
-    </table>
-  </div>
+        <!-- FAIRE -->
+        <div class="verbe">
+          <div class="verb-inf">FAIRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">fais</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">fais</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">fait</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">fai</span><span class="f-o">s</span><span class="f-b">ons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">fai</span><span class="f-r">tes</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">font</span></td></tr>
+          </table>
+        </div>
 
-  <!-- FALLOIR -->
-  <div class="verb-block">
-    <div class="verb-inf">FALLOIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">il</td><td><span class="f-r">faut</span></td></tr>
-      <tr><td colspan="2"><span class="f-s">Verbe impersonnel — il faut seulement</span></td></tr>
-    </table>
-  </div>
+        <!-- POUVOIR -->
+        <div class="verbe">
+          <div class="verb-inf">POUVOIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">peux</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">peux</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">peut</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">pouvons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">pouvez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">peuvent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- VENIR -->
-  <div class="verb-block alt">
-    <div class="verb-inf">VENIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">viens</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">viens</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">vient</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">venons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">venez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">viennent</span></td></tr>
-    </table>
-  </div>
+        <!-- VOULOIR -->
+        <div class="verbe">
+          <div class="verb-inf">VOULOIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">veux</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">veux</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">veut</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">voulons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">voulez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">veulent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- TENIR -->
-  <div class="verb-block">
-    <div class="verb-inf">TENIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">tiens</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">tiens</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">tient</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">tenons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">tenez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">tiennent</span></td></tr>
-    </table>
-  </div>
+        <!-- DEVOIR -->
+        <div class="verbe">
+          <div class="verb-inf">DEVOIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">dois</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">dois</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">doit</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">devons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">devez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">doivent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- METTRE -->
-  <div class="verb-block alt">
-    <div class="verb-inf">METTRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">mets</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">mets</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">met</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">mettons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">mettez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">mettent</span></td></tr>
-    </table>
-  </div>
+        <!-- SAVOIR -->
+        <div class="verbe">
+          <div class="verb-inf">SAVOIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">sais</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">sais</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">sait</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">savons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">savez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">savent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- DIRE -->
-  <div class="verb-block">
-    <div class="verb-inf">DIRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">dis</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">dis</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">dit</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">di</span><span class="f-o">s</span><span class="f-b">ons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">di</span><span class="f-r">tes</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">di</span><span class="f-o">s</span><span class="f-b">ent</span></td></tr>
-    </table>
-  </div>
+        <!-- FALLOIR -->
+        <div class="verbe">
+          <div class="verb-inf">FALLOIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">il</td><td><span class="f-r">faut</span></td></tr>
+            <tr><td colspan="2"><span class="f-s t" data-fr="Verbe impersonnel — il faut seulement" data-en="Impersonal verb — il faut only">Verbe impersonnel — il faut seulement</span></td></tr>
+          </table>
+        </div>
 
-  <!-- LIRE -->
-  <div class="verb-block alt">
-    <div class="verb-inf">LIRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">lis</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">lis</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">lit</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">li</span><span class="f-o">s</span><span class="f-b">ons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">li</span><span class="f-o">s</span><span class="f-b">ez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">li</span><span class="f-o">s</span><span class="f-b">ent</span></td></tr>
-    </table>
-  </div>
+        <!-- VENIR -->
+        <div class="verbe">
+          <div class="verb-inf">VENIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">viens</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">viens</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">vient</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">venons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">venez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">viennent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- ÉCRIRE -->
-  <div class="verb-block">
-    <div class="verb-inf">ÉCRIRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">écris</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">écris</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">écrit</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">écri</span><span class="f-o">v</span><span class="f-b">ons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">écri</span><span class="f-o">v</span><span class="f-b">ez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">écri</span><span class="f-o">v</span><span class="f-b">ent</span></td></tr>
-    </table>
-  </div>
+        <!-- TENIR -->
+        <div class="verbe">
+          <div class="verb-inf">TENIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">tiens</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">tiens</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">tient</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">tenons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">tenez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">tiennent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- BOIRE -->
-  <div class="verb-block alt">
-    <div class="verb-inf">BOIRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">bois</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">bois</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">boit</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">b</span><span class="f-o">uv</span><span class="f-b">ons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">b</span><span class="f-o">uv</span><span class="f-b">ez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">boivent</span></td></tr>
-    </table>
-  </div>
+        <!-- METTRE -->
+        <div class="verbe">
+          <div class="verb-inf">METTRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">mets</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">mets</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">met</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">mettons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">mettez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">mettent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- VOIR -->
-  <div class="verb-block">
-    <div class="verb-inf">VOIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">vois</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">vois</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">voit</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">vo</span><span class="f-o">y</span><span class="f-b">ons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">vo</span><span class="f-o">y</span><span class="f-b">ez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">voient</span></td></tr>
-    </table>
-  </div>
+        <!-- DIRE -->
+        <div class="verbe">
+          <div class="verb-inf">DIRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">dis</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">dis</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">dit</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">di</span><span class="f-o">s</span><span class="f-b">ons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">di</span><span class="f-r">tes</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">di</span><span class="f-o">s</span><span class="f-b">ent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- CROIRE -->
-  <div class="verb-block alt">
-    <div class="verb-inf">CROIRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">crois</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">crois</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">croit</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">cro</span><span class="f-o">y</span><span class="f-b">ons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">cro</span><span class="f-o">y</span><span class="f-b">ez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">croient</span></td></tr>
-    </table>
-  </div>
+        <!-- LIRE -->
+        <div class="verbe">
+          <div class="verb-inf">LIRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">lis</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">lis</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">lit</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">li</span><span class="f-o">s</span><span class="f-b">ons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">li</span><span class="f-o">s</span><span class="f-b">ez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">li</span><span class="f-o">s</span><span class="f-b">ent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- PRENDRE -->
-  <div class="verb-block">
-    <div class="verb-inf">PRENDRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">prends</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">prends</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">prend</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-r">prenons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-r">prenez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">prennent</span></td></tr>
-    </table>
-  </div>
+        <!-- ÉCRIRE -->
+        <div class="verbe">
+          <div class="verb-inf">ÉCRIRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">écris</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">écris</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">écrit</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">écri</span><span class="f-o">v</span><span class="f-b">ons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">écri</span><span class="f-o">v</span><span class="f-b">ez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">écri</span><span class="f-o">v</span><span class="f-b">ent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- CONNAÎTRE -->
-  <div class="verb-block alt">
-    <div class="verb-inf">CONNAÎTRE</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">connais</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">connais</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">connaît</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">connai</span><span class="f-o">ss</span><span class="f-b">ons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">connai</span><span class="f-o">ss</span><span class="f-b">ez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">connai</span><span class="f-o">ss</span><span class="f-b">ent</span></td></tr>
-    </table>
-  </div>
+        <!-- BOIRE -->
+        <div class="verbe">
+          <div class="verb-inf">BOIRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">bois</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">bois</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">boit</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">b</span><span class="f-o">uv</span><span class="f-b">ons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">b</span><span class="f-o">uv</span><span class="f-b">ez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">boivent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- OUVRIR -->
-  <div class="verb-block">
-    <div class="verb-inf">OUVRIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">ouvr</span><span class="f-r">e</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">ouvr</span><span class="f-r">es</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">ouvr</span><span class="f-r">e</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">ouvrons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">ouvrez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">ouvrent</span></td></tr>
-    </table>
-  </div>
+        <!-- VOIR -->
+        <div class="verbe">
+          <div class="verb-inf">VOIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">vois</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">vois</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">voit</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">vo</span><span class="f-o">y</span><span class="f-b">ons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">vo</span><span class="f-o">y</span><span class="f-b">ez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">voient</span></td></tr>
+          </table>
+        </div>
 
-  <!-- RECEVOIR -->
-  <div class="verb-block alt">
-    <div class="verb-inf">RECEVOIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-r">reçois</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-r">reçois</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-r">reçoit</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">recevons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">recevez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-r">reçoivent</span></td></tr>
-    </table>
-  </div>
+        <!-- CROIRE -->
+        <div class="verbe">
+          <div class="verb-inf">CROIRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">crois</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">crois</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">croit</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">cro</span><span class="f-o">y</span><span class="f-b">ons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">cro</span><span class="f-o">y</span><span class="f-b">ez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">croient</span></td></tr>
+          </table>
+        </div>
 
-  <!-- COURIR -->
-  <div class="verb-block">
-    <div class="verb-inf">COURIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">cour</span><span class="f-r">s</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">cour</span><span class="f-r">s</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">cour</span><span class="f-r">t</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">courons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">courez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">courent</span></td></tr>
-    </table>
-  </div>
+        <!-- PRENDRE -->
+        <div class="verbe">
+          <div class="verb-inf">PRENDRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">prends</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">prends</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">prend</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-r">prenons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-r">prenez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">prennent</span></td></tr>
+          </table>
+        </div>
 
-  <!-- PARTIR -->
-  <div class="verb-block alt">
-    <div class="verb-inf">PARTIR</div>
-    <table class="conj-table">
-      <tr><td class="pr">je</td><td><span class="f-b">par</span><span class="f-r">s</span></td></tr>
-      <tr><td class="pr">tu</td><td><span class="f-b">par</span><span class="f-r">s</span></td></tr>
-      <tr><td class="pr">il/elle</td><td><span class="f-b">par</span><span class="f-r">t</span></td></tr>
-      <tr><td class="pr">nous</td><td><span class="f-b">partons</span></td></tr>
-      <tr><td class="pr">vous</td><td><span class="f-b">partez</span></td></tr>
-      <tr><td class="pr">ils/elles</td><td><span class="f-b">partent</span></td></tr>
-    </table>
-    <div class="also-note"><b>Aussi :</b> vivre, sortir, sentir, dormir, servir, suivre, mentir</div>
-  </div>
+        <!-- CONNAÎTRE -->
+        <div class="verbe">
+          <div class="verb-inf">CONNAÎTRE</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">connais</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">connais</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">connaît</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">connai</span><span class="f-o">ss</span><span class="f-b">ons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">connai</span><span class="f-o">ss</span><span class="f-b">ez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">connai</span><span class="f-o">ss</span><span class="f-b">ent</span></td></tr>
+          </table>
+        </div>
 
-</div>
+        <!-- OUVRIR -->
+        <div class="verbe">
+          <div class="verb-inf">OUVRIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">ouvr</span><span class="f-r">e</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">ouvr</span><span class="f-r">es</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">ouvr</span><span class="f-r">e</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">ouvrons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">ouvrez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">ouvrent</span></td></tr>
+          </table>
+        </div>
 
-</div>
+        <!-- RECEVOIR -->
+        <div class="verbe">
+          <div class="verb-inf">RECEVOIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-r">reçois</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-r">reçois</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-r">reçoit</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">recevons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">recevez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-r">reçoivent</span></td></tr>
+          </table>
+        </div>
 
-</div>
+        <!-- COURIR -->
+        <div class="verbe">
+          <div class="verb-inf">COURIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">cour</span><span class="f-r">s</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">cour</span><span class="f-r">s</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">cour</span><span class="f-r">t</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">courons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">courez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">courent</span></td></tr>
+          </table>
+        </div>
+
+        <!-- PARTIR -->
+        <div class="verbe">
+          <div class="verb-inf">PARTIR</div>
+          <table class="conj-table">
+            <tr><td class="pr">je</td><td><span class="f-b">par</span><span class="f-r">s</span></td></tr>
+            <tr><td class="pr">tu</td><td><span class="f-b">par</span><span class="f-r">s</span></td></tr>
+            <tr><td class="pr">il/elle</td><td><span class="f-b">par</span><span class="f-r">t</span></td></tr>
+            <tr><td class="pr">nous</td><td><span class="f-b">partons</span></td></tr>
+            <tr><td class="pr">vous</td><td><span class="f-b">partez</span></td></tr>
+            <tr><td class="pr">ils/elles</td><td><span class="f-b">partent</span></td></tr>
+          </table>
+          <div class="also-note"><b class="t" data-fr="Aussi :" data-en="Also:">Aussi :</b> vivre, sortir, sentir, dormir, servir, suivre, mentir</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <footer>
   <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
+<script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Les verbes irréguliers — French with Alban', en: 'Irregular verbs (les verbes irréguliers) — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* textes alternatifs des illustrations : le français est dans alt, l'anglais dans data-alt-en */
+document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.setAttribute('data-alt-fr', img.alt); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.alt = img.getAttribute('data-alt-' + lang); });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
 </body>
 </html>

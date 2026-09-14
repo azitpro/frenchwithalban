@@ -6,456 +6,537 @@
 <title>Les verbes en -ER au présent — French with Alban</title>
 <meta name="description" content="Les verbes en -ER au présent : conjugaison standard et cas particuliers (commencer, manger, appeler, acheter), avec code couleur.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #faf7f2;
-  --cream-dark: #f0ece4;
-  --navy: #0d2b45;
-  --red: #c0392b;
-  --gold: #c9972a;
-  --border: #ddd8ce;
-  --blue: #1a56a0;
-  --orange: #d4770a;
-  --green: #2e7d4f;
-  --violet: #7b2d8b;
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #d4cfc5;
-  font-family: 'Inter', sans-serif;
-  color: var(--navy);
-  font-size: 11.5pt;
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
 }
-.page-wrap {
-  background: var(--cream);
-  max-width: 860px;
-  margin: 0 auto;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.12);
-  min-height: 100vh;
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
 }
 
-/* HEADER */
-header {
-  padding: 16px 36px;
-  border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream);
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 8% 6%, rgba(200,245,96,.55) 0, transparent 26%),
+    radial-gradient(circle at 96% 18%, rgba(255,95,162,.30) 0, transparent 24%),
+    radial-gradient(circle at 4% 62%, rgba(62,224,198,.28) 0, transparent 22%),
+    radial-gradient(circle at 98% 86%, rgba(255,228,92,.45) 0, transparent 24%);
+  overflow: hidden;
 }
-.logo {
-  display: flex; align-items: center; gap: 4px;
-  font-family: 'Fraunces', serif; font-size: 1.2rem;
-  font-weight: 700; color: var(--navy);
-  white-space: nowrap;
-}
-.logo .red { color: var(--red); }
-.page-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--navy); }
-.page-title .red { color: var(--red); }
-.gold-line { height: 2px; background: var(--gold); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+b, strong { font-weight: 700; }
 
-/* SECTION HEADERS */
-.section-head {
-  display: flex; align-items: center; gap: 9px;
-  margin: 24px 36px 14px;
-}
-.section-head h2 {
-  font-family: 'Fraunces', serif; font-size: 1.15rem;
-  font-weight: 600; color: var(--navy);
-}
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
 
-/* VOCABULARY */
-.vocab-grid {
-  display: grid; grid-template-columns: 210px 1fr;
-  gap: 0 24px; margin: 0 36px 20px;
-}
-.vocab-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-.vocab-table tr:nth-child(even) td { background: var(--cream-dark); }
-.vocab-table td { padding: 6px 8px; }
-.vocab-table .fr { font-weight: 600; color: var(--navy); }
-.vocab-table .en { color: #444; font-weight: 300; }
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.2rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .55em; color: var(--violet); margin-top: .4em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
 
-.verb-list { column-count: 2; column-gap: 36px; }
-.verb-item {
-  display: grid; grid-template-columns: 20px 100px 1fr; align-items: baseline; gap: 6px;
-  padding: 6px 6px; font-size: 0.88rem;
-  break-inside: avoid; -webkit-column-break-inside: avoid;
-}
-.verb-item:nth-child(even) { background: var(--cream-dark); }
-.verb-item .num { color: #bbb; font-size: 0.75rem; font-weight: 300; text-align: right; }
-.verb-item .vfr { font-weight: 600; color: var(--navy); }
-.verb-item .ven { color: #444; font-weight: 300; }
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px; rotate: 2deg; }
+.apercu .inf { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.4rem; line-height: 1; letter-spacing: -0.03em; }
+.apercu .inf span { color: var(--pink); }
+.apercu .fleche { font-size: 1.6rem; margin: 10px 0 6px; color: var(--violet); font-weight: 800; }
+.apercu .forme { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 2rem; line-height: 1.2; }
+.autocollant { position: absolute; top: -22px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
 
-/* SEPARATOR */
-.sep { margin: 20px 36px; border: none; border-top: 1px solid var(--border); }
+/* ---------- CODE COULEUR ----------
+   Même signification que l'ancienne page (ce n'est PAS singulier / pluriel) :
+   .s terminaison muette (-e, -es, -e, -ent) · .p terminaison prononcée (-ons, -ez)
+   .o lettre modifiée ou ajoutée pour garder le son (ç, -e-)
+   .g voyelle du radical /ɛ/ · .v voyelle du radical /ə/ */
+.s { color: #e0337f; }
+.p { color: var(--violet); }
+.s strong, .p strong { font-weight: 800; }
+.o, .g, .v { border-radius: 5px; padding: 0 1px; color: var(--ink); }
+.o { background: var(--orange); }
+.g { background: var(--aqua); }
+.v { background: var(--lemon); }
+.o strong, .g strong, .v strong { font-weight: 800; }
+.sm { display: inline-block; margin-left: 6px; padding: 0 9px; border: 2px solid var(--ink); border-radius: 99px; font-family: 'Inter', sans-serif; font-size: .74rem; font-weight: 600; line-height: 1.7; vertical-align: middle; }
 
-/* PARLER — featured block */
-.parler-block {
-  margin: 0 36px 24px;
-  display: grid; grid-template-columns: auto 1fr;
-  gap: 28px; align-items: start;
-  background: var(--cream-dark);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--navy);
-  padding: 32px 32px;
-}
-.parler-verb-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 2.6rem; color: var(--navy);
-  margin-bottom: 18px;
-}
-.parler-verb-title .er { color: var(--red); }
-.parler-rows { font-size: 1.15rem; line-height: 2.4; }
-.parler-rows .row { display: block; }
-.parler-right {
-  display: flex; flex-direction: column; justify-content: center;
-  gap: 18px; padding-top: 4px;
-}
-.parler-rule {
-  font-size: 0.95rem; line-height: 1.7; color: var(--navy);
-}
-.parler-note {
-  background: #fdecea;
-  border: 1px solid var(--red);
-  border-left: 3px solid var(--red);
-  padding: 12px 16px;
-  font-size: 0.84rem;
-  color: var(--red);
-  line-height: 1.7;
-}
+/* ---------- VOCABULAIRE ---------- */
+.vocab { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 26px; align-items: start; }
+.pronoms { list-style: none; background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 10px 18px; }
+.pronoms li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 2px dashed rgba(27,19,64,.2); }
+.pronoms li:last-child { border-bottom: none; }
+.pronoms b { padding: 1px 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.1rem; white-space: nowrap; }
+.pronoms em { color: var(--soft); font-size: .92rem; text-align: right; }
+.verbes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.verb-item { display: grid; grid-template-columns: 24px minmax(0, 1fr); column-gap: 8px; align-items: baseline; padding: 8px 12px; background: #fff; border: 2.5px solid var(--ink); border-left: 10px solid var(--c); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); }
+.verb-item .num { grid-row: 1 / 3; font-size: .78rem; font-weight: 700; color: var(--soft); text-align: right; }
+.verb-item .vfr { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.12rem; line-height: 1.2; overflow-wrap: anywhere; }
+.verb-item .ven { font-size: .86rem; color: var(--soft); line-height: 1.3; }
 
-/* CAS PARTICULIERS GRID */
-.conj-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 0; margin: 0 36px;
-}
-.conj-block {
-  padding: 20px 20px 16px;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.conj-block:nth-child(2n) { border-right: none; }
-.conj-block:nth-last-child(-n+2) { border-bottom: none; }
+/* ---------- CONJUGAISON DE PARLER ---------- */
+.conj { display: grid; grid-template-columns: .9fr 1.1fr; gap: 26px; align-items: stretch; }
+.bloc { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px; }
+.bloc-verbe { background: var(--ink); color: #fff; box-shadow: 6px 6px 0 var(--pink); }
+.bloc-verbe .inf { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3rem; line-height: 1; letter-spacing: -0.03em; margin-bottom: 18px; }
+.bloc-verbe .inf span { color: var(--lime); }
+.formes { list-style: none; font-size: 1.3rem; line-height: 2.15; }
+.formes .pr { display: inline-block; min-width: 118px; padding-right: 10px; font-weight: 500; }
+.bloc-verbe .pr { color: rgba(255,255,255,.62); }
+.bloc-verbe .s { color: #ff8fc0; }
+.bloc-verbe .p { color: #b9a8ff; }
+.regles { display: grid; gap: 18px; align-content: start; }
+.regles > p { font-size: 1.05rem; }
+.exemple { background: #fff; border: 3px solid var(--ink); border-left: 12px solid var(--aqua); border-radius: 14px; padding: 12px 18px 14px; box-shadow: 3px 3px 0 var(--ink); }
+.exemple .label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; }
+.exemple .label img { width: 28px; height: 28px; object-fit: contain; flex: none; }
+.exemple .ligne { display: block; }
 
-.verb-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.25rem; color: var(--navy);
-  margin-bottom: 14px;
-}
-.verb-title .er { color: var(--red); }
-.conj-rows { font-size: 0.95rem; line-height: 2.1; margin-bottom: 14px; }
-.conj-rows .row { display: block; }
+/* ---------- ENCADRÉS ---------- */
+.encadre { display: flex; gap: 14px; align-items: flex-start; padding: 14px 18px; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); background: #ffe1ee; font-size: .95rem; }
+.encadre .marque { flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--pink); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.1rem; }
 
-.s { color: var(--blue); }
-.p { color: var(--red); }
-.o { color: var(--orange); }
-.g { color: var(--green); }
-.v { color: var(--violet); }
-.sm { font-size: 0.73rem; }
-
-.note {
-  background: #fdecea;
-  border: 1px solid var(--red);
-  border-left: 3px solid var(--red);
-  padding: 12px 16px;
-  font-size: 0.78rem;
-  color: var(--red);
-  line-height: 1.7;
-}
-
-/* BOTTOM SPACING */
-.bottom-pad { height: 36px; }
-.example-label {
-  font-family: 'Fraunces', serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--gold);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  
-}
-.parler-example {
-  margin-top: 12px;
-  padding: 12px 16px;
-  border-left: 3px solid var(--gold);
-  background: var(--cream);
-  font-size: 0.9rem;
-  line-height: 1.8;
-  color: var(--navy);
-}
-.ex-line { display: block; }
-
-/* ===== MOBILE ===== */
-@media (max-width: 860px) {
-  .vocab-grid { grid-template-columns: 1fr; gap: 26px; }
-  .parler-block { grid-template-columns: 1fr; gap: 22px; }
-  .conj-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 720px) {
-  header { padding: 16px 20px; flex-wrap: wrap; gap: 10px; }
-  .verb-list { column-count: 1; }
-  .verb-item { grid-template-columns: 20px 92px 1fr; }
-  .parler-rows { font-size: 1.05rem; line-height: 2; }
-  .parler-right { justify-content: flex-start; }
-  .parler-rule br, .parler-note br { display: none; }
-}
-
-/* ===== LOGO HARMONISE ===== */
-header {
-  padding: 28px 48px; border-bottom: 3px solid var(--navy);
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream); width: 100%; box-sizing: border-box;
-}
-nav { display: flex; gap: 44px; align-items: center; }
-nav a {
-  font-size: 1.05rem; font-weight: 500; letter-spacing: 0.03em;
-  color: var(--navy); text-decoration: none; opacity: 0.65; transition: opacity 0.2s;
-}
-nav a:hover { opacity: 1; }
-.hero { padding: 48px 36px 32px; text-align: center; border-bottom: 1px solid var(--border); }
-.hero h1 {
-  font-family: 'DM Serif Display', serif; font-size: 2.4rem;
-  font-weight: 400; line-height: 1.15; color: var(--navy); margin: 0;
-}
-.hero h1 .red { color: var(--red); }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
-}
-.logo-al { color: var(--red); }
-@media (max-width: 720px) {
-  header { padding: 18px 20px; flex-wrap: wrap; gap: 12px; }
-  nav { gap: 22px; }
-  nav a { font-size: 0.95rem; }
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
-  .hero { padding: 30px 20px 22px; }
-  .hero h1 { font-size: 1.7rem; }
-}
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } nav { gap: 16px; } }
-
+/* ---------- CAS PARTICULIERS ---------- */
+.cas-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.cas { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+.cas-tete { background: var(--c); color: var(--c-texte); border-bottom: 3px solid var(--ink); padding: 12px 20px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.8rem; line-height: 1.1; letter-spacing: -0.02em; }
+.cas-tete .er { display: inline-block; margin-left: 2px; padding: 0 6px; background: #fff; color: var(--ink); border: 2.5px solid var(--ink); border-radius: 8px; rotate: -3deg; }
+.cas-corps { padding: 16px 20px 20px; display: grid; gap: 14px; flex: 1; align-content: start; }
+.cas .formes { font-size: 1.12rem; line-height: 2; }
+.cas .pr { min-width: 112px; color: var(--soft); }
 
 /* ---------- PIED DE PAGE (charte du site) ---------- */
-footer {
-  background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold);
-  display: flex; justify-content: space-between; align-items: center;
-}
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
 .footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
 .footer-copy a { color: rgba(250,247,242,0.6); }
+
+@media (prefers-reduced-motion: reduce) { .fil { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap, .conj { grid-template-columns: 1fr; }
+  .hero .wrap { gap: 44px; }
+  .apercu { max-width: 420px; rotate: 1deg; }
+  h1 { font-size: 3.4rem; }
+  .vocab { grid-template-columns: 1fr; }
+  .pronoms { max-width: 440px; }
+  .cas-grille { grid-template-columns: 1fr; }
+}
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+  section { padding: 38px 0; }
+  .hero { padding: 30px 0 18px; }
+  h1 { font-size: 2.7rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 22px; }
+  .apercu .inf { font-size: 2.6rem; }
+  .apercu .forme { font-size: 1.6rem; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .verbes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .bloc { padding: 22px 20px; }
+  .formes { font-size: 1.15rem; }
+  .formes .pr { min-width: 104px; }
+  .cas-tete { font-size: 1.5rem; padding: 10px 16px; }
+  .cas-corps { padding: 14px 16px 18px; }
+  .cas .formes { font-size: 1.05rem; }
+  .cas .pr { min-width: 100px; }
+  .encadre { padding: 12px 14px; gap: 10px; }
   footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+@media (max-width: 400px) {
+  h1 { font-size: 2.3rem; }
+  .formes .pr, .cas .pr { min-width: 100px; padding-right: 8px; font-size: .9em; }
+  .verb-item { padding: 7px 8px; grid-template-columns: 18px minmax(0, 1fr); column-gap: 5px; border-left-width: 7px; }
+  .verb-item .vfr { font-size: 1rem; }
+}
+@media (max-width: 350px) {
+  .verbes { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="page-wrap">
+<!-- Les pronoms, les verbes, les formes conjuguées et les exemples restent en français dans les deux versions ;
+     les traductions anglaises des pronoms et des verbes restent affichées dans les deux versions (comme sur verbes_ir.html).
+     Seuls les titres et les explications changent de langue. -->
+<main class="page suite-sections">
 
-<div class="hero">
-  <h1>Les verbes en -ER au <span class="red">présent</span></h1>
-</div>
-
-<!-- VOCABULARY -->
-<div class="section-head">
-  <svg width="14" height="17" viewBox="0 0 24 28">
-    <defs><clipPath id="h2"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-    <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h2)"/>
-    <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h2)"/>
-    <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h2)"/>
-    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-  </svg>
-  <h2>Un peu de vocabulaire</h2>
-</div>
-
-<div class="vocab-grid">
-  <table class="vocab-table">
-    <tr><td class="fr">je</td><td class="en"><em>I</em></td></tr>
-    <tr><td class="fr">tu</td><td class="en"><em>You (informal)</em></td></tr>
-    <tr><td class="fr">il / elle / on</td><td class="en"><em>He / She / One, we</em></td></tr>
-    <tr><td class="fr">nous</td><td class="en"><em>We</em></td></tr>
-    <tr><td class="fr">vous</td><td class="en"><em>You (formal)</em></td></tr>
-    <tr><td class="fr">ils / elles</td><td class="en"><em>They</em></td></tr>
-  </table>
-  <div class="verb-list">
-    <div class="verb-item"><span class="num">1</span><span class="vfr">Acheter</span><span class="ven"><em>To buy</em></span></div>
-    <div class="verb-item"><span class="num">2</span><span class="vfr">Aider</span><span class="ven"><em>To help</em></span></div>
-    <div class="verb-item"><span class="num">3</span><span class="vfr">Aimer</span><span class="ven"><em>To like / love</em></span></div>
-    <div class="verb-item"><span class="num">4</span><span class="vfr">Appeler</span><span class="ven"><em>To call</em></span></div>
-    <div class="verb-item"><span class="num">5</span><span class="vfr">Arrêter</span><span class="ven"><em>To stop</em></span></div>
-    <div class="verb-item"><span class="num">6</span><span class="vfr">Chercher</span><span class="ven"><em>To look for</em></span></div>
-    <div class="verb-item"><span class="num">7</span><span class="vfr">Commander</span><span class="ven"><em>To order</em></span></div>
-    <div class="verb-item"><span class="num">8</span><span class="vfr">Commencer</span><span class="ven"><em>To start</em></span></div>
-    <div class="verb-item"><span class="num">9</span><span class="vfr">Demander</span><span class="ven"><em>To ask</em></span></div>
-    <div class="verb-item"><span class="num">10</span><span class="vfr">Donner</span><span class="ven"><em>To give</em></span></div>
-    <div class="verb-item"><span class="num">11</span><span class="vfr">Écouter</span><span class="ven"><em>To listen</em></span></div>
-    <div class="verb-item"><span class="num">12</span><span class="vfr">Habiter</span><span class="ven"><em>To live</em></span></div>
-    <div class="verb-item"><span class="num">13</span><span class="vfr">Jouer</span><span class="ven"><em>To play</em></span></div>
-    <div class="verb-item"><span class="num">14</span><span class="vfr">Manger</span><span class="ven"><em>To eat</em></span></div>
-    <div class="verb-item"><span class="num">15</span><span class="vfr">Montrer</span><span class="ven"><em>To show</em></span></div>
-    <div class="verb-item"><span class="num">16</span><span class="vfr">Oublier</span><span class="ven"><em>To forget</em></span></div>
-    <div class="verb-item"><span class="num">17</span><span class="vfr">Parler</span><span class="ven"><em>To speak</em></span></div>
-    <div class="verb-item"><span class="num">18</span><span class="vfr">Payer</span><span class="ven"><em>To pay</em></span></div>
-    <div class="verb-item"><span class="num">19</span><span class="vfr">Penser</span><span class="ven"><em>To think</em></span></div>
-    <div class="verb-item"><span class="num">20</span><span class="vfr">Regarder</span><span class="ven"><em>To look</em></span></div>
-    <div class="verb-item"><span class="num">21</span><span class="vfr">Trouver</span><span class="ven"><em>To find</em></span></div>
-    <div class="verb-item"><span class="num">22</span><span class="vfr">Étudier</span><span class="ven"><em>To study</em></span></div>
-  </div>
-</div>
-
-<hr class="sep">
-
-<!-- PARLER -->
-<div class="section-head">
-  <svg width="14" height="17" viewBox="0 0 24 28">
-    <defs><clipPath id="h3"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-    <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h3)"/>
-    <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h3)"/>
-    <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h3)"/>
-    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-  </svg>
-  <h2>Conjugaison des verbes en -ER</h2>
-</div>
-
-<div class="parler-block">
-  <div>
-    <div class="parler-verb-title">PARL<span class="er">ER</span></div>
-    <div class="parler-rows">
-      <span class="row">je parl<span class="s"><strong>e</strong></span></span>
-      <span class="row">tu parl<span class="s"><strong>es</strong></span></span>
-      <span class="row">il / elle / on parl<span class="s"><strong>e</strong></span></span>
-      <span class="row">nous parl<span class="p"><strong>ons</strong></span></span>
-      <span class="row">vous parl<span class="p"><strong>ez</strong></span></span>
-      <span class="row">ils / elles parl<span class="s"><strong>ent</strong></span></span>
-    </div>
-  </div>
-  <div class="parler-right">
-    <div class="parler-rule">
-      The vast majority of <strong>-ER verbs</strong> follow this pattern.<br>
-      Simply remove <strong>-er</strong> from the infinitive to get the stem,<br>
-      then add the endings shown on the left.
-    </div>
-    <div class="parler-note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
-      The endings <span class="s"><strong>-e</strong></span>, <span class="s"><strong>-es</strong></span>, <span class="s"><strong>-ent</strong></span> are <strong>silent</strong>.<br>
-      Only <span class="p"><strong>-ons</strong></span> and <span class="p"><strong>-ez</strong></span> (nous, vous) are <strong>pronounced</strong>.
-    </div>
-    <div class="parler-example">
-      <div class="example-label" style="display:flex;align-items:center;gap:6px;"><img src="/coq.png" style="width:28px;height:28px;object-fit:contain;flex-shrink:0;"> Exemple</div>
-      <div class="ex-line">— Est-ce que vous parl<span class="p"><strong>ez</strong></span> français ?</div>
-      <div class="ex-line">— Oui, je parl<span class="s"><strong>e</strong></span> français, anglais et espagnol.</div>
-    </div>
-  </div>
-</div>
-
-<hr class="sep">
-
-<!-- CAS PARTICULIERS -->
-<div class="section-head">
-  <svg width="14" height="17" viewBox="0 0 24 28">
-    <defs><clipPath id="h4"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-    <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#h4)"/>
-    <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#h4)"/>
-    <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#h4)"/>
-    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-  </svg>
-  <h2>Cas particuliers</h2>
-</div>
-
-<div class="conj-grid">
-
-  <div class="conj-block">
-    <div class="verb-title">COMMENC<span class="er">ER</span></div>
-    <div class="conj-rows">
-      <span class="row">je commenc<span class="s"><strong>e</strong></span></span>
-      <span class="row">tu commenc<span class="s"><strong>es</strong></span></span>
-      <span class="row">il / elle / on commenc<span class="s"><strong>e</strong></span></span>
-      <span class="row">nous commen<span class="o"><strong>ç</strong></span><span class="p"><strong>ons</strong></span></span>
-      <span class="row">vous commenc<span class="p"><strong>ez</strong></span></span>
-      <span class="row">ils / elles commenc<span class="s"><strong>ent</strong></span></span>
-    </div>
-    <div class="note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
-      The -ce- combination is /s/, but -co- would be /k/.<br>
-      A cedilla (<span class="o"><strong>ç</strong></span>) is added to preserve the /s/ sound in <em>nous commençons</em>.
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a1-a2" data-fr="← Ressources · Faux débutant" data-en="← Resources · Elementary">← Ressources · Faux débutant</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</span>
+          <span class="pastille t" data-fr="Présent" data-en="Present tense">Présent</span>
+          <span class="pastille">A1–A2</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Les verbes en &lt;mark&gt;-ER&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;au présent&lt;/span&gt;"
+            data-en="&lt;mark&gt;-ER verbs&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;in the present tense&lt;/span&gt;">Les verbes en <mark>-ER</mark> <span class="petit">au présent</span></h1>
+        <p class="lead t"
+           data-fr="Conjugaison standard et cas particuliers, avec code couleur."
+           data-en="The standard pattern and the special cases, with colour coding.">Conjugaison standard et cas particuliers, avec code couleur.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant">1er groupe</span>
+        <div class="inf">parl<span>er</span></div>
+        <div class="fleche">↓</div>
+        <div class="forme">je parl<span class="s"><strong>e</strong></span></div>
+        <div class="forme">nous parl<span class="p"><strong>ons</strong></span></div>
+      </div>
     </div>
   </div>
 
-  <div class="conj-block">
-    <div class="verb-title">MANG<span class="er">ER</span></div>
-    <div class="conj-rows">
-      <span class="row">je mang<span class="s"><strong>e</strong></span></span>
-      <span class="row">tu mang<span class="s"><strong>es</strong></span></span>
-      <span class="row">il / elle / on mang<span class="s"><strong>e</strong></span></span>
-      <span class="row">nous mang<span class="o"><strong>e</strong></span><span class="p"><strong>ons</strong></span></span>
-      <span class="row">vous mang<span class="p"><strong>ez</strong></span></span>
-      <span class="row">ils / elles mang<span class="s"><strong>ent</strong></span></span>
+  <!-- ===== VOCABULAIRE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Un peu de vocabulaire" data-en="A little vocabulary">Un peu de vocabulaire</h2>
+      </div>
+      <div class="vocab">
+        <ul class="pronoms suite">
+          <li><b>je</b><em>I</em></li>
+          <li><b>tu</b><em>You (informal)</em></li>
+          <li><b>il / elle / on</b><em>He / She / One, we</em></li>
+          <li><b>nous</b><em>We</em></li>
+          <li><b>vous</b><em>You (formal)</em></li>
+          <li><b>ils / elles</b><em>They</em></li>
+        </ul>
+        <div class="verbes suite">
+          <div class="verb-item"><span class="num">1</span><span class="vfr">Acheter</span><span class="ven"><em>To buy</em></span></div>
+          <div class="verb-item"><span class="num">2</span><span class="vfr">Aider</span><span class="ven"><em>To help</em></span></div>
+          <div class="verb-item"><span class="num">3</span><span class="vfr">Aimer</span><span class="ven"><em>To like / love</em></span></div>
+          <div class="verb-item"><span class="num">4</span><span class="vfr">Appeler</span><span class="ven"><em>To call</em></span></div>
+          <div class="verb-item"><span class="num">5</span><span class="vfr">Arrêter</span><span class="ven"><em>To stop</em></span></div>
+          <div class="verb-item"><span class="num">6</span><span class="vfr">Chercher</span><span class="ven"><em>To look for</em></span></div>
+          <div class="verb-item"><span class="num">7</span><span class="vfr">Commander</span><span class="ven"><em>To order</em></span></div>
+          <div class="verb-item"><span class="num">8</span><span class="vfr">Commencer</span><span class="ven"><em>To start</em></span></div>
+          <div class="verb-item"><span class="num">9</span><span class="vfr">Demander</span><span class="ven"><em>To ask</em></span></div>
+          <div class="verb-item"><span class="num">10</span><span class="vfr">Donner</span><span class="ven"><em>To give</em></span></div>
+          <div class="verb-item"><span class="num">11</span><span class="vfr">Écouter</span><span class="ven"><em>To listen</em></span></div>
+          <div class="verb-item"><span class="num">12</span><span class="vfr">Habiter</span><span class="ven"><em>To live</em></span></div>
+          <div class="verb-item"><span class="num">13</span><span class="vfr">Jouer</span><span class="ven"><em>To play</em></span></div>
+          <div class="verb-item"><span class="num">14</span><span class="vfr">Manger</span><span class="ven"><em>To eat</em></span></div>
+          <div class="verb-item"><span class="num">15</span><span class="vfr">Montrer</span><span class="ven"><em>To show</em></span></div>
+          <div class="verb-item"><span class="num">16</span><span class="vfr">Oublier</span><span class="ven"><em>To forget</em></span></div>
+          <div class="verb-item"><span class="num">17</span><span class="vfr">Parler</span><span class="ven"><em>To speak</em></span></div>
+          <div class="verb-item"><span class="num">18</span><span class="vfr">Payer</span><span class="ven"><em>To pay</em></span></div>
+          <div class="verb-item"><span class="num">19</span><span class="vfr">Penser</span><span class="ven"><em>To think</em></span></div>
+          <div class="verb-item"><span class="num">20</span><span class="vfr">Regarder</span><span class="ven"><em>To look</em></span></div>
+          <div class="verb-item"><span class="num">21</span><span class="vfr">Trouver</span><span class="ven"><em>To find</em></span></div>
+          <div class="verb-item"><span class="num">22</span><span class="vfr">Étudier</span><span class="ven"><em>To study</em></span></div>
+        </div>
+      </div>
     </div>
-    <div class="note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
-      Similarly, -ge- is /ʒ/ (like <em>s</em> in <em>measure</em>), but -go- would be /ɡ/.<br>
-      An <span class="o"><strong>-e-</strong></span> is added after g to preserve the /ʒ/ sound in <em>nous mangeons</em>.
-    </div>
-  </div>
+  </section>
 
-  <div class="conj-block">
-    <div class="verb-title">APPEL<span class="er">ER</span></div>
-    <div class="conj-rows">
-      <span class="row">j'app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>e</strong></span> <span class="sm g">/ɛ/ (approx. e in bed)</span></span>
-      <span class="row">tu app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>es</strong></span></span>
-      <span class="row">il / elle / on app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>e</strong></span></span>
-      <span class="row">nous app<span class="v"><strong>e</strong></span>l<span class="p"><strong>ons</strong></span> <span class="sm v">/ə/ (approx. u in but)</span></span>
-      <span class="row">vous app<span class="v"><strong>e</strong></span>l<span class="p"><strong>ez</strong></span></span>
-      <span class="row">ils / elles app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>ent</strong></span></span>
+  <!-- ===== CONJUGAISON (PARLER) ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Conjugaison des verbes en -ER" data-en="Conjugating -ER verbs">Conjugaison des verbes en -ER</h2>
+      </div>
+      <div class="conj">
+        <div class="bloc bloc-verbe">
+          <div class="inf">PARL<span>ER</span></div>
+          <ul class="formes">
+            <li><span class="pr">je</span>parl<span class="s"><strong>e</strong></span></li>
+            <li><span class="pr">tu</span>parl<span class="s"><strong>es</strong></span></li>
+            <li><span class="pr">il / elle / on</span>parl<span class="s"><strong>e</strong></span></li>
+            <li><span class="pr">nous</span>parl<span class="p"><strong>ons</strong></span></li>
+            <li><span class="pr">vous</span>parl<span class="p"><strong>ez</strong></span></li>
+            <li><span class="pr">ils / elles</span>parl<span class="s"><strong>ent</strong></span></li>
+          </ul>
+        </div>
+        <div class="bloc regles">
+          <p class="t" data-html="1"
+             data-fr="La grande majorité des &lt;strong&gt;verbes en -ER&lt;/strong&gt; suivent ce modèle. Il suffit d'enlever &lt;strong&gt;-er&lt;/strong&gt; de l'infinitif pour obtenir le radical, puis d'ajouter les terminaisons indiquées ci-contre."
+             data-en="The vast majority of &lt;strong&gt;-ER verbs&lt;/strong&gt; follow this pattern. Simply remove &lt;strong&gt;-er&lt;/strong&gt; from the infinitive to get the stem, then add the endings shown on the left.">La grande majorité des <strong>verbes en -ER</strong> suivent ce modèle. Il suffit d'enlever <strong>-er</strong> de l'infinitif pour obtenir le radical, puis d'ajouter les terminaisons indiquées ci-contre.</p>
+          <div class="encadre">
+            <span class="marque" aria-hidden="true">!</span>
+            <p class="t" data-html="1"
+               data-fr="Les terminaisons &lt;span class=&quot;s&quot;&gt;&lt;strong&gt;-e&lt;/strong&gt;&lt;/span&gt;, &lt;span class=&quot;s&quot;&gt;&lt;strong&gt;-es&lt;/strong&gt;&lt;/span&gt;, &lt;span class=&quot;s&quot;&gt;&lt;strong&gt;-ent&lt;/strong&gt;&lt;/span&gt; sont &lt;strong&gt;muettes&lt;/strong&gt;. Seules &lt;span class=&quot;p&quot;&gt;&lt;strong&gt;-ons&lt;/strong&gt;&lt;/span&gt; et &lt;span class=&quot;p&quot;&gt;&lt;strong&gt;-ez&lt;/strong&gt;&lt;/span&gt; (nous, vous) se &lt;strong&gt;prononcent&lt;/strong&gt;."
+               data-en="The endings &lt;span class=&quot;s&quot;&gt;&lt;strong&gt;-e&lt;/strong&gt;&lt;/span&gt;, &lt;span class=&quot;s&quot;&gt;&lt;strong&gt;-es&lt;/strong&gt;&lt;/span&gt;, &lt;span class=&quot;s&quot;&gt;&lt;strong&gt;-ent&lt;/strong&gt;&lt;/span&gt; are &lt;strong&gt;silent&lt;/strong&gt;. Only &lt;span class=&quot;p&quot;&gt;&lt;strong&gt;-ons&lt;/strong&gt;&lt;/span&gt; and &lt;span class=&quot;p&quot;&gt;&lt;strong&gt;-ez&lt;/strong&gt;&lt;/span&gt; (nous, vous) are &lt;strong&gt;pronounced&lt;/strong&gt;.">Les terminaisons <span class="s"><strong>-e</strong></span>, <span class="s"><strong>-es</strong></span>, <span class="s"><strong>-ent</strong></span> sont <strong>muettes</strong>. Seules <span class="p"><strong>-ons</strong></span> et <span class="p"><strong>-ez</strong></span> (nous, vous) se <strong>prononcent</strong>.</p>
+          </div>
+          <div class="exemple">
+            <div class="label"><img src="/coq.png" alt="" width="28" height="28"><span class="t" data-fr="Exemple" data-en="Example">Exemple</span></div>
+            <span class="ligne">— Est-ce que vous parl<span class="p"><strong>ez</strong></span> français ?</span>
+            <span class="ligne">— Oui, je parl<span class="s"><strong>e</strong></span> français, anglais et espagnol.</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
-      Double l → tense <span class="g"><strong>/ɛ/</strong></span> vowel. Single l → neutral <span class="v"><strong>/ə/</strong></span> vowel.<br>
-      (Approximations — exact sound varies by accent.)
-    </div>
-  </div>
+  </section>
 
-  <div class="conj-block">
-    <div class="verb-title">ACHET<span class="er">ER</span></div>
-    <div class="conj-rows">
-      <span class="row">j'ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>e</strong></span> <span class="sm g">/ɛ/ (approx. e in bed)</span></span>
-      <span class="row">tu ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>es</strong></span></span>
-      <span class="row">il / elle / on ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>e</strong></span></span>
-      <span class="row">nous ach<span class="v"><strong>e</strong></span>t<span class="p"><strong>ons</strong></span> <span class="sm v">/ə/ (approx. u in but)</span></span>
-      <span class="row">vous ach<span class="v"><strong>e</strong></span>t<span class="p"><strong>ez</strong></span></span>
-      <span class="row">ils / elles ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>ent</strong></span></span>
-    </div>
-    <div class="note"><svg width="14" height="16" viewBox="0 0 24 28" style="flex-shrink:0;vertical-align:middle;margin-right:5px;margin-top:-2px"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="#c0392b" stroke="#c0392b" stroke-width="1"/><text x="12" y="20" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-weight="700" font-size="16">!</text></svg>
-      Silent ending → stem vowel becomes <span class="g"><strong>/ɛ/</strong></span> (accent grave: <span class="g"><strong>è</strong></span>).<br>
-      Pronounced ending (nous, vous) → vowel stays <span class="v"><strong>/ə/</strong></span> (no accent).<br>
-      (Approximations — exact sound varies by accent.)
-    </div>
-  </div>
+  <!-- ===== CAS PARTICULIERS ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Cas particuliers" data-en="Special cases">Cas particuliers</h2>
+      </div>
+      <div class="cas-grille suite">
 
-</div>
+        <article class="cas">
+          <h3 class="cas-tete">COMMENC<span class="er">ER</span></h3>
+          <div class="cas-corps">
+            <ul class="formes">
+              <li><span class="pr">je</span>commenc<span class="s"><strong>e</strong></span></li>
+              <li><span class="pr">tu</span>commenc<span class="s"><strong>es</strong></span></li>
+              <li><span class="pr">il / elle / on</span>commenc<span class="s"><strong>e</strong></span></li>
+              <li><span class="pr">nous</span>commen<span class="o"><strong>ç</strong></span><span class="p"><strong>ons</strong></span></li>
+              <li><span class="pr">vous</span>commenc<span class="p"><strong>ez</strong></span></li>
+              <li><span class="pr">ils / elles</span>commenc<span class="s"><strong>ent</strong></span></li>
+            </ul>
+            <div class="encadre">
+              <span class="marque" aria-hidden="true">!</span>
+              <p class="t" data-html="1"
+                 data-fr="Le groupe -ce- se prononce /s/, mais -co- se prononcerait /k/. On ajoute une cédille (&lt;span class=&quot;o&quot;&gt;&lt;strong&gt;ç&lt;/strong&gt;&lt;/span&gt;) pour garder le son /s/ dans &lt;em&gt;nous commençons&lt;/em&gt;."
+                 data-en="The -ce- combination is /s/, but -co- would be /k/. A cedilla (&lt;span class=&quot;o&quot;&gt;&lt;strong&gt;ç&lt;/strong&gt;&lt;/span&gt;) is added to preserve the /s/ sound in &lt;em&gt;nous commençons&lt;/em&gt;.">Le groupe -ce- se prononce /s/, mais -co- se prononcerait /k/. On ajoute une cédille (<span class="o"><strong>ç</strong></span>) pour garder le son /s/ dans <em>nous commençons</em>.</p>
+            </div>
+          </div>
+        </article>
 
-<div class="bottom-pad"></div>
-</div>
+        <article class="cas">
+          <h3 class="cas-tete">MANG<span class="er">ER</span></h3>
+          <div class="cas-corps">
+            <ul class="formes">
+              <li><span class="pr">je</span>mang<span class="s"><strong>e</strong></span></li>
+              <li><span class="pr">tu</span>mang<span class="s"><strong>es</strong></span></li>
+              <li><span class="pr">il / elle / on</span>mang<span class="s"><strong>e</strong></span></li>
+              <li><span class="pr">nous</span>mang<span class="o"><strong>e</strong></span><span class="p"><strong>ons</strong></span></li>
+              <li><span class="pr">vous</span>mang<span class="p"><strong>ez</strong></span></li>
+              <li><span class="pr">ils / elles</span>mang<span class="s"><strong>ent</strong></span></li>
+            </ul>
+            <div class="encadre">
+              <span class="marque" aria-hidden="true">!</span>
+              <p class="t" data-html="1"
+                 data-fr="De même, -ge- se prononce /ʒ/ (comme le j de &lt;em&gt;jour&lt;/em&gt;), mais -go- se prononcerait /ɡ/. On ajoute un &lt;span class=&quot;o&quot;&gt;&lt;strong&gt;-e-&lt;/strong&gt;&lt;/span&gt; après le g pour garder le son /ʒ/ dans &lt;em&gt;nous mangeons&lt;/em&gt;."
+                 data-en="Similarly, -ge- is /ʒ/ (like &lt;em&gt;s&lt;/em&gt; in &lt;em&gt;measure&lt;/em&gt;), but -go- would be /ɡ/. An &lt;span class=&quot;o&quot;&gt;&lt;strong&gt;-e-&lt;/strong&gt;&lt;/span&gt; is added after g to preserve the /ʒ/ sound in &lt;em&gt;nous mangeons&lt;/em&gt;.">De même, -ge- se prononce /ʒ/ (comme le j de <em>jour</em>), mais -go- se prononcerait /ɡ/. On ajoute un <span class="o"><strong>-e-</strong></span> après le g pour garder le son /ʒ/ dans <em>nous mangeons</em>.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="cas">
+          <h3 class="cas-tete">APPEL<span class="er">ER</span></h3>
+          <div class="cas-corps">
+            <ul class="formes">
+              <li><span class="pr">j'</span>app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>e</strong></span> <span class="sm g t" data-fr="/ɛ/ (env. le è de mère)" data-en="/ɛ/ (approx. e in bed)">/ɛ/ (env. le è de mère)</span></li>
+              <li><span class="pr">tu</span>app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>es</strong></span></li>
+              <li><span class="pr">il / elle / on</span>app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>e</strong></span></li>
+              <li><span class="pr">nous</span>app<span class="v"><strong>e</strong></span>l<span class="p"><strong>ons</strong></span> <span class="sm v t" data-fr="/ə/ (env. le e de petit)" data-en="/ə/ (approx. u in but)">/ə/ (env. le e de petit)</span></li>
+              <li><span class="pr">vous</span>app<span class="v"><strong>e</strong></span>l<span class="p"><strong>ez</strong></span></li>
+              <li><span class="pr">ils / elles</span>app<span class="g"><strong>e</strong></span>ll<span class="s"><strong>ent</strong></span></li>
+            </ul>
+            <div class="encadre">
+              <span class="marque" aria-hidden="true">!</span>
+              <p class="t" data-html="1"
+                 data-fr="Double l → voyelle ouverte &lt;span class=&quot;g&quot;&gt;&lt;strong&gt;/ɛ/&lt;/strong&gt;&lt;/span&gt;. Un seul l → voyelle neutre &lt;span class=&quot;v&quot;&gt;&lt;strong&gt;/ə/&lt;/strong&gt;&lt;/span&gt;. (Approximations : le son exact varie selon l'accent.)"
+                 data-en="Double l → tense &lt;span class=&quot;g&quot;&gt;&lt;strong&gt;/ɛ/&lt;/strong&gt;&lt;/span&gt; vowel. Single l → neutral &lt;span class=&quot;v&quot;&gt;&lt;strong&gt;/ə/&lt;/strong&gt;&lt;/span&gt; vowel. (Approximations — exact sound varies by accent.)">Double l → voyelle ouverte <span class="g"><strong>/ɛ/</strong></span>. Un seul l → voyelle neutre <span class="v"><strong>/ə/</strong></span>. (Approximations : le son exact varie selon l'accent.)</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="cas">
+          <h3 class="cas-tete">ACHET<span class="er">ER</span></h3>
+          <div class="cas-corps">
+            <ul class="formes">
+              <li><span class="pr">j'</span>ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>e</strong></span> <span class="sm g t" data-fr="/ɛ/ (env. le è de mère)" data-en="/ɛ/ (approx. e in bed)">/ɛ/ (env. le è de mère)</span></li>
+              <li><span class="pr">tu</span>ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>es</strong></span></li>
+              <li><span class="pr">il / elle / on</span>ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>e</strong></span></li>
+              <li><span class="pr">nous</span>ach<span class="v"><strong>e</strong></span>t<span class="p"><strong>ons</strong></span> <span class="sm v t" data-fr="/ə/ (env. le e de petit)" data-en="/ə/ (approx. u in but)">/ə/ (env. le e de petit)</span></li>
+              <li><span class="pr">vous</span>ach<span class="v"><strong>e</strong></span>t<span class="p"><strong>ez</strong></span></li>
+              <li><span class="pr">ils / elles</span>ach<span class="g"><strong>è</strong></span>t<span class="s"><strong>ent</strong></span></li>
+            </ul>
+            <div class="encadre">
+              <span class="marque" aria-hidden="true">!</span>
+              <p class="t" data-html="1"
+                 data-fr="Terminaison muette → la voyelle du radical devient &lt;span class=&quot;g&quot;&gt;&lt;strong&gt;/ɛ/&lt;/strong&gt;&lt;/span&gt; (accent grave : &lt;span class=&quot;g&quot;&gt;&lt;strong&gt;è&lt;/strong&gt;&lt;/span&gt;). Terminaison prononcée (nous, vous) → la voyelle reste &lt;span class=&quot;v&quot;&gt;&lt;strong&gt;/ə/&lt;/strong&gt;&lt;/span&gt; (sans accent). (Approximations : le son exact varie selon l'accent.)"
+                 data-en="Silent ending → stem vowel becomes &lt;span class=&quot;g&quot;&gt;&lt;strong&gt;/ɛ/&lt;/strong&gt;&lt;/span&gt; (accent grave: &lt;span class=&quot;g&quot;&gt;&lt;strong&gt;è&lt;/strong&gt;&lt;/span&gt;). Pronounced ending (nous, vous) → vowel stays &lt;span class=&quot;v&quot;&gt;&lt;strong&gt;/ə/&lt;/strong&gt;&lt;/span&gt; (no accent). (Approximations — exact sound varies by accent.)">Terminaison muette → la voyelle du radical devient <span class="g"><strong>/ɛ/</strong></span> (accent grave : <span class="g"><strong>è</strong></span>). Terminaison prononcée (nous, vous) → la voyelle reste <span class="v"><strong>/ə/</strong></span> (sans accent). (Approximations : le son exact varie selon l'accent.)</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
 <footer>
   <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
+<script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
 </body>
 </html>

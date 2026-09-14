@@ -6,170 +6,321 @@
 <title>Phrases utiles pour touristes — French with Alban</title>
 <meta name="description" content="12 phrases indispensables pour voyager en France : se faire comprendre, demander son chemin, réserver une table.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#0d2b45;
-    --rouge:#c0392b;
-    --or:#c9972a;
-    --creme:#faf7f2;
-    --gris-texte:#4a5568;
-    --bordure:#e6e0d6;
-    --rose-fem:#c2185b;
-    --vert:#2f7d51;
-    --vert-doux:#e8f4ec;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Inter',sans-serif;color:var(--navy);background:#ffffff;line-height:1.7;-webkit-font-smoothing:antialiased;}
-
-  header{
-    width:100%;background:#ffffff;border-bottom:3px solid var(--navy);
-    padding:28px 48px;display:flex;align-items:center;justify-content:space-between;
-    position:sticky;top:0;z-index:100;
-  }
-  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
-  .logo .fw{color:var(--navy);}
-  .logo .al{color:var(--rouge);}
-  nav{display:flex;gap:44px;}
-  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
-  nav a:hover{color:var(--rouge);}
-  .gold-line{height:2px;background:var(--or);width:100%;}
-
-  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
-
-  .hero{background:var(--creme);width:100%;padding:64px 24px 56px;text-align:center;border-bottom:1px solid var(--bordure);}
-  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;margin-bottom:16px;}
-  .hero p{max-width:640px;margin:0 auto;font-size:1.1rem;color:var(--gris-texte);}
-
-  section{padding:48px 0;border-bottom:1px solid var(--bordure);}
-  section:last-of-type{border-bottom:none;}
-
-  h2{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:16px;}
-  .hex{flex-shrink:0;width:24px;height:28px;}
-  .intro{color:var(--gris-texte);margin-bottom:20px;}
-
-  /* ---------- TOGGLE ---------- */
-  .toggle{display:inline-flex;border:1px solid var(--navy);border-radius:999px;overflow:hidden;margin-bottom:8px;}
-  .toggle button{font-family:'Inter',sans-serif;font-size:.9rem;font-weight:500;padding:8px 20px;border:none;background:#fff;color:var(--navy);cursor:pointer;transition:background .2s,color .2s;}
-  .toggle button.on{background:var(--navy);color:#fff;}
-  .toggle button:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
-  .col-cachee{display:none;}
-
-  /* ---------- TABLEAUX ---------- */
-  table{width:100%;border-collapse:collapse;table-layout:fixed;margin:14px 0 4px;font-size:.98rem;}
-  th{background:var(--navy);color:#fff;font-family:'Fraunces',serif;font-weight:600;text-align:left;padding:11px 14px;}
-  td{padding:9px 14px;border-bottom:1px solid var(--bordure);vertical-align:top;word-wrap:break-word;}
-  tr.q td{font-weight:600;background:var(--creme);}
-  tr.r td{color:var(--gris-texte);padding-left:26px;}
-  tr.r td::before{content:"→ ";color:var(--or);font-weight:600;}
-
-  /* ---------- EXERCICE ---------- */
-  .carte{
-    background:var(--creme);border:2px solid var(--navy);box-shadow:8px 8px 0 var(--navy);
-    padding:32px 28px;margin:22px 0;text-align:center;
-  }
-  .compteur{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris-texte);margin-bottom:18px;}
-  .piste{height:3px;background:var(--bordure);margin-bottom:24px;overflow:hidden;}
-  .piste span{display:block;height:100%;background:var(--rouge);transition:width .25s ease;}
-  .en{font-size:1.35rem;font-weight:500;line-height:1.45;color:var(--navy);}
-  .fr{
-    font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--rouge);
-    margin-top:18px;padding-top:18px;border-top:1px dashed var(--bordure);
-  }
-  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;}
-  .btn{font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;padding:12px 26px;border:none;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;transition:background .2s;}
-  .btn:hover{background:#164066;}
-  .btn.secondaire{background:#fff;color:var(--navy);border:1px solid var(--navy);}
-  .btn.secondaire:hover{background:var(--creme);}
-  .btn.oui{background:var(--vert);}
-  .btn.oui:hover{background:#256641;}
-  .btn.non{background:var(--rouge);}
-  .btn.non:hover{background:#9c2f22;}
-  .btn:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
-
-  .bilan .score{font-family:'DM Serif Display',serif;font-size:3rem;color:var(--navy);line-height:1.1;}
-  .bilan .score small{font-size:1.2rem;color:var(--gris-texte);}
-  .bilan .detail{font-size:.95rem;color:var(--gris-texte);margin-top:8px;}
-
-  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
-  footer a{color:#fff;text-decoration:underline;}
-
-  @media (max-width:720px){
-    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
-    .logo{font-size:1.3rem;}
-    nav{gap:24px;}
-    .hero h1{font-size:2.1rem;}
-    .carte{padding:24px 18px;box-shadow:5px 5px 0 var(--navy);}
-    .en{font-size:1.15rem;}
-    .fr{font-size:1.25rem;}
-    footer{padding:28px 20px;}
-  }
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
-.logo-al { color: var(--rouge); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 44px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les thèmes ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 680px; margin: -6px 0 26px; font-size: 1.05rem; }
+
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 20px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4rem; line-height: 1; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
+
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px 26px; rotate: 2deg; }
+.apercu-question { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2rem; line-height: 1.08; letter-spacing: -.02em; margin-bottom: 18px; padding-right: 40px; }
+.apercu-reponses { list-style: none; display: grid; gap: 10px; }
+.apercu-reponses li { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.3rem; line-height: 1.25; box-shadow: 3px 3px 0 var(--ink); }
+.apercu-reponses li::before { content: '→'; font-weight: 800; }
+.apercu-reponses li:nth-child(2) { margin-left: 22px; }
+.autocollant { position: absolute; top: -20px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
+
+/* choix des colonnes affichées (Français / Anglais / Les deux) */
+.affichage { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; margin-top: 26px; }
+.affichage-label { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; color: var(--soft); }
+.toggle { display: inline-flex; gap: 2px; padding: 3px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 3px 3px 0 var(--ink); }
+.toggle button { border: none; background: none; padding: 6px 16px; border-radius: 99px; font: 700 .9rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; transition: background .15s; }
+.toggle button:hover:not(.on) { background: var(--lemon); }
+.toggle button.on { background: var(--ink); color: #fff; }
+.col-cachee { display: none !important; }
+
+/* ---------- TABLEAUX DE PHRASES ---------- */
+.tableau { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.tableau table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 1rem; }
+.tableau th { background: var(--c); color: var(--c-texte); border-bottom: 3px solid var(--ink); padding: 9px 18px; text-align: left; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.tableau td { padding: 5px 18px; vertical-align: top; overflow-wrap: break-word; }
+.tableau th:not(.col-cachee) + th:not(.col-cachee),
+.tableau td:not(.col-cachee) + td:not(.col-cachee) { border-left: 2.5px dashed rgba(27,19,64,.16); }
+.tableau td.c-en { color: var(--soft); }
+/* question : ligne teintée de la couleur de la section ; réponses : précédées d'une flèche */
+.tableau tr.q td { background: color-mix(in srgb, var(--c) 22%, #fff); padding-top: 12px; padding-bottom: 8px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.14rem; line-height: 1.3; }
+.tableau tr.q td.c-en { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; line-height: 1.6; }
+.tableau tbody tr.q:not(:first-child) td { border-top: 2.5px solid var(--ink); }
+.tableau tr.r td { position: relative; padding-left: 42px; }
+.tableau tr.r td::before { content: '→'; position: absolute; left: 18px; color: var(--violet); font-weight: 800; }
+.tableau tr.r:has(+ tr.q) td, .tableau tr.r:last-child td { padding-bottom: 12px; }
+.tableau tr.q + tr.r td { padding-top: 10px; }
+
+/* ---------- CARTES DE RÉVISION ---------- */
+#exercice { max-width: 760px; }
+.carte { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 32px 28px; margin: 4px 0 22px; text-align: center; }
+.compteur { display: inline-block; margin-bottom: 18px; padding: 2px 14px; border: 2px solid var(--ink); border-radius: 99px; background: var(--c); color: var(--c-texte); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); rotate: -2deg; }
+.piste { height: 14px; max-width: 440px; margin: 0 auto 26px; border: 2.5px solid var(--ink); border-radius: 99px; background: var(--bg); overflow: hidden; }
+.piste span { display: block; height: 100%; background: var(--pink); transition: width .25s ease; }
+.en { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.7rem; line-height: 1.25; letter-spacing: -.01em; }
+.fr { display: table; margin: 22px auto 0; padding: 6px 18px; background: var(--lemon); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); rotate: -1deg; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.6rem; line-height: 1.25; }
+.actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
+.carte + .actions { margin-top: 0; }
+.btn { font: 700 .95rem 'Inter', sans-serif; padding: 11px 24px; border: 2.5px solid var(--ink); border-radius: 99px; background: var(--ink); color: #fff; cursor: pointer; box-shadow: 3px 3px 0 var(--pink); transition: translate .15s, box-shadow .15s; }
+.btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--pink); }
+.btn.oui { background: var(--lime); color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.btn.non { background: var(--pink); color: #fff; box-shadow: 3px 3px 0 var(--ink); }
+.btn.secondaire { background: #fff; color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.btn.oui:hover, .btn.non:hover, .btn.secondaire:hover { box-shadow: 4px 4px 0 var(--ink); }
+.bilan .score { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4rem; line-height: 1; letter-spacing: -.03em; }
+.bilan .score small { font-size: 1.5rem; color: var(--soft); }
+.bilan .detail { margin-top: 10px; color: var(--soft); font-size: 1rem; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+@media (prefers-reduced-motion: reduce) { .fil, .toggle button, .btn, .piste span { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 440px; rotate: 1deg; }
+  h1 { font-size: 3.4rem; }
+}
+/* ---------- MOBILE : les tableaux deviennent des listes (français puis anglais) ---------- */
 @media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
+  .wrap { padding: 0 20px; }
+  section { padding: 34px 0; }
+  .hero { padding: 30px 0 10px; }
+  h1 { font-size: 2.7rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 20px 20px; }
+  .apercu-question { font-size: 1.6rem; }
+  .apercu-reponses li { font-size: 1.1rem; }
+  .apercu-reponses li:nth-child(2) { margin-left: 12px; }
+  .autocollant { right: -6px; font-size: 1rem; }
+
+  .tableau table, .tableau tbody, .tableau tr, .tableau td { display: block; }
+  .tableau thead { display: none; }
+  .tableau td { padding: 0 16px; }
+  .tableau th:not(.col-cachee) + th:not(.col-cachee),
+  .tableau td:not(.col-cachee) + td:not(.col-cachee) { border-left: none; }
+  .tableau tr.q { background: color-mix(in srgb, var(--c) 22%, #fff); padding: 10px 0 8px; }
+  .tableau tbody tr.q:not(:first-child) { border-top: 2.5px solid var(--ink); }
+  .tableau tbody tr.q:not(:first-child) td { border-top: none; }
+  .tableau tr.q td { background: none; padding: 0 16px; font-size: 1.08rem; }
+  .tableau tr.q td.c-en { font-size: .92rem; }
+  .tableau tr.r { padding: 3px 0; }
+  .tableau tr.q + tr.r { padding-top: 10px; }
+  .tableau tr.r:has(+ tr.q), .tableau tr.r:last-child { padding-bottom: 12px; }
+  .tableau tr.r td, .tableau tr.q + tr.r td, .tableau tr.r:has(+ tr.q) td, .tableau tr.r:last-child td { padding: 0 16px 0 40px; }
+  .tableau tr.r td::before { left: 16px; }
+  .tableau tr.r td.c-en { font-size: .92rem; }
+  /* une seule flèche par réponse : sur la première ligne visible */
+  .tableau tr.r td.c-fr:not(.col-cachee) + td.c-en::before { content: none; }
+
+  .carte { padding: 24px 18px; box-shadow: 5px 5px 0 var(--ink); }
+  .en { font-size: 1.3rem; }
+  .fr { font-size: 1.25rem; }
+  .bilan .score { font-size: 3.2rem; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
+@media (max-width: 400px) {
+  h1 { font-size: 2.3rem; }
+  .apercu-question { font-size: 1.4rem; }
+  .toggle button { padding: 6px 11px; font-size: .82rem; }
+  .btn { padding: 10px 18px; }
+}
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="hex-tri" viewBox="-1 -1 32 37">
-    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
-    <g clip-path="url(#clip-hex)">
-      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-    </g>
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
   </symbol>
 </svg>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
-</header>
-<div class="gold-line"></div>
-
-<div class="hero">
-  <h1>Phrases utiles pour touristes</h1>
-  <p>Les questions qu'un voyageur pose en France, et les réponses qu'il peut entendre.</p>
-</div>
-
-<div class="wrap">
-
-  <section>
-    <div class="toggle" role="group" aria-label="Choix de la langue affichée">
-      <button type="button" data-vue="fr">Français</button>
-      <button type="button" data-vue="en">Anglais</button>
-      <button type="button" data-vue="deux" class="on">Les deux</button>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
     </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
+</header>
 
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Se présenter</h2>
+<!-- Les phrases enseignées restent en français dans la version anglaise (la colonne « Anglais » en donne déjà la traduction) :
+     seuls les titres, les consignes et les libellés d'interface sont traduits. -->
+<main class="page suite-sections">
+
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a0" data-fr="← Ressources · Débutant complet" data-en="← Resources · Complete beginner">← Ressources · Débutant complet</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          <span class="pastille t" data-fr="Cartes de révision" data-en="Flashcards">Cartes de révision</span>
+          <span class="pastille">A0</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Phrases utiles pour &lt;mark&gt;touristes&lt;/mark&gt;"
+            data-en="Phrases utiles pour &lt;mark&gt;touristes&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;Useful phrases for travellers&lt;/span&gt;">Phrases utiles pour <mark>touristes</mark></h1>
+        <p class="lead t"
+           data-fr="Les questions qu'un voyageur pose en France, et les réponses qu'il peut entendre."
+           data-en="The questions a traveller asks in France, and the answers they may hear.">Les questions qu'un voyageur pose en France, et les réponses qu'il peut entendre.</p>
+        <div class="affichage">
+          <span class="affichage-label t" data-fr="Colonnes affichées" data-en="Columns shown">Colonnes affichées</span>
+          <div class="toggle" role="group" aria-label="Choix de la langue affichée">
+            <button type="button" data-vue="fr" class="t" data-fr="Français" data-en="French">Français</button>
+            <button type="button" data-vue="en" class="t" data-fr="Anglais" data-en="English">Anglais</button>
+            <button type="button" data-vue="deux" class="on t" data-fr="Les deux" data-en="Both">Les deux</button>
+          </div>
+        </div>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant">Bon voyage !</span>
+        <div class="apercu-question">Excusez-moi, où est la gare ?</div>
+        <ul class="apercu-reponses suite">
+          <li>C'est tout droit.</li>
+          <li>C'est à gauche, après le feu.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SE PRÉSENTER ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Se présenter" data-en="Introducing yourself">Se présenter</h2>
+      </div>
+      <div class="tableau">
     <table>
-      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <thead><tr><th class="c-fr t" style="width:50%" data-fr="Français" data-en="French">Français</th><th class="c-en t" style="width:50%" data-fr="Anglais" data-en="English">Anglais</th></tr></thead>
       <tbody>
         <tr class="q"><td class="c-fr">Comment vous appelez-vous ?</td><td class="c-en">What's your name?</td></tr>
         <tr class="r"><td class="c-fr">Je m'appelle Sarah.</td><td class="c-en">My name is Sarah.</td></tr>
@@ -186,10 +337,20 @@
         <tr class="r"><td class="c-fr">Oui, pour une semaine.</td><td class="c-en">Yes, for a week.</td></tr>
       </tbody>
     </table>
+      </div>
+    </div>
+  </section>
 
-    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Demander son chemin</h2>
+  <!-- ===== DEMANDER SON CHEMIN ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Demander son chemin" data-en="Asking for directions">Demander son chemin</h2>
+      </div>
+      <div class="tableau">
     <table>
-      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <thead><tr><th class="c-fr t" style="width:50%" data-fr="Français" data-en="French">Français</th><th class="c-en t" style="width:50%" data-fr="Anglais" data-en="English">Anglais</th></tr></thead>
       <tbody>
         <tr class="q"><td class="c-fr">Excusez-moi, où est la gare ?</td><td class="c-en">Excuse me, where is the station?</td></tr>
         <tr class="r"><td class="c-fr">C'est tout droit.</td><td class="c-en">It's straight ahead.</td></tr>
@@ -205,10 +366,20 @@
         <tr class="r"><td class="c-fr">C'est juste en face.</td><td class="c-en">It's right opposite.</td></tr>
       </tbody>
     </table>
+      </div>
+    </div>
+  </section>
 
-    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Au restaurant et au café</h2>
+  <!-- ===== AU RESTAURANT ET AU CAFÉ ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Au restaurant et au café" data-en="At the restaurant and the café">Au restaurant et au café</h2>
+      </div>
+      <div class="tableau">
     <table>
-      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <thead><tr><th class="c-fr t" style="width:50%" data-fr="Français" data-en="French">Français</th><th class="c-en t" style="width:50%" data-fr="Anglais" data-en="English">Anglais</th></tr></thead>
       <tbody>
         <tr class="q"><td class="c-fr">Une table pour deux, s'il vous plaît ?</td><td class="c-en">A table for two, please?</td></tr>
         <tr class="r"><td class="c-fr">Oui, suivez-moi.</td><td class="c-en">Yes, follow me.</td></tr>
@@ -224,10 +395,20 @@
         <tr class="r"><td class="c-fr">Désolé, seulement en français.</td><td class="c-en">Sorry, only in French.</td></tr>
       </tbody>
     </table>
+      </div>
+    </div>
+  </section>
 
-    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>À l'hôtel</h2>
+  <!-- ===== À L'HÔTEL ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="À l'hôtel" data-en="At the hotel">À l'hôtel</h2>
+      </div>
+      <div class="tableau">
     <table>
-      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <thead><tr><th class="c-fr t" style="width:50%" data-fr="Français" data-en="French">Français</th><th class="c-en t" style="width:50%" data-fr="Anglais" data-en="English">Anglais</th></tr></thead>
       <tbody>
         <tr class="q"><td class="c-fr">J'ai une réservation au nom de Martin.</td><td class="c-en">I have a reservation under the name Martin.</td></tr>
         <tr class="r"><td class="c-fr">Un instant, je vérifie.</td><td class="c-en">One moment, I'll check.</td></tr>
@@ -240,10 +421,20 @@
         <tr class="r"><td class="c-fr">Oui, il est gratuit dans tout l'hôtel.</td><td class="c-en">Yes, it's free throughout the hotel.</td></tr>
       </tbody>
     </table>
+      </div>
+    </div>
+  </section>
 
-    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Achats et marché</h2>
+  <!-- ===== ACHATS ET MARCHÉ ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Achats et marché" data-en="Shopping and markets">Achats et marché</h2>
+      </div>
+      <div class="tableau">
     <table>
-      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <thead><tr><th class="c-fr t" style="width:50%" data-fr="Français" data-en="French">Français</th><th class="c-en t" style="width:50%" data-fr="Anglais" data-en="English">Anglais</th></tr></thead>
       <tbody>
         <tr class="q"><td class="c-fr">Combien ça coûte ?</td><td class="c-en">How much does it cost?</td></tr>
         <tr class="r"><td class="c-fr">Ça coûte dix euros.</td><td class="c-en">It costs ten euros.</td></tr>
@@ -256,10 +447,20 @@
         <tr class="r"><td class="c-fr">Bien sûr, allez-y.</td><td class="c-en">Of course, go ahead.</td></tr>
       </tbody>
     </table>
+      </div>
+    </div>
+  </section>
 
-    <h2 style="margin-top:36px"><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Transports</h2>
+  <!-- ===== TRANSPORTS ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Transports" data-en="Transport">Transports</h2>
+      </div>
+      <div class="tableau">
     <table>
-      <thead><tr><th class="c-fr" style="width:50%">Français</th><th class="c-en" style="width:50%">Anglais</th></tr></thead>
+      <thead><tr><th class="c-fr t" style="width:50%" data-fr="Français" data-en="French">Français</th><th class="c-en t" style="width:50%" data-fr="Anglais" data-en="English">Anglais</th></tr></thead>
       <tbody>
         <tr class="q"><td class="c-fr">Un billet pour Lyon, s'il vous plaît.</td><td class="c-en">A ticket to Lyon, please.</td></tr>
         <tr class="r"><td class="c-fr">Aller simple ou aller-retour ?</td><td class="c-en">One way or return?</td></tr>
@@ -272,23 +473,54 @@
         <tr class="r"><td class="c-fr">Non, prenez le 12.</td><td class="c-en">No, take the 12.</td></tr>
       </tbody>
     </table>
+      </div>
+    </div>
   </section>
 
-  <!-- ===================== EXERCICE ===================== -->
+  <!-- ===== EXERCICE ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice — Cartes de révision</h2>
-    <p class="intro">Une phrase en anglais apparaît. Dites-la en français, puis affichez la réponse et indiquez si vous la connaissiez.</p>
-    <div id="exercice"></div>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice — Cartes de révision" data-en="Exercise — Flashcards">Exercice — Cartes de révision</h2>
+      </div>
+      <p class="intro t"
+         data-fr="Une phrase en anglais apparaît. Dites-la en français, puis affichez la réponse et indiquez si vous la connaissiez."
+         data-en="An English sentence appears. Say it in French, then show the answer and say whether you knew it.">Une phrase en anglais apparaît. Dites-la en français, puis affichez la réponse et indiquez si vous la connaissiez.</p>
+      <div id="exercice"></div>
+    </div>
   </section>
 
-</div>
+</main>
 
 <footer>
-  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
-  <p style="margin-top:10px;font-size:.82rem;opacity:.7;">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></p>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  colonnes: { fr: 'Choix de la langue affichée', en: 'Choose the columns to show' },
+  titre: { fr: 'Phrases utiles pour touristes — French with Alban', en: 'Useful phrases for travellers — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
 /* ---------- TOGGLE LANGUE ---------- */
 document.querySelectorAll('.toggle button').forEach(function(b){
   b.addEventListener('click', function(){
@@ -308,6 +540,24 @@ document.querySelectorAll('tbody tr').forEach(function(tr){
 });
 
 var paquet = [], idx = 0, revelee = false, erreurs = [], reussies = 0;
+
+/* textes d'interface des cartes de révision (les phrases, elles, ne changent pas) */
+var TEXTES = {
+  carte: { fr: 'Carte ', en: 'Card ' },
+  sur: { fr: ' sur ', en: ' of ' },
+  savais: { fr: 'Je savais', en: 'I knew it' },
+  savaisPas: { fr: 'Je ne savais pas', en: "I didn't know" },
+  voir: { fr: 'Afficher la réponse', en: 'Show the answer' },
+  arreter: { fr: 'Arrêter', en: 'Stop' },
+  acquises: { fr: 'Toutes les phrases sont acquises.', en: 'You know all the sentences.' },
+  aRevoirPl: { fr: ' phrases à revoir.', en: ' sentences to review.' },
+  aRevoirSg: { fr: ' phrase à revoir.', en: ' sentence to review.' },
+  erreurs: { fr: 'Réviser les erreurs', en: 'Review my mistakes' },
+  recommencer: { fr: 'Recommencer', en: 'Start again' },
+  aReviser: { fr: ' phrases à réviser', en: ' sentences to practise' },
+  commencer: { fr: 'Commencer', en: 'Start' }
+};
+function tx(cle) { return TEXTES[cle][LANG]; }
 
 function melange(arr){
   var a = arr.slice();
@@ -333,18 +583,18 @@ function afficher(){
   var pct = Math.round(idx / paquet.length * 100);
   c.innerHTML =
     '<div class="carte">' +
-      '<div class="compteur">Carte ' + (idx + 1) + ' sur ' + paquet.length + '</div>' +
+      '<div class="compteur">' + tx('carte') + (idx + 1) + tx('sur') + paquet.length + '</div>' +
       '<div class="piste"><span style="width:' + pct + '%"></span></div>' +
       '<div class="en">' + carte.en + '</div>' +
       (revelee ? '<div class="fr">' + carte.fr + '</div>' : '') +
       '<div class="actions">' +
         (revelee
-          ? '<button class="btn oui" id="btnOui">&#10003;&nbsp; Je savais</button>' +
-            '<button class="btn non" id="btnNon">&#10007;&nbsp; Je ne savais pas</button>'
-          : '<button class="btn" id="btnVoir">Afficher la réponse</button>') +
+          ? '<button class="btn oui" id="btnOui">&#10003;&nbsp; ' + tx('savais') + '</button>' +
+            '<button class="btn non" id="btnNon">&#10007;&nbsp; ' + tx('savaisPas') + '</button>'
+          : '<button class="btn" id="btnVoir">' + tx('voir') + '</button>') +
       '</div>' +
     '</div>' +
-    '<div class="actions"><button class="btn secondaire" id="btnStop">Arrêter</button></div>';
+    '<div class="actions"><button class="btn secondaire" id="btnStop">' + tx('arreter') + '</button></div>';
 
   if (revelee){
     document.getElementById('btnOui').addEventListener('click', function(){ reussies++; suivante(); });
@@ -364,12 +614,12 @@ function bilan(){
     '<div class="carte bilan">' +
       '<div class="score">' + reussies + ' <small>/ ' + total + '</small></div>' +
       '<div class="detail">' + (erreurs.length === 0
-        ? 'Toutes les phrases sont acquises.'
-        : erreurs.length + (erreurs.length > 1 ? ' phrases à revoir.' : ' phrase à revoir.')) + '</div>' +
+        ? tx('acquises')
+        : erreurs.length + (erreurs.length > 1 ? tx('aRevoirPl') : tx('aRevoirSg'))) + '</div>' +
       '<div class="actions">' +
-        (erreurs.length > 0 ? '<button class="btn" id="btnErreurs">Réviser les erreurs</button>' : '') +
-        '<button class="btn secondaire" id="btnRecommencer">Recommencer</button>' +
-        '<button class="btn secondaire" id="btnStop2">Arrêter</button>' +
+        (erreurs.length > 0 ? '<button class="btn" id="btnErreurs">' + tx('erreurs') + '</button>' : '') +
+        '<button class="btn secondaire" id="btnRecommencer">' + tx('recommencer') + '</button>' +
+        '<button class="btn secondaire" id="btnStop2">' + tx('arreter') + '</button>' +
       '</div>' +
     '</div>';
 
@@ -385,14 +635,55 @@ function accueil(){
   var c = document.getElementById('exercice');
   c.innerHTML =
     '<div class="carte">' +
-      '<div class="en">' + TOUTES.length + ' phrases à réviser</div>' +
-      '<div class="actions"><button class="btn" id="btnDemarrer">Commencer</button></div>' +
+      '<div class="en">' + TOUTES.length + tx('aReviser') + '</div>' +
+      '<div class="actions"><button class="btn" id="btnDemarrer">' + tx('commencer') + '</button></div>' +
     '</div>';
   document.getElementById('btnDemarrer').addEventListener('click', function(){ demarrer(TOUTES); });
 }
 
-accueil();
-</script>
+/* au changement de langue : on réaffiche l'écran en cours, sans toucher à la progression */
+function rerendre(){
+  var c = document.getElementById('exercice');
+  if (!c.firstChild) return;
+  if (document.getElementById('btnDemarrer')) accueil();
+  else if (c.querySelector('.bilan')) bilan();
+  else afficher();
+}
 
+accueil();
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.alt = img.getAttribute('data-alt-' + lang); });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  document.querySelector('.toggle').setAttribute('aria-label', LIBELLES.colonnes[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+  rerendre();
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
 </body>
 </html>

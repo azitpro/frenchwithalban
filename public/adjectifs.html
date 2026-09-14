@@ -6,717 +6,847 @@
 <title>Les adjectifs essentiels — French with Alban</title>
 <meta name="description" content="Les adjectifs français essentiels : accord au féminin et au pluriel, place avant ou après le nom, phonétique et 5 exercices.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#0d2b45;
-    --rouge:#c0392b;
-    --or:#c9972a;
-    --creme:#faf7f2;
-    --bleu-fr:#002395;
-    --rouge-fr:#ED2939;
-    --gris-texte:#4a5568;
-    --bordure:#e6e0d6;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{
-    font-family:'Inter',sans-serif;
-    color:var(--navy);
-    background:#ffffff;
-    line-height:1.7;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  /* ---------- HEADER (pleine largeur, identique à l'accueil) ---------- */
-  header{
-    width:100%;
-    background:#ffffff;
-        border-bottom:3px solid var(--navy);
-    padding:28px 48px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    position:sticky;
-    top:0;
-    z-index:100;
-  }
-  .logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-family:'Fraunces',serif;
-    font-size:1.7rem;
-    font-weight:600;
-    white-space:nowrap;
-    text-decoration:none;
-  }
-  .logo .fw{color:var(--navy);}
-  .logo .al{color:var(--rouge);}
-  nav{display:flex;gap:44px;}
-  nav a{
-    font-size:1.05rem;
-    font-weight:500;
-    color:var(--navy);
-    text-decoration:none;
-    transition:color .2s;
-  }
-  nav a:hover{color:var(--rouge);}
-
-  /* ---------- STRUCTURE ---------- */
-  .gold-line{height:2px;background:var(--or);width:100%;}
-  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
-
-  .hero{
-    background:var(--creme);
-    width:100%;
-    padding:64px 24px 56px;
-    text-align:center;
-    border-bottom:1px solid var(--bordure);
-  }
-  .hero h1{
-    font-family:'DM Serif Display',serif;
-    font-size:3rem;
-    font-weight:400;
-    line-height:1.15;
-    margin-bottom:16px;
-  }
-  .hero p{
-    max-width:640px;
-    margin:0 auto;
-    font-size:1.1rem;
-    color:var(--gris-texte);
-  }
-  .hero .compteur{
-    display:inline-block;
-    margin-top:24px;
-    font-family:'Fraunces',serif;
-    font-size:.95rem;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--or);
-  }
-
-  section{padding:56px 0;border-bottom:1px solid var(--bordure);}
-  section:last-of-type{border-bottom:none;}
-
-  h2{
-    font-family:'Fraunces',serif;
-    font-size:1.85rem;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    margin-bottom:20px;
-  }
-  h3{
-    font-family:'Fraunces',serif;
-    font-size:1.25rem;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin:32px 0 14px;
-  }
-  .hex{flex-shrink:0;}
-  h2 .hex{width:26px;height:30px;}
-  h3 .hex{width:20px;height:23px;}
-
-  p+p{margin-top:14px;}
-  .intro{color:var(--gris-texte);margin-bottom:20px;}
-
-  /* ---------- EXEMPLES AVEC COQ ---------- */
-  .exemples{list-style:none;margin:18px 0;}
-  .exemples li{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    padding:7px 0;
-  }
-  .exemples li img{
-    width:20px;
-    height:20px;
-    margin-top:5px;
-    flex-shrink:0;
-  }
-  .exemples b{color:var(--rouge);font-weight:600;}
-
-  /* ---------- ENCADRÉS INFO / AVERTISSEMENT ---------- */
-  .bulle{
-    display:flex;
-    gap:16px;
-    padding:20px 22px;
-    margin:26px 0;
-    background:var(--creme);
-    border-radius:18px 18px 18px 4px;
-  }
-  .bulle.warn{background:#fdf1ef;}
-  .bulle .marque{flex-shrink:0;width:28px;height:32px;}
-  .bulle .contenu{font-size:.98rem;}
-  .bulle .contenu strong{font-family:'Fraunces',serif;display:block;margin-bottom:4px;}
-
-  /* ---------- TABLEAUX DE RÈGLES ---------- */
-  table{
-    width:100%;
-    border-collapse:collapse;
-    table-layout:fixed;
-    margin:18px 0;
-    font-size:.98rem;
-  }
-  th{
-    background:var(--navy);
-    color:#fff;
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    text-align:left;
-    padding:12px 14px;
-  }
-  td{
-    padding:11px 14px;
-    border-bottom:1px solid var(--bordure);
-    vertical-align:top;
-    word-wrap:break-word;
-  }
-  tbody tr:nth-child(even){background:var(--creme);}
-  .phon{color:var(--rouge);font-size:.92rem;white-space:nowrap;}
-  .fem{color:var(--or);font-weight:600;}
-
-  /* ---------- TOGGLE LANGUE ---------- */
-  .toggle{
-    display:inline-flex;
-    border:1px solid var(--navy);
-    border-radius:999px;
-    overflow:hidden;
-    margin-bottom:18px;
-  }
-  .toggle button{
-    font-family:'Inter',sans-serif;
-    font-size:.9rem;
-    font-weight:500;
-    padding:8px 20px;
-    border:none;
-    background:#fff;
-    color:var(--navy);
-    cursor:pointer;
-    transition:background .2s,color .2s;
-  }
-  .toggle button.on{background:var(--navy);color:#fff;}
-  .toggle button:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
-  .col-cachee{display:none;}
-
-  .recherche{
-    width:100%;
-    max-width:320px;
-    padding:10px 14px;
-    margin-bottom:18px;
-    border:1px solid var(--bordure);
-    border-radius:8px;
-    font-family:'Inter',sans-serif;
-    font-size:.95rem;
-    display:block;
-  }
-
-  /* ---------- EXERCICES ---------- */
-  .exo{
-    background:var(--creme);
-    border-radius:14px;
-    padding:26px 28px;
-    margin:22px 0;
-  }
-  .consigne{font-size:.95rem;color:var(--gris-texte);margin-bottom:18px;}
-  .q{margin-bottom:20px;}
-  .q .enonce{font-weight:500;margin-bottom:10px;}
-  .q .enonce .num{
-    font-family:'Fraunces',serif;
-    color:var(--or);
-    margin-right:8px;
-  }
-  .opts{display:flex;flex-wrap:wrap;gap:10px;}
-  .opts button{
-    font-family:'Inter',sans-serif;
-    font-size:.95rem;
-    padding:9px 18px;
-    border:1px solid var(--bordure);
-    border-radius:999px;
-    background:#fff;
-    color:var(--navy);
-    cursor:pointer;
-    transition:all .15s;
-  }
-  .opts button:hover:not(:disabled){border-color:var(--navy);}
-  .opts button:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
-  .opts button.juste{background:#e8f4ec;border-color:#2f7d51;color:#2f7d51;font-weight:600;}
-  .opts button.faux{background:#fdeceb;border-color:var(--rouge);color:var(--rouge);}
-  .opts button:disabled{cursor:default;}
-
-  .saisie{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .saisie input{
-    padding:9px 14px;
-    border:1px solid var(--bordure);
-    border-radius:8px;
-    font-family:'Inter',sans-serif;
-    font-size:.95rem;
-    width:180px;
-  }
-  .saisie input:focus{outline:2px solid var(--or);outline-offset:1px;}
-  .saisie input.juste{border-color:#2f7d51;background:#e8f4ec;}
-  .saisie input.faux{border-color:var(--rouge);background:#fdeceb;}
-  .solution{font-size:.9rem;color:#2f7d51;font-weight:600;}
-
-  .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px;}
-  .btn{
-    font-family:'Inter',sans-serif;
-    font-size:.95rem;
-    font-weight:600;
-    padding:11px 24px;
-    border:none;
-    border-radius:8px;
-    background:var(--navy);
-    color:#fff;
-    cursor:pointer;
-    transition:background .2s;
-  }
-  .btn:hover{background:#164066;}
-  .btn.secondaire{background:#fff;color:var(--navy);border:1px solid var(--navy);}
-  .btn:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
-  .score{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;}
-
-  /* ---------- FOOTER (pleine largeur) ---------- */
-  footer{
-    width:100%;
-    background:var(--navy);
-    color:#fff;
-    padding:36px 48px;
-    text-align:center;
-    font-size:.92rem;
-  }
-  footer a{color:#fff;text-decoration:underline;}
-
-  @media (max-width:720px){
-    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
-    .logo{font-size:1.3rem;}
-    nav{gap:24px;}
-    .hero h1{font-size:2.1rem;}
-    .exo{padding:20px 18px;}
-    footer{padding:28px 20px;}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *{transition:none!important;animation:none!important;}
-  }
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
-.logo-al { color: var(--rouge); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 2%, rgba(200,245,96,.55) 0, transparent 16%),
+    radial-gradient(circle at 97% 10%, rgba(62,224,198,.28) 0, transparent 16%),
+    radial-gradient(circle at 3% 36%, rgba(255,95,162,.2) 0, transparent 14%),
+    radial-gradient(circle at 98% 58%, rgba(255,228,92,.42) 0, transparent 16%),
+    radial-gradient(circle at 4% 80%, rgba(124,92,255,.16) 0, transparent 16%),
+    radial-gradient(circle at 96% 96%, rgba(255,138,61,.2) 0, transparent 14%);
+  overflow: hidden;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 680px; margin: -6px 0 26px; font-size: 1.05rem; }
+.sous-titre { display: flex; align-items: center; gap: 10px; margin: 42px 0 18px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.45rem; line-height: 1.2; }
+.sous-titre::after { content: ''; flex: 1; border-top: 2.5px dashed rgba(27,19,64,.25); }
+.sous-titre .hex-penche { width: 22px; height: 26px; filter: drop-shadow(1.5px 2px 0 var(--ink)); }
+b, strong { font-weight: 700; }
+/* forme féminine « en or » quand elle est différente (or foncé pour rester lisible) */
+.fem { color: #a8730b; font-weight: 800; }
+
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--aqua); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
+.compteur { display: inline-block; margin-top: 20px; padding: 4px 14px; border: 2.5px solid var(--ink); border-radius: 99px; background: var(--ink); color: #fff; font-weight: 700; font-size: .85rem; letter-spacing: .04em; box-shadow: 3px 3px 0 var(--lemon); }
+
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px 26px; rotate: 2deg; }
+.apercu-question { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.3rem; line-height: 1.05; letter-spacing: -.02em; margin-bottom: 18px; padding-right: 64px; }
+.apercu-reponses { list-style: none; display: grid; gap: 10px; }
+.apercu-reponses li { display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 8px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.35rem; box-shadow: 3px 3px 0 var(--ink); }
+.apercu-reponses li:nth-child(2) { margin-left: 22px; }
+.apercu-reponses img { width: 46px; height: 46px; flex: none; border-radius: 10px; border: 2px solid var(--ink); object-fit: cover; background: #fff; }
+.autocollant { position: absolute; top: -20px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
+
+/* ---------- LES CONTRAIRES EN IMAGES ---------- */
+.contraires { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.duo { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: 12px; padding: 16px; background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); }
+.duo-seul { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+.duo-seul figure { width: calc(50% - 22px); }
+.duo figure { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.duo img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; background: #fff; border: 2.5px solid var(--ink); border-radius: 12px; margin-bottom: 4px; }
+.duo figcaption { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.mot { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem; line-height: 1.15; letter-spacing: -0.015em; }
+.duo .phon { display: inline-block; padding: 1px 10px; border: 2px solid var(--ink); border-radius: 99px; background: var(--c); color: var(--c-texte); font-size: .82rem; font-weight: 600; }
+.signe { align-self: center; margin-bottom: 56px; width: 38px; height: 38px; display: grid; place-items: center; border: 2.5px solid var(--ink); border-radius: 50%; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.35rem; box-shadow: 2px 2px 0 var(--ink); rotate: -8deg; }
+
+/* ---------- CARTES DE RÈGLES (accord, place) ---------- */
+.regles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.categories { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.regle { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+.formule { position: relative; background: var(--c); color: var(--c-texte); border-bottom: 3px solid var(--ink); padding: 12px 18px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.2rem; line-height: 1.25; }
+.formule small { display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; opacity: .85; margin-bottom: 2px; }
+.formule b { font-weight: 800; }
+.formule .traduction { display: block; font-family: 'Inter', sans-serif; font-size: .8rem; font-weight: 600; opacity: .9; }
+.initiale { position: absolute; top: 10px; right: 12px; width: 40px; height: 40px; display: grid; place-items: center; background: #fff; color: var(--ink); border: 2.5px solid var(--ink); border-radius: 12px; box-shadow: 2px 2px 0 var(--ink); font-size: 1.4rem; font-weight: 800; rotate: 6deg; }
+.categories .formule { padding-right: 64px; }
+.regle-corps { padding: 12px 18px 16px; display: grid; gap: 8px; flex: 1; align-content: start; }
+.regle-corps.deux { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.label { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: .74rem; color: var(--soft); }
+.forme { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.15rem; line-height: 1.3; }
+.forme b { color: var(--violet); font-weight: 800; }
+
+.texte { max-width: 760px; margin: 28px 0 0; font-size: 1.05rem; }
+.exemples { list-style: none; display: grid; gap: 10px; margin-top: 18px; max-width: 760px; }
+.exemples li { display: flex; align-items: center; gap: 12px; padding: 8px 16px 8px 10px; background: #fff; border: 2.5px solid var(--ink); border-left: 10px solid var(--c); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); font-size: 1.05rem; }
+.exemples li img { width: 26px; height: 26px; flex: none; }
+.exemples b { color: var(--violet); font-weight: 800; }
+
+/* ---------- ENCADRÉS ---------- */
+.encadre { display: flex; gap: 16px; align-items: flex-start; margin: 28px 0 0; padding: 16px 20px; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); }
+.encadre-attention { background: #ffe1ee; }
+.encadre-info { background: var(--lemon); }
+.encadre .marque { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--ink); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; }
+.encadre-attention .marque { background: var(--pink); }
+.encadre strong { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.1rem; margin-bottom: 2px; }
+.encadre p b { font-weight: 800; }
+
+/* ---------- LISTE DES ADJECTIFS ---------- */
+.outils { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 20px; }
+.toggle { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 3px 3px 0 var(--ink); }
+.toggle button { border: none; background: none; padding: 6px 16px; border-radius: 99px; font: 700 .9rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.toggle button:hover { background: var(--lemon); }
+.toggle button.on { background: var(--ink); color: #fff; }
+.recherche { flex: 1 1 220px; max-width: 340px; min-width: 0; padding: 9px 18px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; color: var(--ink); font: 500 .95rem 'Inter', sans-serif; box-shadow: 3px 3px 0 var(--ink); }
+.recherche:focus { outline: 3px solid var(--violet); outline-offset: 2px; }
+.tableau { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+#tableau-vocab { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 1rem; }
+#tableau-vocab th { background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.05rem; text-align: left; padding: 12px 18px; border-bottom: 3px solid var(--ink); }
+#tableau-vocab td { padding: 9px 18px; border-bottom: 2px dashed rgba(27,19,64,.14); vertical-align: top; overflow-wrap: anywhere; }
+#tableau-vocab tbody tr:last-child td { border-bottom: none; }
+#tableau-vocab tbody tr:nth-child(even) { background: #fffaf2; }
+#tableau-vocab td:first-child { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.1rem; }
+#tableau-vocab td.phon { color: var(--soft); font-size: .95rem; }
+#tableau-vocab td.c-en { font-weight: 500; }
+.col-cachee { display: none; }
+
+/* ---------- EXERCICES ---------- */
+.exo { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px 26px 26px; }
+.consigne { color: var(--soft); font-size: 1.02rem; margin-bottom: 18px; }
+#exo1, #exo2, #exo3, #exo4, #exo5 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.q { background: var(--bg); border: 2.5px solid var(--ink); border-radius: 14px; padding: 14px 16px; box-shadow: 3px 3px 0 var(--ink); min-width: 0; }
+.q .enonce { font-weight: 500; font-size: 1.05rem; margin-bottom: 10px; }
+.exo .num { display: inline-grid; place-items: center; min-width: 28px; height: 28px; padding: 0 6px; margin-right: 8px; border: 2px solid var(--ink); border-radius: 99px; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: .9rem; line-height: 1; vertical-align: 1px; }
+.q .adj { color: var(--violet); font-weight: 800; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opts button { font: 700 .95rem 'Inter', sans-serif; padding: 7px 14px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: translate .12s; }
+.opts button:hover:not(:disabled) { translate: -1px -1px; background: var(--lemon); }
+.opts button:disabled { cursor: default; opacity: .5; }
+.opts button.juste { background: var(--lime); opacity: 1; }
+.opts button.faux { background: var(--pink); color: #fff; opacity: 1; text-decoration: line-through; }
+/* numéro · mot · champ sur une ligne, la correction toujours en dessous */
+.saisie { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 170px); align-items: center; gap: 8px 10px; }
+.saisie .base { font-weight: 600; font-size: 1.05rem; }
+.saisie .num { margin-right: 0; }
+.saisie input { width: 100%; padding: 7px 12px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); font: 500 1rem 'Inter', sans-serif; }
+.saisie input:focus { outline: 3px solid var(--violet); outline-offset: 2px; }
+.saisie input.juste { background: #ecffc4; border-color: var(--ink); box-shadow: inset 0 0 0 2px var(--lime); }
+.saisie input.faux { background: #ffe1ee; border-color: var(--ink); box-shadow: inset 0 0 0 2px var(--pink); }
+.solution { grid-column: 2 / -1; justify-self: start; padding: 1px 10px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-weight: 700; font-size: .9rem; }
+.solution:empty { display: none; }
+.saisie input.juste ~ .solution { background: var(--lime); }
+.saisie input.faux ~ .solution { background: #ffe1ee; }
+.actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 20px; padding: 14px 18px; background: var(--ink); color: #fff; border-radius: 16px; box-shadow: 5px 5px 0 var(--c); }
+.btn { font: 700 .95rem 'Inter', sans-serif; padding: 9px 18px; border-radius: 99px; border: 2.5px solid #fff; background: var(--pink); color: #fff; cursor: pointer; transition: translate .12s; }
+.btn:hover { translate: -1px -1px; }
+.btn.secondaire { background: #fff; color: var(--ink); }
+.score { margin-left: auto; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.5rem; line-height: 1; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+@media (prefers-reduced-motion: reduce) { .fil, .opts button, .btn { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 440px; rotate: 1deg; }
+  h1 { font-size: 3.6rem; }
+  .regles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contraires { gap: 18px; }
+  .duo { padding: 12px; gap: 8px; }
+  .mot { font-size: 1.12rem; }
+  .duo .phon { font-size: .76rem; padding: 0 8px; }
+  .signe { width: 32px; height: 32px; font-size: 1.1rem; margin-bottom: 48px; }
+  #exo1, #exo2, #exo3, #exo4, #exo5 { grid-template-columns: 1fr; }
+}
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
+  .wrap { padding: 0 20px; }
+  section { padding: 38px 0; }
+  .hero { padding: 30px 0 18px; }
+  h1 { font-size: 2.9rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 20px 20px; }
+  .apercu-question { font-size: 1.8rem; }
+  .apercu-reponses li { font-size: 1.12rem; }
+  .apercu-reponses li:nth-child(2) { margin-left: 12px; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .contraires { grid-template-columns: 1fr; }
+  .exo { padding: 18px 16px 20px; }
+  .q { padding: 12px 12px; }
+  .actions { padding: 12px 14px; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
-
-  /* ===== LES CONTRAIRES EN IMAGES ===== */
-  .paires{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:28px;}
-  .paire{display:flex;align-items:flex-start;justify-content:center;gap:14px;padding:22px 16px;border:1px solid var(--bordure);}
-  .paire figure{margin:0;flex:1 1 0;min-width:0;max-width:190px;}
-  .paire .illus{display:block;padding:8px;background:var(--creme);border:2px solid var(--navy);box-shadow:5px 5px 0 var(--navy);line-height:0;}
-  .paire .illus img{display:block;width:100%;height:auto;}
-  .paire .illus-label{font-family:'Fraunces',serif;font-size:1.02rem;font-weight:600;color:var(--navy);text-align:center;margin-top:14px;line-height:1.35;}
-  .paire .illus-label .phon{display:block;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:400;white-space:normal;margin-top:3px;}
-  .paire-sep{align-self:center;margin-bottom:52px;font-family:'Fraunces',serif;font-size:1.8rem;font-weight:600;color:var(--or);flex:none;}
-  /* cher, sans contraire illustré, prend la dernière case à côté de haut/bas */
-  .paire-seule figure{flex:0 1 190px;}
-  @media (max-width:720px){
-    .paires{grid-template-columns:1fr;gap:18px;}
-    .paire{padding:16px 10px;gap:8px;}
-    .paire .illus{padding:5px;box-shadow:3px 3px 0 var(--navy);}
-    .paire .illus-label{font-size:.95rem;margin-top:10px;}
-    .paire-sep{font-size:1.4rem;margin-bottom:44px;}
-  }
+/* le tableau devient une liste de lignes empilées : français et prononciation, puis anglais */
+@media (max-width: 600px) {
+  .regles, .categories { grid-template-columns: 1fr; }
+  #tableau-vocab, #tableau-vocab tbody { display: block; }
+  #tableau-vocab thead { display: none; }
+  #tableau-vocab tr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; padding: 8px 14px; border-bottom: 2px dashed rgba(27,19,64,.14); }
+  #tableau-vocab tbody tr:last-child { border-bottom: none; }
+  #tableau-vocab td { padding: 0; border-bottom: none; }
+  #tableau-vocab td:first-child { flex-basis: 100%; }
+  /* la prononciation ne se coupe pas après une barre oblique */
+  #tableau-vocab td.phon { white-space: nowrap; overflow-wrap: normal; }
+  #tableau-vocab td.c-en { flex: 1 1 auto; min-width: 0; }
+  .recherche { max-width: none; }
+}
+@media (max-width: 400px) {
+  h1 { font-size: 2.45rem; }
+  .duo { padding: 10px; gap: 6px; }
+  .mot { font-size: 1rem; }
+  .signe { width: 28px; height: 28px; font-size: 1rem; }
+  .duo-seul figure { width: calc(50% - 17px); }
+  .saisie { grid-template-columns: auto minmax(0, 1fr); }
+  .saisie input { grid-column: 2 / -1; }
+  .toggle button { padding: 5px 11px; font-size: .85rem; }
+}
 </style>
 </head>
 <body>
 
-<!-- Symboles réutilisables -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="hex-tri" viewBox="0 0 30 35">
-    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
-    <g clip-path="url(#clip-hex)">
-      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-    </g>
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
-  </symbol>
-  <symbol id="hex-warn" viewBox="0 0 30 35">
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#c0392b"/>
-    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="19" font-weight="700" fill="#fff">!</text>
-  </symbol>
-  <symbol id="hex-info" viewBox="0 0 30 35">
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="#0d2b45"/>
-    <text x="15" y="24" text-anchor="middle" font-family="Fraunces,serif" font-size="18" font-weight="700" fill="#fff">i</text>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
   </symbol>
 </svg>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="hero">
-  <h1>Les adjectifs essentiels</h1>
-  <p>Décrire une personne, un objet, une situation. Les adjectifs les plus utiles en français, avec leur accord, leur place dans la phrase et leur prononciation.</p>
-  <div class="compteur" id="compteur">50 adjectifs · 5 exercices</div>
-</div>
+<!-- Les adjectifs, prononciations, exemples et phrases des exercices restent en français dans la version anglaise :
+     seules les consignes et les explications sont traduites. -->
+<main class="page suite-sections">
 
-<div class="wrap">
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a1-a2" data-fr="← Ressources · Faux débutant" data-en="← Resources · Elementary">← Ressources · Faux débutant</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          <span class="pastille t" data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+          <span class="pastille">A1–A2</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Les adjectifs &lt;mark&gt;essentiels&lt;/mark&gt;"
+            data-en="Les adjectifs &lt;mark&gt;essentiels&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;The essential adjectives&lt;/span&gt;">Les adjectifs <mark>essentiels</mark></h1>
+        <p class="lead t"
+           data-fr="Décrire une personne, un objet, une situation. Les adjectifs les plus utiles en français, avec leur accord, leur place dans la phrase et leur prononciation."
+           data-en="Describing a person, an object, a situation. The most useful adjectives in French, with their agreement, their position in the sentence and their pronunciation.">Décrire une personne, un objet, une situation. Les adjectifs les plus utiles en français, avec leur accord, leur place dans la phrase et leur prononciation.</p>
+        <div class="compteur" id="compteur">50 adjectifs · 5 exercices</div>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant">+ e</span>
+        <div class="apercu-question">grand → grand<span class="fem">e</span></div>
+        <ul class="apercu-reponses suite">
+          <li><img src="/img/adjectifs/petit.jpg" alt="" width="46" height="46">petit / petite</li>
+          <li><img src="/img/adjectifs/court.jpg" alt="" width="46" height="46">court / courte</li>
+          <li><img src="/img/adjectifs/lent.jpg" alt="" width="46" height="46">lent / lente</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-  <!-- ===================== LES CONTRAIRES EN IMAGES ===================== -->
+  <!-- ===== LES CONTRAIRES EN IMAGES ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les contraires en images</h2>
-    <p class="intro">Des adjectifs contraires, deux par deux. La forme féminine apparaît en or quand elle est différente.</p>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Les contraires en images" data-en="Opposites in pictures">Les contraires en images</h2>
+      </div>
+      <p class="intro t"
+         data-fr="Des adjectifs contraires, deux par deux. La forme féminine apparaît en or quand elle est différente."
+         data-en="Opposite adjectives, two by two. The feminine form is shown in gold when it is different.">Des adjectifs contraires, deux par deux. La forme féminine apparaît en or quand elle est différente.</p>
 
-    <div class="paires">
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/beau.jpg" alt="Belle maison en pierre, fleurie" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">beau / <span class="fem">belle</span><span class="phon">/bo/ · /bɛl/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/laid.jpg" alt="Maison terne aux murs gris" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">laid / <span class="fem">laide</span><span class="phon">/lɛ/ · /lɛd/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/bon.jpg" alt="Pouce levé sur fond vert" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">bon / <span class="fem">bonne</span><span class="phon">/bɔ̃/ · /bɔn/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/mauvais.jpg" alt="Pouce baissé sur fond rouge" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">mauvais / <span class="fem">mauvaise</span><span class="phon">/movɛ/ · /movɛz/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/grand.jpg" alt="Un éléphant" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">grand / <span class="fem">grande</span><span class="phon">/ɡʁɑ̃/ · /ɡʁɑ̃d/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/petit.jpg" alt="Une souris au pied d'un éléphant" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">petit / <span class="fem">petite</span><span class="phon">/pəti/ · /pətit/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/fort.jpg" alt="Haltérophile soulevant une lourde barre" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">fort / <span class="fem">forte</span><span class="phon">/fɔʁ/ · /fɔʁt/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/faible.jpg" alt="Garçon peinant à soulever un petit haltère" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">faible<span class="phon">/fɛbl/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/facile.jpg" alt="Fillette qui résout 2 + 2 au tableau" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">facile<span class="phon">/fasil/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/difficile.jpg" alt="Fillette perplexe devant une intégrale" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">difficile<span class="phon">/difisil/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/court.jpg" alt="Un crayon court" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">court / <span class="fem">courte</span><span class="phon">/kuʁ/ · /kuʁt/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/long.jpg" alt="Un crayon long" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">long / <span class="fem">longue</span><span class="phon">/lɔ̃/ · /lɔ̃ɡ/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/rapide.jpg" alt="Un guépard en pleine course" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">rapide<span class="phon">/ʁapid/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/lent.jpg" alt="Un escargot" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">lent / <span class="fem">lente</span><span class="phon">/lɑ̃/ · /lɑ̃t/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/etroit.jpg" alt="Ruelle pavée étroite" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">étroit / <span class="fem">étroite</span><span class="phon">/etʁwa/ · /etʁwat/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/large.jpg" alt="Large avenue bordée d'arbres" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">large<span class="phon">/laʁʒ/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/haut.jpg" alt="Une tour très haute" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">haut / <span class="fem">haute</span><span class="phon">/o/ · /ot/</span></figcaption>
-        </figure>
-        <span class="paire-sep" aria-hidden="true">≠</span>
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/bas.jpg" alt="Avion volant bas au-dessus d'une ville" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">bas / <span class="fem">basse</span><span class="phon">/ba/ · /bas/</span></figcaption>
-        </figure>
-      </div>
-      <div class="paire paire-seule">
-        <figure>
-          <div class="illus"><img src="/img/adjectifs/cher.jpg" alt="Sac à main vendu 6 000 €" width="700" height="700" loading="lazy"></div>
-          <figcaption class="illus-label">cher / <span class="fem">chère</span><span class="phon">/ʃɛʁ/</span></figcaption>
-        </figure>
+      <div class="contraires suite">
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/beau.jpg" alt="Belle maison en pierre, fleurie" data-alt-en="A beautiful stone house covered in flowers" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">beau / <span class="fem">belle</span></span><span class="phon">/bo/ · /bɛl/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/laid.jpg" alt="Maison terne aux murs gris" data-alt-en="A dull house with grey walls" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">laid / <span class="fem">laide</span></span><span class="phon">/lɛ/ · /lɛd/</span></figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/bon.jpg" alt="Pouce levé sur fond vert" data-alt-en="Thumbs up on a green background" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">bon / <span class="fem">bonne</span></span><span class="phon">/bɔ̃/ · /bɔn/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/mauvais.jpg" alt="Pouce baissé sur fond rouge" data-alt-en="Thumbs down on a red background" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">mauvais / <span class="fem">mauvaise</span></span><span class="phon">/movɛ/ · /movɛz/</span></figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/grand.jpg" alt="Un éléphant" data-alt-en="An elephant" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">grand / <span class="fem">grande</span></span><span class="phon">/ɡʁɑ̃/ · /ɡʁɑ̃d/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/petit.jpg" alt="Une souris au pied d'un éléphant" data-alt-en="A mouse at the feet of an elephant" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">petit / <span class="fem">petite</span></span><span class="phon">/pəti/ · /pətit/</span></figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/fort.jpg" alt="Haltérophile soulevant une lourde barre" data-alt-en="A weightlifter lifting a heavy barbell" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">fort / <span class="fem">forte</span></span><span class="phon">/fɔʁ/ · /fɔʁt/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/faible.jpg" alt="Garçon peinant à soulever un petit haltère" data-alt-en="A boy struggling to lift a small dumbbell" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">faible</span><span class="phon">/fɛbl/</span></figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/facile.jpg" alt="Fillette qui résout 2 + 2 au tableau" data-alt-en="A little girl solving 2 + 2 on the board" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">facile</span><span class="phon">/fasil/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/difficile.jpg" alt="Fillette perplexe devant une intégrale" data-alt-en="A little girl puzzled by an integral" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">difficile</span><span class="phon">/difisil/</span></figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/court.jpg" alt="Un crayon court" data-alt-en="A short pencil" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">court / <span class="fem">courte</span></span><span class="phon">/kuʁ/ · /kuʁt/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/long.jpg" alt="Un crayon long" data-alt-en="A long pencil" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">long / <span class="fem">longue</span></span><span class="phon">/lɔ̃/ · /lɔ̃ɡ/</span></figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/rapide.jpg" alt="Un guépard en pleine course" data-alt-en="A cheetah running at full speed" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">rapide</span><span class="phon">/ʁapid/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/lent.jpg" alt="Un escargot" data-alt-en="A snail" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">lent / <span class="fem">lente</span></span><span class="phon">/lɑ̃/ · /lɑ̃t/</span></figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/etroit.jpg" alt="Ruelle pavée étroite" data-alt-en="A narrow cobbled alley" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">étroit / <span class="fem">étroite</span></span><span class="phon">/etʁwa/ · /etʁwat/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/large.jpg" alt="Large avenue bordée d'arbres" data-alt-en="A wide tree-lined avenue" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">large</span><span class="phon">/laʁʒ/</span></figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure>
+            <img src="/img/adjectifs/haut.jpg" alt="Une tour très haute" data-alt-en="A very tall tower" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">haut / <span class="fem">haute</span></span><span class="phon">/o/ · /ot/</span></figcaption>
+          </figure>
+          <span class="signe" aria-hidden="true">≠</span>
+          <figure>
+            <img src="/img/adjectifs/bas.jpg" alt="Avion volant bas au-dessus d'une ville" data-alt-en="A plane flying low over a town" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">bas / <span class="fem">basse</span></span><span class="phon">/ba/ · /bas/</span></figcaption>
+          </figure>
+        </div>
+        <!-- cher, sans contraire illustré, prend la dernière case à côté de haut/bas -->
+        <div class="duo duo-seul">
+          <figure>
+            <img src="/img/adjectifs/cher.jpg" alt="Sac à main vendu 6 000 €" data-alt-en="A handbag on sale for €6,000" width="700" height="700" loading="lazy">
+            <figcaption><span class="mot">cher / <span class="fem">chère</span></span><span class="phon">/ʃɛʁ/</span></figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== ACCORD ===================== -->
+  <!-- ===== L'ACCORD ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>L'accord des adjectifs</h2>
-    <p class="intro">En français, l'adjectif s'accorde avec le nom qu'il décrit : il change de forme au féminin et au pluriel.</p>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="L'accord des adjectifs" data-en="Adjective agreement">L'accord des adjectifs</h2>
+      </div>
+      <p class="intro t"
+         data-fr="En français, l'adjectif s'accorde avec le nom qu'il décrit : il change de forme au féminin et au pluriel."
+         data-en="In French, an adjective agrees with the noun it describes: its form changes in the feminine and in the plural.">En français, l'adjectif s'accorde avec le nom qu'il décrit : il change de forme au féminin et au pluriel.</p>
 
-    <table>
-      <thead>
-        <tr><th style="width:34%">Règle</th><th style="width:33%">Masculin</th><th style="width:33%">Féminin</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Cas général : on ajoute <b>-e</b></td><td>grand</td><td class="fem">grande</td></tr>
-        <tr><td>Déjà terminé par <b>-e</b> : aucun changement</td><td>calme</td><td class="fem">calme</td></tr>
-        <tr><td><b>-eux</b> → <b>-euse</b></td><td>heureux</td><td class="fem">heureuse</td></tr>
-        <tr><td><b>-f</b> → <b>-ve</b></td><td>neuf</td><td class="fem">neuve</td></tr>
-        <tr><td><b>-er</b> → <b>-ère</b></td><td>cher</td><td class="fem">chère</td></tr>
-        <tr><td>Consonne doublée + <b>-e</b></td><td>bon, gentil</td><td class="fem">bonne, gentille</td></tr>
-        <tr><td>Irréguliers à mémoriser</td><td>beau, nouveau, vieux</td><td class="fem">belle, nouvelle, vieille</td></tr>
-      </tbody>
-    </table>
+      <!-- ancien tableau Règle / Masculin / Féminin, présenté en cartes -->
+      <div class="regles suite">
+        <article class="regle">
+          <div class="formule"><small class="t" data-fr="Règle" data-en="Rule">Règle</small><span class="t" data-html="1" data-fr="Cas général : on ajoute &lt;b&gt;-e&lt;/b&gt;" data-en="General rule: add &lt;b&gt;-e&lt;/b&gt;">Cas général : on ajoute <b>-e</b></span></div>
+          <div class="regle-corps deux">
+            <div><span class="label t" data-fr="Masculin" data-en="Masculine">Masculin</span><span class="forme">grand</span></div>
+            <div><span class="label t" data-fr="Féminin" data-en="Feminine">Féminin</span><span class="forme fem">grande</span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><small class="t" data-fr="Règle" data-en="Rule">Règle</small><span class="t" data-html="1" data-fr="Déjà terminé par &lt;b&gt;-e&lt;/b&gt; : aucun changement" data-en="Already ends in &lt;b&gt;-e&lt;/b&gt;: no change">Déjà terminé par <b>-e</b> : aucun changement</span></div>
+          <div class="regle-corps deux">
+            <div><span class="label t" data-fr="Masculin" data-en="Masculine">Masculin</span><span class="forme">calme</span></div>
+            <div><span class="label t" data-fr="Féminin" data-en="Feminine">Féminin</span><span class="forme fem">calme</span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><small class="t" data-fr="Règle" data-en="Rule">Règle</small><b>-eux</b> → <b>-euse</b></div>
+          <div class="regle-corps deux">
+            <div><span class="label t" data-fr="Masculin" data-en="Masculine">Masculin</span><span class="forme">heureux</span></div>
+            <div><span class="label t" data-fr="Féminin" data-en="Feminine">Féminin</span><span class="forme fem">heureuse</span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><small class="t" data-fr="Règle" data-en="Rule">Règle</small><b>-f</b> → <b>-ve</b></div>
+          <div class="regle-corps deux">
+            <div><span class="label t" data-fr="Masculin" data-en="Masculine">Masculin</span><span class="forme">neuf</span></div>
+            <div><span class="label t" data-fr="Féminin" data-en="Feminine">Féminin</span><span class="forme fem">neuve</span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><small class="t" data-fr="Règle" data-en="Rule">Règle</small><b>-er</b> → <b>-ère</b></div>
+          <div class="regle-corps deux">
+            <div><span class="label t" data-fr="Masculin" data-en="Masculine">Masculin</span><span class="forme">cher</span></div>
+            <div><span class="label t" data-fr="Féminin" data-en="Feminine">Féminin</span><span class="forme fem">chère</span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><small class="t" data-fr="Règle" data-en="Rule">Règle</small><span class="t" data-html="1" data-fr="Consonne doublée + &lt;b&gt;-e&lt;/b&gt;" data-en="Double the consonant + &lt;b&gt;-e&lt;/b&gt;">Consonne doublée + <b>-e</b></span></div>
+          <div class="regle-corps deux">
+            <div><span class="label t" data-fr="Masculin" data-en="Masculine">Masculin</span><span class="forme">bon, gentil</span></div>
+            <div><span class="label t" data-fr="Féminin" data-en="Feminine">Féminin</span><span class="forme fem">bonne, gentille</span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><small class="t" data-fr="Règle" data-en="Rule">Règle</small><span class="t" data-fr="Irréguliers à mémoriser" data-en="Irregular forms to learn by heart">Irréguliers à mémoriser</span></div>
+          <div class="regle-corps deux">
+            <div><span class="label t" data-fr="Masculin" data-en="Masculine">Masculin</span><span class="forme">beau, nouveau, vieux</span></div>
+            <div><span class="label t" data-fr="Féminin" data-en="Feminine">Féminin</span><span class="forme fem">belle, nouvelle, vieille</span></div>
+          </div>
+        </article>
+      </div>
 
-    <p class="intro">Au pluriel, on ajoute <b>-s</b> : <i>des livres intéressants</i>, <i>des maisons propres</i>. Les adjectifs en <b>-eux</b> ne changent pas au masculin pluriel : <i>des étudiants sérieux</i>.</p>
+      <p class="texte t" data-html="1"
+         data-fr="Au pluriel, on ajoute &lt;b&gt;-s&lt;/b&gt; : &lt;i&gt;des livres intéressants&lt;/i&gt;, &lt;i&gt;des maisons propres&lt;/i&gt;. Les adjectifs en &lt;b&gt;-eux&lt;/b&gt; ne changent pas au masculin pluriel : &lt;i&gt;des étudiants sérieux&lt;/i&gt;."
+         data-en="In the plural, add &lt;b&gt;-s&lt;/b&gt;: &lt;i&gt;des livres intéressants&lt;/i&gt;, &lt;i&gt;des maisons propres&lt;/i&gt;. Adjectives ending in &lt;b&gt;-eux&lt;/b&gt; don't change in the masculine plural: &lt;i&gt;des étudiants sérieux&lt;/i&gt;.">Au pluriel, on ajoute <b>-s</b> : <i>des livres intéressants</i>, <i>des maisons propres</i>. Les adjectifs en <b>-eux</b> ne changent pas au masculin pluriel : <i>des étudiants sérieux</i>.</p>
 
-    <ul class="exemples">
-      <li><img src="/coq.png" alt=""><span>Mon frère est <b>grand</b> et ma sœur est <b>grande</b>.</span></li>
-      <li><img src="/coq.png" alt=""><span>Elle est très <b>heureuse</b> aujourd'hui.</span></li>
-      <li><img src="/coq.png" alt=""><span>Ce sont des voisins <b>gentils</b>.</span></li>
-    </ul>
+      <ul class="exemples suite">
+        <li><img src="/coq.png" alt=""><span>Mon frère est <b>grand</b> et ma sœur est <b>grande</b>.</span></li>
+        <li><img src="/coq.png" alt=""><span>Elle est très <b>heureuse</b> aujourd'hui.</span></li>
+        <li><img src="/coq.png" alt=""><span>Ce sont des voisins <b>gentils</b>.</span></li>
+      </ul>
 
-    <div class="bulle warn">
-      <svg class="marque" aria-hidden="true"><use href="#hex-warn"/></svg>
-      <div class="contenu">
-        <strong>Neuf ou nouveau ?</strong>
-        Les deux se traduisent par <i>new</i>, mais <b>neuf</b> veut dire « jamais utilisé, qui sort de l'usine » : <i>une voiture neuve</i>. <b>Nouveau</b> veut dire « nouveau pour moi » : <i>ma nouvelle voiture</i> (achetée d'occasion la semaine dernière).
+      <div class="encadre encadre-attention">
+        <span class="marque" aria-hidden="true">!</span>
+        <div>
+          <strong class="t" data-fr="Neuf ou nouveau ?" data-en="Neuf or nouveau?">Neuf ou nouveau ?</strong>
+          <p class="t" data-html="1"
+             data-fr="Les deux se traduisent par &lt;i&gt;new&lt;/i&gt;, mais &lt;b&gt;neuf&lt;/b&gt; veut dire « jamais utilisé, qui sort de l'usine » : &lt;i&gt;une voiture neuve&lt;/i&gt;. &lt;b&gt;Nouveau&lt;/b&gt; veut dire « nouveau pour moi » : &lt;i&gt;ma nouvelle voiture&lt;/i&gt; (achetée d'occasion la semaine dernière)."
+             data-en="Both translate as &lt;i&gt;new&lt;/i&gt;, but &lt;b&gt;neuf&lt;/b&gt; means “never used, straight from the factory”: &lt;i&gt;une voiture neuve&lt;/i&gt;. &lt;b&gt;Nouveau&lt;/b&gt; means “new to me”: &lt;i&gt;ma nouvelle voiture&lt;/i&gt; (bought second-hand last week).">Les deux se traduisent par <i>new</i>, mais <b>neuf</b> veut dire « jamais utilisé, qui sort de l'usine » : <i>une voiture neuve</i>. <b>Nouveau</b> veut dire « nouveau pour moi » : <i>ma nouvelle voiture</i> (achetée d'occasion la semaine dernière).</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== PLACE ===================== -->
+  <!-- ===== LA PLACE ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>La place de l'adjectif</h2>
-    <p class="intro">Contrairement à l'anglais, l'adjectif français se place normalement <b>après</b> le nom : <i>une voiture rapide</i>, <i>un film intéressant</i>.</p>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="La place de l'adjectif" data-en="Where the adjective goes">La place de l'adjectif</h2>
+      </div>
+      <p class="intro t" data-html="1"
+         data-fr="Contrairement à l'anglais, l'adjectif français se place normalement &lt;b&gt;après&lt;/b&gt; le nom : &lt;i&gt;une voiture rapide&lt;/i&gt;, &lt;i&gt;un film intéressant&lt;/i&gt;."
+         data-en="Unlike in English, a French adjective normally goes &lt;b&gt;after&lt;/b&gt; the noun: &lt;i&gt;une voiture rapide&lt;/i&gt;, &lt;i&gt;un film intéressant&lt;/i&gt;.">Contrairement à l'anglais, l'adjectif français se place normalement <b>après</b> le nom : <i>une voiture rapide</i>, <i>un film intéressant</i>.</p>
 
-    <h3><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Les exceptions : avant le nom</h3>
-    <p class="intro">Un petit groupe d'adjectifs très courants se place <b>avant</b> le nom. Ils concernent la beauté, l'âge, la qualité et la taille.</p>
+      <h3 class="sous-titre"><svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg><span class="t" data-fr="Les exceptions : avant le nom" data-en="The exceptions: before the noun">Les exceptions : avant le nom</span></h3>
+      <p class="intro t" data-html="1"
+         data-fr="Un petit groupe d'adjectifs très courants se place &lt;b&gt;avant&lt;/b&gt; le nom. Ils concernent la beauté, l'âge, la qualité et la taille."
+         data-en="A small group of very common adjectives goes &lt;b&gt;before&lt;/b&gt; the noun. They are about beauty, age, quality and size.">Un petit groupe d'adjectifs très courants se place <b>avant</b> le nom. Ils concernent la beauté, l'âge, la qualité et la taille.</p>
 
-    <table>
-      <thead>
-        <tr><th style="width:33%">Catégorie</th><th style="width:34%">Adjectifs</th><th style="width:33%">Exemple</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Beauté</td><td>beau, joli</td><td><i>un <b>beau</b> jardin</i></td></tr>
-        <tr><td>Âge</td><td>jeune, vieux, nouveau</td><td><i>une <b>vieille</b> maison</i></td></tr>
-        <tr><td>Qualité</td><td>bon, mauvais</td><td><i>un <b>bon</b> café</i></td></tr>
-        <tr><td>Taille</td><td>grand, petit, long, court</td><td><i>un <b>petit</b> problème</i></td></tr>
-      </tbody>
-    </table>
+      <!-- ancien tableau Catégorie / Adjectifs / Exemple, présenté en cartes (initiales B, Â, Q, T de l'astuce) -->
+      <div class="regles categories suite">
+        <article class="regle">
+          <div class="formule"><span class="initiale" aria-hidden="true">B</span><small class="t" data-fr="Catégorie" data-en="Category">Catégorie</small><span class="t" data-html="1" data-fr="Beauté" data-en="Beauté&lt;span class=&quot;traduction&quot;&gt;Beauty&lt;/span&gt;">Beauté</span></div>
+          <div class="regle-corps">
+            <div><span class="label t" data-fr="Adjectifs" data-en="Adjectives">Adjectifs</span><span class="forme">beau, joli</span></div>
+            <div><span class="label t" data-fr="Exemple" data-en="Example">Exemple</span><span class="forme"><i>un <b>beau</b> jardin</i></span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><span class="initiale" aria-hidden="true">Â</span><small class="t" data-fr="Catégorie" data-en="Category">Catégorie</small><span class="t" data-html="1" data-fr="Âge" data-en="Âge&lt;span class=&quot;traduction&quot;&gt;Age&lt;/span&gt;">Âge</span></div>
+          <div class="regle-corps">
+            <div><span class="label t" data-fr="Adjectifs" data-en="Adjectives">Adjectifs</span><span class="forme">jeune, vieux, nouveau</span></div>
+            <div><span class="label t" data-fr="Exemple" data-en="Example">Exemple</span><span class="forme"><i>une <b>vieille</b> maison</i></span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><span class="initiale" aria-hidden="true">Q</span><small class="t" data-fr="Catégorie" data-en="Category">Catégorie</small><span class="t" data-html="1" data-fr="Qualité" data-en="Qualité&lt;span class=&quot;traduction&quot;&gt;Quality&lt;/span&gt;">Qualité</span></div>
+          <div class="regle-corps">
+            <div><span class="label t" data-fr="Adjectifs" data-en="Adjectives">Adjectifs</span><span class="forme">bon, mauvais</span></div>
+            <div><span class="label t" data-fr="Exemple" data-en="Example">Exemple</span><span class="forme"><i>un <b>bon</b> café</i></span></div>
+          </div>
+        </article>
+        <article class="regle">
+          <div class="formule"><span class="initiale" aria-hidden="true">T</span><small class="t" data-fr="Catégorie" data-en="Category">Catégorie</small><span class="t" data-html="1" data-fr="Taille" data-en="Taille&lt;span class=&quot;traduction&quot;&gt;Size&lt;/span&gt;">Taille</span></div>
+          <div class="regle-corps">
+            <div><span class="label t" data-fr="Adjectifs" data-en="Adjectives">Adjectifs</span><span class="forme">grand, petit, long, court</span></div>
+            <div><span class="label t" data-fr="Exemple" data-en="Example">Exemple</span><span class="forme"><i>un <b>petit</b> problème</i></span></div>
+          </div>
+        </article>
+      </div>
 
-    <div class="bulle">
-      <svg class="marque" aria-hidden="true"><use href="#hex-info"/></svg>
-      <div class="contenu">
-        <strong>Astuce de mémorisation</strong>
-        Retenez les quatre catégories : <b>B</b>eauté, <b>Â</b>ge, <b>Q</b>ualité, <b>T</b>aille. Tous les autres adjectifs de cette page se placent après le nom.
+      <div class="encadre encadre-info">
+        <span class="marque" aria-hidden="true">i</span>
+        <div>
+          <strong class="t" data-fr="Astuce de mémorisation" data-en="Memory tip">Astuce de mémorisation</strong>
+          <p class="t" data-html="1"
+             data-fr="Retenez les quatre catégories : &lt;b&gt;B&lt;/b&gt;eauté, &lt;b&gt;Â&lt;/b&gt;ge, &lt;b&gt;Q&lt;/b&gt;ualité, &lt;b&gt;T&lt;/b&gt;aille. Tous les autres adjectifs de cette page se placent après le nom."
+             data-en="Remember the four categories: &lt;b&gt;B&lt;/b&gt;eauté, &lt;b&gt;Â&lt;/b&gt;ge, &lt;b&gt;Q&lt;/b&gt;ualité, &lt;b&gt;T&lt;/b&gt;aille (beauty, age, quality, size). All the other adjectives on this page go after the noun.">Retenez les quatre catégories : <b>B</b>eauté, <b>Â</b>ge, <b>Q</b>ualité, <b>T</b>aille. Tous les autres adjectifs de cette page se placent après le nom.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== TABLEAU DES ADJECTIFS ===================== -->
+  <!-- ===== LA LISTE DES ADJECTIFS ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>La liste des adjectifs</h2>
-    <p class="intro">La forme féminine apparaît en or quand elle est différente. La prononciation est donnée en alphabet phonétique international.</p>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="La liste des adjectifs" data-en="The list of adjectives">La liste des adjectifs</h2>
+      </div>
+      <p class="intro t"
+         data-fr="La forme féminine apparaît en or quand elle est différente. La prononciation est donnée en alphabet phonétique international."
+         data-en="The feminine form is shown in gold when it is different. The pronunciation is given in the International Phonetic Alphabet.">La forme féminine apparaît en or quand elle est différente. La prononciation est donnée en alphabet phonétique international.</p>
 
-    <div class="toggle" role="group" aria-label="Choix de la langue affichée">
-      <button type="button" data-vue="fr">Français</button>
-      <button type="button" data-vue="en">Anglais</button>
-      <button type="button" data-vue="deux" class="on">Les deux</button>
-    </div>
+      <div class="outils">
+        <div class="toggle" role="group" aria-label="Choix de la langue affichée">
+          <button type="button" data-vue="fr" class="t" data-fr="Français" data-en="French">Français</button>
+          <button type="button" data-vue="en" class="t" data-fr="Anglais" data-en="English">Anglais</button>
+          <button type="button" data-vue="deux" class="on t" data-fr="Les deux" data-en="Both">Les deux</button>
+        </div>
+        <input type="search" id="recherche" class="recherche" placeholder="Chercher un adjectif…" aria-label="Chercher un adjectif">
+      </div>
 
-    <input type="search" id="recherche" class="recherche" placeholder="Chercher un adjectif…" aria-label="Chercher un adjectif">
-
-    <table id="tableau-vocab">
-      <thead>
-        <tr>
-          <th class="c-fr" style="width:34%">Français</th>
-          <th class="c-fr" style="width:33%">Prononciation</th>
-          <th class="c-en" style="width:33%">Anglais</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="c-fr">beau / <span class="fem">belle</span></td><td class="c-fr phon">/bo/ · /bɛl/</td><td class="c-en">beautiful</td></tr>
-        <tr><td class="c-fr">bon / <span class="fem">bonne</span></td><td class="c-fr phon">/bɔ̃/ · /bɔn/</td><td class="c-en">good</td></tr>
-        <tr><td class="c-fr">calme</td><td class="c-fr phon">/kalm/</td><td class="c-en">calm</td></tr>
-        <tr><td class="c-fr">cher / <span class="fem">chère</span></td><td class="c-fr phon">/ʃɛʁ/</td><td class="c-en">expensive</td></tr>
-        <tr><td class="c-fr">clair / <span class="fem">claire</span></td><td class="c-fr phon">/klɛʁ/</td><td class="c-en">clear, light</td></tr>
-        <tr><td class="c-fr">content / <span class="fem">contente</span></td><td class="c-fr phon">/kɔ̃tɑ̃/ · /kɔ̃tɑ̃t/</td><td class="c-en">happy, pleased</td></tr>
-        <tr><td class="c-fr">court / <span class="fem">courte</span></td><td class="c-fr phon">/kuʁ/ · /kuʁt/</td><td class="c-en">short</td></tr>
-        <tr><td class="c-fr">désolé / <span class="fem">désolée</span></td><td class="c-fr phon">/dezɔle/</td><td class="c-en">sorry</td></tr>
-        <tr><td class="c-fr">difficile</td><td class="c-fr phon">/difisil/</td><td class="c-en">difficult</td></tr>
-        <tr><td class="c-fr">drôle</td><td class="c-fr phon">/dʁol/</td><td class="c-en">funny</td></tr>
-        <tr><td class="c-fr">égoïste</td><td class="c-fr phon">/eɡɔist/</td><td class="c-en">selfish</td></tr>
-        <tr><td class="c-fr">facile</td><td class="c-fr phon">/fasil/</td><td class="c-en">easy</td></tr>
-        <tr><td class="c-fr">faible</td><td class="c-fr phon">/fɛbl/</td><td class="c-en">weak</td></tr>
-        <tr><td class="c-fr">fier / <span class="fem">fière</span></td><td class="c-fr phon">/fjɛʁ/</td><td class="c-en">proud</td></tr>
-        <tr><td class="c-fr">fort / <span class="fem">forte</span></td><td class="c-fr phon">/fɔʁ/ · /fɔʁt/</td><td class="c-en">strong</td></tr>
-        <tr><td class="c-fr">froid / <span class="fem">froide</span></td><td class="c-fr phon">/fʁwa/ · /fʁwad/</td><td class="c-en">cold</td></tr>
-        <tr><td class="c-fr">génial / <span class="fem">géniale</span></td><td class="c-fr phon">/ʒenjal/</td><td class="c-en">great, awesome</td></tr>
-        <tr><td class="c-fr">gentil / <span class="fem">gentille</span></td><td class="c-fr phon">/ʒɑ̃ti/ · /ʒɑ̃tij/</td><td class="c-en">kind</td></tr>
-        <tr><td class="c-fr">grand / <span class="fem">grande</span></td><td class="c-fr phon">/ɡʁɑ̃/ · /ɡʁɑ̃d/</td><td class="c-en">tall, big</td></tr>
-        <tr><td class="c-fr">heureux / <span class="fem">heureuse</span></td><td class="c-fr phon">/øʁø/ · /øʁøz/</td><td class="c-en">happy</td></tr>
-        <tr><td class="c-fr">important / <span class="fem">importante</span></td><td class="c-fr phon">/ɛ̃pɔʁtɑ̃/ · /ɛ̃pɔʁtɑ̃t/</td><td class="c-en">important</td></tr>
-        <tr><td class="c-fr">inquiet / <span class="fem">inquiète</span></td><td class="c-fr phon">/ɛ̃kjɛ/ · /ɛ̃kjɛt/</td><td class="c-en">worried</td></tr>
-        <tr><td class="c-fr">intelligent / <span class="fem">intelligente</span></td><td class="c-fr phon">/ɛ̃teliʒɑ̃/ · /ɛ̃teliʒɑ̃t/</td><td class="c-en">smart</td></tr>
-        <tr><td class="c-fr">intéressant / <span class="fem">intéressante</span></td><td class="c-fr phon">/ɛ̃teʁesɑ̃/ · /ɛ̃teʁesɑ̃t/</td><td class="c-en">interesting</td></tr>
-        <tr><td class="c-fr">jeune</td><td class="c-fr phon">/ʒœn/</td><td class="c-en">young</td></tr>
-        <tr><td class="c-fr">joli / <span class="fem">jolie</span></td><td class="c-fr phon">/ʒɔli/</td><td class="c-en">pretty</td></tr>
-        <tr><td class="c-fr">lent / <span class="fem">lente</span></td><td class="c-fr phon">/lɑ̃/ · /lɑ̃t/</td><td class="c-en">slow</td></tr>
-        <tr><td class="c-fr">libre</td><td class="c-fr phon">/libʁ/</td><td class="c-en">free, available</td></tr>
-        <tr><td class="c-fr">long / <span class="fem">longue</span></td><td class="c-fr phon">/lɔ̃/ · /lɔ̃ɡ/</td><td class="c-en">long</td></tr>
-        <tr><td class="c-fr">malade</td><td class="c-fr phon">/malad/</td><td class="c-en">sick</td></tr>
-        <tr><td class="c-fr">mauvais / <span class="fem">mauvaise</span></td><td class="c-fr phon">/movɛ/ · /movɛz/</td><td class="c-en">bad</td></tr>
-        <tr><td class="c-fr">méchant / <span class="fem">méchante</span></td><td class="c-fr phon">/meʃɑ̃/ · /meʃɑ̃t/</td><td class="c-en">mean</td></tr>
-        <tr><td class="c-fr">neuf / <span class="fem">neuve</span></td><td class="c-fr phon">/nœf/ · /nœv/</td><td class="c-en">brand new</td></tr>
-        <tr><td class="c-fr">normal / <span class="fem">normale</span></td><td class="c-fr phon">/nɔʁmal/</td><td class="c-en">normal</td></tr>
-        <tr><td class="c-fr">nouveau / <span class="fem">nouvelle</span></td><td class="c-fr phon">/nuvo/ · /nuvɛl/</td><td class="c-en">new</td></tr>
-        <tr><td class="c-fr">occupé / <span class="fem">occupée</span></td><td class="c-fr phon">/ɔkype/</td><td class="c-en">busy</td></tr>
-        <tr><td class="c-fr">ouvert / <span class="fem">ouverte</span></td><td class="c-fr phon">/uvɛʁ/ · /uvɛʁt/</td><td class="c-en">open</td></tr>
-        <tr><td class="c-fr">parfait / <span class="fem">parfaite</span></td><td class="c-fr phon">/paʁfɛ/ · /paʁfɛt/</td><td class="c-en">perfect</td></tr>
-        <tr><td class="c-fr">pauvre</td><td class="c-fr phon">/povʁ/</td><td class="c-en">poor</td></tr>
-        <tr><td class="c-fr">petit / <span class="fem">petite</span></td><td class="c-fr phon">/pəti/ · /pətit/</td><td class="c-en">small</td></tr>
-        <tr><td class="c-fr">possible</td><td class="c-fr phon">/pɔsibl/</td><td class="c-en">possible</td></tr>
-        <tr><td class="c-fr">prêt / <span class="fem">prête</span></td><td class="c-fr phon">/pʁɛ/ · /pʁɛt/</td><td class="c-en">ready</td></tr>
-        <tr><td class="c-fr">propre</td><td class="c-fr phon">/pʁɔpʁ/</td><td class="c-en">clean</td></tr>
-        <tr><td class="c-fr">rapide</td><td class="c-fr phon">/ʁapid/</td><td class="c-en">fast</td></tr>
-        <tr><td class="c-fr">riche</td><td class="c-fr phon">/ʁiʃ/</td><td class="c-en">rich</td></tr>
-        <tr><td class="c-fr">sale</td><td class="c-fr phon">/sal/</td><td class="c-en">dirty</td></tr>
-        <tr><td class="c-fr">sérieux / <span class="fem">sérieuse</span></td><td class="c-fr phon">/seʁjø/ · /seʁjøz/</td><td class="c-en">serious</td></tr>
-        <tr><td class="c-fr">simple</td><td class="c-fr phon">/sɛ̃pl/</td><td class="c-en">simple</td></tr>
-        <tr><td class="c-fr">triste</td><td class="c-fr phon">/tʁist/</td><td class="c-en">sad</td></tr>
-        <tr><td class="c-fr">vieux / <span class="fem">vieille</span></td><td class="c-fr phon">/vjø/ · /vjɛj/</td><td class="c-en">old</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- ===================== EXERCICE 1 ===================== -->
-  <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 1 — Choisir le bon adjectif</h2>
-    <div class="exo">
-      <p class="consigne">Cliquez sur l'adjectif qui convient au sens de la phrase.</p>
-      <div id="exo1"></div>
-      <div class="actions">
-        <button class="btn secondaire" type="button" onclick="reinit(1)">Recommencer</button>
-        <span class="score" id="score1"></span>
+      <div class="tableau">
+        <table id="tableau-vocab">
+          <thead>
+            <tr>
+              <th class="c-fr t" style="width:34%" data-fr="Français" data-en="French">Français</th>
+              <th class="c-fr t" style="width:33%" data-fr="Prononciation" data-en="Pronunciation">Prononciation</th>
+              <th class="c-en t" style="width:33%" data-fr="Anglais" data-en="English">Anglais</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="c-fr">beau / <span class="fem">belle</span></td><td class="c-fr phon">/bo/ · /bɛl/</td><td class="c-en">beautiful</td></tr>
+            <tr><td class="c-fr">bon / <span class="fem">bonne</span></td><td class="c-fr phon">/bɔ̃/ · /bɔn/</td><td class="c-en">good</td></tr>
+            <tr><td class="c-fr">calme</td><td class="c-fr phon">/kalm/</td><td class="c-en">calm</td></tr>
+            <tr><td class="c-fr">cher / <span class="fem">chère</span></td><td class="c-fr phon">/ʃɛʁ/</td><td class="c-en">expensive</td></tr>
+            <tr><td class="c-fr">clair / <span class="fem">claire</span></td><td class="c-fr phon">/klɛʁ/</td><td class="c-en">clear, light</td></tr>
+            <tr><td class="c-fr">content / <span class="fem">contente</span></td><td class="c-fr phon">/kɔ̃tɑ̃/ · /kɔ̃tɑ̃t/</td><td class="c-en">happy, pleased</td></tr>
+            <tr><td class="c-fr">court / <span class="fem">courte</span></td><td class="c-fr phon">/kuʁ/ · /kuʁt/</td><td class="c-en">short</td></tr>
+            <tr><td class="c-fr">désolé / <span class="fem">désolée</span></td><td class="c-fr phon">/dezɔle/</td><td class="c-en">sorry</td></tr>
+            <tr><td class="c-fr">difficile</td><td class="c-fr phon">/difisil/</td><td class="c-en">difficult</td></tr>
+            <tr><td class="c-fr">drôle</td><td class="c-fr phon">/dʁol/</td><td class="c-en">funny</td></tr>
+            <tr><td class="c-fr">égoïste</td><td class="c-fr phon">/eɡɔist/</td><td class="c-en">selfish</td></tr>
+            <tr><td class="c-fr">facile</td><td class="c-fr phon">/fasil/</td><td class="c-en">easy</td></tr>
+            <tr><td class="c-fr">faible</td><td class="c-fr phon">/fɛbl/</td><td class="c-en">weak</td></tr>
+            <tr><td class="c-fr">fier / <span class="fem">fière</span></td><td class="c-fr phon">/fjɛʁ/</td><td class="c-en">proud</td></tr>
+            <tr><td class="c-fr">fort / <span class="fem">forte</span></td><td class="c-fr phon">/fɔʁ/ · /fɔʁt/</td><td class="c-en">strong</td></tr>
+            <tr><td class="c-fr">froid / <span class="fem">froide</span></td><td class="c-fr phon">/fʁwa/ · /fʁwad/</td><td class="c-en">cold</td></tr>
+            <tr><td class="c-fr">génial / <span class="fem">géniale</span></td><td class="c-fr phon">/ʒenjal/</td><td class="c-en">great, awesome</td></tr>
+            <tr><td class="c-fr">gentil / <span class="fem">gentille</span></td><td class="c-fr phon">/ʒɑ̃ti/ · /ʒɑ̃tij/</td><td class="c-en">kind</td></tr>
+            <tr><td class="c-fr">grand / <span class="fem">grande</span></td><td class="c-fr phon">/ɡʁɑ̃/ · /ɡʁɑ̃d/</td><td class="c-en">tall, big</td></tr>
+            <tr><td class="c-fr">heureux / <span class="fem">heureuse</span></td><td class="c-fr phon">/øʁø/ · /øʁøz/</td><td class="c-en">happy</td></tr>
+            <tr><td class="c-fr">important / <span class="fem">importante</span></td><td class="c-fr phon">/ɛ̃pɔʁtɑ̃/ · /ɛ̃pɔʁtɑ̃t/</td><td class="c-en">important</td></tr>
+            <tr><td class="c-fr">inquiet / <span class="fem">inquiète</span></td><td class="c-fr phon">/ɛ̃kjɛ/ · /ɛ̃kjɛt/</td><td class="c-en">worried</td></tr>
+            <tr><td class="c-fr">intelligent / <span class="fem">intelligente</span></td><td class="c-fr phon">/ɛ̃teliʒɑ̃/ · /ɛ̃teliʒɑ̃t/</td><td class="c-en">smart</td></tr>
+            <tr><td class="c-fr">intéressant / <span class="fem">intéressante</span></td><td class="c-fr phon">/ɛ̃teʁesɑ̃/ · /ɛ̃teʁesɑ̃t/</td><td class="c-en">interesting</td></tr>
+            <tr><td class="c-fr">jeune</td><td class="c-fr phon">/ʒœn/</td><td class="c-en">young</td></tr>
+            <tr><td class="c-fr">joli / <span class="fem">jolie</span></td><td class="c-fr phon">/ʒɔli/</td><td class="c-en">pretty</td></tr>
+            <tr><td class="c-fr">lent / <span class="fem">lente</span></td><td class="c-fr phon">/lɑ̃/ · /lɑ̃t/</td><td class="c-en">slow</td></tr>
+            <tr><td class="c-fr">libre</td><td class="c-fr phon">/libʁ/</td><td class="c-en">free, available</td></tr>
+            <tr><td class="c-fr">long / <span class="fem">longue</span></td><td class="c-fr phon">/lɔ̃/ · /lɔ̃ɡ/</td><td class="c-en">long</td></tr>
+            <tr><td class="c-fr">malade</td><td class="c-fr phon">/malad/</td><td class="c-en">sick</td></tr>
+            <tr><td class="c-fr">mauvais / <span class="fem">mauvaise</span></td><td class="c-fr phon">/movɛ/ · /movɛz/</td><td class="c-en">bad</td></tr>
+            <tr><td class="c-fr">méchant / <span class="fem">méchante</span></td><td class="c-fr phon">/meʃɑ̃/ · /meʃɑ̃t/</td><td class="c-en">mean</td></tr>
+            <tr><td class="c-fr">neuf / <span class="fem">neuve</span></td><td class="c-fr phon">/nœf/ · /nœv/</td><td class="c-en">brand new</td></tr>
+            <tr><td class="c-fr">normal / <span class="fem">normale</span></td><td class="c-fr phon">/nɔʁmal/</td><td class="c-en">normal</td></tr>
+            <tr><td class="c-fr">nouveau / <span class="fem">nouvelle</span></td><td class="c-fr phon">/nuvo/ · /nuvɛl/</td><td class="c-en">new</td></tr>
+            <tr><td class="c-fr">occupé / <span class="fem">occupée</span></td><td class="c-fr phon">/ɔkype/</td><td class="c-en">busy</td></tr>
+            <tr><td class="c-fr">ouvert / <span class="fem">ouverte</span></td><td class="c-fr phon">/uvɛʁ/ · /uvɛʁt/</td><td class="c-en">open</td></tr>
+            <tr><td class="c-fr">parfait / <span class="fem">parfaite</span></td><td class="c-fr phon">/paʁfɛ/ · /paʁfɛt/</td><td class="c-en">perfect</td></tr>
+            <tr><td class="c-fr">pauvre</td><td class="c-fr phon">/povʁ/</td><td class="c-en">poor</td></tr>
+            <tr><td class="c-fr">petit / <span class="fem">petite</span></td><td class="c-fr phon">/pəti/ · /pətit/</td><td class="c-en">small</td></tr>
+            <tr><td class="c-fr">possible</td><td class="c-fr phon">/pɔsibl/</td><td class="c-en">possible</td></tr>
+            <tr><td class="c-fr">prêt / <span class="fem">prête</span></td><td class="c-fr phon">/pʁɛ/ · /pʁɛt/</td><td class="c-en">ready</td></tr>
+            <tr><td class="c-fr">propre</td><td class="c-fr phon">/pʁɔpʁ/</td><td class="c-en">clean</td></tr>
+            <tr><td class="c-fr">rapide</td><td class="c-fr phon">/ʁapid/</td><td class="c-en">fast</td></tr>
+            <tr><td class="c-fr">riche</td><td class="c-fr phon">/ʁiʃ/</td><td class="c-en">rich</td></tr>
+            <tr><td class="c-fr">sale</td><td class="c-fr phon">/sal/</td><td class="c-en">dirty</td></tr>
+            <tr><td class="c-fr">sérieux / <span class="fem">sérieuse</span></td><td class="c-fr phon">/seʁjø/ · /seʁjøz/</td><td class="c-en">serious</td></tr>
+            <tr><td class="c-fr">simple</td><td class="c-fr phon">/sɛ̃pl/</td><td class="c-en">simple</td></tr>
+            <tr><td class="c-fr">triste</td><td class="c-fr phon">/tʁist/</td><td class="c-en">sad</td></tr>
+            <tr><td class="c-fr">vieux / <span class="fem">vieille</span></td><td class="c-fr phon">/vjø/ · /vjɛj/</td><td class="c-en">old</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
 
-  <!-- ===================== EXERCICE 2 ===================== -->
+  <!-- ===== EXERCICE 1 ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 2 — Écrire le féminin</h2>
-    <div class="exo">
-      <p class="consigne">Écrivez la forme féminine de chaque adjectif, puis vérifiez vos réponses.</p>
-      <div id="exo2"></div>
-      <div class="actions">
-        <button class="btn" type="button" onclick="corrige2()">Vérifier</button>
-        <button class="btn secondaire" type="button" onclick="reinit(2)">Recommencer</button>
-        <span class="score" id="score2"></span>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 1 — Choisir le bon adjectif" data-en="Exercise 1 — Choose the right adjective">Exercice 1 — Choisir le bon adjectif</h2>
+      </div>
+      <div class="exo">
+        <p class="consigne t" data-fr="Cliquez sur l'adjectif qui convient au sens de la phrase." data-en="Click the adjective that fits the meaning of the sentence.">Cliquez sur l'adjectif qui convient au sens de la phrase.</p>
+        <div id="exo1"></div>
+        <div class="actions">
+          <button class="btn secondaire t" type="button" onclick="reinit(1)" data-fr="Recommencer" data-en="Start again">Recommencer</button>
+          <span class="score" id="score1"></span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== EXERCICE 3 ===================== -->
+  <!-- ===== EXERCICE 2 ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 3 — Avant ou après le nom ?</h2>
-    <div class="exo">
-      <p class="consigne">Pour chaque adjectif, indiquez sa place par rapport au nom.</p>
-      <div id="exo3"></div>
-      <div class="actions">
-        <button class="btn secondaire" type="button" onclick="reinit(3)">Recommencer</button>
-        <span class="score" id="score3"></span>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 2 — Écrire le féminin" data-en="Exercise 2 — Write the feminine">Exercice 2 — Écrire le féminin</h2>
+      </div>
+      <div class="exo">
+        <p class="consigne t" data-fr="Écrivez la forme féminine de chaque adjectif, puis vérifiez vos réponses." data-en="Write the feminine form of each adjective, then check your answers.">Écrivez la forme féminine de chaque adjectif, puis vérifiez vos réponses.</p>
+        <div id="exo2"></div>
+        <div class="actions">
+          <button class="btn t" type="button" onclick="corrige2()" data-fr="Vérifier" data-en="Check">Vérifier</button>
+          <button class="btn secondaire t" type="button" onclick="reinit(2)" data-fr="Recommencer" data-en="Start again">Recommencer</button>
+          <span class="score" id="score2"></span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== EXERCICE 4 ===================== -->
+  <!-- ===== EXERCICE 3 ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 4 — Le sens des adjectifs</h2>
-    <div class="exo">
-      <p class="consigne">Lisez la définition et cliquez sur l'adjectif qui correspond.</p>
-      <div id="exo4"></div>
-      <div class="actions">
-        <button class="btn secondaire" type="button" onclick="reinit(4)">Recommencer</button>
-        <span class="score" id="score4"></span>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 3 — Avant ou après le nom ?" data-en="Exercise 3 — Before or after the noun?">Exercice 3 — Avant ou après le nom ?</h2>
+      </div>
+      <div class="exo">
+        <!-- les boutons « avant le nom » / « après le nom » restent en français : le script compare leur texte à la réponse -->
+        <p class="consigne t" data-fr="Pour chaque adjectif, indiquez sa place par rapport au nom." data-en="For each adjective, say where it goes in relation to the noun (avant = before, après = after).">Pour chaque adjectif, indiquez sa place par rapport au nom.</p>
+        <div id="exo3"></div>
+        <div class="actions">
+          <button class="btn secondaire t" type="button" onclick="reinit(3)" data-fr="Recommencer" data-en="Start again">Recommencer</button>
+          <span class="score" id="score3"></span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== EXERCICE 5 ===================== -->
+  <!-- ===== EXERCICE 4 ===== -->
   <section>
-    <h2><svg class="hex" aria-hidden="true"><use href="#hex-tri"/></svg>Exercice 5 — De l'anglais au français</h2>
-    <div class="exo">
-      <p class="consigne">Écrivez l'adjectif français correspondant. La forme masculine ou féminine est acceptée.</p>
-      <div id="exo5"></div>
-      <div class="actions">
-        <button class="btn" type="button" onclick="corrige5()">Vérifier</button>
-        <button class="btn secondaire" type="button" onclick="reinit(5)">Recommencer</button>
-        <span class="score" id="score5"></span>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 4 — Le sens des adjectifs" data-en="Exercise 4 — What the adjectives mean">Exercice 4 — Le sens des adjectifs</h2>
+      </div>
+      <div class="exo">
+        <p class="consigne t" data-fr="Lisez la définition et cliquez sur l'adjectif qui correspond." data-en="Read the definition and click the matching adjective.">Lisez la définition et cliquez sur l'adjectif qui correspond.</p>
+        <div id="exo4"></div>
+        <div class="actions">
+          <button class="btn secondaire t" type="button" onclick="reinit(4)" data-fr="Recommencer" data-en="Start again">Recommencer</button>
+          <span class="score" id="score4"></span>
+        </div>
       </div>
     </div>
   </section>
 
-</div>
+  <!-- ===== EXERCICE 5 ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Exercice 5 — De l'anglais au français" data-en="Exercise 5 — From English to French">Exercice 5 — De l'anglais au français</h2>
+      </div>
+      <div class="exo">
+        <p class="consigne t" data-fr="Écrivez l'adjectif français correspondant. La forme masculine ou féminine est acceptée." data-en="Write the matching French adjective. Either the masculine or the feminine form is accepted.">Écrivez l'adjectif français correspondant. La forme masculine ou féminine est acceptée.</p>
+        <div id="exo5"></div>
+        <div class="actions">
+          <button class="btn t" type="button" onclick="corrige5()" data-fr="Vérifier" data-en="Check">Vérifier</button>
+          <button class="btn secondaire t" type="button" onclick="reinit(5)" data-fr="Recommencer" data-en="Start again">Recommencer</button>
+          <span class="score" id="score5"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <footer>
-  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
-  <p style="margin-top:10px;font-size:.82rem;opacity:.7;">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></p>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
 
 <script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Les adjectifs essentiels — French with Alban', en: 'The essential adjectives (les adjectifs) — French with Alban' },
+  vue: { fr: 'Choix de la langue affichée', en: 'Choose the columns shown' },
+  recherche: { fr: 'Chercher un adjectif', en: 'Search for an adjective' },
+  compteur: { fr: ' adjectifs · 5 exercices', en: ' adjectives · 5 exercises' },
+  feminin: { fr: 'Féminin de ', en: 'Feminine of ' },
+  traduction: { fr: 'Adjectif français pour ', en: 'French adjective for ' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
 /* ---------- TOGGLE LANGUE ---------- */
 document.querySelectorAll('.toggle button').forEach(function(b){
   b.addEventListener('click', function(){
@@ -861,9 +991,9 @@ function construit2(){
     d.className = 'q';
     d.innerHTML =
       '<div class="saisie">' +
-      '<span class="num" style="font-family:Fraunces,serif;color:#c9972a">' + (i + 1) + '.</span>' +
-      '<span style="min-width:120px;font-weight:500">' + paire[0] + ' →</span>' +
-      '<input type="text" data-rep="' + paire[1] + '" aria-label="Féminin de ' + paire[0] + '" autocomplete="off">' +
+      '<span class="num">' + (i + 1) + '.</span>' +
+      '<span class="base">' + paire[0] + ' →</span>' +
+      '<input type="text" data-rep="' + paire[1] + '" aria-label="' + LIBELLES.feminin[LANG] + paire[0] + '" autocomplete="off">' +
       '<span class="solution"></span>' +
       '</div>';
     c.appendChild(d);
@@ -901,7 +1031,7 @@ function construit3(){
     d.className = 'q';
     var e = document.createElement('div');
     e.className = 'enonce';
-    e.innerHTML = '<span class="num">' + (i + 1) + '.</span><b style="color:#c0392b">' + q.a + '</b> — ' + q.n;
+    e.innerHTML = '<span class="num">' + (i + 1) + '.</span><b class="adj">' + q.a + '</b> — ' + q.n;
     d.appendChild(e);
     var box = document.createElement('div');
     box.className = 'opts';
@@ -984,9 +1114,9 @@ function construit5(){
     d.className = 'q';
     d.innerHTML =
       '<div class="saisie">' +
-      '<span class="num" style="font-family:Fraunces,serif;color:#c9972a">' + (i + 1) + '.</span>' +
-      '<span style="min-width:120px;font-weight:500">' + q.en + ' →</span>' +
-      '<input type="text" data-i="' + i + '" aria-label="Adjectif français pour ' + q.en + '" autocomplete="off" spellcheck="false">' +
+      '<span class="num">' + (i + 1) + '.</span>' +
+      '<span class="base">' + q.en + ' →</span>' +
+      '<input type="text" data-i="' + i + '" aria-label="' + LIBELLES.traduction[LANG] + q.en + '" autocomplete="off" spellcheck="false">' +
       '<span class="solution"></span>' +
       '</div>';
     c.appendChild(d);
@@ -1004,12 +1134,12 @@ function corrige5(){
     if (q.ok.indexOf(val) !== -1){
       inp.classList.add('juste');
       sol.textContent = '✓ ' + q.aff;
-      sol.style.color = '#2f7d51';
+      sol.style.color = '#1b1340';
       n++;
     } else {
       inp.classList.add('faux');
       sol.textContent = q.aff;
-      sol.style.color = '#c9972a';
+      sol.style.color = '#1b1340';
     }
   });
   document.getElementById('score5').textContent = n + ' / ' + champs.length;
@@ -1028,15 +1158,55 @@ construit2();
 construit3();
 construit4();
 construit5();
-</script>
 
-<script>
 /* compteur du bandeau : suit le nombre réel de lignes du tableau */
-(function () {
+function majCompteur() {
   var n = document.querySelectorAll('#tableau-vocab tbody tr').length;
   var c = document.getElementById('compteur');
-  if (c && n) c.textContent = n + ' adjectifs · 5 exercices';
-})();
+  if (c && n) c.textContent = n + LIBELLES.compteur[LANG];
+}
+
+/* textes alternatifs des illustrations : le français est dans alt, l'anglais dans data-alt-en */
+document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.setAttribute('data-alt-fr', img.alt); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.querySelectorAll('img[data-alt-en]').forEach(function (img) { img.alt = img.getAttribute('data-alt-' + lang); });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  /* liste et exercices : libellés seulement, les réponses déjà saisies sont conservées */
+  document.querySelector('.toggle').setAttribute('aria-label', LIBELLES.vue[lang]);
+  var champ = document.getElementById('recherche');
+  champ.setAttribute('aria-label', LIBELLES.recherche[lang]);
+  champ.setAttribute('placeholder', LIBELLES.recherche[lang] + '…');
+  document.querySelectorAll('#exo2 input').forEach(function (inp, i) { inp.setAttribute('aria-label', LIBELLES.feminin[lang] + feminins[i][0]); });
+  document.querySelectorAll('#exo5 input').forEach(function (inp) { inp.setAttribute('aria-label', LIBELLES.traduction[lang] + traductions[parseInt(inp.dataset.i, 10)].en); });
+  majCompteur();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
 </script>
 </body>
 </html>

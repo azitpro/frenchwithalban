@@ -6,178 +6,394 @@
 <title>Les animaux — French with Alban</title>
 <meta name="description" content="79 noms d'animaux en français avec prononciation, classés par catégorie. Cartes de révision anglais-français et exercices interactifs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#0d2b45; --rouge:#c0392b; --or:#c9972a; --creme:#faf7f2;
-    --gris-texte:#4a5568; --bordure:#e6e0d6; --rose-fem:#c2185b;
-    --vert:#2f7d51; --vert-doux:#e8f4ec;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Inter',sans-serif;color:var(--navy);background:#fff;line-height:1.7;-webkit-font-smoothing:antialiased;}
-
-  header{width:100%;background:#fff;border-bottom:3px solid var(--navy);padding:28px 48px;
-    display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-  .logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;white-space:nowrap;text-decoration:none;}
-  .logo .fw{color:var(--navy);} .logo .al{color:var(--rouge);}
-  nav{display:flex;gap:44px;}
-  nav a{font-size:1.05rem;font-weight:500;color:var(--navy);text-decoration:none;transition:color .2s;}
-  nav a:hover{color:var(--rouge);}
-  .gold-line{height:2px;background:var(--or);width:100%;}
-
-  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
-  .hero{background:var(--creme);width:100%;padding:56px 24px 48px;text-align:center;border-bottom:1px solid var(--bordure);}
-  .hero h1{font-family:'DM Serif Display',serif;font-size:3rem;font-weight:400;line-height:1.15;}
-
-  /* onglets */
-  .onglets{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:32px 0 8px;}
-  .onglet{font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;padding:11px 22px;
-    border:1.5px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;transition:all .15s;}
-  .onglet.on{background:var(--navy);color:#fff;box-shadow:3px 3px 0 var(--rouge);}
-  .onglet:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
-
-  section{padding:32px 0 56px;}
-  h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;display:flex;align-items:center;gap:13px;margin:28px 0 14px;}
-  .hex{flex-shrink:0;width:22px;height:26px;}
-  .intro{color:var(--gris-texte);margin-bottom:16px;}
-
-  .mots{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:8px;}
-  .mot{background:var(--creme);border:1px solid var(--bordure);border-top:2px solid var(--navy);
-    padding:12px 10px;text-align:center;font-family:'Fraunces',serif;font-size:1rem;font-weight:600;}
-  .mot small{display:block;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:400;color:var(--rouge);margin-top:2px;}
-
-  .carte{background:var(--creme);border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);
-    padding:30px 26px;margin:20px 0;text-align:center;}
-  .compteur{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris-texte);margin-bottom:16px;}
-  .piste{height:3px;background:var(--bordure);margin-bottom:22px;overflow:hidden;}
-  .piste span{display:block;height:100%;background:var(--rouge);transition:width .25s;}
-  .question{font-size:1.3rem;font-weight:500;line-height:1.4;margin-bottom:6px;}
-  .question b{font-family:'Fraunces',serif;color:var(--rouge);}
-  .opts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px;}
-  .opts button{font-family:'Inter',sans-serif;font-size:.95rem;padding:10px 20px;border:1px solid var(--bordure);
-    border-radius:999px;background:#fff;color:var(--navy);cursor:pointer;transition:all .15s;}
-  .opts button:hover:not(:disabled){border-color:var(--navy);}
-  .opts button.juste{background:var(--vert-doux);border-color:var(--vert);color:var(--vert);font-weight:600;}
-  .opts button.faux{background:#fdeceb;border-color:var(--rouge);color:var(--rouge);}
-  .opts button:disabled{cursor:default;}
-  .explication{margin-top:16px;font-size:.92rem;color:var(--gris-texte);min-height:1.4em;}
-  .en{font-size:1.5rem;font-weight:500;line-height:1.4;color:var(--navy);}
-  .fr{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;color:var(--rouge);
-      margin-top:18px;padding-top:18px;border-top:1px dashed var(--bordure);}
-  .btn.oui{background:var(--vert);} .btn.oui:hover{background:#256641;}
-  .btn.non{background:var(--rouge);} .btn.non:hover{background:#9c2f22;}
-
-  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
-  .btn{font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;padding:12px 26px;border:none;
-    border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;transition:background .2s;}
-  .btn:hover{background:#164066;}
-  .btn.secondaire{background:#fff;color:var(--navy);border:1px solid var(--navy);}
-  .btn:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
-  .score{font-family:'DM Serif Display',serif;font-size:3rem;color:var(--navy);line-height:1.1;}
-  .score small{font-size:1.2rem;color:var(--gris-texte);}
-
-  footer{width:100%;background:var(--navy);color:#fff;padding:36px 48px;text-align:center;font-size:.92rem;border-top:4px solid var(--or);}
-  footer a{color:#fff;text-decoration:underline;}
-
-  @media (max-width:720px){
-    header{padding:18px 20px;flex-wrap:wrap;gap:12px;}
-    .logo{font-size:1.3rem;} nav{gap:24px;}
-    .hero h1{font-size:2.1rem;}
-    .mots{grid-template-columns:repeat(2,1fr);}
-    .carte{padding:22px 16px;box-shadow:4px 4px 0 var(--navy);}
-    .question{font-size:1.1rem;}
-    footer{padding:28px 20px;}
-  }
-
-/* ===== LOGO HARMONISE ===== */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo-name {
-  font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700;
-  color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
 }
-.logo-al { color: var(--rouge); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+b, strong { font-weight: 700; }
+
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--aqua); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
+
+/* aperçu : une carte de révision et quelques petits */
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px 26px; rotate: 2deg; }
+.autocollant { position: absolute; top: -20px; right: -16px; background: var(--orange); color: #fff; border: 3px solid var(--ink); border-radius: 99px; padding: 8px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; rotate: 12deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
+.apercu-en { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--soft); }
+.apercu-fr { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.6rem; line-height: 1.05; letter-spacing: -.02em; margin: 2px 0 18px; }
+.apercu-fr span { padding: 1px 10px; border: 2px solid var(--ink); border-radius: 99px; background: var(--lemon); font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 600; letter-spacing: 0; }
+.apercu-petits { list-style: none; display: grid; gap: 10px; padding-top: 16px; border-top: 2.5px dashed rgba(27,19,64,.25); }
+.apercu-petits li { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 6px 14px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.2rem; box-shadow: 3px 3px 0 var(--ink); }
+.apercu-petits li:nth-child(2) { margin-left: 22px; }
+
+/* ---------- ONGLETS ---------- */
+.onglets { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+.onglet { font: 700 .95rem 'Inter', sans-serif; padding: 9px 20px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; color: var(--ink); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: translate .15s, box-shadow .15s, background .15s; }
+.onglet:hover { translate: -1px -1px; box-shadow: 3px 3px 0 var(--ink); }
+.onglet.on { background: var(--c); color: var(--c-texte); box-shadow: 4px 4px 0 var(--ink); translate: -1px -1px; }
+
+/* ---------- VUE LISTE ---------- */
+#contenu > div + div { margin-top: 46px; }
+.titre-liste { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; font-size: 1.9rem; }
+.mots { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.mot { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px 10px 14px; background: #fff; border: 2.5px solid var(--ink); border-left: 10px solid var(--c); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.12rem; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.mot small { font-family: 'Inter', sans-serif; font-size: .84rem; font-weight: 500; color: var(--soft); }
+
+/* ---------- EXERCICES ET CARTES DE RÉVISION ---------- */
+.carte { max-width: 760px; margin: 0 auto; padding: 30px 32px 30px; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); text-align: center; }
+.compteur { font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); margin-bottom: 12px; }
+.piste { height: 16px; margin-bottom: 26px; border: 2.5px solid var(--ink); border-radius: 99px; background: var(--bg); overflow: hidden; }
+.piste span { display: block; height: 100%; background: var(--lime); border-right: 2.5px solid var(--ink); transition: width .25s; }
+.piste span[style="width:0%"] { border-right: none; }
+.question { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.6rem; line-height: 1.25; letter-spacing: -.01em; margin-bottom: 6px; }
+.question b { display: inline-block; padding: 0 .25em; background: var(--lemon); border: 2.5px solid var(--ink); border-radius: 10px; box-shadow: 2px 2px 0 var(--ink); font-weight: 800; rotate: -1.5deg; }
+.opts { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px; }
+.opts button { font: 700 1rem 'Inter', sans-serif; padding: 9px 18px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--bg); color: var(--ink); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: translate .12s, background .12s; }
+.opts button:hover:not(:disabled) { translate: -1px -1px; background: var(--lemon); }
+.opts button:disabled { cursor: default; opacity: .55; }
+.opts button.juste { background: var(--lime); opacity: 1; }
+.opts button.faux { background: var(--pink); color: #fff; opacity: 1; text-decoration: line-through; }
+.explication { margin-top: 18px; font-size: 1rem; color: var(--soft); min-height: 1.4em; }
+.en { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2rem; line-height: 1.2; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.fr { display: block; width: fit-content; max-width: 100%; margin: 20px auto 0; padding: 4px 18px; background: var(--aqua); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.2; rotate: -1.5deg; overflow-wrap: anywhere; }
+
+.actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+.btn { font: 700 .95rem 'Inter', sans-serif; padding: 11px 24px; border: 2.5px solid var(--ink); border-radius: 99px; background: var(--violet); color: #fff; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: translate .15s, box-shadow .15s; }
+.btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.btn.secondaire { background: #fff; color: var(--ink); }
+.btn.oui { background: var(--lime); color: var(--ink); }
+.btn.non { background: var(--pink); color: #fff; }
+.score { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4rem; line-height: 1.05; letter-spacing: -.03em; }
+.score small { font-size: 1.6rem; color: var(--soft); }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
+.footer-copy a { color: rgba(250,247,242,0.6); }
+
+@media (prefers-reduced-motion: reduce) { .fil, .onglet, .opts button, .btn, .piste span { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 440px; rotate: 1deg; }
+  h1 { font-size: 3.6rem; }
+  .mots { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+/* ---------- MOBILE ---------- */
 @media (max-width: 720px) {
-  .logo-name { font-size: 1.3rem; }
-  .logo svg { width: 26px; height: 30px; }
+  .wrap { padding: 0 20px; }
+  section { padding: 38px 0; }
+  .hero { padding: 30px 0 18px; }
+  h1 { font-size: 2.9rem; }
+  .lead { font-size: 1.05rem; }
+  h2, .titre-liste { font-size: 1.5rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 20px 20px; }
+  .apercu-fr { font-size: 2rem; }
+  .apercu-petits li { font-size: 1.05rem; }
+  .apercu-petits li:nth-child(2) { margin-left: 12px; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .onglets { gap: 8px; margin-bottom: 30px; }
+  .onglet { padding: 7px 14px; font-size: .88rem; }
+  .mots { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .mot { font-size: 1.02rem; padding: 8px 10px 8px 12px; }
+  .mot small { font-size: .78rem; }
+  .carte { padding: 22px 16px 24px; box-shadow: 5px 5px 0 var(--ink); }
+  .question { font-size: 1.25rem; }
+  .en { font-size: 1.55rem; }
+  .fr { font-size: 1.7rem; }
+  .score { font-size: 3.2rem; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
-@media (max-width: 400px) { .logo-name { font-size: 1.12rem; } }
+@media (max-width: 400px) {
+  h1 { font-size: 2.45rem; }
+  .mots { grid-template-columns: 1fr; }
+  .opts button { padding: 8px 14px; }
+}
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="hex-tri" viewBox="-1 -1 32 37">
-    <clipPath id="clip-hex"><polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75"/></clipPath>
-    <g clip-path="url(#clip-hex)">
-      <rect x="0" y="0" width="10" height="35" fill="#002395"/>
-      <rect x="10" y="0" width="10" height="35" fill="#ffffff"/>
-      <rect x="20" y="0" width="10" height="35" fill="#ED2939"/>
-    </g>
-    <polygon points="15,0 30,8.75 30,26.25 15,35 0,26.25 0,8.75" fill="none" stroke="#0d2b45" stroke-width="2"/>
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
   </symbol>
 </svg>
 
-<header>
-  <a href="/" class="logo">
-    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
-      <defs><clipPath id="hexLogo"><polygon points="12,1 23,7 23,21 12,27 1,21 1,7"/></clipPath></defs>
-      <rect x="0" y="0" width="8" height="28" fill="#002395" clip-path="url(#hexLogo)"/>
-      <rect x="8" y="0" width="8" height="28" fill="#fff" clip-path="url(#hexLogo)"/>
-      <rect x="16" y="0" width="8" height="28" fill="#ED2939" clip-path="url(#hexLogo)"/>
-      <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#0d2b45" stroke-width="1.5"/>
-    </svg>
-    <span class="logo-name">French with <span class="logo-al">Alban</span></span>
-  </a>
-  <nav>
-    <a href="/ressources.html">Retour</a>
-    <a href="/">Accueil</a>
-  </nav>
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
 </header>
-<div class="gold-line"></div>
 
-<div class="hero"><h1>Les animaux</h1></div>
+<!-- Les noms d'animaux, leur prononciation et les réponses des exercices restent en français dans la version anglaise :
+     seuls les titres, les consignes, les explications et les boutons sont traduits. -->
+<main class="page suite-sections">
 
-<div class="wrap">
-  <div class="onglets" id="onglets"></div>
-  <section id="contenu"></section>
-</div>
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a0" data-fr="← Ressources · Débutant complet" data-en="← Resources · Complete beginner">← Ressources · Débutant complet</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</span>
+          <span class="pastille t" data-fr="Exercices" data-en="Exercises">Exercices</span>
+          <span class="pastille">A0</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Les &lt;mark&gt;animaux&lt;/mark&gt;"
+            data-en="&lt;mark&gt;Les animaux&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;Animals&lt;/span&gt;">Les <mark>animaux</mark></h1>
+        <p class="lead t"
+           data-fr="79 animaux classés par catégorie, avec cartes de révision et exercices."
+           data-en="79 animals sorted by category, with flashcards and interactive exercises.">79 animaux classés par catégorie, avec cartes de révision et exercices.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant t" data-fr="79 animaux" data-en="79 animals">79 animaux</span>
+        <div class="apercu-en">the fox</div>
+        <div class="apercu-fr">le renard <span>/ʁənaʁ/</span></div>
+        <ul class="apercu-petits suite">
+          <li>le chat → le chaton</li>
+          <li>le lion → le lionceau</li>
+          <li>l'ours → l'ourson</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VOCABULAIRE ET EXERCICES (onglets remplis par le script) ===== -->
+  <section>
+    <div class="wrap">
+      <div class="onglets suite" id="onglets"></div>
+      <div id="contenu"></div>
+    </div>
+  </section>
+
+</main>
 
 <footer>
-  <p>French with Alban — cours de français en ligne. <a href="/reserver.html">Réserver un cours</a></p>
-  <p style="margin-top:10px;font-size:.82rem;opacity:.7;">© 2026 · frenchwithalban.com · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/confidentialite.html">Confidentialité</a></p>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
 </footer>
+
+<script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Les animaux — French with Alban', en: 'Animals (les animaux) — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+
+/* ---------- libellés générés par les exercices ----------
+   Chaque libellé est une étiquette .t (data-fr / data-en) : appliquer() la traduit sur place,
+   sans relancer l'exercice en cours. */
+function echap(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function T(fr, en, html) {
+  var txt = LANG === 'en' ? en : fr;
+  return '<span class="t"' + (html ? ' data-html="1"' : '') + ' data-fr="' + echap(fr) + '" data-en="' + echap(en) + '">' + (html ? txt : echap(txt)) + '</span>';
+}
+</script>
 
 <script>
 /* ================= DONNÉES ================= */
 var CATS = {
   "domestiques": {
-    titre: "Animaux domestiques et de la ferme",
+    titre: "Animaux domestiques et de la ferme", titreEn: "Pets and farm animals",
     mots: [["l'âne","/ɑn/"],["le canard","/kanaʁ/"],["le chat","/ʃa/"],["le cheval","/ʃəval/"],["la chèvre","/ʃɛvʁ/"],
            ["le coq","/kɔk/"],["le chien","/ʃjɛ̃/"],["le cochon","/kɔʃɔ̃/"],["le hamster","/amstɛʁ/"],["le lapin","/lapɛ̃/"],
            ["le mouton","/mutɔ̃/"],["l'oie","/wa/"],["l'oiseau","/wazo/"],["le poisson","/pwasɔ̃/"],["la poule","/pul/"],
            ["la tortue","/tɔʁty/"],["la vache","/vaʃ/"],["la souris","/suʁi/"],["le dindon","/dɛ̃dɔ̃/"],["le cygne","/siɲ/"]]
   },
   "foret": {
-    titre: "Animaux de la forêt",
+    titre: "Animaux de la forêt", titreEn: "Forest animals",
     mots: [["la biche","/biʃ/"],["le cerf","/sɛʁ/"],["la chouette","/ʃwɛt/"],["l'écureuil","/ekyʁœj/"],["le hérisson","/eʁisɔ̃/"],
            ["le loup","/lu/"],["le renard","/ʁənaʁ/"],["la taupe","/top/"],["le hibou","/ibu/"],["le sanglier","/sɑ̃ɡlije/"]]
   },
   "sauvages": {
-    titre: "Animaux sauvages",
+    titre: "Animaux sauvages", titreEn: "Wild animals",
     mots: [["l'autruche","/otʁyʃ/"],["le castor","/kastɔʁ/"],["le chameau","/ʃamo/"],["la cigogne","/siɡɔɲ/"],["le crocodile","/kʁɔkɔdil/"],
            ["le dromadaire","/dʁɔmadɛʁ/"],["l'éléphant","/elefɑ̃/"],["la girafe","/ʒiʁaf/"],["le gorille","/ɡɔʁij/"],["le guépard","/ɡepaʁ/"],
            ["l'hippopotame","/ipɔpɔtam/"],["le kangourou","/kɑ̃ɡuʁu/"],["le lion","/ljɔ̃/"],["l'ours","/uʁs/"],["la panthère","/pɑ̃tɛʁ/"],
            ["le perroquet","/peʁɔkɛ/"],["le serpent","/sɛʁpɑ̃/"],["le singe","/sɛ̃ʒ/"],["le tigre","/tiɡʁ/"],["le zèbre","/zɛbʁ/"]]
   },
   "insectes": {
-    titre: "Insectes et petits animaux",
+    titre: "Insectes et petits animaux", titreEn: "Insects and small creatures",
     mots: [["l'abeille","/abɛj/"],["l'araignée","/aʁɛɲe/"],["la chenille","/ʃənij/"],["la coccinelle","/kɔksinɛl/"],["le crapaud","/kʁapo/"],
            ["l'escargot","/ɛskaʁɡo/"],["la fourmi","/fuʁmi/"],["la grenouille","/ɡʁənuj/"],["le lézard","/lezaʁ/"],["le mille-pattes","/milpat/"],
            ["la mouche","/muʃ/"],["le papillon","/papijɔ̃/"],["la sauterelle","/sotʁɛl/"],["le scarabée","/skaʁabe/"],["le ver de terre","/vɛʁdətɛʁ/"]]
   },
   "marins": {
-    titre: "Animaux marins",
+    titre: "Animaux marins", titreEn: "Sea animals",
     mots: [["la baleine","/balɛn/"],["le bernard-l'ermite","/bɛʁnaʁlɛʁmit/"],["le crabe","/kʁab/"],["le dauphin","/dofɛ̃/"],["l'étoile de mer","/etwaldəmɛʁ/"],
            ["l'hippocampe","/ipɔkɑ̃p/"],["la méduse","/medyz/"],["la mouette","/mwɛt/"],["l'otarie","/ɔtaʁi/"],["le pélican","/pelikɑ̃/"],
            ["la pieuvre","/pjœvʁ/"],["le requin","/ʁəkɛ̃/"],["le phoque","/fɔk/"],["la tortue de mer","/tɔʁtydəmɛʁ/"]]
@@ -191,31 +407,44 @@ var PETITS = [
   ["l'ours","l'ourson"],["le loup","le louveteau"],["l'éléphant","l'éléphanteau"]
 ];
 
+/* q, e : question et explication en français ; qEn, eEn : leur version anglaise (les réponses o restent en français) */
 var PIEGES = [
   {q:"Quelle forme est correcte ?", o:["le hibou","l'hibou","la hibou"], r:0,
-   e:"« Hibou » commence par un h aspiré : pas d'élision, on ne dit jamais « l'hibou »."},
+   e:"« Hibou » commence par un h aspiré : pas d'élision, on ne dit jamais « l'hibou ».",
+   qEn:"Which form is correct?", eEn:"« Hibou » begins with an aspirated h: no elision, so you never say « l'hibou »."},
   {q:"Quelle forme est correcte ?", o:["une souris","un souris","un sourie"], r:0,
-   e:"« Souris » est un mot féminin, malgré sa terminaison en -is."},
+   e:"« Souris » est un mot féminin, malgré sa terminaison en -is.",
+   qEn:"Which form is correct?", eEn:"« Souris » is a feminine word, despite its -is ending."},
   {q:"Quel est le pluriel de « un cheval » ?", o:["des chevaux","des chevals","des chevales"], r:0,
-   e:"Les mots en -al font leur pluriel en -aux : un cheval, des chevaux ; un animal, des animaux."},
+   e:"Les mots en -al font leur pluriel en -aux : un cheval, des chevaux ; un animal, des animaux.",
+   qEn:"What is the plural of « un cheval »?", eEn:"Words ending in -al form their plural in -aux: un cheval, des chevaux; un animal, des animaux."},
   {q:"Quel est le pluriel de « un hibou » ?", o:["des hiboux","des hibous","des hibous"], r:0,
-   e:"Sept mots en -ou prennent un -x : bijou, caillou, chou, genou, hibou, joujou, pou."},
+   e:"Sept mots en -ou prennent un -x : bijou, caillou, chou, genou, hibou, joujou, pou.",
+   qEn:"What is the plural of « un hibou »?", eEn:"Seven words ending in -ou take an -x: bijou, caillou, chou, genou, hibou, joujou, pou."},
   {q:"Quel animal a une seule bosse ?", o:["le dromadaire","le chameau","le lama"], r:0,
-   e:"Le dromadaire a une bosse, le chameau en a deux."},
+   e:"Le dromadaire a une bosse, le chameau en a deux.",
+   qEn:"Which animal has only one hump?", eEn:"Le dromadaire has one hump; le chameau has two."},
   {q:"En quoi se transforme la chenille ?", o:["en papillon","en sauterelle","en scarabée"], r:0,
-   e:"C'est la métamorphose : la chenille devient un papillon."},
+   e:"C'est la métamorphose : la chenille devient un papillon.",
+   qEn:"What does « la chenille » turn into?", eEn:"It's metamorphosis: la chenille becomes un papillon."},
   {q:"Quel insecte fait le miel ?", o:["l'abeille","la guêpe","la mouche"], r:0,
-   e:"L'abeille produit le miel. La guêpe, elle, n'en fait pas."},
+   e:"L'abeille produit le miel. La guêpe, elle, n'en fait pas.",
+   qEn:"Which insect makes honey?", eEn:"L'abeille makes honey. La guêpe (the wasp) doesn't."},
   {q:"Quel animal marin a huit bras ?", o:["la pieuvre","le crabe","la méduse"], r:0,
-   e:"La pieuvre, aussi appelée poulpe, a huit bras."},
+   e:"La pieuvre, aussi appelée poulpe, a huit bras.",
+   qEn:"Which sea animal has eight arms?", eEn:"La pieuvre, also called le poulpe, has eight arms."},
   {q:"Comment appelle-t-on la femelle du cerf ?", o:["la biche","la chèvre","la truie"], r:0,
-   e:"La biche est la femelle du cerf ; leur petit est le faon."},
+   e:"La biche est la femelle du cerf ; leur petit est le faon.",
+   qEn:"What is the female of « le cerf » called?", eEn:"La biche is the female of le cerf; their young is le faon."},
   {q:"Dans les expressions, quel animal est « rusé » ?", o:["le renard","le loup","la taupe"], r:0,
-   e:"« Rusé comme un renard » est une expression courante."},
+   e:"« Rusé comme un renard » est une expression courante.",
+   qEn:"In expressions, which animal is « rusé » (cunning)?", eEn:"« Rusé comme un renard » (as cunning as a fox) is a common expression."},
   {q:"Quel animal est « têtu » dans les expressions ?", o:["l'âne","le chat","l'oie"], r:0,
-   e:"« Têtu comme un âne » — on dit aussi « têtu comme une mule »."},
+   e:"« Têtu comme un âne » — on dit aussi « têtu comme une mule ».",
+   qEn:"Which animal is « têtu » (stubborn) in expressions?", eEn:"« Têtu comme un âne » (as stubborn as a donkey) — people also say « têtu comme une mule »."},
   {q:"Que dit-on quand il pleut très fort ?", o:["Il pleut des cordes","Il pleut des chats","Il pleut des grenouilles"], r:0,
-   e:"« Il pleut des cordes » ou « il pleut à verse ». L'anglais dit « cats and dogs », pas le français."}
+   e:"« Il pleut des cordes » ou « il pleut à verse ». L'anglais dit « cats and dogs », pas le français.",
+   qEn:"What do you say when it's raining very hard?", eEn:"« Il pleut des cordes » or « il pleut à verse ». English says “cats and dogs”; French doesn't."}
 ];
 
 var EN = {"l'âne": "the donkey", "le canard": "the duck", "le chat": "the cat", "le cheval": "the horse", "la chèvre": "the goat", "le coq": "the rooster", "le chien": "the dog", "le cochon": "the pig", "le hamster": "the hamster", "le lapin": "the rabbit", "le mouton": "the sheep", "l'oie": "the goose", "l'oiseau": "the bird", "le poisson": "the fish", "la poule": "the hen", "la tortue": "the tortoise", "la vache": "the cow", "la souris": "the mouse", "le dindon": "the turkey", "le cygne": "the swan", "la biche": "the doe", "le cerf": "the deer, the stag", "la chouette": "the owl", "l'écureuil": "the squirrel", "le hérisson": "the hedgehog", "le loup": "the wolf", "le renard": "the fox", "la taupe": "the mole", "le hibou": "the owl (horned)", "le sanglier": "the wild boar", "l'autruche": "the ostrich", "le castor": "the beaver", "le chameau": "the camel", "la cigogne": "the stork", "le crocodile": "the crocodile", "le dromadaire": "the dromedary", "l'éléphant": "the elephant", "la girafe": "the giraffe", "le gorille": "the gorilla", "le guépard": "the cheetah", "l'hippopotame": "the hippopotamus", "le kangourou": "the kangaroo", "le lion": "the lion", "l'ours": "the bear", "la panthère": "the panther", "le perroquet": "the parrot", "le serpent": "the snake", "le singe": "the monkey", "le tigre": "the tiger", "le zèbre": "the zebra", "l'abeille": "the bee", "l'araignée": "the spider", "la chenille": "the caterpillar", "la coccinelle": "the ladybird", "le crapaud": "the toad", "l'escargot": "the snail", "la fourmi": "the ant", "la grenouille": "the frog", "le lézard": "the lizard", "le mille-pattes": "the centipede", "la mouche": "the fly", "le papillon": "the butterfly", "la sauterelle": "the grasshopper", "le scarabée": "the beetle", "le ver de terre": "the earthworm", "la baleine": "the whale", "le bernard-l'ermite": "the hermit crab", "le crabe": "the crab", "le dauphin": "the dolphin", "l'étoile de mer": "the starfish", "l'hippocampe": "the seahorse", "la méduse": "the jellyfish", "la mouette": "the seagull", "l'otarie": "the sea lion", "le pélican": "the pelican", "la pieuvre": "the octopus", "le requin": "the shark", "le phoque": "the seal", "la tortue de mer": "the sea turtle"};
@@ -226,11 +455,11 @@ function el(h){var d=document.createElement('div');d.innerHTML=h;return d;}
 var contenu=document.getElementById('contenu');
 
 /* ================= ONGLETS ================= */
-var ONGLETS=[["liste","Le vocabulaire"],["cartes","Cartes de révision"],["cat","Trouve la catégorie"],["petits","Les petits"],["pieges","Les pièges"]];
+var ONGLETS=[["liste","Le vocabulaire","Vocabulary"],["cartes","Cartes de révision","Flashcards"],["cat","Trouve la catégorie","Find the category"],["petits","Les petits","Baby animals"],["pieges","Les pièges","Pitfalls"]];
 var boite=document.getElementById('onglets');
 ONGLETS.forEach(function(o){
   var b=document.createElement('button');
-  b.className='onglet'; b.textContent=o[1]; b.dataset.vue=o[0];
+  b.type='button'; b.className='onglet t'; b.dataset.fr=o[1]; b.dataset.en=o[2]; b.textContent=LANG==='en'?o[2]:o[1]; b.dataset.vue=o[0];
   b.addEventListener('click',function(){
     document.querySelectorAll('.onglet').forEach(function(x){x.classList.remove('on');});
     b.classList.add('on'); afficher(o[0]);
@@ -248,21 +477,24 @@ function afficher(vue){
 }
 
 /* ================= VUE LISTE ================= */
+var HEX='<svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>';
 function vueListe(){
   Object.keys(CATS).forEach(function(k){
     var c=CATS[k];
-    var h='<h2><svg class="hex"><use href="#hex-tri"/></svg>'+c.titre+'</h2><div class="mots">';
+    var h='<h2 class="titre-liste">'+HEX+T(c.titre,c.titreEn)+'</h2><div class="mots suite">';
     c.mots.forEach(function(m){ h+='<div class="mot">'+m[0]+'<small>'+m[1]+'</small></div>'; });
     h+='</div>';
     contenu.appendChild(el(h));
   });
-  var h='<h2><svg class="hex"><use href="#hex-tri"/></svg>Les noms des petits</h2><div class="mots">';
+  var h='<h2 class="titre-liste">'+HEX+T('Les noms des petits','Names of baby animals')+'</h2><div class="mots suite">';
   PETITS.forEach(function(p){ h+='<div class="mot">'+p[1]+'<small>'+p[0]+'</small></div>'; });
   h+='</div>';
   contenu.appendChild(el(h));
 }
 
 /* ================= MOTEUR D'EXERCICE ================= */
+/* q.texte : HTML déjà traduisible (T) ; q.explication : {fr, en} ; q.traductions : libellés anglais de certaines options.
+   La bonne réponse est reconnue par data-valeur (le texte affiché peut être traduit). */
 function lancer(items, rendu){
   var paquet=melange(items), i=0, bons=0, erreurs=[];
   function etape(){
@@ -271,22 +503,24 @@ function lancer(items, rendu){
     var q=rendu(paquet[i]);
     var pct=Math.round(i/paquet.length*100);
     var carte=el('<div class="carte">'+
-      '<div class="compteur">Question '+(i+1)+' sur '+paquet.length+'</div>'+
+      '<div class="compteur">'+T('Question '+(i+1)+' sur '+paquet.length,'Question '+(i+1)+' of '+paquet.length)+'</div>'+
       '<div class="piste"><span style="width:'+pct+'%"></span></div>'+
       '<div class="question">'+q.texte+'</div>'+
       '<div class="opts"></div><div class="explication"></div></div>').firstChild;
     var opts=carte.querySelector('.opts'), expl=carte.querySelector('.explication');
     melange(q.options).forEach(function(o){
-      var b=document.createElement('button'); b.type='button'; b.textContent=o;
+      var b=document.createElement('button'); b.type='button'; b.textContent=o; b.dataset.valeur=o;
+      if(q.traductions&&q.traductions[o]){ b.className='t'; b.dataset.fr=o; b.dataset.en=q.traductions[o]; b.textContent=LANG==='en'?q.traductions[o]:o; }
       b.addEventListener('click',function(){
         opts.querySelectorAll('button').forEach(function(x){x.disabled=true;});
         if(o===q.bonne){ b.classList.add('juste'); bons++; }
         else { b.classList.add('faux'); erreurs.push(paquet[i]);
-          opts.querySelectorAll('button').forEach(function(x){ if(x.textContent===q.bonne) x.classList.add('juste'); }); }
-        expl.textContent=q.explication||'';
+          opts.querySelectorAll('button').forEach(function(x){ if(x.dataset.valeur===q.bonne) x.classList.add('juste'); }); }
+        if(q.explication&&q.explication.fr){ expl.className='explication t'; expl.dataset.fr=q.explication.fr; expl.dataset.en=q.explication.en; expl.textContent=q.explication[LANG]; }
+        else expl.textContent='';
         var suite=document.createElement('div'); suite.className='actions';
         var n=document.createElement('button'); n.className='btn';
-        n.textContent=(i+1===paquet.length)?'Voir le résultat':'Suivant';
+        n.innerHTML=(i+1===paquet.length)?T('Voir le résultat','See the result'):T('Suivant','Next');
         n.addEventListener('click',function(){ i++; etape(); });
         suite.appendChild(n); carte.appendChild(suite); n.focus();
       });
@@ -298,16 +532,16 @@ function lancer(items, rendu){
     contenu.innerHTML='';
     var c=el('<div class="carte">'+
       '<div class="score">'+bons+' <small>/ '+paquet.length+'</small></div>'+
-      '<div class="explication">'+(erreurs.length?erreurs.length+' à revoir.':'Tout est acquis.')+'</div>'+
+      '<div class="explication">'+(erreurs.length?T(erreurs.length+' à revoir.',erreurs.length+' to review.'):T('Tout est acquis.','You know them all.'))+'</div>'+
       '<div class="actions"></div></div>').firstChild;
     var a=c.querySelector('.actions');
     if(erreurs.length){
-      var r=document.createElement('button'); r.className='btn'; r.textContent='Réviser les erreurs';
+      var r=document.createElement('button'); r.className='btn'; r.innerHTML=T('Réviser les erreurs','Review your mistakes');
       var copie=erreurs.slice();
       r.addEventListener('click',function(){ lancer(copie,rendu); });
       a.appendChild(r);
     }
-    var re=document.createElement('button'); re.className='btn secondaire'; re.textContent='Recommencer';
+    var re=document.createElement('button'); re.className='btn secondaire'; re.innerHTML=T('Recommencer','Start again');
     re.addEventListener('click',function(){ lancer(items,rendu); });
     a.appendChild(re);
     contenu.appendChild(c);
@@ -316,7 +550,9 @@ function lancer(items, rendu){
 }
 
 /* ================= EXERCICE : CATÉGORIE ================= */
-var LIBELLES={domestiques:"Domestique",foret:"Forêt",sauvages:"Sauvage",insectes:"Insecte",marins:"Marin"};
+/* (renommé LIBELLES_CAT : LIBELLES désigne déjà les libellés de l'en-tête) */
+var LIBELLES_CAT={domestiques:"Domestique",foret:"Forêt",sauvages:"Sauvage",insectes:"Insecte",marins:"Marin"};
+var LIBELLES_CAT_EN={"Domestique":"Domestic","Forêt":"Forest","Sauvage":"Wild","Insecte":"Insect","Marin":"Sea"};
 function exoCategorie(){
   var items=[];
   Object.keys(CATS).forEach(function(k){
@@ -325,10 +561,11 @@ function exoCategorie(){
   items=melange(items).slice(0,20);
   lancer(items,function(it){
     return {
-      texte:'À quelle catégorie appartient <b>'+it.mot+'</b> ?',
-      options:Object.keys(LIBELLES).map(function(k){return LIBELLES[k];}),
-      bonne:LIBELLES[it.cat],
-      explication:''
+      texte:T('À quelle catégorie appartient <b>'+it.mot+'</b> ?','Which category does <b>'+it.mot+'</b> belong to?',true),
+      options:Object.keys(LIBELLES_CAT).map(function(k){return LIBELLES_CAT[k];}),
+      bonne:LIBELLES_CAT[it.cat],
+      traductions:LIBELLES_CAT_EN,
+      explication:{fr:'',en:''}
     };
   });
 }
@@ -338,10 +575,10 @@ function exoPetits(){
   lancer(PETITS.slice(),function(p){
     var faux=melange(PETITS.filter(function(x){return x[1]!==p[1];})).slice(0,2).map(function(x){return x[1];});
     return {
-      texte:'Comment s\'appelle le petit de <b>'+p[0]+'</b> ?',
+      texte:T('Comment s\'appelle le petit de <b>'+p[0]+'</b> ?','What is the young of <b>'+p[0]+'</b> called?',true),
       options:[p[1]].concat(faux),
       bonne:p[1],
-      explication:'Le petit de '+p[0]+' est '+p[1]+'.'
+      explication:{fr:'Le petit de '+p[0]+' est '+p[1]+'.',en:'The young of '+p[0]+' is '+p[1]+'.'}
     };
   });
 }
@@ -349,7 +586,7 @@ function exoPetits(){
 /* ================= EXERCICE : LES PIÈGES ================= */
 function exoPieges(){
   lancer(PIEGES.slice(),function(q){
-    return { texte:q.q, options:q.o.slice(), bonne:q.o[q.r], explication:q.e };
+    return { texte:T(q.q,q.qEn), options:q.o.slice(), bonne:q.o[q.r], explication:{fr:q.e,en:q.eEn} };
   });
 }
 
@@ -364,10 +601,10 @@ function exoCartes(){
 
 function accueilCartes(liste){
   contenu.innerHTML='';
-  var c=el('<div class="carte"><div class="en">'+liste.length+' animaux à réviser</div>'+
-           '<div class="explication">Une traduction anglaise apparaît. Dites l\'animal en français, puis vérifiez.</div>'+
+  var c=el('<div class="carte"><div class="en">'+T(liste.length+' animaux à réviser',liste.length+' animals to review')+'</div>'+
+           '<div class="explication">'+T('Une traduction anglaise apparaît. Dites l\'animal en français, puis vérifiez.','An English translation appears. Say the animal in French, then check.')+'</div>'+
            '<div class="actions"></div></div>').firstChild;
-  var b=document.createElement('button'); b.className='btn'; b.textContent='Commencer';
+  var b=document.createElement('button'); b.className='btn'; b.innerHTML=T('Commencer','Start');
   b.addEventListener('click',function(){ jouerCartes(melange(liste), liste); });
   c.querySelector('.actions').appendChild(b);
   contenu.appendChild(c);
@@ -382,28 +619,28 @@ function jouerCartes(paquet, source){
     var carte=paquet[i];
     var pct=Math.round(i/paquet.length*100);
     var c=el('<div class="carte">'+
-      '<div class="compteur">Carte '+(i+1)+' sur '+paquet.length+'</div>'+
+      '<div class="compteur">'+T('Carte '+(i+1)+' sur '+paquet.length,'Card '+(i+1)+' of '+paquet.length)+'</div>'+
       '<div class="piste"><span style="width:'+pct+'%"></span></div>'+
-      '<div class="en">'+carte.en+'</div>'+
+      '<div class="en" lang="en">'+carte.en+'</div>'+
       (revelee?'<div class="fr">'+carte.fr+'</div>':'')+
       '<div class="actions"></div></div>').firstChild;
     var a=c.querySelector('.actions');
 
     if(revelee){
-      var oui=document.createElement('button'); oui.className='btn oui'; oui.innerHTML='\u2713&nbsp; Je savais';
+      var oui=document.createElement('button'); oui.className='btn oui'; oui.innerHTML='\u2713&nbsp; '+T('Je savais','I knew it');
       oui.addEventListener('click',function(){ bons++; i++; revelee=false; etape(); });
-      var non=document.createElement('button'); non.className='btn non'; non.innerHTML='\u2717&nbsp; Je ne savais pas';
+      var non=document.createElement('button'); non.className='btn non'; non.innerHTML='\u2717&nbsp; '+T('Je ne savais pas','I didn\'t know');
       non.addEventListener('click',function(){ erreurs.push(carte); i++; revelee=false; etape(); });
       a.appendChild(oui); a.appendChild(non);
     } else {
-      var v=document.createElement('button'); v.className='btn'; v.textContent='Afficher la réponse';
+      var v=document.createElement('button'); v.className='btn'; v.innerHTML=T('Afficher la réponse','Show the answer');
       v.addEventListener('click',function(){ revelee=true; etape(); });
       a.appendChild(v);
     }
 
     contenu.appendChild(c);
     var stop=el('<div class="actions"></div>').firstChild;
-    var s=document.createElement('button'); s.className='btn secondaire'; s.textContent='Arrêter';
+    var s=document.createElement('button'); s.className='btn secondaire'; s.innerHTML=T('Arrêter','Stop');
     s.addEventListener('click',function(){ accueilCartes(source); });
     stop.appendChild(s); contenu.appendChild(stop);
   }
@@ -412,19 +649,19 @@ function jouerCartes(paquet, source){
     contenu.innerHTML='';
     var c=el('<div class="carte">'+
       '<div class="score">'+bons+' <small>/ '+paquet.length+'</small></div>'+
-      '<div class="explication">'+(erreurs.length?erreurs.length+' animal(aux) à revoir.':'Tout est acquis.')+'</div>'+
+      '<div class="explication">'+(erreurs.length?T(erreurs.length+' animal(aux) à revoir.',erreurs.length+' animal(s) to review.'):T('Tout est acquis.','You know them all.'))+'</div>'+
       '<div class="actions"></div></div>').firstChild;
     var a=c.querySelector('.actions');
     if(erreurs.length){
       var copie=erreurs.slice();
-      var r=document.createElement('button'); r.className='btn'; r.textContent='Réviser les erreurs';
+      var r=document.createElement('button'); r.className='btn'; r.innerHTML=T('Réviser les erreurs','Review your mistakes');
       r.addEventListener('click',function(){ jouerCartes(melange(copie), source); });
       a.appendChild(r);
     }
-    var re=document.createElement('button'); re.className='btn secondaire'; re.textContent='Recommencer';
+    var re=document.createElement('button'); re.className='btn secondaire'; re.innerHTML=T('Recommencer','Start again');
     re.addEventListener('click',function(){ jouerCartes(melange(source), source); });
     a.appendChild(re);
-    var st=document.createElement('button'); st.className='btn secondaire'; st.textContent='Arrêter';
+    var st=document.createElement('button'); st.className='btn secondaire'; st.innerHTML=T('Arrêter','Stop');
     st.addEventListener('click',function(){ accueilCartes(source); });
     a.appendChild(st);
     contenu.appendChild(c);
