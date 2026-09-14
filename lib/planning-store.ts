@@ -5,11 +5,12 @@
  * été modifié entre-temps (autre onglet, autre appareil, page restée ouverte), le
  * serveur refuse au lieu d'écraser la version plus récente. Avant chaque écriture,
  * la version remplacée est conservée dans un historique des 30 dernières versions.
+ * À chaque écriture, ce qui dépasse la période de conservation (12 mois) est effacé.
  *
  * Aucune route publique n'utilise ce module.
  */
 import type { Redis } from '@upstash/redis';
-import { EMPTY_PLANNING, validatePlanning } from './planning';
+import { EMPTY_PLANNING, pruneOld, todayInParis, validatePlanning } from './planning';
 import type { Planning } from './planning';
 
 export const PLANNING_KEY = 'planning';
@@ -66,14 +67,15 @@ export async function savePlanning(
   // Écriture groupée (MULTI/EXEC). Entre la lecture ci-dessus et cette écriture, la
   // fenêtre est de quelques millisecondes : suffisant pour un seul utilisateur.
   const revision = current + 1;
+  const planning = pruneOld(result.planning, todayInParis(now));
   const tx = redis.multi();
   if (raw) {
     const entry: HistoryEntry = { replacedAt: now.toISOString(), revision: current, planning: raw };
     tx.lpush(HISTORY_KEY, entry);
     tx.ltrim(HISTORY_KEY, 0, HISTORY_LENGTH - 1);
   }
-  tx.set(PLANNING_KEY, result.planning);
+  tx.set(PLANNING_KEY, planning);
   tx.set(REVISION_KEY, revision);
   await tx.exec();
-  return { status: 'saved', planning: result.planning, revision };
+  return { status: 'saved', planning, revision };
 }

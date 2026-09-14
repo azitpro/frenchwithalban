@@ -1,16 +1,19 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { CSSProperties, PointerEvent as ReactPointerEvent, MouseEvent as ReactMouseEvent } from 'react';
+import type { CSSProperties, ReactNode, PointerEvent as ReactPointerEvent, MouseEvent as ReactMouseEvent } from 'react';
 import { EMPTY_SCHEDULE, withDefaults } from '@/lib/schedule';
 import type { Schedule } from '@/lib/schedule';
 import {
-  DAY_END_MIN, DAY_START_MIN, DEFAULT_SETTINGS, EMPTY_PLANNING, ROUNDING_OPTIONS, ROUTINE_COLORS, WEEKDAY_NAMES,
-  addDays, addRoutine, addSlot, deleteOccurrence, deleteRoutine, fmtDuration, fmtTime,
-  lessonsForWeek, occurrencesForWeek, setRounding, todayInParis, updateOccurrence, updateRoutine,
-  weekDates, weekStartOf, weeklyQuotas,
+  DAY_END_MIN, DAY_START_MIN, DEFAULT_SETTINGS, EMPTY_PLANNING, EVENT_COLORS, EVENT_TITLE_MAX, JOURNAL_ITEM_MAX, JOURNAL_MAX_ITEMS,
+  RETENTION_WEEKS, ROUNDING_OPTIONS, ROUTINE_COLORS, WEEKDAY_NAMES,
+  addDays, addEvent, addRoutine, addSlot, deleteEvent, deleteOccurrence, deleteRoutine, eventRef, eventsForWeek,
+  fmtDuration, fmtTime, lessonsForWeek, nowInParis, occurrenceRef, occurrencesForWeek, retentionStart, setJournal, setRounding,
+  updateEvent, updateOccurrence, updateRoutine, weekDates, weekStartOf, weeklyQuotas,
 } from '@/lib/planning';
-import type { Lesson, Occurrence, PlacementDefaults, Planning, PreplyBusy, Routine, RoundingMin, Scope } from '@/lib/planning';
+import type {
+  EventInput, Lesson, Occurrence, PlacementDefaults, Planning, PlanningEvent, PreplyBusy, Routine, RoundingMin, Scope,
+} from '@/lib/planning';
 
 /* ======================= réglages ======================= */
 
@@ -18,10 +21,14 @@ const K = 1.1; // pixels par minute à l'écran (réduit à l'impression)
 const DURATIONS = [25, 50, 60];
 
 type Dialog =
-  | { type: 'place'; date: string; startMin: number }
+  | { type: 'place'; date: string; startMin: number; mode: 'routine' | 'event' }
   | { type: 'edit'; occ: Occurrence; durationMin?: number }
+  | { type: 'event'; event: PlanningEvent }
   | { type: 'routine'; routine?: Routine }
   | null;
+
+/** Bloc personnel affiché dans la grille : occurrence de routine ou événement ponctuel. */
+type Bloc = { key: string; startMin: number; endMin: number; occ?: Occurrence; event?: PlanningEvent };
 
 /* ======================= utilitaires d'affichage ======================= */
 
@@ -47,8 +54,6 @@ function weekLabel(weekStart: string): string {
   return `Semaine du ${start} au ${formatLongDate(end, true)}`;
 }
 
-const shortDay = (date: string) => `${WEEKDAY_NAMES[(new Date(date + 'T00:00:00Z').getUTCDay() + 6) % 7].slice(0, 3)} ${Number(date.slice(8))}`;
-
 const toMinutes = (value: string) => {
   const [h, m] = value.split(':').map(Number);
   return Number.isFinite(h) && Number.isFinite(m) ? h * 60 + m : NaN;
@@ -61,26 +66,26 @@ function textOn(hex: string): string {
   return 0.299 * r + 0.587 * g + 0.114 * b > 150 ? '#0d2b45' : '#ffffff';
 }
 
-/** Répartit en colonnes les routines qui se chevauchent entre elles. */
-function laneLayout(occurrences: Occurrence[]): Map<Occurrence, { lane: number; lanes: number }> {
-  const result = new Map<Occurrence, { lane: number; lanes: number }>();
-  const sorted = [...occurrences].sort((a, b) => a.startMin - b.startMin);
-  let cluster: Occurrence[] = [];
+/** Répartit en colonnes les blocs (routines et événements) qui se chevauchent entre eux. */
+function laneLayout(blocs: Bloc[]): Map<string, { lane: number; lanes: number }> {
+  const result = new Map<string, { lane: number; lanes: number }>();
+  const sorted = [...blocs].sort((a, b) => a.startMin - b.startMin);
+  let cluster: Bloc[] = [];
   let clusterEnd = -1;
   const flush = () => {
     const laneEnds: number[] = [];
-    const assigned = cluster.map((o) => {
-      let lane = laneEnds.findIndex((end) => end <= o.startMin);
+    const assigned = cluster.map((b) => {
+      let lane = laneEnds.findIndex((end) => end <= b.startMin);
       if (lane < 0) { lane = laneEnds.length; laneEnds.push(0); }
-      laneEnds[lane] = o.endMin;
-      return { o, lane };
+      laneEnds[lane] = b.endMin;
+      return { b, lane };
     });
-    assigned.forEach(({ o, lane }) => result.set(o, { lane, lanes: laneEnds.length }));
+    assigned.forEach(({ b, lane }) => result.set(b.key, { lane, lanes: laneEnds.length }));
   };
-  for (const o of sorted) {
-    if (cluster.length && o.startMin >= clusterEnd) { flush(); cluster = []; clusterEnd = -1; }
-    cluster.push(o);
-    clusterEnd = Math.max(clusterEnd, o.endMin);
+  for (const b of sorted) {
+    if (cluster.length && b.startMin >= clusterEnd) { flush(); cluster = []; clusterEnd = -1; }
+    cluster.push(b);
+    clusterEnd = Math.max(clusterEnd, b.endMin);
   }
   if (cluster.length) flush();
   return result;
@@ -96,7 +101,8 @@ async function fetchPlanning(): Promise<{ planning: Planning; revision: number }
 /* ======================= page ======================= */
 
 export default function PlanningPersonnel() {
-  const today = todayInParis();
+  const [clock, setClock] = useState(() => nowInParis());
+  const today = clock.date;
   const currentWeek = weekStartOf(today);
 
   const [weekStart, setWeekStart] = useState(currentWeek);
@@ -119,6 +125,12 @@ export default function PlanningPersonnel() {
   const pendingRef = useRef(0);
   const generationRef = useRef(0);
   const dialogRef = useRef<Dialog>(null);
+
+  /* ---------- horloge : sert à savoir quels créneaux sont terminés ---------- */
+  useEffect(() => {
+    const t = setInterval(() => setClock(nowInParis()), 60_000);
+    return () => clearInterval(t);
+  }, []);
 
   /* ---------- chargement ---------- */
   useEffect(() => {
@@ -200,9 +212,13 @@ export default function PlanningPersonnel() {
   const dates = useMemo(() => weekDates(weekStart), [weekStart]);
   const lessons = useMemo(() => lessonsForWeek(weekStart, schedule, preply), [weekStart, schedule, preply]);
   const occurrences = useMemo(() => occurrencesForWeek(weekStart, planning, lessons), [weekStart, planning, lessons]);
+  const events = useMemo(() => eventsForWeek(weekStart, planning), [weekStart, planning]);
   const quotas = useMemo(() => weeklyQuotas(planning, occurrences), [planning, occurrences]);
   const routineById = useMemo(() => new Map(planning.routines.map((r) => [r.id, r])), [planning.routines]);
+  const journal = useMemo(() => new Map((planning.journal ?? []).map((j) => [j.ref, j.items])), [planning.journal]);
   const rounding = planning.settings?.countRoundingMin ?? DEFAULT_SETTINGS.countRoundingMin;
+  const oldestWeek = retentionStart(today);
+  const isEnded = (date: string, endMin: number) => date < clock.date || (date === clock.date && endMin <= clock.minutes);
 
   /* ---------- clavier : Échap ferme la fenêtre ---------- */
   useEffect(() => {
@@ -211,6 +227,19 @@ export default function PlanningPersonnel() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [dialog]);
+
+  /* ---------- PDF : nom de fichier proposé = titre de la page pendant l'impression ---------- */
+  useEffect(() => {
+    let previousTitle = '';
+    const before = () => { previousTitle = document.title; document.title = `Planning ${weekStart}`; };
+    const after = () => { if (previousTitle) document.title = previousTitle; };
+    window.addEventListener('beforeprint', before);
+    window.addEventListener('afterprint', after);
+    return () => {
+      window.removeEventListener('beforeprint', before);
+      window.removeEventListener('afterprint', after);
+    };
+  }, [weekStart]);
 
   /* ---------- retour sur l'onglet : recharger si le planning a changé ailleurs ---------- */
   useEffect(() => { dialogRef.current = dialog; }, [dialog]);
@@ -248,7 +277,16 @@ export default function PlanningPersonnel() {
     const rect = e.currentTarget.getBoundingClientRect();
     const minute = DAY_START_MIN + (e.clientY - rect.top) / K;
     const startMin = Math.min(DAY_END_MIN - 30, Math.max(DAY_START_MIN, Math.floor(minute / 30) * 30));
-    setDialog({ type: 'place', date, startMin });
+    setDialog({ type: 'place', date, startMin, mode: planning.routines.length ? 'routine' : 'event' });
+  }
+
+  function openNewEvent() {
+    const inWeek = dates.includes(today);
+    const date = inWeek ? today : dates[0];
+    const startMin = inWeek
+      ? Math.min(DAY_END_MIN - 60, Math.max(DAY_START_MIN, Math.ceil(clock.minutes / 30) * 30))
+      : 9 * 60;
+    setDialog({ type: 'place', date, startMin, mode: 'event' });
   }
 
   function onResizeStart(e: ReactPointerEvent<HTMLDivElement>, occ: Occurrence) {
@@ -287,7 +325,13 @@ export default function PlanningPersonnel() {
   }
 
   const isCurrentWeek = weekStart === currentWeek;
+  const canGoBack = addDays(weekStart, -7) >= oldestWeek;
   const label = weekLabel(weekStart);
+  const endedBlocs = [
+    ...occurrences.filter((o) => isEnded(o.date, o.endMin)).map((o) => occurrenceRef(o)),
+    ...events.filter((e) => isEnded(e.date, e.startMin + e.durationMin)).map((e) => eventRef(e.id)),
+  ];
+  const filledCount = endedBlocs.filter((ref) => journal.has(ref)).length;
 
   return (
     <div className="pp">
@@ -296,13 +340,15 @@ export default function PlanningPersonnel() {
       <header className="pp-barre">
         <h1>Planning personnel</h1>
         <div className="pp-semaine">
-          <button className="pp-fleche" onClick={() => goToWeek(addDays(weekStart, -7))} aria-label="Semaine précédente">‹</button>
+          <button className="pp-fleche" onClick={() => goToWeek(addDays(weekStart, -7))} disabled={!canGoBack}
+            aria-label="Semaine précédente" title={canGoBack ? undefined : `Les semaines passées sont conservées ${RETENTION_WEEKS / 52 === 1 ? '12 mois' : `${RETENTION_WEEKS} semaines`}.`}>‹</button>
           <span className="pp-titre-semaine">{label}</span>
           <button className="pp-fleche" onClick={() => goToWeek(addDays(weekStart, 7))} aria-label="Semaine suivante">›</button>
         </div>
         <button className="pp-btn" onClick={() => goToWeek(currentWeek)} disabled={isCurrentWeek}>Semaine courante</button>
         <button className="pp-btn pp-or" onClick={() => setDialog({ type: 'routine' })}>+ Routine</button>
-        <button className="pp-btn pp-plein" onClick={() => window.print()}>Exporter en PDF</button>
+        <button className="pp-btn pp-or" onClick={openNewEvent}>+ Événement</button>
+        <button className="pp-btn pp-plein" onClick={() => window.print()}>Télécharger le PDF</button>
       </header>
       <div className="pp-filet" />
 
@@ -343,10 +389,13 @@ export default function PlanningPersonnel() {
                 isToday={date === today}
                 lessons={lessons.filter((l) => l.date === date)}
                 occurrences={occurrences.filter((o) => o.date === date)}
+                events={events.filter((e) => e.date === date)}
                 routineById={routineById}
+                journal={journal}
                 resize={resize}
                 onColumnClick={onColumnClick}
                 onEdit={(occ) => setDialog({ type: 'edit', occ })}
+                onEditEvent={(event) => setDialog({ type: 'event', event })}
                 onResizeStart={onResizeStart}
                 onResizeMove={onResizeMove}
                 onResizeEnd={onResizeEnd}
@@ -367,20 +416,29 @@ export default function PlanningPersonnel() {
             ))}
           </div>
           <MobileDay
-            date={dates[mobileDay]}
             lessons={lessons.filter((l) => l.date === dates[mobileDay])}
             occurrences={occurrences.filter((o) => o.date === dates[mobileDay])}
+            events={events.filter((e) => e.date === dates[mobileDay])}
             routineById={routineById}
+            journal={journal}
             onEdit={(occ) => setDialog({ type: 'edit', occ })}
+            onEditEvent={(event) => setDialog({ type: 'event', event })}
           />
-          <button className="pp-fab" aria-label="Placer un créneau"
-            onClick={() => setDialog({ type: 'place', date: dates[mobileDay], startMin: 9 * 60 })}>+</button>
+          <button className="pp-fab" aria-label="Placer un créneau ou un événement"
+            onClick={() => setDialog({ type: 'place', date: dates[mobileDay], startMin: 9 * 60, mode: planning.routines.length ? 'routine' : 'event' })}>+</button>
         </div>
 
         {/* ---------- quotas ---------- */}
         <aside className="pp-panneau">
+          <div className="pp-resume">
+            <b>Bilan de la semaine</b>
+            <span>{endedBlocs.length === 0
+              ? 'Aucun créneau terminé pour l’instant.'
+              : `${filledCount} / ${endedBlocs.length} créneau${endedBlocs.length > 1 ? 'x' : ''} terminé${endedBlocs.length > 1 ? 's' : ''} renseigné${filledCount > 1 ? 's' : ''}`}</span>
+            <a href="#bilan">Voir le bilan ↓</a>
+          </div>
           <h2>Quotas de la semaine</h2>
-          <p className="pp-sous">Remis à zéro chaque lundi. Les minutes couvertes par un cours ne comptent pas.</p>
+          <p className="pp-sous">Remis à zéro chaque lundi. Les minutes couvertes par un cours ne comptent pas. Les événements ponctuels ne comptent dans aucun quota.</p>
           <label className="pp-arrondi">
             <span>Arrondi du décompte</span>
             <select className="pp-inp" value={rounding}
@@ -423,10 +481,26 @@ export default function PlanningPersonnel() {
             <span><i style={{ background: '#0d2b45' }} />Cours (lecture seule)</span>
             <span><i style={{ background: '#0d2b45', boxShadow: 'inset 0 -4px 0 #c9972a' }} />Créneau occupé Preply</span>
             <span><i style={{ background: '#3f7d5c' }} />↻ routine hebdomadaire · sans ↻ : ponctuelle</span>
+            <span><i className="pp-legende-evenement" />◆ événement ponctuel, hors routine</span>
             <span><i className="pp-legende-conflit" />Routine écrasée par un cours</span>
+            <span><b className="pp-legende-fait">✓ 2</b>Lignes notées dans « Ce que j’ai fait »</span>
           </div>
         </aside>
       </div>
+
+      {/* ---------- bilan heure par heure (écran et pages suivantes du PDF) ---------- */}
+      <WeekReport
+        label={label}
+        dates={dates}
+        lessons={lessons}
+        occurrences={occurrences}
+        events={events}
+        routineById={routineById}
+        journal={journal}
+        isEnded={isEnded}
+        onOpenOcc={(occ) => setDialog({ type: 'edit', occ })}
+        onOpenEvent={(event) => setDialog({ type: 'event', event })}
+      />
 
       {dialog?.type === 'place' && (
         <PlaceDialog
@@ -434,10 +508,12 @@ export default function PlanningPersonnel() {
           defaults={planning.settings?.lastPlacement}
           initialDate={dialog.date}
           initialStart={dialog.startMin}
+          initialMode={dialog.mode}
           routines={planning.routines}
           onCreateRoutine={() => setDialog({ type: 'routine' })}
           onCancel={() => setDialog(null)}
-          onSubmit={(input) => { setDialog(null); persist(addSlot(planning, input)); }}
+          onSubmitSlot={(input) => { setDialog(null); persist(addSlot(planning, input)); }}
+          onSubmitEvent={(input) => { setDialog(null); persist(addEvent(planning, input)); }}
         />
       )}
       {dialog?.type === 'edit' && (
@@ -446,9 +522,34 @@ export default function PlanningPersonnel() {
           occ={dialog.occ}
           initialDuration={dialog.durationMin}
           routine={routineById.get(dialog.occ.routineId)}
+          items={journal.get(occurrenceRef(dialog.occ)) ?? []}
+          ended={isEnded(dialog.occ.date, dialog.occ.endMin)}
           onCancel={() => setDialog(null)}
-          onSave={(values, scope) => { setDialog(null); persist(updateOccurrence(planning, dialog.occ, values, scope)); }}
+          onSave={(values, scope, items) => {
+            const occ = dialog.occ;
+            setDialog(null);
+            // le bilan d'abord : en cas de scission de la série, il suit la nouvelle série
+            let next = setJournal(planning, occurrenceRef(occ), items);
+            const moved = values.date !== occ.date || values.startMin !== occ.startMin || values.durationMin !== occ.durationMin;
+            if (moved) next = updateOccurrence(next, occ, values, scope);
+            persist(next);
+          }}
           onDelete={(scope) => { setDialog(null); persist(deleteOccurrence(planning, dialog.occ, scope)); }}
+        />
+      )}
+      {dialog?.type === 'event' && (
+        <EventDialog
+          dates={dates}
+          event={dialog.event}
+          items={journal.get(eventRef(dialog.event.id)) ?? []}
+          ended={isEnded(dialog.event.date, dialog.event.startMin + dialog.event.durationMin)}
+          onCancel={() => setDialog(null)}
+          onSave={(values, items) => {
+            const id = dialog.event.id;
+            setDialog(null);
+            persist(setJournal(updateEvent(planning, id, values), eventRef(id), items));
+          }}
+          onDelete={() => { setDialog(null); persist(deleteEvent(planning, dialog.event.id)); }}
         />
       )}
       {dialog?.type === 'routine' && (
@@ -475,16 +576,23 @@ function DayColumn(props: {
   isToday: boolean;
   lessons: Lesson[];
   occurrences: Occurrence[];
+  events: PlanningEvent[];
   routineById: Map<string, Routine>;
+  journal: Map<string, string[]>;
   resize: { occ: Occurrence; durationMin: number } | null;
   onColumnClick: (e: ReactMouseEvent<HTMLDivElement>, date: string) => void;
   onEdit: (occ: Occurrence) => void;
+  onEditEvent: (event: PlanningEvent) => void;
   onResizeStart: (e: ReactPointerEvent<HTMLDivElement>, occ: Occurrence) => void;
   onResizeMove: (e: ReactPointerEvent<HTMLDivElement>) => void;
   onResizeEnd: () => void;
 }) {
-  const { date, lessons, occurrences, routineById, resize } = props;
-  const lanes = laneLayout(occurrences);
+  const { date, lessons, occurrences, events, routineById, journal, resize } = props;
+  const blocs: Bloc[] = [
+    ...occurrences.map((o) => ({ key: `r-${o.slotId}`, startMin: o.startMin, endMin: o.endMin, occ: o })),
+    ...events.map((e) => ({ key: `e-${e.id}`, startMin: e.startMin, endMin: e.startMin + e.durationMin, event: e })),
+  ];
+  const lanes = laneLayout(blocs);
 
   // position dans la fenêtre 7h–22h ; ce qui déborde est coupé et signalé
   const place = (start: number, end: number) => {
@@ -492,6 +600,7 @@ function DayColumn(props: {
     const e = Math.min(end, DAY_END_MIN);
     return { visible: e > s, top: s - DAY_START_MIN, height: e - s, cutTop: start < DAY_START_MIN, cutBottom: end > DAY_END_MIN };
   };
+  const faitBadge = (count: number) => (count > 0 ? <span className="pp-fait" title={`${count} ligne${count > 1 ? 's' : ''} dans « Ce que j’ai fait »`}>✓ {count}</span> : null);
 
   return (
     <div className={`pp-jour ${props.isToday ? 'pp-auj' : ''}`} onClick={(e) => props.onColumnClick(e, date)}>
@@ -501,7 +610,7 @@ function DayColumn(props: {
         const duration = resize && resize.occ.slotId === o.slotId && resize.occ.date === o.date ? resize.durationMin : o.durationMin;
         const pos = place(o.startMin, o.startMin + duration);
         if (!pos.visible) return null;
-        const lane = lanes.get(o) ?? { lane: 0, lanes: 1 };
+        const lane = lanes.get(`r-${o.slotId}`) ?? { lane: 0, lanes: 1 };
         const conflict = o.displacedMin > 0;
         return (
           <div key={`${o.slotId}-${o.date}`}>
@@ -518,6 +627,7 @@ function DayColumn(props: {
               <div className="pp-nom">{o.kind === 'weekly' ? '↻ ' : ''}{r.name}</div>
               <div className="pp-heure">{fmtTime(o.startMin)}–{fmtTime(o.startMin + duration)}</div>
               {pos.cutBottom && <span className="pp-coupe pp-coupe-bas">↓ {fmtTime(o.startMin + duration)}</span>}
+              {faitBadge(journal.get(occurrenceRef(o))?.length ?? 0)}
               <div
                 className="pp-poignee"
                 onClick={(e) => e.stopPropagation()}
@@ -535,14 +645,38 @@ function DayColumn(props: {
           </div>
         );
       })}
+      {events.map((ev) => {
+        const end = ev.startMin + ev.durationMin;
+        const pos = place(ev.startMin, end);
+        if (!pos.visible) return null;
+        const lane = lanes.get(`e-${ev.id}`) ?? { lane: 0, lanes: 1 };
+        return (
+          <div
+            key={`e-${ev.id}`}
+            className="pp-bloc pp-routine pp-evenement"
+            style={{
+              ...cssVars({ '--s': pos.top, '--d': pos.height, '--lane': lane.lane, '--lanes': lane.lanes }),
+              background: ev.color, color: textOn(ev.color),
+            }}
+            title={`Événement · ${ev.title} · ${fmtTime(ev.startMin)}–${fmtTime(end)}`}
+            onClick={(e) => { e.stopPropagation(); props.onEditEvent(ev); }}
+          >
+            {pos.cutTop && <span className="pp-coupe">↑ {fmtTime(ev.startMin)}</span>}
+            <div className="pp-nom">◆ {ev.title}</div>
+            <div className="pp-heure">{fmtTime(ev.startMin)}–{fmtTime(end)}</div>
+            {pos.cutBottom && <span className="pp-coupe pp-coupe-bas">↓ {fmtTime(end)}</span>}
+            {faitBadge(journal.get(eventRef(ev.id))?.length ?? 0)}
+          </div>
+        );
+      })}
       {lessons.map((l) => {
         const pos = place(l.startMin, l.endMin);
         if (!pos.visible) return null;
-        const overRoutine = occurrences.some((o) => Math.min(o.endMin, l.endMin) > Math.max(o.startMin, l.startMin));
+        const overBloc = blocs.some((b) => Math.min(b.endMin, l.endMin) > Math.max(b.startMin, l.startMin));
         return (
           <div
             key={`${l.source}-${l.startMin}-${l.label}`}
-            className={`pp-bloc pp-cours ${overRoutine ? 'pp-decale' : ''} ${l.source === 'preply' ? 'pp-preply' : ''}`}
+            className={`pp-bloc pp-cours ${overBloc ? 'pp-decale' : ''} ${l.source === 'preply' ? 'pp-preply' : ''}`}
             style={cssVars({ '--s': pos.top, '--d': pos.height })}
             title={`Cours · ${l.label} · ${fmtTime(l.startMin)}–${fmtTime(l.endMin)} (lecture seule)`}
             onClick={(e) => e.stopPropagation()}
@@ -559,13 +693,16 @@ function DayColumn(props: {
 /* ======================= liste mobile ======================= */
 
 function MobileDay(props: {
-  date: string;
   lessons: Lesson[];
   occurrences: Occurrence[];
+  events: PlanningEvent[];
   routineById: Map<string, Routine>;
+  journal: Map<string, string[]>;
   onEdit: (occ: Occurrence) => void;
+  onEditEvent: (event: PlanningEvent) => void;
 }) {
-  type Item = { start: number; key: string; node: React.ReactNode };
+  type Item = { start: number; key: string; node: ReactNode };
+  const fait = (count: number) => (count > 0 ? <em className="pp-item-fait">✓ {count} ligne{count > 1 ? 's' : ''} notée{count > 1 ? 's' : ''}</em> : null);
   const items: Item[] = [
     ...props.lessons.map((l) => ({
       start: l.startMin,
@@ -589,11 +726,26 @@ function MobileDay(props: {
               <b>{o.kind === 'weekly' ? '↻ ' : ''}{r.name}</b>
               <span>{o.kind === 'weekly' ? 'Routine hebdomadaire' : 'Routine ponctuelle'}</span>
               {o.displacedMin > 0 && <em>⚠ {fmtDuration(o.displacedMin)} déplacée{plural(o.displacedMin)} par un cours</em>}
+              {fait(props.journal.get(occurrenceRef(o))?.length ?? 0)}
             </div>
           </button>
         ),
       };
     }),
+    ...props.events.map((ev) => ({
+      start: ev.startMin,
+      key: `e-${ev.id}`,
+      node: (
+        <button className="pp-item pp-item-evenement" style={{ borderLeftColor: ev.color }} onClick={() => props.onEditEvent(ev)}>
+          <div className="pp-item-h">{fmtTime(ev.startMin)} – {fmtTime(ev.startMin + ev.durationMin)}</div>
+          <div>
+            <b>◆ {ev.title}</b>
+            <span>Événement ponctuel</span>
+            {fait(props.journal.get(eventRef(ev.id))?.length ?? 0)}
+          </div>
+        </button>
+      ),
+    })),
   ].sort((a, b) => a.start - b.start);
 
   return (
@@ -601,6 +753,95 @@ function MobileDay(props: {
       {items.length === 0 && <p className="pp-vide">Rien de prévu ce jour-là.</p>}
       {items.map((i) => <div key={i.key}>{i.node}</div>)}
     </div>
+  );
+}
+
+/* ======================= bilan heure par heure ======================= */
+
+function WeekReport(props: {
+  label: string;
+  dates: string[];
+  lessons: Lesson[];
+  occurrences: Occurrence[];
+  events: PlanningEvent[];
+  routineById: Map<string, Routine>;
+  journal: Map<string, string[]>;
+  isEnded: (date: string, endMin: number) => boolean;
+  onOpenOcc: (occ: Occurrence) => void;
+  onOpenEvent: (event: PlanningEvent) => void;
+}) {
+  type Ligne = { key: string; startMin: number; endMin: number; node: ReactNode };
+  const jours = props.dates.map((date, i) => {
+    const lignes: Ligne[] = [];
+    for (const l of props.lessons.filter((x) => x.date === date)) {
+      lignes.push({
+        key: `c-${l.source}-${l.startMin}`, startMin: l.startMin, endMin: l.endMin,
+        node: <div className="pp-bilan-titre pp-bilan-cours"><i style={{ background: '#0d2b45' }} /><span>{l.source === 'preply' ? 'Occupé (Preply)' : `Cours · ${l.label}`}</span></div>,
+      });
+    }
+    for (const o of props.occurrences.filter((x) => x.date === date)) {
+      const r = props.routineById.get(o.routineId);
+      if (!r) continue;
+      lignes.push({
+        key: `r-${o.slotId}`, startMin: o.startMin, endMin: o.endMin,
+        node: (
+          <Entree items={props.journal.get(occurrenceRef(o)) ?? []} ended={props.isEnded(o.date, o.endMin)} onOpen={() => props.onOpenOcc(o)}
+            color={r.color} title={r.name} tag={o.kind === 'weekly' ? 'routine hebdomadaire' : 'routine ponctuelle'} />
+        ),
+      });
+    }
+    for (const ev of props.events.filter((x) => x.date === date)) {
+      lignes.push({
+        key: `e-${ev.id}`, startMin: ev.startMin, endMin: ev.startMin + ev.durationMin,
+        node: (
+          <Entree items={props.journal.get(eventRef(ev.id)) ?? []} ended={props.isEnded(ev.date, ev.startMin + ev.durationMin)} onOpen={() => props.onOpenEvent(ev)}
+            color={ev.color} title={`◆ ${ev.title}`} tag="événement" />
+        ),
+      });
+    }
+    lignes.sort((a, b) => a.startMin - b.startMin || a.endMin - b.endMin);
+    return { date, nom: `${WEEKDAY_NAMES[i]} ${formatLongDate(date, false)}`, lignes };
+  }).filter((j) => j.lignes.length > 0);
+
+  return (
+    <section className="pp-bilan" id="bilan" aria-label="Bilan de la semaine">
+      <div className="pp-bilan-tete">
+        <h2>Bilan de la semaine</h2>
+        <span className="pp-bilan-semaine">{props.label}</span>
+        <p>Heure par heure, avec ce que vous avez noté dans chaque créneau. Ce bilan figure aussi dans le PDF. Les semaines passées restent disponibles 12 mois.</p>
+      </div>
+      {jours.length === 0 && <p className="pp-vide">Rien de prévu cette semaine.</p>}
+      <div className="pp-bilan-jours">
+        {jours.map((j) => (
+          <div key={j.date} className="pp-bilan-jour">
+            <h3>{j.nom}</h3>
+            {j.lignes.map((l) => (
+              <div key={l.key} className="pp-bilan-ligne">
+                <span className="pp-bilan-h">{fmtTime(l.startMin)}–{fmtTime(l.endMin)}</span>
+                {l.node}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Entree(props: { items: string[]; ended: boolean; onOpen: () => void; color: string; title: string; tag: string }) {
+  return (
+    <>
+      <div className="pp-bilan-titre">
+        <button type="button" className="pp-bilan-ouvrir" onClick={props.onOpen}>
+          <i style={{ background: props.color }} /><span>{props.title}</span>
+        </button>
+        <small>{props.tag}</small>
+      </div>
+      {props.items.length > 0 && <ul>{props.items.map((it, k) => <li key={k}>{it}</li>)}</ul>}
+      {props.items.length === 0 && props.ended && (
+        <button type="button" className="pp-a-completer" onClick={props.onOpen}>À compléter</button>
+      )}
+    </>
   );
 }
 
@@ -626,7 +867,7 @@ function validTiming(startMin: number, durationMin: number): string {
   return '';
 }
 
-function Modal({ title, children, onCancel }: { title: string; children: React.ReactNode; onCancel: () => void }) {
+function Modal({ title, children, onCancel }: { title: string; children: ReactNode; onCancel: () => void }) {
   return (
     <div className="pp-voile" onClick={onCancel}>
       <div className="pp-dlg" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
@@ -645,62 +886,138 @@ function DaySelect({ dates, value, onChange }: { dates: string[]; value: string;
   );
 }
 
+function ColorPicker({ colors, value, onChange }: { colors: string[]; value: string; onChange: (c: string) => void }) {
+  return (
+    <div className="pp-couleurs">
+      {colors.map((c) => (
+        <button type="button" key={c} className={c === value ? 'pp-on' : ''} style={{ background: c }} onClick={() => onChange(c)} aria-label={`Couleur ${c}`} />
+      ))}
+    </div>
+  );
+}
+
+/** Liste « Ce que j'ai fait » ; la ligne en cours de saisie est ajoutée aussi à l'enregistrement. */
+function JournalEditor(props: { items: string[]; onChange: (items: string[]) => void; draft: string; onDraft: (v: string) => void; ended: boolean }) {
+  const { items, draft } = props;
+  const full = items.length >= JOURNAL_MAX_ITEMS;
+  const add = () => {
+    const text = draft.trim();
+    if (!text || full) return;
+    props.onChange([...items, text]);
+    props.onDraft('');
+  };
+  return (
+    <div className="pp-champ pp-journal-zone">
+      <label htmlFor="pp-journal-saisie">Ce que j’ai fait</label>
+      {!props.ended && <p className="pp-note-dlg">Ce créneau n’est pas encore terminé : vous pourrez compléter la liste ensuite.</p>}
+      {items.length > 0 && (
+        <ul className="pp-journal">
+          {items.map((it, i) => (
+            <li key={i}>
+              <span>{it}</span>
+              <button type="button" aria-label={`Retirer « ${it} »`} onClick={() => props.onChange(items.filter((_, k) => k !== i))}>×</button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="pp-journal-ajout">
+        <input id="pp-journal-saisie" className="pp-inp" value={draft} maxLength={JOURNAL_ITEM_MAX} disabled={full}
+          placeholder={full ? `${JOURNAL_MAX_ITEMS} lignes au plus` : 'Ex. : préparé la leçon sur le passé composé'}
+          onChange={(e) => props.onDraft(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }} />
+        <button type="button" className="pp-btn" onClick={add} disabled={!draft.trim() || full}>Ajouter</button>
+      </div>
+    </div>
+  );
+}
+
+const withDraft = (items: string[], draft: string) => (draft.trim() ? [...items, draft.trim()] : items);
+
 function PlaceDialog(props: {
   dates: string[];
   initialDate: string;
   initialStart: number;
+  initialMode: 'routine' | 'event';
   routines: Routine[];
   defaults?: PlacementDefaults;
   onCreateRoutine: () => void;
   onCancel: () => void;
-  onSubmit: (input: { routineId: string; kind: 'weekly' | 'once'; date: string; startMin: number; durationMin: number }) => void;
+  onSubmitSlot: (input: { routineId: string; kind: 'weekly' | 'once'; date: string; startMin: number; durationMin: number }) => void;
+  onSubmitEvent: (input: EventInput) => void;
 }) {
   // reprend la routine, la durée et la répétition du dernier créneau placé ; l'heure reste celle du clic
   const last = props.routines.some((r) => r.id === props.defaults?.routineId) ? props.defaults : undefined;
+  const [mode, setMode] = useState(props.initialMode);
   const [routineId, setRoutineId] = useState(last?.routineId ?? props.routines[0]?.id ?? '');
   const [date, setDate] = useState(props.initialDate);
   const [start, setStart] = useState(fmtTime(props.initialStart));
-  const [durationMin, setDurationMin] = useState(last?.durationMin ?? 60);
+  const [durationMin, setDurationMin] = useState(props.initialMode === 'event' ? 60 : last?.durationMin ?? 60);
   const [kind, setKind] = useState<'weekly' | 'once'>(last?.kind ?? 'once');
-
-  if (props.routines.length === 0) {
-    return (
-      <Modal title="Placer un créneau" onCancel={props.onCancel}>
-        <p className="pp-info-dlg">Créez d’abord une routine : un créneau appartient toujours à une routine.</p>
-        <div className="pp-act">
-          <button className="pp-btn" onClick={props.onCancel}>Annuler</button>
-          <button className="pp-btn pp-plein" onClick={props.onCreateRoutine}>Créer une routine</button>
-        </div>
-      </Modal>
-    );
-  }
+  const [title, setTitle] = useState('');
+  const [color, setColor] = useState(EVENT_COLORS[0]);
 
   const startMin = toMinutes(start);
-  const error = validTiming(startMin, durationMin);
+  const timingError = validTiming(startMin, durationMin);
+  const error = mode === 'event' && !title.trim() ? 'Donnez un titre à l’événement.' : timingError;
+  const noRoutine = mode === 'routine' && props.routines.length === 0;
 
   return (
-    <Modal title="Placer un créneau" onCancel={props.onCancel}>
-      <div className="pp-champ"><label>Routine</label>
-        <select className="pp-inp" value={routineId} onChange={(e) => setRoutineId(e.target.value)}>
-          {props.routines.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
-        </select>
+    <Modal title={mode === 'event' ? 'Nouvel événement' : 'Placer un créneau'} onCancel={props.onCancel}>
+      <div className="pp-onglets" role="tablist" aria-label="Type de bloc">
+        <button type="button" role="tab" aria-selected={mode === 'routine'} className={mode === 'routine' ? 'pp-on' : ''} onClick={() => setMode('routine')}>Routine</button>
+        <button type="button" role="tab" aria-selected={mode === 'event'} className={mode === 'event' ? 'pp-on' : ''} onClick={() => setMode('event')}>Événement ponctuel</button>
       </div>
-      <div className="pp-champ"><label>Jour</label><DaySelect dates={props.dates} value={date} onChange={setDate} /></div>
-      <div className="pp-deux">
-        <div className="pp-champ"><label>Début</label><input className="pp-inp" type="time" step={60} value={start} onChange={(e) => setStart(e.target.value)} /></div>
-        <div className="pp-champ"><label>Fin</label><div className="pp-inp pp-lecture">{error ? '—' : fmtTime(startMin + durationMin)}</div></div>
-      </div>
-      <div className="pp-champ"><label>Durée</label><DurationPicker value={durationMin} onChange={setDurationMin} /></div>
-      <div className="pp-champ"><label>Répétition</label>
-        <label className="pp-radio"><input type="radio" checked={kind === 'once'} onChange={() => setKind('once')} /><span>Cette semaine seulement<small>Créneau ponctuel</small></span></label>
-        <label className="pp-radio"><input type="radio" checked={kind === 'weekly'} onChange={() => setKind('weekly')} /><span>Chaque semaine<small>Reproduit à partir de cette semaine</small></span></label>
-      </div>
-      {error && <p className="pp-erreur-dlg">{error}</p>}
-      <div className="pp-act">
-        <button className="pp-btn" onClick={props.onCancel}>Annuler</button>
-        <button className="pp-btn pp-plein" disabled={!!error}
-          onClick={() => props.onSubmit({ routineId, kind, date, startMin, durationMin })}>Placer</button>
-      </div>
+
+      {noRoutine ? (
+        <>
+          <p className="pp-info-dlg">Créez d’abord une routine : un créneau de routine appartient toujours à une routine. Pour un rendez-vous isolé, choisissez « Événement ponctuel ».</p>
+          <div className="pp-act">
+            <button className="pp-btn" onClick={props.onCancel}>Annuler</button>
+            <button className="pp-btn pp-plein" onClick={props.onCreateRoutine}>Créer une routine</button>
+          </div>
+        </>
+      ) : (
+        <>
+          {mode === 'routine' ? (
+            <div className="pp-champ"><label>Routine</label>
+              <select className="pp-inp" value={routineId} onChange={(e) => setRoutineId(e.target.value)}>
+                {props.routines.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
+              </select>
+            </div>
+          ) : (
+            <>
+              <p className="pp-info-dlg">Un événement ponctuel ne fait partie d’aucune routine et ne compte dans aucun quota.</p>
+              <div className="pp-champ"><label htmlFor="pp-titre-evenement">Titre</label>
+                <input id="pp-titre-evenement" className="pp-inp" value={title} maxLength={EVENT_TITLE_MAX} autoFocus
+                  placeholder="Rendez-vous chez le dentiste" onChange={(e) => setTitle(e.target.value)} />
+              </div>
+              <div className="pp-champ"><label>Couleur</label><ColorPicker colors={EVENT_COLORS} value={color} onChange={setColor} /></div>
+            </>
+          )}
+          <div className="pp-champ"><label>Jour</label><DaySelect dates={props.dates} value={date} onChange={setDate} /></div>
+          <div className="pp-deux">
+            <div className="pp-champ"><label>Début</label><input className="pp-inp" type="time" step={60} value={start} onChange={(e) => setStart(e.target.value)} /></div>
+            <div className="pp-champ"><label>Fin</label><div className="pp-inp pp-lecture">{timingError ? '—' : fmtTime(startMin + durationMin)}</div></div>
+          </div>
+          <div className="pp-champ"><label>Durée</label><DurationPicker value={durationMin} onChange={setDurationMin} /></div>
+          {mode === 'routine' && (
+            <div className="pp-champ"><label>Répétition</label>
+              <label className="pp-radio"><input type="radio" checked={kind === 'once'} onChange={() => setKind('once')} /><span>Cette semaine seulement<small>Créneau ponctuel</small></span></label>
+              <label className="pp-radio"><input type="radio" checked={kind === 'weekly'} onChange={() => setKind('weekly')} /><span>Chaque semaine<small>Reproduit à partir de cette semaine</small></span></label>
+            </div>
+          )}
+          {error && <p className="pp-erreur-dlg">{error}</p>}
+          <div className="pp-act">
+            <button className="pp-btn" onClick={props.onCancel}>Annuler</button>
+            <button className="pp-btn pp-plein" disabled={!!error}
+              onClick={() => (mode === 'routine'
+                ? props.onSubmitSlot({ routineId, kind, date, startMin, durationMin })
+                : props.onSubmitEvent({ title: title.trim(), color, date, startMin, durationMin }))}>
+              {mode === 'routine' ? 'Placer' : 'Ajouter l’événement'}
+            </button>
+          </div>
+        </>
+      )}
     </Modal>
   );
 }
@@ -710,8 +1027,10 @@ function EditDialog(props: {
   occ: Occurrence;
   initialDuration?: number;
   routine?: Routine;
+  items: string[];
+  ended: boolean;
   onCancel: () => void;
-  onSave: (values: { date: string; startMin: number; durationMin: number }, scope: Scope) => void;
+  onSave: (values: { date: string; startMin: number; durationMin: number }, scope: Scope, items: string[]) => void;
   onDelete: (scope: Scope) => void;
 }) {
   const { occ } = props;
@@ -719,11 +1038,18 @@ function EditDialog(props: {
   const [start, setStart] = useState(fmtTime(occ.startMin));
   const [durationMin, setDurationMin] = useState(props.initialDuration ?? occ.durationMin);
   const [scope, setScope] = useState<Scope>('this');
+  const [items, setItems] = useState(props.items);
+  const [draft, setDraft] = useState('');
   const weekly = occ.kind === 'weekly';
   const startMin = toMinutes(start);
   const error = validTiming(startMin, durationMin);
 
   const deleteLabel = !weekly ? 'Supprimer' : scope === 'this' ? 'Supprimer cette semaine' : 'Supprimer cette semaine et les suivantes';
+  const confirmDelete = () => {
+    const perdu = withDraft(items, draft).length;
+    if (perdu && !window.confirm(`Ce créneau a ${perdu} ligne${perdu > 1 ? 's' : ''} dans « Ce que j’ai fait ». Elle${perdu > 1 ? 's seront supprimées' : ' sera supprimée'} aussi. Continuer ?`)) return;
+    props.onDelete(scope);
+  };
 
   return (
     <Modal title={weekly ? 'Modifier un créneau hebdomadaire' : 'Modifier un créneau'} onCancel={props.onCancel}>
@@ -744,11 +1070,65 @@ function EditDialog(props: {
           <label className="pp-radio"><input type="radio" checked={scope === 'future'} onChange={() => setScope('future')} /><span>Cette semaine et toutes les suivantes<small>Les semaines passées ne changent pas</small></span></label>
         </div>
       )}
+      <JournalEditor items={items} onChange={setItems} draft={draft} onDraft={setDraft} ended={props.ended} />
       {error && <p className="pp-erreur-dlg">{error}</p>}
       <div className="pp-act">
-        <button className="pp-btn pp-rouge" onClick={() => props.onDelete(scope)}>{deleteLabel}</button>
+        <button className="pp-btn pp-rouge" onClick={confirmDelete}>{deleteLabel}</button>
         <button className="pp-btn" onClick={props.onCancel}>Annuler</button>
-        <button className="pp-btn pp-plein" disabled={!!error} onClick={() => props.onSave({ date, startMin, durationMin }, scope)}>Enregistrer</button>
+        <button className="pp-btn pp-plein" disabled={!!error} onClick={() => props.onSave({ date, startMin, durationMin }, scope, withDraft(items, draft))}>Enregistrer</button>
+      </div>
+    </Modal>
+  );
+}
+
+function EventDialog(props: {
+  dates: string[];
+  event: PlanningEvent;
+  items: string[];
+  ended: boolean;
+  onCancel: () => void;
+  onSave: (values: EventInput, items: string[]) => void;
+  onDelete: () => void;
+}) {
+  const ev = props.event;
+  const [title, setTitle] = useState(ev.title);
+  const [color, setColor] = useState(ev.color);
+  const [date, setDate] = useState(ev.date);
+  const [start, setStart] = useState(fmtTime(ev.startMin));
+  const [durationMin, setDurationMin] = useState(ev.durationMin);
+  const [items, setItems] = useState(props.items);
+  const [draft, setDraft] = useState('');
+  const startMin = toMinutes(start);
+  const timingError = validTiming(startMin, durationMin);
+  const error = !title.trim() ? 'Donnez un titre à l’événement.' : timingError;
+  const colors = EVENT_COLORS.includes(ev.color) ? EVENT_COLORS : [...EVENT_COLORS, ev.color];
+
+  const confirmDelete = () => {
+    const perdu = withDraft(items, draft).length;
+    const detail = perdu ? ` et ses ${perdu} ligne${perdu > 1 ? 's' : ''} dans « Ce que j’ai fait »` : '';
+    if (window.confirm(`Supprimer « ${ev.title} »${detail} ?`)) props.onDelete();
+  };
+
+  return (
+    <Modal title="Modifier l’événement" onCancel={props.onCancel}>
+      <p className="pp-info-dlg">◆ Événement ponctuel · ne compte dans aucun quota</p>
+      <div className="pp-champ"><label htmlFor="pp-titre-evenement">Titre</label>
+        <input id="pp-titre-evenement" className="pp-inp" value={title} maxLength={EVENT_TITLE_MAX} onChange={(e) => setTitle(e.target.value)} />
+      </div>
+      <div className="pp-champ"><label>Couleur</label><ColorPicker colors={colors} value={color} onChange={setColor} /></div>
+      <div className="pp-champ"><label>Jour</label><DaySelect dates={props.dates} value={date} onChange={setDate} /></div>
+      <div className="pp-deux">
+        <div className="pp-champ"><label>Début</label><input className="pp-inp" type="time" step={60} value={start} onChange={(e) => setStart(e.target.value)} /></div>
+        <div className="pp-champ"><label>Fin</label><div className="pp-inp pp-lecture">{timingError ? '—' : fmtTime(startMin + durationMin)}</div></div>
+      </div>
+      <div className="pp-champ"><label>Durée</label><DurationPicker value={durationMin} onChange={setDurationMin} /></div>
+      <JournalEditor items={items} onChange={setItems} draft={draft} onDraft={setDraft} ended={props.ended} />
+      {error && <p className="pp-erreur-dlg">{error}</p>}
+      <div className="pp-act">
+        <button className="pp-btn pp-rouge" onClick={confirmDelete}>Supprimer</button>
+        <button className="pp-btn" onClick={props.onCancel}>Annuler</button>
+        <button className="pp-btn pp-plein" disabled={!!error}
+          onClick={() => props.onSave({ title: title.trim(), color, date, startMin, durationMin }, withDraft(items, draft))}>Enregistrer</button>
       </div>
     </Modal>
   );
@@ -775,13 +1155,7 @@ function RoutineDialog(props: {
   return (
     <Modal title={r ? 'Modifier la routine' : 'Nouvelle routine'} onCancel={props.onCancel}>
       <div className="pp-champ"><label>Nom</label><input className="pp-inp" value={name} maxLength={60} onChange={(e) => setName(e.target.value)} placeholder="Salle de sport" autoFocus /></div>
-      <div className="pp-champ"><label>Couleur</label>
-        <div className="pp-couleurs">
-          {ROUTINE_COLORS.map((c) => (
-            <button type="button" key={c} className={c === color ? 'pp-on' : ''} style={{ background: c }} onClick={() => setColor(c)} aria-label={`Couleur ${c}`} />
-          ))}
-        </div>
-      </div>
+      <div className="pp-champ"><label>Couleur</label><ColorPicker colors={ROUTINE_COLORS} value={color} onChange={setColor} /></div>
       <div className="pp-champ"><label>Quota hebdomadaire (heures)</label>
         <input className="pp-inp" type="number" min={0} step={0.25} value={quota} onChange={(e) => setQuota(e.target.value)} placeholder="10" />
       </div>
@@ -789,7 +1163,7 @@ function RoutineDialog(props: {
       <div className="pp-act">
         {r && (
           <button className="pp-btn pp-rouge" onClick={() => {
-            const detail = props.slotCount ? ` et ses ${props.slotCount} créneau${props.slotCount > 1 ? 'x' : ''}` : '';
+            const detail = props.slotCount ? ` et ses ${props.slotCount} créneau${props.slotCount > 1 ? 'x' : ''} (bilans compris)` : '';
             if (window.confirm(`Supprimer « ${r.name} »${detail} ? Cette action est définitive.`)) props.onDelete();
           }}>Supprimer</button>
         )}
@@ -815,6 +1189,7 @@ const CSS = `
 .pp-barre h1{font-family:Fraunces,Georgia,serif;font-size:1.35rem;font-weight:700;margin:0 auto 0 0}
 .pp-semaine{display:flex;align-items:center;gap:8px}
 .pp-fleche{width:32px;height:32px;border:1px solid var(--border);background:#fff;font-size:1.05rem;color:var(--navy)}
+.pp-fleche:disabled{opacity:.35;cursor:not-allowed}
 .pp-titre-semaine{font-weight:600;min-width:260px;text-align:center}
 .pp-btn{border:1.5px solid var(--navy);background:transparent;color:var(--navy);padding:8px 14px;font-weight:600;font-size:.8rem}
 .pp-btn:disabled{opacity:.4;cursor:default}
@@ -849,6 +1224,9 @@ const CSS = `
 .pp-heure{font-size:.62rem;opacity:.9;white-space:nowrap}
 .pp-routine{z-index:1;left:calc(3px + (100% - 6px) * var(--lane) / var(--lanes));width:calc((100% - 6px) / var(--lanes) - 2px)}
 .pp-routine:hover{filter:brightness(1.06)}
+.pp-evenement{border-radius:6px;box-shadow:inset 3px 0 0 rgba(255,255,255,.75);
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.14) 0 6px,transparent 6px 12px)}
+.pp-fait{position:absolute;right:3px;bottom:8px;font-size:.56rem;font-weight:700;line-height:1.3;background:rgba(255,255,255,.92);color:var(--navy);padding:0 4px;border-radius:6px;pointer-events:none}
 .pp-conflit{opacity:.42;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.4) 0 4px,transparent 4px 9px)}
 .pp-conflit .pp-nom{text-decoration:line-through}
 .pp-badge{position:absolute;z-index:4;top:calc(var(--s) * var(--k) * 1px - 7px);left:calc(5px + (100% - 6px) * var(--lane) / var(--lanes));
@@ -863,6 +1241,10 @@ const CSS = `
 
 .pp-panneau{padding:18px 20px}
 .pp-panneau h2{font-family:Fraunces,Georgia,serif;font-size:1.05rem;margin:0 0 4px}
+.pp-resume{display:grid;gap:2px;margin:0 0 16px;padding:9px 11px;background:#fff;border:1px solid var(--border);border-left:3px solid #3f7d5c;font-size:.76rem}
+.pp-resume b{font-size:.8rem}
+.pp-resume span{color:var(--soft)}
+.pp-resume a{color:var(--navy);font-weight:600;font-size:.74rem}
 .pp-sous{font-size:.72rem;color:var(--soft);margin:0 0 14px}
 .pp-vide{font-size:.8rem;color:var(--soft)}
 .pp-arrondi{display:block;margin:0 0 14px}
@@ -886,12 +1268,39 @@ const CSS = `
 .pp-legende span{display:flex;align-items:center;gap:7px}
 .pp-legende i{width:16px;height:11px;display:inline-block;border-radius:2px}
 .pp-legende-conflit{background:#3f7d5c;opacity:.42;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.4) 0 3px,transparent 3px 7px)}
+.pp-legende-evenement{background:#546e7a;border-radius:4px !important;box-shadow:inset 2px 0 0 rgba(255,255,255,.75)}
+.pp-legende-fait{font-size:.6rem;background:#fff;border:1px solid var(--border);color:var(--navy);padding:0 4px;border-radius:6px}
+
+/* ---------- bilan heure par heure ---------- */
+.pp-bilan{padding:20px 22px 34px;border-top:3px solid var(--navy);scroll-margin-top:10px}
+.pp-bilan-tete{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;margin-bottom:14px}
+.pp-bilan-tete h2{font-family:Fraunces,Georgia,serif;font-size:1.15rem;margin:0}
+.pp-bilan-semaine{font-weight:600;font-size:.84rem}
+.pp-bilan-tete p{flex-basis:100%;margin:2px 0 0;font-size:.74rem;color:var(--soft)}
+.pp-bilan-jours{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;align-items:start}
+.pp-bilan-jour{background:#fff;border:1px solid var(--border);border-top:3px solid var(--navy);padding:10px 12px;break-inside:avoid}
+.pp-bilan-jour h3{font-family:Fraunces,Georgia,serif;font-size:.92rem;margin:0 0 4px}
+.pp-bilan-ligne{display:grid;grid-template-columns:88px minmax(0,1fr);gap:2px 10px;padding:6px 0;border-top:1px dashed #e6dfd2;font-size:.8rem;break-inside:avoid}
+.pp-bilan-jour h3+.pp-bilan-ligne{border-top:none}
+.pp-bilan-h{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pp-bilan-titre{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;font-weight:600;min-width:0}
+.pp-bilan-titre i{width:10px;height:10px;border-radius:2px;flex:none;display:inline-block}
+.pp-bilan-titre small{font-weight:500;color:var(--soft);font-size:.68rem}
+.pp-bilan-cours{color:var(--soft);font-weight:500}
+.pp-bilan-ouvrir{border:none;background:none;padding:0;font:inherit;color:inherit;text-align:left;display:inline-flex;align-items:center;gap:6px}
+.pp-bilan-ouvrir:hover span{text-decoration:underline}
+.pp-bilan-ligne ul{grid-column:2;margin:3px 0 0;padding-left:17px}
+.pp-bilan-ligne li{margin:1px 0;line-height:1.4;overflow-wrap:anywhere}
+.pp-a-completer{grid-column:2;justify-self:start;margin-top:3px;border:1px dashed var(--gold);background:#fdf6e6;color:#8a6614;font-size:.68rem;font-weight:700;padding:1px 8px}
 
 .pp-mobile{display:none}
 
 .pp-voile{position:fixed;inset:0;z-index:50;background:rgba(13,43,69,.35);display:grid;place-items:center;padding:16px}
-.pp-dlg{background:#fff;border:1px solid var(--border);border-top:3px solid var(--navy);width:100%;max-width:380px;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 12px 32px rgba(13,43,69,.2)}
+.pp-dlg{background:#fff;border:1px solid var(--border);border-top:3px solid var(--navy);width:100%;max-width:420px;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 12px 32px rgba(13,43,69,.2)}
 .pp-dlg h3{font-family:Fraunces,Georgia,serif;font-size:1.02rem;margin:0 0 12px}
+.pp-onglets{display:flex;margin:0 0 14px;border:1.5px solid var(--navy)}
+.pp-onglets button{flex:1;border:none;background:#fff;color:var(--navy);padding:7px 6px;font-weight:600;font-size:.8rem}
+.pp-onglets button.pp-on{background:var(--navy);color:#fff}
 .pp-champ{margin-bottom:12px}
 .pp-champ>label{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:5px}
 .pp-inp{width:100%;border:1.5px solid var(--border);padding:7px 10px;font:500 .86rem Inter,system-ui,sans-serif;background:var(--cream);color:var(--navy)}
@@ -909,6 +1318,14 @@ const CSS = `
 .pp-couleurs button{width:24px;height:24px;border-radius:50%;border:none}
 .pp-couleurs button.pp-on{outline:2px solid var(--navy);outline-offset:2px}
 .pp-info-dlg{font-size:.76rem;color:var(--soft);background:var(--cream);padding:8px 10px;margin:0 0 12px;border-left:3px solid var(--gold)}
+.pp-journal-zone{padding-top:12px;border-top:1px solid var(--border)}
+.pp-note-dlg{font-size:.72rem;color:var(--soft);margin:0 0 6px}
+.pp-journal{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:4px}
+.pp-journal li{display:flex;gap:8px;align-items:flex-start;background:var(--cream);border-left:3px solid #3f7d5c;padding:5px 8px;font-size:.82rem;line-height:1.35}
+.pp-journal li span{flex:1;min-width:0;overflow-wrap:anywhere}
+.pp-journal li button{border:none;background:none;color:var(--soft);font-size:1.05rem;line-height:1;padding:0 2px}
+.pp-journal-ajout{display:flex;gap:6px}
+.pp-journal-ajout .pp-btn{flex:none}
 .pp-erreur-dlg{font-size:.76rem;color:var(--red);margin:0 0 8px}
 .pp-act{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}
 
@@ -918,7 +1335,7 @@ const CSS = `
   .pp-barre h1{flex-basis:100%;font-size:1.15rem}
   .pp-semaine{flex-basis:100%;justify-content:space-between}
   .pp-titre-semaine{min-width:0;font-size:.82rem}
-  .pp-barre .pp-btn{flex:1;padding:8px 6px;font-size:.74rem}
+  .pp-barre .pp-btn{flex:1 1 40%;padding:8px 6px;font-size:.74rem}
   .pp-corps{grid-template-columns:1fr}
   .pp-grille-zone{display:none}
   .pp-mobile{display:block;position:relative;padding-bottom:70px}
@@ -934,17 +1351,21 @@ const CSS = `
   .pp-item b{display:block;font-size:.86rem}
   .pp-item span{display:block;font-size:.7rem;color:var(--soft)}
   .pp-item em{display:block;font-style:normal;font-size:.68rem;font-weight:700;color:var(--red);margin-top:2px}
+  .pp-item em.pp-item-fait{color:#2e6b4a}
   .pp-item-cours{background:var(--navy);color:#fff;border-color:var(--navy)}
   .pp-item-cours span{color:rgba(255,255,255,.72)}
   .pp-item-conflit b{text-decoration:line-through;opacity:.6}
   .pp-fab{position:absolute;right:14px;bottom:10px;width:50px;height:50px;border-radius:50%;border:none;background:var(--navy);color:#fff;font-size:1.6rem;box-shadow:3px 3px 0 var(--gold)}
+  .pp-bilan{padding:16px 12px 28px}
+  .pp-bilan-jours{grid-template-columns:minmax(0,1fr)}
+  .pp-bilan-ligne{grid-template-columns:78px minmax(0,1fr)}
 }
 
-/* ---------- impression : semaine complète en A4 paysage ---------- */
+/* ---------- impression : page 1 = semaine en A4 paysage, pages suivantes = bilan ---------- */
 @page{size:A4 landscape;margin:8mm}
 @media print{
   .pp{min-height:0;font-size:10px;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff}
-  .pp-barre,.pp-messages,.pp-mobile,.pp-voile,.pp-crayon,.pp-poignee,.pp-arrondi{display:none !important}
+  .pp-barre,.pp-messages,.pp-mobile,.pp-voile,.pp-crayon,.pp-poignee,.pp-arrondi,.pp-resume,.pp-a-completer{display:none !important}
   .pp-arrondi-impression{display:block;font-size:8.5px;color:var(--soft);margin:-8px 0 6px}
   .pp-filet{order:0}
   .pp-impression-titre{display:block;font-family:Inter,system-ui,sans-serif;font-size:11px;padding:0 0 4px;border-bottom:2px solid var(--navy);margin-bottom:0}
@@ -957,11 +1378,24 @@ const CSS = `
   .pp-bloc{font-size:8px;padding:1px 3px}
   .pp-heure{font-size:7px}
   .pp-badge{font-size:7px}
+  .pp-fait{font-size:6.5px;bottom:2px}
   .pp-panneau{display:block !important;padding:6px 3mm 0 8px;border-top:none !important;min-width:0;overflow:hidden}
   .pp-chiffres{flex-wrap:wrap;gap:0 6px}
   .pp-panneau h2{font-size:12px}
+  .pp-sous{font-size:8px;margin-bottom:8px}
   .pp-quota{padding:6px 0;break-inside:avoid}
   .pp-quota-tete{font-size:10px}
   .pp-chiffres,.pp-deplace,.pp-legende{font-size:8.5px}
+  .pp-bilan{break-before:page;border-top:2px solid var(--navy);padding:4px 0 0}
+  .pp-bilan-tete{margin-bottom:6px}
+  .pp-bilan-tete h2{font-size:13px}
+  .pp-bilan-semaine{font-size:10px}
+  .pp-bilan-tete p{display:none}
+  .pp-bilan-jours{display:block;column-count:3;column-gap:5mm}
+  .pp-bilan-jour{margin:0 0 4mm;padding:5px 7px;border-color:#cfc8bb}
+  .pp-bilan-jour h3{font-size:10px}
+  .pp-bilan-ligne{grid-template-columns:58px minmax(0,1fr);font-size:8.5px;padding:3px 0;gap:1px 6px}
+  .pp-bilan-titre small{font-size:7px}
+  .pp-bilan-ouvrir{cursor:default}
 }
 `;

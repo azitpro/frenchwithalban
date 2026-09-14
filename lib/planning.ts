@@ -1,14 +1,17 @@
 /**
- * Organisation personnelle (routines) — logique pure, sans accès réseau.
+ * Organisation personnelle (routines et événements) — logique pure, sans accès réseau.
  *
  * Stockée dans Redis sous la clé « planning », lue et écrite uniquement par
  * /api/admin/planning. Aucune page ni API publique ne lit ces données : une
- * routine n'est jamais une indisponibilité et n'empêche aucune réservation.
+ * routine ou un événement n'est jamais une indisponibilité et n'empêche aucune réservation.
  *
  * Toutes les heures sont stockées en minutes depuis minuit, en nombres entiers :
  * un créneau de 10h07 à 10h57 est enregistré et affiché tel quel. L'arrondi
  * facultatif (au quart d'heure ou à la demi-heure supérieurs) ne s'applique
  * qu'au décompte des quotas.
+ *
+ * Les semaines passées restent disponibles RETENTION_WEEKS semaines ; au-delà,
+ * les événements, bilans et créneaux terminés sont effacés à l'enregistrement.
  */
 import type { Schedule } from './schedule';
 
@@ -40,6 +43,22 @@ export type SlotOverride = {
   durationMin?: number;
 };
 
+/** Événement ponctuel, hors routine : ne compte dans aucun quota. */
+export type PlanningEvent = {
+  id: string;
+  title: string;
+  date: string;
+  startMin: number;
+  durationMin: number;
+  color: string;
+};
+
+/**
+ * Bilan d'un créneau : « ce que j'ai fait ».
+ * ref = « e:<idÉvénement> » pour un événement, « r:<idCréneau>:<lundi> » pour une occurrence de routine.
+ */
+export type JournalEntry = { ref: string; items: string[] };
+
 /** Pas d'arrondi du décompte : 0 = minutes exactes. */
 export type RoundingMin = 0 | 15 | 30;
 
@@ -55,12 +74,14 @@ export type Planning = {
   routines: Routine[];
   slots: RoutineSlot[];
   overrides: SlotOverride[];
+  events: PlanningEvent[];
+  journal: JournalEntry[];
   settings: PlanningSettings;
 };
 
 export const DEFAULT_SETTINGS: PlanningSettings = { countRoundingMin: 30 };
 
-export const EMPTY_PLANNING: Planning = { routines: [], slots: [], overrides: [], settings: DEFAULT_SETTINGS };
+export const EMPTY_PLANNING: Planning = { routines: [], slots: [], overrides: [], events: [], journal: [], settings: DEFAULT_SETTINGS };
 
 export const ROUNDING_OPTIONS: Array<{ value: RoundingMin; label: string }> = [
   { value: 0, label: 'Minutes exactes' },
@@ -72,6 +93,13 @@ export const DAY_START_MIN = 7 * 60;
 export const DAY_END_MIN = 22 * 60;
 export const WEEKDAY_NAMES = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 export const ROUTINE_COLORS = ['#3f7d5c', '#c9972a', '#7b3f9d', '#1f7a8c', '#b5543a', '#8d6e63', '#5c6bc0', '#2e8b57'];
+export const EVENT_COLORS = ['#546e7a', '#c2185b', '#00897b', '#ef6c00', '#3949ab', '#6d4c41'];
+
+/** Durée de conservation des semaines passées (événements, bilans, créneaux terminés). */
+export const RETENTION_WEEKS = 52;
+export const EVENT_TITLE_MAX = 80;
+export const JOURNAL_ITEM_MAX = 200;
+export const JOURNAL_MAX_ITEMS = 30;
 
 /* ======================= dates ======================= */
 // Dates en chaînes AAAA-MM-JJ, calculées en UTC : les changements d'heure n'ont aucun effet.
@@ -104,6 +132,19 @@ export function weekDates(weekStart: string): string[] {
 
 export function todayInParis(now: Date = new Date()): string {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+}
+
+/** Date et minute courantes à Paris (pour savoir si un créneau est terminé). */
+export function nowInParis(now: Date = new Date()): { date: string; minutes: number } {
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(now);
+  const h = Number(parts.find((p) => p.type === 'hour')?.value ?? 0);
+  const m = Number(parts.find((p) => p.type === 'minute')?.value ?? 0);
+  return { date: todayInParis(now), minutes: h * 60 + m };
+}
+
+/** Premier lundi encore conservé : les semaines antérieures sont effacées. */
+export function retentionStart(today: string, weeks: number = RETENTION_WEEKS): string {
+  return addDays(weekStartOf(today), -7 * weeks);
 }
 
 /* ======================= formatage ======================= */
@@ -268,6 +309,39 @@ export function occurrencesForWeek(weekStart: string, planning: Planning, lesson
   return result.sort(byDateThenStart);
 }
 
+/* ======================= événements et bilans ======================= */
+
+export function eventsForWeek(weekStart: string, planning: Planning): PlanningEvent[] {
+  const dates = weekDates(weekStart);
+  return (planning.events ?? []).filter((e) => dates.includes(e.date)).sort(byDateThenStart);
+}
+
+export const eventRef = (eventId: string) => `e:${eventId}`;
+export const occurrenceRef = (o: { slotId: string; weekStart: string }) => `r:${o.slotId}:${o.weekStart}`;
+
+type ParsedRef = { kind: 'e'; eventId: string } | { kind: 'r'; slotId: string; weekStart: string };
+
+export function parseRef(ref: unknown): ParsedRef | null {
+  if (typeof ref !== 'string') return null;
+  const e = /^e:([A-Za-z0-9_-]{1,64})$/.exec(ref);
+  if (e) return { kind: 'e', eventId: e[1] };
+  const r = /^r:([A-Za-z0-9_-]{1,64}):(\d{4}-\d{2}-\d{2})$/.exec(ref);
+  if (r && isDateKey(r[2]) && isoWeekday(r[2]) === 1) return { kind: 'r', slotId: r[1], weekStart: r[2] };
+  return null;
+}
+
+/** Ce qui a été noté pour un créneau (liste vide s'il n'y a rien). */
+export function journalItems(planning: Planning, ref: string): string[] {
+  return (planning.journal ?? []).find((j) => j.ref === ref)?.items ?? [];
+}
+
+/** Remplace la liste « ce que j'ai fait » d'un créneau ; une liste vide efface le bilan. */
+export function setJournal(p: Planning, ref: string, items: string[]): Planning {
+  const clean = items.map((s) => s.trim()).filter(Boolean);
+  const others = (p.journal ?? []).filter((j) => j.ref !== ref);
+  return { ...p, journal: clean.length ? [...others, { ref, items: clean }] : others };
+}
+
 /* ======================= quotas ======================= */
 
 export type QuotaSummary = {
@@ -304,6 +378,13 @@ export function newId(): string {
   return globalThis.crypto.randomUUID().replace(/-/g, '').slice(0, 12);
 }
 
+/** Retire les bilans de créneaux de routine qui vérifient le prédicat. */
+const withoutSlotJournal = (journal: JournalEntry[] | undefined, match: (slotId: string, weekStart: string) => boolean) =>
+  (journal ?? []).filter((j) => {
+    const r = parseRef(j.ref);
+    return !(r?.kind === 'r' && match(r.slotId, r.weekStart));
+  });
+
 export function addRoutine(p: Planning, input: Omit<Routine, 'id'>, id: string = newId()): Planning {
   return { ...p, routines: [...p.routines, { id, ...input }] };
 }
@@ -312,7 +393,7 @@ export function updateRoutine(p: Planning, id: string, patch: Partial<Omit<Routi
   return { ...p, routines: p.routines.map((r) => (r.id === id ? { ...r, ...patch } : r)) };
 }
 
-/** Supprime la routine, tous ses créneaux et leurs exceptions. */
+/** Supprime la routine, tous ses créneaux, leurs exceptions et leurs bilans. */
 export function deleteRoutine(p: Planning, id: string): Planning {
   const slotIds = new Set(p.slots.filter((s) => s.routineId === id).map((s) => s.id));
   return {
@@ -320,6 +401,7 @@ export function deleteRoutine(p: Planning, id: string): Planning {
     routines: p.routines.filter((r) => r.id !== id),
     slots: p.slots.filter((s) => s.routineId !== id),
     overrides: p.overrides.filter((o) => !slotIds.has(o.slotId)),
+    journal: withoutSlotJournal(p.journal, (slotId) => slotIds.has(slotId)),
   };
 }
 
@@ -364,10 +446,16 @@ export function updateOccurrence(p: Planning, ref: OccurrenceRef, values: Occurr
     // la série commence cette semaine : on la modifie simplement
     return { ...p, overrides, slots: p.slots.map((s) => (s.id === slot.id ? { ...s, ...changed } : s)) };
   }
-  // sinon on scinde : les semaines passées gardent l'ancien horaire
+  // sinon on scinde : les semaines passées gardent l'ancien horaire ; les bilans de cette semaine et des suivantes suivent la nouvelle série
   const ended: RoutineSlot = { ...slot, validUntil: addDays(ref.weekStart, -1) };
   const continued: RoutineSlot = { ...slot, ...changed, id: newId(), validFrom: ref.weekStart };
-  return { ...p, overrides, slots: [...p.slots.map((s) => (s.id === slot.id ? ended : s)), continued] };
+  const journal = (p.journal ?? []).map((j) => {
+    const r = parseRef(j.ref);
+    return r?.kind === 'r' && r.slotId === slot.id && r.weekStart >= ref.weekStart
+      ? { ...j, ref: occurrenceRef({ slotId: continued.id, weekStart: r.weekStart }) }
+      : j;
+  });
+  return { ...p, overrides, journal, slots: [...p.slots.map((s) => (s.id === slot.id ? ended : s)), continued] };
 }
 
 export function deleteOccurrence(p: Planning, ref: OccurrenceRef, scope: Scope): Planning {
@@ -378,13 +466,18 @@ export function deleteOccurrence(p: Planning, ref: OccurrenceRef, scope: Scope):
     ...p,
     slots: p.slots.filter((s) => s.id !== slot.id),
     overrides: p.overrides.filter((o) => o.slotId !== slot.id),
+    journal: withoutSlotJournal(p.journal, (slotId) => slotId === slot.id),
   });
 
   if (slot.kind === 'once') return removeSlot();
 
   if (scope === 'this') {
     const others = p.overrides.filter((o) => !(o.slotId === slot.id && o.weekStart === ref.weekStart));
-    return { ...p, overrides: [...others, { slotId: slot.id, weekStart: ref.weekStart, action: 'delete' }] };
+    return {
+      ...p,
+      overrides: [...others, { slotId: slot.id, weekStart: ref.weekStart, action: 'delete' }],
+      journal: withoutSlotJournal(p.journal, (slotId, week) => slotId === slot.id && week === ref.weekStart),
+    };
   }
 
   if (slot.validFrom && slot.validFrom >= ref.weekStart) return removeSlot();
@@ -392,7 +485,46 @@ export function deleteOccurrence(p: Planning, ref: OccurrenceRef, scope: Scope):
     ...p,
     overrides: withoutFutureOverrides(p.overrides, slot.id, ref.weekStart),
     slots: p.slots.map((s) => (s.id === slot.id ? { ...s, validUntil: addDays(ref.weekStart, -1) } : s)),
+    journal: withoutSlotJournal(p.journal, (slotId, week) => slotId === slot.id && week >= ref.weekStart),
   };
+}
+
+export type EventInput = Omit<PlanningEvent, 'id'>;
+
+export function addEvent(p: Planning, input: EventInput, id: string = newId()): Planning {
+  return { ...p, events: [...(p.events ?? []), { id, ...input }] };
+}
+
+export function updateEvent(p: Planning, id: string, patch: Partial<EventInput>): Planning {
+  return { ...p, events: (p.events ?? []).map((e) => (e.id === id ? { ...e, ...patch } : e)) };
+}
+
+/** Supprime l'événement et son bilan. */
+export function deleteEvent(p: Planning, id: string): Planning {
+  return {
+    ...p,
+    events: (p.events ?? []).filter((e) => e.id !== id),
+    journal: (p.journal ?? []).filter((j) => j.ref !== eventRef(id)),
+  };
+}
+
+/**
+ * Efface ce qui est antérieur à la période de conservation : événements, bilans, exceptions,
+ * créneaux ponctuels passés et séries terminées. Les semaines conservées s'affichent à l'identique.
+ */
+export function pruneOld(p: Planning, today: string, weeks: number = RETENTION_WEEKS): Planning {
+  const cutoff = retentionStart(today, weeks);
+  const slots = p.slots.filter((s) => (s.kind === 'once' ? (s.date ?? '') >= cutoff : !(s.validUntil && s.validUntil < cutoff)));
+  const slotIds = new Set(slots.map((s) => s.id));
+  const events = (p.events ?? []).filter((e) => e.date >= cutoff);
+  const eventIds = new Set(events.map((e) => e.id));
+  const overrides = p.overrides.filter((o) => slotIds.has(o.slotId) && o.weekStart >= cutoff);
+  const journal = (p.journal ?? []).filter((j) => {
+    const r = parseRef(j.ref);
+    if (!r) return false;
+    return r.kind === 'e' ? eventIds.has(r.eventId) : slotIds.has(r.slotId) && r.weekStart >= cutoff;
+  });
+  return { ...p, slots, overrides, events, journal };
 }
 
 /* ======================= validation (API) ======================= */
@@ -401,6 +533,7 @@ type Result = { ok: true; planning: Planning } | { ok: false; error: string };
 
 const isInt = (v: unknown, min: number, max: number): v is number => Number.isInteger(v) && (v as number) >= min && (v as number) <= max;
 const isId = (v: unknown): v is string => typeof v === 'string' && /^[A-Za-z0-9_-]{1,64}$/.test(v);
+const isColor = (v: unknown): v is string => typeof v === 'string' && /^#[0-9a-fA-F]{6}$/.test(v);
 const fitsInDay = (start: number, duration: number) => start + duration <= 24 * 60;
 
 /** Contrôle strict avant écriture ; ne conserve que les champs connus. */
@@ -410,8 +543,14 @@ export function validatePlanning(raw: unknown): Result {
   const routinesIn = src.routines ?? [];
   const slotsIn = src.slots ?? [];
   const overridesIn = src.overrides ?? [];
-  if (!Array.isArray(routinesIn) || !Array.isArray(slotsIn) || !Array.isArray(overridesIn)) return { ok: false, error: 'Structure invalide.' };
-  if (routinesIn.length > 100 || slotsIn.length > 3000 || overridesIn.length > 10000) return { ok: false, error: 'Trop d’éléments.' };
+  const eventsIn = src.events ?? [];
+  const journalIn = src.journal ?? [];
+  if (!Array.isArray(routinesIn) || !Array.isArray(slotsIn) || !Array.isArray(overridesIn) || !Array.isArray(eventsIn) || !Array.isArray(journalIn)) {
+    return { ok: false, error: 'Structure invalide.' };
+  }
+  if (routinesIn.length > 100 || slotsIn.length > 3000 || overridesIn.length > 10000 || eventsIn.length > 3000 || journalIn.length > 6000) {
+    return { ok: false, error: 'Trop d’éléments.' };
+  }
 
   const settingsIn = (src.settings && typeof src.settings === 'object' ? src.settings : {}) as Record<string, unknown>;
   // « countRoundingMin » remplace l'ancien « roundingMin », enregistré à 0 sans choix explicite : ce dernier est ignoré
@@ -422,7 +561,7 @@ export function validatePlanning(raw: unknown): Result {
   for (const r of routinesIn as Record<string, unknown>[]) {
     const name = typeof r?.name === 'string' ? r.name.trim() : '';
     if (!isId(r?.id) || !name || name.length > 60) return { ok: false, error: 'Routine invalide : nom manquant ou trop long.' };
-    if (typeof r.color !== 'string' || !/^#[0-9a-fA-F]{6}$/.test(r.color)) return { ok: false, error: `Couleur invalide pour « ${name} ».` };
+    if (!isColor(r.color)) return { ok: false, error: `Couleur invalide pour « ${name} ».` };
     if (!isInt(r.weeklyQuotaMin, 0, 7 * 24 * 60)) return { ok: false, error: `Quota invalide pour « ${name} ».` };
     if (routines.some((x) => x.id === r.id)) return { ok: false, error: 'Identifiant de routine en double.' };
     routines.push({ id: r.id, name, color: r.color, weeklyQuotaMin: r.weeklyQuotaMin });
@@ -453,6 +592,7 @@ export function validatePlanning(raw: unknown): Result {
       return { ok: false, error: 'Type de créneau invalide.' };
     }
   }
+  const slotIds = new Set(slots.map((s) => s.id));
   const weeklyIds = new Set(slots.filter((s) => s.kind === 'weekly').map((s) => s.id));
 
   const overrides: SlotOverride[] = [];
@@ -473,11 +613,43 @@ export function validatePlanning(raw: unknown): Result {
     }
   }
 
+  const events: PlanningEvent[] = [];
+  for (const e of eventsIn as Record<string, unknown>[]) {
+    const title = typeof e?.title === 'string' ? e.title.trim() : '';
+    if (!isId(e?.id) || events.some((x) => x.id === e.id)) return { ok: false, error: 'Identifiant d’événement invalide.' };
+    if (!title || title.length > EVENT_TITLE_MAX) return { ok: false, error: 'Événement invalide : titre manquant ou trop long.' };
+    if (!isColor(e.color)) return { ok: false, error: `Couleur invalide pour « ${title} ».` };
+    if (!isDateKey(e.date) || !isInt(e.startMin, 0, 24 * 60 - 1) || !isInt(e.durationMin, 5, 24 * 60) || !fitsInDay(e.startMin, e.durationMin)) {
+      return { ok: false, error: `Horaire invalide pour « ${title} ».` };
+    }
+    events.push({ id: e.id, title, date: e.date, startMin: e.startMin, durationMin: e.durationMin, color: e.color });
+  }
+  const eventIds = new Set(events.map((e) => e.id));
+
+  const journal: JournalEntry[] = [];
+  for (const j of journalIn as Record<string, unknown>[]) {
+    const ref = parseRef(j?.ref);
+    if (!ref || !Array.isArray(j.items)) return { ok: false, error: 'Bilan invalide.' };
+    if (j.items.length > JOURNAL_MAX_ITEMS) return { ok: false, error: `Bilan trop long (${JOURNAL_MAX_ITEMS} lignes au plus).` };
+    const items: string[] = [];
+    for (const item of j.items) {
+      if (typeof item !== 'string') return { ok: false, error: 'Bilan invalide.' };
+      const text = item.trim();
+      if (text.length > JOURNAL_ITEM_MAX) return { ok: false, error: `Ligne de bilan trop longue (${JOURNAL_ITEM_MAX} caractères au plus).` };
+      if (text) items.push(text);
+    }
+    // bilan d'un créneau ou d'un événement disparu, ou vide : simplement ignoré
+    const alive = ref.kind === 'e' ? eventIds.has(ref.eventId) : slotIds.has(ref.slotId);
+    if (!alive || items.length === 0) continue;
+    if (journal.some((x) => x.ref === j.ref)) return { ok: false, error: 'Bilan en double pour un même créneau.' };
+    journal.push({ ref: j.ref as string, items });
+  }
+
   const settings: PlanningSettings = { countRoundingMin };
   const lp = settingsIn.lastPlacement as Record<string, unknown> | undefined;
   // simple préférence : ignorée si elle ne correspond plus à rien (routine supprimée, par exemple)
   if (lp && typeof lp === 'object' && routineIds.has(lp.routineId as string) && isInt(lp.durationMin, 5, 24 * 60) && (lp.kind === 'weekly' || lp.kind === 'once')) {
     settings.lastPlacement = { routineId: lp.routineId as string, durationMin: lp.durationMin as number, kind: lp.kind };
   }
-  return { ok: true, planning: { routines, slots, overrides, settings } };
+  return { ok: true, planning: { routines, slots, overrides, events, journal, settings } };
 }
