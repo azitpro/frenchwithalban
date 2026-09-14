@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le genre des noms et la terminaison — French with Alban</title>
+<meta name="description" content="Le genre des noms en français : la règle du -e, les terminaisons masculines (-age, -ment, -eau…) et féminines (-tion, -té, -ure…), et les exceptions courantes à retenir.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
+  /* genre : couleurs fixes de la leçon (féminin rose, masculin violet) */
+  --fem: #ff5fa2; --fem-texte: #d42a78; --fem-clair: #ffe1ee;
+  --masc: #7c5cff; --masc-texte: #5b3be0; --masc-clair: #ebe5ff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(255,95,162,.26) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(124,92,255,.16) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(62,224,198,.22) 0, transparent 20%);
+  overflow: hidden; padding-bottom: 40px;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 50px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.intro { color: var(--soft); max-width: 700px; margin-bottom: 26px; font-size: 1.05rem; }
+
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 20px; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.2rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; border-radius: 12px; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.15rem; color: var(--soft); max-width: 540px; }
+
+.apercu { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 28px 26px; rotate: 2deg; display: grid; gap: 14px; }
+.apercu-ligne { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 3px 3px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.3rem; line-height: 1.15; }
+.apercu-ligne.f { background: var(--fem-clair); }
+.apercu-ligne.m { background: var(--masc-clair); margin-left: 26px; }
+.apercu-ligne .art { font-family: 'Inter', sans-serif; font-weight: 600; font-size: .5em; color: var(--soft); margin-right: .3em; }
+.apercu-ligne.f b { color: var(--fem-texte); }
+.apercu-ligne.m b { color: var(--masc-texte); }
+.apercu-genre { flex: none; padding: 1px 10px; border: 2px solid var(--ink); border-radius: 99px; font-family: 'Inter', sans-serif; font-size: .8rem; font-weight: 700; color: #fff; }
+.f .apercu-genre { background: var(--fem); }
+.m .apercu-genre { background: var(--masc); }
+.autocollant { position: absolute; top: -20px; right: -14px; background: var(--lemon); color: var(--ink); border: 3px solid var(--ink); border-radius: 99px; padding: 7px 15px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; rotate: 10deg; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
+
+/* ---------- MOTS ---------- */
+.art { font-weight: 600; color: var(--soft); }
+.fin { font-weight: 800; }
+li.f .fin { color: var(--fem-texte); }
+li.m .fin { color: var(--masc-texte); }
+/* genre indiqué à côté des mots en l' (on ne l'entend pas) */
+.g { display: inline-block; margin-left: 5px; padding: 0 6px; border-radius: 99px; font-family: 'Inter', sans-serif; font-size: .62rem; font-weight: 700; vertical-align: 2px; color: #fff; }
+li.f .g { background: var(--fem); }
+li.m .g { background: var(--masc); }
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { padding: 3px 11px; border: 2px solid var(--ink); border-radius: 10px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.05rem; line-height: 1.35; }
+.chips li.f { background: var(--fem-clair); }
+.chips li.m { background: var(--masc-clair); }
+.chips .art { font-family: 'Inter', sans-serif; font-size: .82em; }
+
+/* ---------- RÈGLE GÉNÉRALE ---------- */
+.regle-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.regle-carte { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.regle-tete { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; padding: 16px 22px; color: #fff; border-bottom: 3px solid var(--ink); }
+.regle-carte.f .regle-tete { background: var(--fem); }
+.regle-carte.m .regle-tete { background: var(--masc); }
+.regle-tete h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.5rem; line-height: 1.15; }
+.regle-genre { padding: 2px 14px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; color: var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; box-shadow: 2px 2px 0 var(--ink); white-space: nowrap; }
+.regle-mots { list-style: none; padding: 10px 22px 18px; }
+.regle-mots li { display: flex; align-items: baseline; gap: 10px; padding: 8px 0; border-bottom: 2px dashed rgba(27,19,64,.14); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.6rem; line-height: 1.2; }
+.regle-mots li:last-child { border-bottom: none; }
+.regle-mots .art { width: 38px; font-family: 'Inter', sans-serif; font-size: .62em; }
+/* ---------- TRADUCTION D'UN MOT AU CLIC ---------- */
+.traduisible { cursor: help; }
+.traduisible:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
+.chips li.traduisible { transition: translate .12s, box-shadow .12s; }
+.chips li.traduisible:hover, .chips li.traduisible[aria-expanded="true"] { translate: -1px -1px; box-shadow: 2px 2px 0 var(--ink); }
+.regle-mots li.traduisible:hover > span:not(.art), .regle-mots li[aria-expanded="true"] > span:not(.art),
+.mot-fr.traduisible:hover, .mot-fr[aria-expanded="true"] { text-decoration: underline dotted 2px; text-underline-offset: 5px; }
+.encadre .mot-fr, .exc-tete .mot-fr { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; }
+.astuce-trad { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 4px 14px 4px 5px; background: #fff; border: 2px solid var(--ink); border-radius: 99px; box-shadow: 2px 2px 0 var(--ink); font-size: .9rem; font-weight: 600; }
+.astuce-trad b { flex: none; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: var(--violet); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; }
+.bulle-trad { position: absolute; z-index: 60; max-width: min(260px, calc(100vw - 16px)); padding: 6px 12px; background: var(--ink); color: #fff; border-radius: 12px; box-shadow: 3px 3px 0 var(--lime); font: 600 .95rem/1.35 'Inter', system-ui, sans-serif; pointer-events: none; }
+.bulle-trad::after { content: ''; position: absolute; top: 100%; left: var(--fleche, 50%); margin-left: -7px; border: 7px solid transparent; border-top-color: var(--ink); }
+.bulle-trad.dessous::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--ink); }
+.bulle-lang { display: inline-block; margin-right: 8px; padding: 0 6px; border-radius: 6px; background: var(--lime); color: var(--ink); font-size: .7rem; font-weight: 800; vertical-align: 1px; }
+@media (prefers-reduced-motion: reduce) { .chips li.traduisible { transition: none; } }
+
+.encadre { display: flex; gap: 16px; align-items: flex-start; margin-top: 28px; padding: 16px 20px; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); }
+.encadre-info { background: var(--lemon); }
+.encadre-astuce { background: var(--aqua); }
+.encadre .marque { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--ink); color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.1rem; }
+.encadre strong { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.1rem; margin-bottom: 2px; }
+.encadre p + p { margin-top: 6px; }
+.encadre i { font-style: normal; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; }
+
+/* ---------- TERMINAISONS ---------- */
+.terminaisons { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; align-items: start; }
+.term { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px 20px 20px; }
+.term.m { border-top: 12px solid var(--masc); }
+.term.f { border-top: 12px solid var(--fem); }
+.term-fin { display: inline-block; margin-bottom: 12px; padding: 0 14px 2px; border: 3px solid var(--ink); border-radius: 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1.2; box-shadow: 3px 3px 0 var(--ink); rotate: -2deg; }
+/* terminaisons multiples (« -phone / -scope ») : plus petites, sur une seule ligne */
+.term-fin.longue { font-size: 1.45rem; white-space: nowrap; }
+.term.m .term-fin { background: var(--masc-clair); color: var(--masc-texte); }
+.term.f .term-fin { background: var(--fem-clair); color: var(--fem-texte); }
+.term-mais { margin-top: 14px; padding-top: 12px; border-top: 2px dashed rgba(27,19,64,.25); }
+.label { display: block; margin-bottom: 6px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+.term-mais .chips li { border-style: dashed; }
+
+/* ---------- EXCEPTIONS À RETENIR ---------- */
+.exc-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.exc-groupe { background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.exc-groupe.large { grid-column: 1 / -1; }
+.exc-tete { padding: 14px 20px; color: #fff; border-bottom: 3px solid var(--ink); }
+.exc-groupe.m .exc-tete { background: var(--masc); }
+.exc-groupe.f .exc-tete { background: var(--fem); }
+.exc-groupe.mixte .exc-tete { background: var(--ink); }
+.exc-tete h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.35rem; line-height: 1.2; }
+.exc-tete p { font-size: .9rem; opacity: .92; margin-top: 2px; }
+.exc-corps { padding: 16px 20px 20px; }
+.exc-lignes { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 24px; }
+.exc-ligne { display: flex; align-items: flex-start; gap: 12px; }
+.exc-ligne > b { flex: none; min-width: 64px; padding: 1px 8px; border: 2px solid var(--ink); border-radius: 10px; background: var(--bg); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; text-align: center; }
+.exc-ligne .chips li { border-style: dashed; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: .72rem; font-weight: 300; color: rgba(250,247,242,.4); }
+.footer-copy a { color: rgba(250,247,242,.6); }
+
+@media (prefers-reduced-motion: reduce) { .fil { transition: none; } }
+
+/* ---------- TABLETTE ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 44px; }
+  .apercu { max-width: 440px; rotate: 1deg; }
+  h1 { font-size: 3.5rem; }
+  .exc-lignes { grid-template-columns: 1fr; }
+}
+/* ---------- MOBILE ---------- */
+@media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+  section { padding: 36px 0; }
+  .hero { padding: 30px 0 10px; }
+  h1 { font-size: 2.8rem; }
+  .lead { font-size: 1.05rem; }
+  h2 { font-size: 1.7rem; }
+  .hex-penche { width: 28px; height: 33px; }
+  .apercu { padding: 24px 20px 20px; }
+  .apercu-ligne { font-size: 1.8rem; padding: 6px 12px; }
+  .apercu-ligne.m { margin-left: 12px; }
+  .autocollant { right: -6px; font-size: 1rem; }
+  .regle-grille, .exc-grille { grid-template-columns: 1fr; gap: 20px; }
+  .regle-mots li { font-size: 1.35rem; }
+  .terminaisons { grid-template-columns: 1fr; gap: 18px; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+@media (max-width: 400px) {
+  h1 { font-size: 2.35rem; }
+  .apercu-ligne { font-size: 1.5rem; }
+  .exc-ligne { flex-direction: column; gap: 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
+</header>
+
+<!-- Les mots français enseignés (noms, articles, terminaisons) restent en français dans la version anglaise :
+     seules les consignes et les explications sont traduites.
+     Chaque mot porte son genre (li.f / li.m) et sa terminaison (b.fin) : la page de vérification contrôle leur cohérence. -->
+<main class="page suite-sections">
+
+  <!-- ===== HÉROS ===== -->
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <a class="fil t" href="/ressources.html#a1-a2" data-fr="← Ressources · Faux débutant" data-en="← Resources · Elementary">← Ressources · Faux débutant</a>
+        <div class="pastilles suite">
+          <span class="pastille t" data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+          <span class="pastille t" data-fr="Masculin · Féminin" data-en="Masculine · Feminine">Masculin · Féminin</span>
+          <span class="pastille">A1</span>
+        </div>
+        <h1 class="t" data-html="1"
+            data-fr="Le &lt;mark&gt;genre&lt;/mark&gt; des noms &lt;span class=&quot;petit&quot;&gt;et la terminaison&lt;/span&gt;"
+            data-en="&lt;mark&gt;Noun gender&lt;/mark&gt; &lt;span class=&quot;petit&quot;&gt;and word endings&lt;/span&gt;">Le <mark>genre</mark> des noms <span class="petit">et la terminaison</span></h1>
+        <p class="lead t"
+           data-fr="Masculin ou féminin ? Très souvent, la fin du mot donne la réponse. Voici la règle générale, les terminaisons les plus fiables et les exceptions à connaître."
+           data-en="Masculine or feminine? Very often, the end of the word gives you the answer. Here is the general rule, the most reliable endings and the exceptions to know.">Masculin ou féminin ? Très souvent, la fin du mot donne la réponse. Voici la règle générale, les terminaisons les plus fiables et les exceptions à connaître.</p>
+        <p class="astuce-trad t" data-html="1"
+           data-fr="&lt;b aria-hidden=&quot;true&quot;&gt;?&lt;/b&gt;Cliquez sur un mot français pour voir sa traduction en anglais."
+           data-en="&lt;b aria-hidden=&quot;true&quot;&gt;?&lt;/b&gt;Click on a French word to see its English translation."><b aria-hidden="true">?</b>Cliquez sur un mot français pour voir sa traduction en anglais.</p>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="autocollant">le ou la ?</span>
+        <div class="apercu-ligne f"><span class="mot-fr"><span class="art">la</span>chais<b>e</b></span><span class="apercu-genre t" data-fr="féminin" data-en="feminine">féminin</span></div>
+        <div class="apercu-ligne m"><span class="mot-fr"><span class="art">le</span>li<b>t</b></span><span class="apercu-genre t" data-fr="masculin" data-en="masculine">masculin</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RÈGLE GÉNÉRALE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="La règle générale" data-en="The general rule">La règle générale</h2>
+      </div>
+      <p class="intro t" data-fr="Pour deviner le genre d'un nom, regardez sa dernière lettre." data-en="To guess a noun's gender, look at its last letter.">Pour deviner le genre d'un nom, regardez sa dernière lettre.</p>
+
+      <div class="regle-grille">
+        <div class="regle-carte f" id="regle-f">
+          <div class="regle-tete">
+            <h3 class="t" data-fr="-e à la fin" data-en="Ending in -e">-e à la fin</h3>
+            <span class="regle-genre t" data-fr="= féminin" data-en="= feminine">= féminin</span>
+          </div>
+          <ul class="regle-mots">
+            <li class="f"><span class="art">la</span><span>fourchett<b class="fin">e</b></span></li>
+            <li class="f"><span class="art">la</span><span>fenêtr<b class="fin">e</b></span></li>
+            <li class="f"><span class="art">la</span><span>chais<b class="fin">e</b></span></li>
+            <li class="f"><span class="art">la</span><span>tass<b class="fin">e</b></span></li>
+            <li class="f"><span class="art">la</span><span>port<b class="fin">e</b></span></li>
+          </ul>
+        </div>
+        <div class="regle-carte m" id="regle-m">
+          <div class="regle-tete">
+            <h3 class="t" data-fr="Pas de -e à la fin" data-en="No -e at the end">Pas de -e à la fin</h3>
+            <span class="regle-genre t" data-fr="= masculin" data-en="= masculine">= masculin</span>
+          </div>
+          <ul class="regle-mots">
+            <li class="m"><span class="art">le</span><span>li<b class="fin">t</b></span></li>
+            <li class="m"><span class="art">le</span><span>coutea<b class="fin">u</b></span></li>
+            <li class="m"><span class="art">le</span><span>pai<b class="fin">n</b></span></li>
+            <li class="m"><span class="art">le</span><span>sa<b class="fin">c</b></span></li>
+            <li class="m"><span class="art">le</span><span>mu<b class="fin">r</b></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="encadre encadre-info">
+        <span class="marque" aria-hidden="true">i</span>
+        <div>
+          <strong class="t" data-fr="Une tendance, pas une loi" data-en="A tendency, not a law">Une tendance, pas une loi</strong>
+          <p class="t" data-html="1"
+             data-fr="Beaucoup de noms en -e sont masculins (&lt;span class=&quot;mot-fr&quot; data-mot=&quot;problème&quot;&gt;le problème&lt;/span&gt;, &lt;span class=&quot;mot-fr&quot; data-mot=&quot;livre&quot;&gt;le livre&lt;/span&gt;…). Les terminaisons ci-dessous sont plus sûres, et les exceptions courantes sont réunies à la fin de la page."
+             data-en="Many nouns ending in -e are masculine (&lt;span class=&quot;mot-fr&quot; data-mot=&quot;problème&quot;&gt;le problème&lt;/span&gt;, &lt;span class=&quot;mot-fr&quot; data-mot=&quot;livre&quot;&gt;le livre&lt;/span&gt;…). The endings below are more reliable, and the common exceptions are listed at the end of the page.">Beaucoup de noms en -e sont masculins (<span class="mot-fr" data-mot="problème">le problème</span>, <span class="mot-fr" data-mot="livre">le livre</span>…). Les terminaisons ci-dessous sont plus sûres, et les exceptions courantes sont réunies à la fin de la page.</p>
+          <p class="t" data-html="1"
+             data-fr="Avec &lt;i&gt;l'&lt;/i&gt;, on n'entend pas le genre : il est indiqué à côté du mot (fém. ou masc.)."
+             data-en="With &lt;i&gt;l'&lt;/i&gt; you can't hear the gender, so it is shown next to the word (fem. or masc.).">Avec <i>l'</i>, on n'entend pas le genre : il est indiqué à côté du mot (fém. ou masc.).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TERMINAISONS MASCULINES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Les terminaisons masculines" data-en="Masculine endings">Les terminaisons masculines</h2>
+      </div>
+      <p class="intro t" data-fr="Ces terminaisons indiquent presque toujours un nom masculin." data-en="These endings almost always mean the noun is masculine.">Ces terminaisons indiquent presque toujours un nom masculin.</p>
+
+      <div class="terminaisons">
+        <article class="term m" data-fin="age">
+          <div class="term-fin">-age</div>
+          <ul class="chips">
+            <li class="m"><span class="art">le</span> from<b class="fin">age</b></li>
+            <li class="m"><span class="art">le</span> voy<b class="fin">age</b></li>
+            <li class="m"><span class="art">le</span> gar<b class="fin">age</b></li>
+            <li class="m"><span class="art">le</span> vis<b class="fin">age</b></li>
+            <li class="m"><span class="art">le</span> mén<b class="fin">age</b></li>
+          </ul>
+          <div class="term-mais">
+            <span class="label t" data-fr="Mais" data-en="Exceptions">Mais</span>
+            <ul class="chips">
+              <li class="f"><span class="art">la</span> pl<b class="fin">age</b></li>
+              <li class="f"><span class="art">la</span> p<b class="fin">age</b></li>
+              <li class="f"><span class="art">l'</span>im<b class="fin">age</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+              <li class="f"><span class="art">la</span> c<b class="fin">age</b></li>
+              <li class="f"><span class="art">la</span> n<b class="fin">age</b></li>
+              <li class="f"><span class="art">la</span> r<b class="fin">age</b></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="term m" data-fin="ment">
+          <div class="term-fin">-ment</div>
+          <ul class="chips">
+            <li class="m"><span class="art">le</span> mo<b class="fin">ment</b></li>
+            <li class="m"><span class="art">l'</span>apparte<b class="fin">ment</b><small class="g t" data-fr="masc." data-en="masc.">masc.</small></li>
+            <li class="m"><span class="art">le</span> vête<b class="fin">ment</b></li>
+            <li class="m"><span class="art">le</span> médica<b class="fin">ment</b></li>
+            <li class="m"><span class="art">le</span> gouverne<b class="fin">ment</b></li>
+          </ul>
+        </article>
+
+        <article class="term m" data-fin="eau">
+          <div class="term-fin">-eau</div>
+          <ul class="chips">
+            <li class="m"><span class="art">le</span> bur<b class="fin">eau</b></li>
+            <li class="m"><span class="art">le</span> gât<b class="fin">eau</b></li>
+            <li class="m"><span class="art">le</span> cad<b class="fin">eau</b></li>
+            <li class="m"><span class="art">le</span> chap<b class="fin">eau</b></li>
+            <li class="m"><span class="art">le</span> cout<b class="fin">eau</b></li>
+          </ul>
+          <div class="term-mais">
+            <span class="label t" data-fr="Mais" data-en="Exceptions">Mais</span>
+            <ul class="chips">
+              <li class="f"><span class="art">l'</span><b class="fin">eau</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+              <li class="f"><span class="art">la</span> p<b class="fin">eau</b></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="term m" data-fin="phone|scope">
+          <div class="term-fin longue">-phone / -scope</div>
+          <ul class="chips">
+            <li class="m"><span class="art">le</span> télé<b class="fin">phone</b></li>
+            <li class="m"><span class="art">le</span> micro<b class="fin">phone</b></li>
+            <li class="m"><span class="art">l'</span>inter<b class="fin">phone</b><small class="g t" data-fr="masc." data-en="masc.">masc.</small></li>
+            <li class="m"><span class="art">le</span> micro<b class="fin">scope</b></li>
+            <li class="m"><span class="art">le</span> téle<b class="fin">scope</b></li>
+          </ul>
+        </article>
+
+        <article class="term m" data-fin="isme">
+          <div class="term-fin">-isme</div>
+          <ul class="chips">
+            <li class="m"><span class="art">le</span> tour<b class="fin">isme</b></li>
+            <li class="m"><span class="art">le</span> journal<b class="fin">isme</b></li>
+            <li class="m"><span class="art">le</span> réal<b class="fin">isme</b></li>
+            <li class="m"><span class="art">le</span> social<b class="fin">isme</b></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TERMINAISONS FÉMININES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Les terminaisons féminines" data-en="Feminine endings">Les terminaisons féminines</h2>
+      </div>
+      <p class="intro t" data-fr="Ces terminaisons indiquent presque toujours un nom féminin." data-en="These endings almost always mean the noun is feminine.">Ces terminaisons indiquent presque toujours un nom féminin.</p>
+
+      <div class="terminaisons">
+        <article class="term f" data-fin="tion">
+          <div class="term-fin">-tion</div>
+          <ul class="chips">
+            <li class="f"><span class="art">la</span> ques<b class="fin">tion</b></li>
+            <li class="f"><span class="art">l'</span>informa<b class="fin">tion</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+            <li class="f"><span class="art">la</span> solu<b class="fin">tion</b></li>
+            <li class="f"><span class="art">la</span> situa<b class="fin">tion</b></li>
+            <li class="f"><span class="art">la</span> réserva<b class="fin">tion</b></li>
+          </ul>
+        </article>
+
+        <article class="term f" data-fin="sion">
+          <div class="term-fin">-sion</div>
+          <ul class="chips">
+            <li class="f"><span class="art">la</span> télévi<b class="fin">sion</b></li>
+            <li class="f"><span class="art">la</span> déci<b class="fin">sion</b></li>
+            <li class="f"><span class="art">la</span> profes<b class="fin">sion</b></li>
+            <li class="f"><span class="art">l'</span>émis<b class="fin">sion</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+          </ul>
+        </article>
+
+        <article class="term f" data-fin="té">
+          <div class="term-fin">-té</div>
+          <ul class="chips">
+            <li class="f"><span class="art">la</span> san<b class="fin">té</b></li>
+            <li class="f"><span class="art">la</span> liber<b class="fin">té</b></li>
+            <li class="f"><span class="art">la</span> beau<b class="fin">té</b></li>
+            <li class="f"><span class="art">la</span> socié<b class="fin">té</b></li>
+            <li class="f"><span class="art">la</span> réali<b class="fin">té</b></li>
+          </ul>
+          <div class="term-mais">
+            <span class="label t" data-fr="Mais" data-en="Exceptions">Mais</span>
+            <ul class="chips">
+              <li class="m"><span class="art">le</span> cô<b class="fin">té</b></li>
+              <li class="m"><span class="art">l'</span>é<b class="fin">té</b><small class="g t" data-fr="masc." data-en="masc.">masc.</small></li>
+              <li class="m"><span class="art">le</span> comi<b class="fin">té</b></li>
+              <li class="m"><span class="art">le</span> dépu<b class="fin">té</b></li>
+              <li class="m"><span class="art">le</span> pâ<b class="fin">té</b></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="term f" data-fin="ette">
+          <div class="term-fin">-ette</div>
+          <ul class="chips">
+            <li class="f"><span class="art">la</span> bagu<b class="fin">ette</b></li>
+            <li class="f"><span class="art">la</span> fourch<b class="fin">ette</b></li>
+            <li class="f"><span class="art">la</span> servi<b class="fin">ette</b></li>
+            <li class="f"><span class="art">la</span> chauss<b class="fin">ette</b></li>
+            <li class="f"><span class="art">la</span> bicycl<b class="fin">ette</b></li>
+          </ul>
+          <div class="term-mais">
+            <span class="label t" data-fr="Mais" data-en="Exceptions">Mais</span>
+            <ul class="chips">
+              <li class="m"><span class="art">le</span> squel<b class="fin">ette</b></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="term f" data-fin="ance">
+          <div class="term-fin">-ance</div>
+          <ul class="chips">
+            <li class="f"><span class="art">la</span> ch<b class="fin">ance</b></li>
+            <li class="f"><span class="art">la</span> dist<b class="fin">ance</b></li>
+            <li class="f"><span class="art">l'</span>ambi<b class="fin">ance</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+            <li class="f"><span class="art">la</span> connaiss<b class="fin">ance</b></li>
+          </ul>
+        </article>
+
+        <article class="term f" data-fin="ence">
+          <div class="term-fin">-ence</div>
+          <ul class="chips">
+            <li class="f"><span class="art">la</span> différ<b class="fin">ence</b></li>
+            <li class="f"><span class="art">la</span> pati<b class="fin">ence</b></li>
+            <li class="f"><span class="art">l'</span>expéri<b class="fin">ence</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+            <li class="f"><span class="art">la</span> prés<b class="fin">ence</b></li>
+          </ul>
+          <div class="term-mais">
+            <span class="label t" data-fr="Mais" data-en="Exceptions">Mais</span>
+            <ul class="chips">
+              <li class="m"><span class="art">le</span> sil<b class="fin">ence</b></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="term f" data-fin="ure">
+          <div class="term-fin">-ure</div>
+          <ul class="chips">
+            <li class="f"><span class="art">la</span> voit<b class="fin">ure</b></li>
+            <li class="f"><span class="art">la</span> nourrit<b class="fin">ure</b></li>
+            <li class="f"><span class="art">la</span> confit<b class="fin">ure</b></li>
+            <li class="f"><span class="art">la</span> cult<b class="fin">ure</b></li>
+            <li class="f"><span class="art">la</span> peint<b class="fin">ure</b></li>
+          </ul>
+          <div class="term-mais">
+            <span class="label t" data-fr="Mais" data-en="Exceptions">Mais</span>
+            <ul class="chips">
+              <li class="m"><span class="art">le</span> merc<b class="fin">ure</b></li>
+              <li class="m"><span class="art">le</span> cyan<b class="fin">ure</b></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="term f" data-fin="ode|ade|ude">
+          <div class="term-fin longue">-ode / -ade / -ude</div>
+          <ul class="chips">
+            <li class="f"><span class="art">la</span> méth<b class="fin">ode</b></li>
+            <li class="f"><span class="art">la</span> péri<b class="fin">ode</b></li>
+            <li class="f"><span class="art">la</span> sal<b class="fin">ade</b></li>
+            <li class="f"><span class="art">la</span> promen<b class="fin">ade</b></li>
+            <li class="f"><span class="art">l'</span>habit<b class="fin">ude</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="encadre encadre-astuce">
+        <span class="marque" aria-hidden="true">★</span>
+        <div>
+          <strong class="t" data-fr="Astuce" data-en="Tip">Astuce</strong>
+          <p class="t" data-html="1"
+             data-fr="Apprenez toujours un nouveau nom avec son article (&lt;span class=&quot;mot-fr&quot; data-mot=&quot;plage&quot;&gt;la plage&lt;/span&gt;, &lt;span class=&quot;mot-fr&quot; data-mot=&quot;problème&quot;&gt;le problème&lt;/span&gt;) : c'est le moyen le plus sûr de retenir son genre."
+             data-en="Always learn a new noun together with its article (&lt;span class=&quot;mot-fr&quot; data-mot=&quot;plage&quot;&gt;la plage&lt;/span&gt;, &lt;span class=&quot;mot-fr&quot; data-mot=&quot;problème&quot;&gt;le problème&lt;/span&gt;): it's the surest way to remember its gender.">Apprenez toujours un nouveau nom avec son article (<span class="mot-fr" data-mot="plage">la plage</span>, <span class="mot-fr" data-mot="problème">le problème</span>) : c'est le moyen le plus sûr de retenir son genre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXCEPTIONS À RETENIR ===== -->
+  <section>
+    <div class="wrap">
+      <div class="titre-section">
+        <svg class="hex-penche" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+        <h2 class="t" data-fr="Les exceptions à retenir" data-en="Exceptions to remember">Les exceptions à retenir</h2>
+      </div>
+      <p class="intro t" data-fr="Des mots courants qui ne suivent pas les règles : à apprendre par cœur." data-en="Common words that don't follow the rules: learn them by heart.">Des mots courants qui ne suivent pas les règles : à apprendre par cœur.</p>
+
+      <div class="exc-grille">
+        <div class="exc-groupe m" id="exc-masc-e">
+          <div class="exc-tete">
+            <h3 class="t" data-fr="Masculins… terminés par -e" data-en="Masculine… but ending in -e">Masculins… terminés par -e</h3>
+          </div>
+          <div class="exc-corps">
+            <ul class="chips">
+              <li class="m"><span class="art">le</span> problèm<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> systèm<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> programm<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> volum<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> modèl<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> group<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> domain<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> rôl<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> livr<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> verr<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> beurr<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> sucr<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> mond<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> nombr<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> rêv<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> musé<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> lycé<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> collèg<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> paraplui<b class="fin">e</b></li>
+              <li class="m"><span class="art">le</span> dentifric<b class="fin">e</b></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exc-groupe f" id="exc-fem-sans-e">
+          <div class="exc-tete">
+            <h3 class="t" data-fr="Féminins… sans -e" data-en="Feminine… without -e">Féminins… sans -e</h3>
+          </div>
+          <div class="exc-corps">
+            <ul class="chips">
+              <li class="f"><span class="art">la</span> main</li>
+              <li class="f"><span class="art">la</span> nuit</li>
+              <li class="f"><span class="art">la</span> mer</li>
+              <li class="f"><span class="art">la</span> fin</li>
+              <li class="f"><span class="art">la</span> faim</li>
+              <li class="f"><span class="art">la</span> dent</li>
+              <li class="f"><span class="art">la</span> clé</li>
+              <li class="f"><span class="art">la</span> forêt</li>
+              <li class="f"><span class="art">la</span> souris</li>
+              <li class="f"><span class="art">la</span> radio</li>
+              <li class="f"><span class="art">la</span> photo</li>
+              <li class="f"><span class="art">la</span> moto</li>
+              <li class="f"><span class="art">la</span> maison</li>
+              <li class="f"><span class="art">la</span> chanson</li>
+              <li class="f"><span class="art">la</span> leçon</li>
+              <li class="f"><span class="art">la</span> boisson</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exc-groupe f large" id="exc-fem-eur">
+          <div class="exc-tete">
+            <h3 class="t" data-fr="Féminins en -eur" data-en="Feminine nouns in -eur">Féminins en -eur</h3>
+            <p class="t" data-html="1"
+               data-fr="La plupart des noms en -eur sont masculins (&lt;span class=&quot;mot-fr&quot; data-mot=&quot;professeur&quot;&gt;le professeur&lt;/span&gt;, &lt;span class=&quot;mot-fr&quot; data-mot=&quot;ordinateur&quot;&gt;l'ordinateur&lt;/span&gt;, &lt;span class=&quot;mot-fr&quot; data-mot=&quot;moteur&quot;&gt;le moteur&lt;/span&gt;), mais pas ceux-ci :"
+               data-en="Most nouns in -eur are masculine (&lt;span class=&quot;mot-fr&quot; data-mot=&quot;professeur&quot;&gt;le professeur&lt;/span&gt;, &lt;span class=&quot;mot-fr&quot; data-mot=&quot;ordinateur&quot;&gt;l'ordinateur&lt;/span&gt;, &lt;span class=&quot;mot-fr&quot; data-mot=&quot;moteur&quot;&gt;le moteur&lt;/span&gt;), but not these:">La plupart des noms en -eur sont masculins (<span class="mot-fr" data-mot="professeur">le professeur</span>, <span class="mot-fr" data-mot="ordinateur">l'ordinateur</span>, <span class="mot-fr" data-mot="moteur">le moteur</span>), mais pas ceux-ci :</p>
+          </div>
+          <div class="exc-corps">
+            <ul class="chips">
+              <li class="f"><span class="art">la</span> coul<b class="fin">eur</b></li>
+              <li class="f"><span class="art">l'</span>od<b class="fin">eur</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+              <li class="f"><span class="art">la</span> sav<b class="fin">eur</b></li>
+              <li class="f"><span class="art">la</span> p<b class="fin">eur</b></li>
+              <li class="f"><span class="art">la</span> doul<b class="fin">eur</b></li>
+              <li class="f"><span class="art">la</span> fl<b class="fin">eur</b></li>
+              <li class="f"><span class="art">l'</span>err<b class="fin">eur</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+              <li class="f"><span class="art">la</span> val<b class="fin">eur</b></li>
+              <li class="f"><span class="art">la</span> chal<b class="fin">eur</b></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exc-groupe mixte large" id="exc-terminaisons">
+          <div class="exc-tete">
+            <h3 class="t" data-fr="Les pièges des terminaisons" data-en="Tricky endings">Les pièges des terminaisons</h3>
+            <p class="t" data-fr="Les exceptions vues plus haut, réunies ici." data-en="The exceptions seen above, all in one place.">Les exceptions vues plus haut, réunies ici.</p>
+          </div>
+          <div class="exc-corps">
+            <ul class="exc-lignes">
+              <li class="exc-ligne" data-fin="age"><b>-age</b>
+                <ul class="chips">
+                  <li class="f"><span class="art">la</span> pl<b class="fin">age</b></li>
+                  <li class="f"><span class="art">la</span> p<b class="fin">age</b></li>
+                  <li class="f"><span class="art">l'</span>im<b class="fin">age</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+                  <li class="f"><span class="art">la</span> c<b class="fin">age</b></li>
+                  <li class="f"><span class="art">la</span> n<b class="fin">age</b></li>
+                  <li class="f"><span class="art">la</span> r<b class="fin">age</b></li>
+                </ul>
+              </li>
+              <li class="exc-ligne" data-fin="té"><b>-té</b>
+                <ul class="chips">
+                  <li class="m"><span class="art">le</span> cô<b class="fin">té</b></li>
+                  <li class="m"><span class="art">l'</span>é<b class="fin">té</b><small class="g t" data-fr="masc." data-en="masc.">masc.</small></li>
+                  <li class="m"><span class="art">le</span> comi<b class="fin">té</b></li>
+                  <li class="m"><span class="art">le</span> dépu<b class="fin">té</b></li>
+                  <li class="m"><span class="art">le</span> pâ<b class="fin">té</b></li>
+                </ul>
+              </li>
+              <li class="exc-ligne" data-fin="eau"><b>-eau</b>
+                <ul class="chips">
+                  <li class="f"><span class="art">l'</span><b class="fin">eau</b><small class="g t" data-fr="fém." data-en="fem.">fém.</small></li>
+                  <li class="f"><span class="art">la</span> p<b class="fin">eau</b></li>
+                </ul>
+              </li>
+              <li class="exc-ligne" data-fin="ure"><b>-ure</b>
+                <ul class="chips">
+                  <li class="m"><span class="art">le</span> merc<b class="fin">ure</b></li>
+                  <li class="m"><span class="art">le</span> cyan<b class="fin">ure</b></li>
+                </ul>
+              </li>
+              <li class="exc-ligne" data-fin="ette"><b>-ette</b>
+                <ul class="chips">
+                  <li class="m"><span class="art">le</span> squel<b class="fin">ette</b></li>
+                </ul>
+              </li>
+              <li class="exc-ligne" data-fin="ence"><b>-ence</b>
+                <ul class="chips">
+                  <li class="m"><span class="art">le</span> sil<b class="fin">ence</b></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+</footer>
+
+<script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Le genre des noms et la terminaison — French with Alban', en: 'Noun gender and word endings — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+  fermerBulle();
+  preparerMots(); // les exemples dans les explications sont recréés à chaque changement de langue
+}
+
+/* ---------- traduction d'un mot au clic ----------
+   Les mots français enseignés (li.f / li.m et .mot-fr) affichent leur traduction anglaise dans une bulle.
+   Clé = le mot sans son article (ou data-mot) ; un mot absent du dictionnaire n'est simplement pas cliquable. */
+var TRAD = {
+  // règle générale
+  'fourchette': 'fork', 'fenêtre': 'window', 'chaise': 'chair', 'tasse': 'cup', 'porte': 'door',
+  'lit': 'bed', 'couteau': 'knife', 'pain': 'bread', 'sac': 'bag', 'mur': 'wall',
+  // terminaisons masculines
+  'fromage': 'cheese', 'voyage': 'trip', 'garage': 'garage', 'visage': 'face', 'ménage': 'housework',
+  'plage': 'beach', 'page': 'page', 'image': 'picture', 'cage': 'cage', 'nage': 'swimming', 'rage': 'rage',
+  'moment': 'moment', 'appartement': 'flat, apartment', 'vêtement': 'piece of clothing', 'médicament': 'medicine', 'gouvernement': 'government',
+  'bureau': 'desk, office', 'gâteau': 'cake', 'cadeau': 'present, gift', 'chapeau': 'hat', 'eau': 'water', 'peau': 'skin',
+  'téléphone': 'phone', 'microphone': 'microphone', 'interphone': 'intercom', 'microscope': 'microscope', 'télescope': 'telescope',
+  'tourisme': 'tourism', 'journalisme': 'journalism', 'réalisme': 'realism', 'socialisme': 'socialism',
+  // terminaisons féminines
+  'question': 'question', 'information': 'information', 'solution': 'solution', 'situation': 'situation', 'réservation': 'booking, reservation',
+  'télévision': 'television', 'décision': 'decision', 'profession': 'profession', 'émission': 'programme (TV, radio)',
+  'santé': 'health', 'liberté': 'freedom', 'beauté': 'beauty', 'société': 'society, company', 'réalité': 'reality',
+  'côté': 'side', 'été': 'summer', 'comité': 'committee', 'député': 'member of parliament', 'pâté': 'pâté',
+  'baguette': 'baguette', 'serviette': 'towel, napkin', 'chaussette': 'sock', 'bicyclette': 'bicycle', 'squelette': 'skeleton',
+  'chance': 'luck', 'distance': 'distance', 'ambiance': 'atmosphere', 'connaissance': 'knowledge',
+  'différence': 'difference', 'patience': 'patience', 'expérience': 'experience', 'présence': 'presence', 'silence': 'silence',
+  'voiture': 'car', 'nourriture': 'food', 'confiture': 'jam', 'culture': 'culture', 'peinture': 'painting, paint', 'mercure': 'mercury', 'cyanure': 'cyanide',
+  'méthode': 'method', 'période': 'period', 'salade': 'salad', 'promenade': 'walk', 'habitude': 'habit',
+  // exceptions à retenir
+  'problème': 'problem', 'système': 'system', 'programme': 'programme', 'volume': 'volume', 'modèle': 'model', 'groupe': 'group',
+  'domaine': 'field, area', 'rôle': 'role', 'livre': 'book', 'verre': 'glass', 'beurre': 'butter', 'sucre': 'sugar', 'monde': 'world',
+  'nombre': 'number', 'rêve': 'dream', 'musée': 'museum', 'lycée': 'high school', 'collège': 'secondary school', 'parapluie': 'umbrella', 'dentifrice': 'toothpaste',
+  'main': 'hand', 'nuit': 'night', 'mer': 'sea', 'fin': 'end', 'faim': 'hunger', 'dent': 'tooth', 'clé': 'key', 'forêt': 'forest', 'souris': 'mouse',
+  'radio': 'radio', 'photo': 'photo', 'moto': 'motorbike', 'maison': 'house', 'chanson': 'song', 'leçon': 'lesson', 'boisson': 'drink',
+  'couleur': 'colour', 'odeur': 'smell', 'saveur': 'flavour', 'peur': 'fear', 'douleur': 'pain', 'fleur': 'flower', 'erreur': 'mistake', 'valeur': 'value', 'chaleur': 'heat',
+  'professeur': 'teacher', 'ordinateur': 'computer', 'moteur': 'engine'
+};
+var SELECTEUR_MOTS = 'main li.f, main li.m, .mot-fr';
+function cleMot(el) {
+  if (el.dataset.mot) return el.dataset.mot;
+  var clone = el.cloneNode(true);
+  clone.querySelectorAll('.art, .g').forEach(function (e) { e.remove(); });
+  return clone.textContent.replace(/\s+/g, ' ').trim();
+}
+var bulle = document.createElement('div');
+bulle.id = 'bulle-trad';
+bulle.className = 'bulle-trad';
+bulle.setAttribute('role', 'tooltip');
+bulle.hidden = true;
+document.body.appendChild(bulle);
+var motOuvert = null;
+
+function fermerBulle() {
+  if (!motOuvert) return;
+  motOuvert.removeAttribute('aria-describedby');
+  if (motOuvert.hasAttribute('aria-expanded')) motOuvert.setAttribute('aria-expanded', 'false');
+  motOuvert = null;
+  bulle.hidden = true;
+}
+function ouvrirBulle(el) {
+  var trad = TRAD[cleMot(el)];
+  if (!trad) return;
+  fermerBulle();
+  bulle.innerHTML = '<span class="bulle-lang">EN</span>';
+  bulle.appendChild(document.createTextNode(trad));
+  bulle.hidden = false;
+  var r = el.getBoundingClientRect(), b = bulle.getBoundingClientRect();
+  var largeur = document.documentElement.clientWidth;
+  var gauche = Math.min(Math.max(8, r.left + r.width / 2 - b.width / 2), largeur - b.width - 8);
+  var dessus = r.top - b.height - 12;
+  var dessous = dessus < 84; // trop près de l'en-tête collant : la bulle passe sous le mot
+  bulle.classList.toggle('dessous', dessous);
+  bulle.style.left = (gauche + window.scrollX) + 'px';
+  bulle.style.top = ((dessous ? r.bottom + 12 : dessus) + window.scrollY) + 'px';
+  bulle.style.setProperty('--fleche', Math.min(Math.max(14, r.left + r.width / 2 - gauche), b.width - 14) + 'px');
+  el.setAttribute('aria-describedby', 'bulle-trad');
+  if (el.hasAttribute('aria-expanded')) el.setAttribute('aria-expanded', 'true');
+  motOuvert = el;
+}
+function preparerMots() {
+  document.querySelectorAll(SELECTEUR_MOTS).forEach(function (el) {
+    if (!TRAD[cleMot(el)]) return;
+    el.classList.add('traduisible');
+    if (el.closest('[aria-hidden="true"]')) return; // aperçu décoratif : cliquable à la souris seulement
+    el.tabIndex = 0;
+    el.setAttribute('role', 'button');
+    el.setAttribute('aria-expanded', 'false');
+  });
+}
+document.addEventListener('click', function (e) {
+  var el = e.target.closest ? e.target.closest(SELECTEUR_MOTS) : null;
+  if (el && el.classList.contains('traduisible')) {
+    if (el === motOuvert) fermerBulle(); else ouvrirBulle(el);
+    return;
+  }
+  fermerBulle();
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && motOuvert) {
+    var el = motOuvert;
+    fermerBulle();
+    if (el.tabIndex === 0) el.focus();
+    return;
+  }
+  var cible = e.target.classList && e.target.classList.contains('traduisible') ? e.target : null;
+  if (cible && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    if (cible === motOuvert) fermerBulle(); else ouvrirBulle(cible);
+  }
+});
+window.addEventListener('resize', fermerBulle);
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script>
+</body>
+</html>
