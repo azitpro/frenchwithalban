@@ -125,6 +125,12 @@ h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size
 .soutien-texte strong { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.12rem; }
 .soutien-btn { display: inline-block; padding: 11px 22px; background: var(--pink); color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem; border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; transition: translate .15s, box-shadow .15s; }
 .soutien-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+/* appel vers le test de placement (lien simple : il n'est pas compté parmi les ressources) */
+.placement { display: flex; align-items: center; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; margin-bottom: 22px; background: var(--aqua); border: 3px solid var(--ink); border-radius: 20px; box-shadow: var(--shadow); padding: 20px 26px; rotate: .4deg; }
+.placement-texte { font-size: .98rem; line-height: 1.6; max-width: 700px; }
+.placement-texte strong { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.12rem; }
+.placement-btn { display: inline-block; padding: 11px 22px; background: var(--ink); color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem; border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 var(--pink); white-space: nowrap; transition: translate .15s, box-shadow .15s; }
+.placement-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--pink); }
 
 /* ---------- NIVEAUX ---------- */
 .niveaux { display: grid; gap: 24px; margin-top: 44px; }
@@ -198,6 +204,7 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   h1 { font-size: 2.9rem; }
   .lead { font-size: 1.04rem; }
   .soutien { padding: 18px 18px; rotate: none; }
+  .placement { padding: 18px 18px; rotate: none; }
   .niveaux { margin-top: 34px; gap: 20px; }
   .niveau-tete { gap: 14px; padding: 14px 14px; align-items: flex-start; }
   .niveau-img { width: 62px; height: 62px; border-radius: 16px; }
@@ -315,6 +322,14 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
   </div>
 
   <div class="wrap">
+
+    <div class="placement">
+      <div class="placement-texte t"
+           data-fr="&lt;strong&gt;Quel est votre niveau&amp;nbsp;?&lt;/strong&gt; Faites le test de placement : des questions de grammaire de A1 à C1, qui s'adaptent à vos réponses. Résultat en quelques minutes."
+           data-en="&lt;strong&gt;What is your level?&lt;/strong&gt; Take the placement test: grammar questions from A1 to C1 that adapt to your answers. Get your result in a few minutes."
+           data-html="1"><strong>Quel est votre niveau&nbsp;?</strong> Faites le test de placement : des questions de grammaire de A1 à C1, qui s'adaptent à vos réponses. Résultat en quelques minutes.</div>
+      <a href="/test_placement.html" class="placement-btn t" data-fr="Faire le test →" data-en="Take the test →">Faire le test →</a>
+    </div>
 
     <div class="soutien">
       <div class="soutien-texte t"

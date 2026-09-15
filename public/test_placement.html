@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de placement — French with Alban</title>
+<meta name="description" content="Test de placement gratuit en français : des questions de grammaire du niveau A1 au niveau C1. Le test s'adapte à votre niveau et vous donne un résultat indicatif.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --ok-fond: #ecffc4; --faux-fond: #ffe1ee;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre. Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). */
+.suite > :nth-child(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ (mêmes règles que les autres pages) ---------- */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+main {
+  flex: 1; padding: 40px 20px 72px;
+  background:
+    radial-gradient(circle at 6% 6%, rgba(200,245,96,.55) 0, transparent 26%),
+    radial-gradient(circle at 96% 20%, rgba(255,95,162,.26) 0, transparent 24%),
+    radial-gradient(circle at 4% 80%, rgba(124,92,255,.18) 0, transparent 24%),
+    radial-gradient(circle at 96% 92%, rgba(255,228,92,.42) 0, transparent 24%);
+}
+.app { width: 100%; max-width: 720px; margin: 0 auto; }
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 18px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.pastille { display: inline-block; padding: 4px 13px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .76rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(odd) { rotate: -2.5deg; }
+.pastille:nth-child(even) { rotate: 2deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.4rem; line-height: 1.02; letter-spacing: -0.035em; margin-bottom: 14px; }
+h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; border-radius: 12px; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); display: inline-block; rotate: -2deg; }
+.lead { color: var(--soft); font-size: 1.08rem; margin-bottom: 26px; max-width: 600px; }
+
+.card { background: #fff; border: 3px solid var(--ink); border-radius: 24px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 32px 32px; }
+.section-label { font-family: 'Bricolage Grotesque', sans-serif; font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-bottom: 10px; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.btn { flex: 1; padding: 13px 18px; border: 3px solid var(--ink); border-radius: 99px; font-weight: 800; font-size: 1rem; cursor: pointer; text-align: center; text-decoration: none; transition: translate .12s, box-shadow .12s, background .15s; }
+.btn:disabled { cursor: default; opacity: .5; }
+.btn-rose { background: var(--pink); color: #fff; box-shadow: 4px 4px 0 var(--ink); }
+.btn-rose:hover:not(:disabled) { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); }
+.btn-primary { background: var(--ink); color: #fff; box-shadow: 4px 4px 0 var(--pink); }
+.btn-primary:hover:not(:disabled) { translate: -1px -1px; box-shadow: 5px 5px 0 var(--pink); }
+.btn-ghost { background: #fff; color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.btn-ghost:hover:not(:disabled) { translate: -1px -1px; background: var(--lemon); }
+.message { margin-top: 14px; padding: 10px 14px; border: 2.5px solid var(--ink); border-radius: 12px; font-weight: 600; font-size: .95rem; }
+.message.ok { background: var(--ok-fond); }
+.message.erreur { background: var(--faux-fond); }
+.message.info { background: var(--bg); color: var(--soft); }
+
+/* ---------- ACCUEIL DU TEST ---------- */
+.accueil h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 8px; }
+.accueil .lede { color: var(--soft); margin-bottom: 20px; }
+.etapes { list-style: none; display: grid; gap: 10px; margin-bottom: 6px; }
+.etapes li { display: flex; gap: 12px; align-items: baseline; }
+.etapes li::before { content: "→"; flex: none; font-weight: 800; color: var(--pink); }
+.confidentiel { margin-top: 18px; font-size: .82rem; color: var(--soft); }
+.confidentiel a { font-weight: 600; text-decoration-color: var(--pink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* ---------- QUESTION ---------- */
+.frise { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.frise span { padding: 1px 12px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; color: var(--soft); font-weight: 800; font-size: .8rem; }
+.frise span.fait { background: var(--lime); color: var(--ink); }
+.frise span.encours { background: var(--pink); color: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.quiz-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; font-size: .88rem; font-weight: 700; }
+.quiz-top span { padding: 1px 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--bg); }
+.progress-track { height: 16px; background: #fff; border: 2.5px solid var(--ink); border-radius: 99px; margin-bottom: 22px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--pink); transition: width .25s ease; }
+.phrase { margin-bottom: 20px; padding: 28px 20px; text-align: center; background: var(--bg); border: 3px dashed var(--ink); border-radius: 20px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.7rem; line-height: 1.35; overflow-wrap: anywhere; }
+.blanc { display: inline-block; min-width: 3.2em; margin: 0 .12em; border-bottom: 4px solid var(--pink); }
+.consigne { text-align: center; font-weight: 700; margin-bottom: 12px; }
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.option { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 12px 14px; background: #fff; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 3px 3px 0 var(--ink); font-weight: 600; font-size: 1.08rem; text-align: left; cursor: pointer; transition: translate .12s, box-shadow .12s, background .15s; }
+.option .lettre { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border: 2.5px solid var(--ink); border-radius: 50%; background: var(--c); color: var(--c-texte); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: .95rem; line-height: 1; }
+.option span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.option:hover:not(:disabled) { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); background: var(--bg); }
+.option:disabled, .jnsp:disabled { cursor: default; }
+.option.choisi { background: var(--lemon); translate: 1px 1px; box-shadow: 1px 1px 0 var(--ink); }
+.jnsp { display: block; width: 100%; margin-top: 14px; padding: 11px 16px; background: transparent; border: 2.5px dashed var(--ink); border-radius: 99px; color: var(--soft); font-weight: 700; cursor: pointer; transition: background .15s, color .15s; }
+.jnsp:hover:not(:disabled), .jnsp.choisi { background: #fff; color: var(--ink); }
+.raccourcis { margin-top: 16px; text-align: center; font-size: .78rem; color: var(--soft); }
+@media (hover: none) { .raccourcis { display: none; } }
+
+/* ---------- PALIER (niveau validé) ---------- */
+.palier { text-align: center; padding: 10px 0; }
+.palier .coche { display: inline-grid; place-items: center; width: 74px; height: 74px; margin-bottom: 14px; background: var(--lime); border: 3px solid var(--ink); border-radius: 50%; box-shadow: 4px 4px 0 var(--ink); font-size: 2.2rem; font-weight: 800; rotate: -6deg; }
+.palier h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2rem; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 8px; }
+.palier p { color: var(--soft); }
+.palier .actions { justify-content: center; }
+.palier .btn { flex: 0 1 280px; }
+
+/* ---------- RÉSULTAT ---------- */
+.result h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: .9rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+.niveau-obtenu { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; margin: 12px 0 10px; }
+.niveau-code { display: inline-block; padding: 4px 24px 10px; background: var(--lime); border: 3px solid var(--ink); border-radius: 22px; box-shadow: 6px 6px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: 1; letter-spacing: -.03em; rotate: -2deg; }
+.niveau-nom { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.5rem; line-height: 1.15; }
+.niveau-desc { margin-bottom: 18px; }
+.scores { list-style: none; display: grid; gap: 9px; margin-bottom: 14px; }
+.scores li { display: grid; grid-template-columns: 2.6em minmax(0, 1fr) auto; align-items: center; gap: 12px; font-weight: 700; font-size: .95rem; }
+.barre { height: 14px; background: #fff; border: 2.5px solid var(--ink); border-radius: 99px; overflow: hidden; }
+.barre i { display: block; height: 100%; background: var(--aqua); }
+.scores li.valide .barre i { background: var(--lime); }
+.scores small { font-weight: 600; color: var(--soft); }
+.note { font-size: .85rem; color: var(--soft); }
+
+.contact { margin-top: 24px; padding: 20px 22px 22px; background: var(--bg); border: 3px solid var(--ink); border-radius: 18px; }
+.contact h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.35rem; line-height: 1.15; margin-bottom: 6px; }
+.contact > p { font-size: .95rem; color: var(--soft); }
+.contact-champs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 16px 0 14px; }
+.form-field { min-width: 0; }
+.form-field label { display: block; font-size: .9rem; font-weight: 700; margin-bottom: 6px; }
+.form-field input { display: block; width: 100%; padding: 10px 13px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; font: 400 1rem/1.45 'Inter', sans-serif; color: var(--ink); }
+.form-field input::placeholder { color: #8a84a0; opacity: 1; }
+.form-field input:focus { outline: 3px solid var(--violet); outline-offset: 2px; box-shadow: 3px 3px 0 var(--ink); }
+/* pot de miel : invisible pour les personnes, rempli seulement par les robots */
+.pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.consent-note { margin-top: 10px; font-size: .82rem; color: var(--soft); text-align: center; }
+.consent-note a { color: var(--ink); font-weight: 600; text-decoration-color: var(--pink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.contact .actions { margin-top: 0; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: .72rem; font-weight: 300; color: rgba(250,247,242,.4); }
+.footer-copy a { color: rgba(250,247,242,.6); }
+
+@media (prefers-reduced-motion: reduce) { .btn, .option, .jnsp, .progress-fill, .fil { transition: none; } }
+
+@media (max-width: 720px) {
+  main { padding: 26px 16px 56px; }
+  h1 { font-size: 2.5rem; }
+  .lead { font-size: 1rem; margin-bottom: 22px; }
+  .card { padding: 24px 18px 24px; border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); }
+  .accueil h2 { font-size: 1.55rem; }
+  .phrase { padding: 22px 14px; font-size: 1.35rem; }
+  .niveau-code { font-size: 3.6rem; }
+  .contact { padding: 18px 16px 20px; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+@media (max-width: 560px) {
+  .options { grid-template-columns: 1fr; }
+  .contact-champs { grid-template-columns: 1fr; }
+}
+@media (max-width: 380px) {
+  h1 { font-size: 2.15rem; }
+  .phrase { font-size: 1.2rem; }
+  .actions .btn { flex-basis: 100%; }
+}
+
+/* ---------- EN-TÊTE TRICOLORE ----------
+   Fond en fondu doux bleu → blanc → rouge, et liseré bleu-blanc-rouge sous l'en-tête
+   (le liseré remplace l'ancien trait foncé du bas, encadré de deux traits foncés). */
+.ac-entete { background: linear-gradient(90deg, #c9d4ff 0%, #fff 35%, #fff 65%, #ffd0d4 100%); border-bottom: 0; }
+.ac-entete::after { content: ""; display: block; box-sizing: content-box; height: 6px; background: linear-gradient(90deg, #002395 0 33.34%, #fff 33.34% 66.67%, #ED2939 66.67%); border-top: 2px solid var(--ink); border-bottom: 3px solid var(--ink); }
+/* fin en-tête tricolore */
+</style>
+</head>
+<body>
+
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
+</header>
+
+<main>
+<div class="app">
+  <a class="fil t" href="/ressources.html" data-fr="← Ressources" data-en="← Resources">← Ressources</a>
+  <div class="pastilles suite">
+    <span class="pastille t" data-fr="Test" data-en="Test">Test</span>
+    <span class="pastille t" data-fr="Grammaire" data-en="Grammar">Grammaire</span>
+    <span class="pastille">A1 → C1</span>
+  </div>
+  <h1 class="t" data-html="1" data-fr="Test de &lt;mark&gt;placement&lt;/mark&gt;" data-en="&lt;mark&gt;Placement&lt;/mark&gt; test">Test de <mark>placement</mark></h1>
+  <p class="lead t"
+     data-fr="Évaluez votre niveau de grammaire en quelques minutes, de A1 à C1. Résultat indicatif, affiné lors du premier cours."
+     data-en="Check your French grammar level in a few minutes, from A1 to C1. The result is a guide, refined during the first lesson.">Évaluez votre niveau de grammaire en quelques minutes, de A1 à C1. Résultat indicatif, affiné lors du premier cours.</p>
+  <div class="card" id="cardRoot" aria-live="polite"></div>
+</div>
+</main>
+
+<footer>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+</footer>
+
+<script>
+/* ---------- test de placement ----------
+   Les questions et le barème viennent de /api/placement/questions (source unique : lib/placement.ts).
+   Niveaux dans l'ordre A1 → C1, 10 questions mélangées par niveau ; 7/10 ou plus : niveau suivant.
+   À la fin, les réponses sont envoyées à /api/placement, qui recalcule le résultat et l'enregistre ;
+   prénom et email sont facultatifs et envoyés à part (/api/placement/contact). */
+const API_QUESTIONS = "/api/placement/questions", API_TEST = "/api/placement", API_CONTACT = "/api/placement/contact";
+const LETTRES = ["a", "b", "c", "d"];
+
+/* ---------- textes de l'interface (les phrases du test restent en français) ---------- */
+let LANG = "fr";
+const TXT = {
+  titreAccueil: { fr: "Quel est votre niveau de français&nbsp;?", en: "What is your level of French?" },
+  lede: { fr: "Des questions de grammaire, du niveau A1 au niveau C1. Le test s'adapte à vous : il s'arrête dès qu'un niveau n'est pas validé.",
+          en: "Grammar questions from level A1 to level C1. The test adapts to you: it stops as soon as a level is not passed." },
+  etape1: { fr: "10 questions par niveau, dans le désordre.", en: "10 questions per level, in random order." },
+  etape2: { fr: "7 bonnes réponses sur 10 pour passer au niveau suivant.", en: "7 correct answers out of 10 to move on to the next level." },
+  etape3: { fr: "Pas sûr&nbsp;? Choisissez «&nbsp;Je ne sais pas&nbsp;» plutôt que de répondre au hasard : le résultat sera plus juste.",
+            en: "Not sure? Choose “I don't know” rather than guessing: your result will be more accurate." },
+  etape4: { fr: "De 2 à 15 minutes selon votre niveau.", en: "2 to 15 minutes depending on your level." },
+  confidentiel: { fr: "Vos réponses et votre résultat sont enregistrés sans nom. Vos coordonnées ne sont demandées qu'à la fin, et seulement si vous le souhaitez. <a href=\"/confidentialite.html\">Confidentialité</a>",
+                  en: "Your answers and result are saved without your name. Your contact details are only asked for at the end, and only if you wish. <a href=\"/confidentialite.html\">Privacy</a>" },
+  commencer: { fr: "Commencer le test", en: "Start the test" },
+  chargement: { fr: "Chargement des questions…", en: "Loading the questions…" },
+  erreurChargement: { fr: "Les questions n'ont pas pu être chargées. Vérifiez votre connexion.", en: "The questions could not be loaded. Please check your connection." },
+  reessayer: { fr: "Réessayer", en: "Try again" },
+  niveau: { fr: "Niveau", en: "Level" },
+  consigne: { fr: "Complétez la phrase :", en: "Complete the sentence:" },
+  jnsp: { fr: "Je ne sais pas", en: "I don't know" },
+  raccourcis: { fr: "Clavier : A, B, C, D pour répondre, ? pour «&nbsp;Je ne sais pas&nbsp;»", en: "Keyboard: A, B, C, D to answer, ? for “I don't know”" },
+  valide: { fr: "validé&nbsp;!", en: "passed!" },
+  paliersBonnes: { fr: "bonnes réponses sur 10. Place au niveau", en: "correct answers out of 10. On to level" },
+  continuer: { fr: "Continuer", en: "Continue" },
+  votreNiveau: { fr: "Votre niveau estimé", en: "Your estimated level" },
+  detail: { fr: "Détail par niveau", en: "Breakdown by level" },
+  jnspCourt: { fr: "je ne sais pas", en: "I don't know" },
+  note: { fr: "Résultat indicatif, basé uniquement sur la grammaire : il sera affiné lors du premier cours.",
+          en: "This result is a guide based on grammar only: it will be refined during the first lesson." },
+  contactTitre: { fr: "Envie d'en parler&nbsp;?", en: "Want to talk about it?" },
+  contactTexte: { fr: "Laissez votre prénom et votre email : Alban vous recontactera avec votre résultat et des conseils pour progresser. C'est facultatif.",
+                  en: "Leave your first name and email: Alban will get back to you with your result and tips to improve. This is optional." },
+  prenom: { fr: "Prénom", en: "First name" },
+  email: { fr: "Email", en: "Email" },
+  envoyer: { fr: "Être recontacté", en: "Get in touch" },
+  envoiEnCours: { fr: "Envoi…", en: "Sending…" },
+  consent: { fr: "En envoyant ce formulaire, vous acceptez notre <a href=\"/confidentialite.html\">politique de confidentialité</a>.",
+             en: "By sending this form, you accept our <a href=\"/confidentialite.html\">privacy policy</a>." },
+  merci: { fr: "Merci&nbsp;! Alban vous recontactera très vite.", en: "Thank you! Alban will get back to you very soon." },
+  erreurContact: { fr: "L'envoi n'a pas fonctionné. Vérifiez vos informations ou réessayez plus tard.", en: "Sending failed. Please check your details or try again later." },
+  enregistrement: { fr: "Enregistrement du résultat…", en: "Saving your result…" },
+  erreurEnregistrement: { fr: "Votre résultat n'a pas pu être enregistré. Pour en parler, vous pouvez réserver directement un cours.",
+                          en: "Your result could not be saved. To talk about it, you can book a lesson directly." },
+  reserver: { fr: "Réserver un cours", en: "Book a lesson" },
+  refaire: { fr: "Refaire le test", en: "Take the test again" },
+  descA0: { fr: "Le niveau A1 est la prochaine étape : c'est le bon moment pour commencer.", en: "Level A1 is the next step: it's the perfect time to start." },
+  descMoins: { fr: "Vous avez validé le niveau précédent et vous commencez à aborder celui-ci.", en: "You have passed the previous level and are starting to tackle this one." },
+  descNiveau: { fr: "Vous maîtrisez une partie des structures de ce niveau.", en: "You have a partial command of this level's structures." },
+  descPlus: { fr: "Vous maîtrisez une bonne partie des structures de ce niveau.", en: "You have a good command of most of this level's structures." },
+  descC2: { fr: "Vous avez réussi presque toutes les questions de niveau C1. Bravo&nbsp;!", en: "You got almost every C1 question right. Well done!" }
+};
+const NOMS = {
+  A0: { fr: "Débutant complet", en: "Complete beginner" }, A1: { fr: "Débutant", en: "Beginner" },
+  A2: { fr: "Élémentaire", en: "Elementary" }, B1: { fr: "Intermédiaire", en: "Intermediate" },
+  B2: { fr: "Intermédiaire avancé", en: "Upper intermediate" }, C1: { fr: "Avancé", en: "Advanced" },
+  C2: { fr: "Maîtrise", en: "Proficient" }
+};
+/* en français, espace insécable avant : ; ! ? » et après « (les textes sont insérés en HTML) */
+function insecables(s) { return s.replace(/ ([:;!?»])/g, "&nbsp;$1").replace(/« /g, "«&nbsp;"); }
+function t(cle) { const s = TXT[cle][LANG]; return LANG === "fr" ? insecables(s) : s; }
+function echapper(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
+function melanger(liste) { const a = [...liste]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+let DONNEES = null, chargement = "en-cours";
+let state = nouvelEtat();
+function nouvelEtat() {
+  return { ecran: "accueil", niveauIdx: 0, ordre: [], idx: 0, reponses: [], verrou: false, choixAffiche: undefined,
+           resultat: null, envoi: "attente", enregistrement: null, contact: "formulaire", prenom: "", email: "" };
+}
+
+function charger() {
+  chargement = "en-cours"; render();
+  fetch(API_QUESTIONS)
+    .then(r => { if (!r.ok) throw new Error("questions"); return r.json(); })
+    .then(d => { DONNEES = d; chargement = "ok"; render(); })
+    .catch(() => { chargement = "erreur"; render(); });
+}
+
+/* même barème que le serveur : 0–2, 3–4, 5–6, 7+ ; null = niveau validé, on continue */
+function resultatPour(niveau, bonnes) {
+  const [bas, moyen, bon, excellent] = DONNEES.resultats[niveau];
+  if (bonnes >= DONNEES.seuil) return excellent;
+  if (bonnes >= 5) return bon;
+  if (bonnes >= 3) return moyen;
+  return bas;
+}
+function bonnesDu(bloc) {
+  const questions = DONNEES.niveaux.find(n => n.niveau === bloc.niveau).questions;
+  return bloc.reponses.filter(r => r.choix === questions.find(q => q.id === r.id).reponse).length;
+}
+
+function commencer() {
+  if (chargement !== "ok") return;
+  state = nouvelEtat();
+  demarrerNiveau(0);
+}
+function demarrerNiveau(i) {
+  const niveau = DONNEES.niveaux[i];
+  state.niveauIdx = i; state.idx = 0; state.verrou = false; state.choixAffiche = undefined;
+  state.ordre = melanger(niveau.questions);
+  state.reponses.push({ niveau: niveau.niveau, reponses: [] });
+  state.ecran = "question";
+  render();
+}
+/* choix : 0 à 3, ou null pour « Je ne sais pas ». Court délai pour voir la réponse choisie et éviter les doubles clics. */
+function repondre(choix) {
+  if (state.ecran !== "question" || state.verrou) return;
+  state.verrou = true; state.choixAffiche = choix;
+  state.reponses[state.reponses.length - 1].reponses.push({ id: state.ordre[state.idx].id, choix });
+  render();
+  setTimeout(() => {
+    state.verrou = false; state.choixAffiche = undefined;
+    if (state.idx + 1 < state.ordre.length) { state.idx++; render(); return; }
+    finNiveau();
+  }, 220);
+}
+function finNiveau() {
+  const bloc = state.reponses[state.reponses.length - 1];
+  const r = resultatPour(bloc.niveau, bonnesDu(bloc));
+  if (r === null) { state.ecran = "palier"; render(); return; }
+  state.resultat = r; state.ecran = "resultat";
+  envoyerTest();
+  render();
+}
+
+function envoyerTest() {
+  state.envoi = "en-cours";
+  fetch(API_TEST, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ reponses: state.reponses, langue: LANG }) })
+    .then(r => r.json().then(d => ({ ok: r.ok, d })))
+    .then(({ ok, d }) => {
+      if (ok && d.id && d.jeton) { state.enregistrement = { id: d.id, jeton: d.jeton }; state.envoi = "ok"; }
+      else state.envoi = "erreur";
+    })
+    .catch(() => { state.envoi = "erreur"; })
+    .then(() => { if (state.ecran === "resultat") render(); });
+}
+function envoyerContact(e) {
+  e.preventDefault();
+  const form = e.target;
+  if (!form.reportValidity() || !state.enregistrement || state.contact === "envoi") return;
+  const site = form.elements.site.value;
+  state.contact = "envoi"; render();
+  fetch(API_CONTACT, { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: state.enregistrement.id, jeton: state.enregistrement.jeton, prenom: state.prenom, email: state.email, site }) })
+    .then(r => { state.contact = r.ok ? "ok" : "erreur"; })
+    .catch(() => { state.contact = "erreur"; })
+    .then(render);
+}
+
+function description(r) {
+  if (r === "A0") return t("descA0");
+  if (r === "C2") return t("descC2");
+  if (r.endsWith("-")) return t("descMoins");
+  if (r.endsWith("+")) return t("descPlus");
+  return t("descNiveau");
+}
+
+function render() {
+  const root = document.getElementById("cardRoot");
+
+  if (state.ecran === "accueil") {
+    root.innerHTML = `
+      <div class="accueil">
+        <h2>${t("titreAccueil")}</h2>
+        <p class="lede">${t("lede")}</p>
+        <ul class="etapes">
+          <li>${t("etape1")}</li><li>${t("etape2")}</li><li>${t("etape3")}</li><li>${t("etape4")}</li>
+        </ul>
+        ${chargement === "en-cours" ? `<p class="message info">${t("chargement")}</p>` : ""}
+        ${chargement === "erreur" ? `<p class="message erreur">${t("erreurChargement")}</p>` : ""}
+        <div class="actions">
+          ${chargement === "erreur"
+            ? `<button type="button" class="btn btn-primary" id="reessayer">${t("reessayer")}</button>`
+            : `<button type="button" class="btn btn-rose" id="commencer" ${chargement === "ok" ? "" : "disabled"}>${t("commencer")}</button>`}
+        </div>
+        <p class="confidentiel">${t("confidentiel")}</p>
+      </div>`;
+    const c = document.getElementById("commencer");
+    if (c) c.addEventListener("click", commencer);
+    const re = document.getElementById("reessayer");
+    if (re) re.addEventListener("click", charger);
+    return;
+  }
+
+  if (state.ecran === "question") {
+    const niveau = DONNEES.niveaux[state.niveauIdx].niveau;
+    const q = state.ordre[state.idx], total = state.ordre.length, num = state.idx + 1;
+    const repondues = state.reponses[state.reponses.length - 1].reponses.length;
+    const phrase = insecables(echapper(q.phrase)).replace("___", '<span class="blanc"></span>');
+    root.innerHTML = `
+      <div class="frise" aria-hidden="true">${DONNEES.niveaux.map((n, i) => `<span class="${i < state.niveauIdx ? "fait" : i === state.niveauIdx ? "encours" : ""}">${n.niveau}</span>`).join("")}</div>
+      <div class="quiz-top"><span>${t("niveau")} ${niveau}</span><span>Question ${num} / ${total}</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.round(repondues / total * 100)}%"></div></div>
+      <p class="consigne">${t("consigne")}</p>
+      <div class="phrase" lang="fr">${phrase}</div>
+      <div class="options suite">
+        ${q.options.map((o, i) => `<button type="button" class="option ${state.choixAffiche === i ? "choisi" : ""}" data-choix="${i}" ${state.verrou ? "disabled" : ""}><span class="lettre">${LETTRES[i]}</span><span lang="fr">${echapper(o)}</span></button>`).join("")}
+      </div>
+      <button type="button" class="jnsp ${state.choixAffiche === null ? "choisi" : ""}" id="jnsp" ${state.verrou ? "disabled" : ""}>${t("jnsp")}</button>
+      <p class="raccourcis">${t("raccourcis")}</p>`;
+    root.querySelectorAll(".option").forEach(b => b.addEventListener("click", () => repondre(Number(b.dataset.choix))));
+    document.getElementById("jnsp").addEventListener("click", () => repondre(null));
+    return;
+  }
+
+  if (state.ecran === "palier") {
+    const bloc = state.reponses[state.reponses.length - 1];
+    const suivant = DONNEES.niveaux[state.niveauIdx + 1].niveau;
+    root.innerHTML = `
+      <div class="palier">
+        <div class="coche" aria-hidden="true">✓</div>
+        <h2>${t("niveau")} ${bloc.niveau} ${t("valide")}</h2>
+        <p>${bonnesDu(bloc)} ${t("paliersBonnes")} ${suivant}.</p>
+        <div class="actions"><button type="button" class="btn btn-primary" id="continuer">${t("continuer")}</button></div>
+      </div>`;
+    const bouton = document.getElementById("continuer");
+    bouton.addEventListener("click", () => demarrerNiveau(state.niveauIdx + 1));
+    bouton.focus();
+    return;
+  }
+
+  if (state.ecran === "resultat") {
+    const r = state.resultat, base = r.replace(/[+-]$/, "");
+    const scores = state.reponses.map(bloc => {
+      const bonnes = bonnesDu(bloc), jnsp = bloc.reponses.filter(x => x.choix === null).length;
+      return `<li class="${bonnes >= DONNEES.seuil ? "valide" : ""}"><span>${bloc.niveau}</span><span class="barre" aria-hidden="true"><i style="width:${bonnes * 10}%"></i></span><span>${bonnes}/10${jnsp ? ` <small>· ${jnsp} ${t("jnspCourt")}</small>` : ""}</span></li>`;
+    }).join("");
+
+    let contact = "";
+    if (state.envoi === "en-cours") contact = `<p class="message info">${t("enregistrement")}</p>`;
+    else if (state.envoi === "erreur") contact = `<p class="message erreur">${t("erreurEnregistrement")}</p>`;
+    else if (state.contact === "ok") contact = `<p class="message ok">${t("merci")}</p>`;
+    else if (state.envoi === "ok") {
+      const occupe = state.contact === "envoi";
+      contact = `
+        <form id="formContact" novalidate>
+          <div class="contact-champs">
+            <div class="form-field"><label for="prenom">${t("prenom")}</label><input id="prenom" name="prenom" type="text" autocomplete="given-name" maxlength="60" required value="${echapper(state.prenom)}" ${occupe ? "disabled" : ""}></div>
+            <div class="form-field"><label for="email">${t("email")}</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required value="${echapper(state.email)}" ${occupe ? "disabled" : ""}></div>
+          </div>
+          <div class="pot" aria-hidden="true"><label for="site">Site</label><input id="site" name="site" type="text" tabindex="-1" autocomplete="off"></div>
+          <div class="actions"><button type="submit" class="btn btn-rose" ${occupe ? "disabled" : ""}>${occupe ? t("envoiEnCours") : t("envoyer")}</button></div>
+          <p class="consent-note">${t("consent")}</p>
+          ${state.contact === "erreur" ? `<p class="message erreur">${t("erreurContact")}</p>` : ""}
+        </form>`;
+    }
+
+    root.innerHTML = `
+      <div class="result">
+        <h2>${t("votreNiveau")}</h2>
+        <div class="niveau-obtenu"><span class="niveau-code">${echapper(r)}</span><span class="niveau-nom">${NOMS[base][LANG]}</span></div>
+        <p class="niveau-desc">${description(r)}</p>
+        <div class="section-label">${t("detail")}</div>
+        <ul class="scores">${scores}</ul>
+        <p class="note">${t("note")}</p>
+        <div class="contact">
+          <h3>${t("contactTitre")}</h3>
+          <p>${t("contactTexte")}</p>
+          ${contact}
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="/reserver.html">${t("reserver")}</a>
+          <button type="button" class="btn btn-ghost" id="refaire">${t("refaire")}</button>
+        </div>
+      </div>`;
+    const form = document.getElementById("formContact");
+    if (form) {
+      form.addEventListener("submit", envoyerContact);
+      form.elements.prenom.addEventListener("input", e => { state.prenom = e.target.value; });
+      form.elements.email.addEventListener("input", e => { state.email = e.target.value; });
+    }
+    document.getElementById("refaire").addEventListener("click", () => { state = nouvelEtat(); render(); });
+  }
+}
+
+/* raccourcis clavier : A à D pour répondre, ? pour « Je ne sais pas » */
+document.addEventListener("keydown", e => {
+  if (state.ecran !== "question" || state.verrou || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.target instanceof HTMLInputElement) return;
+  const i = LETTRES.indexOf(e.key.toLowerCase());
+  if (i >= 0) { e.preventDefault(); repondre(i); return; }
+  if (e.key === "?") { e.preventDefault(); repondre(null); }
+});
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+const btnFr = document.getElementById("btn-fr"), btnEn = document.getElementById("btn-en");
+const burger = document.querySelector(".ac-burger"), menu = document.getElementById("ac-menu");
+const LIBELLES = {
+  nav: { fr: "Navigation principale", en: "Main navigation" },
+  langue: { fr: "Choix de la langue", en: "Language" },
+  ouvrir: { fr: "Ouvrir le menu", en: "Open menu" },
+  fermer: { fr: "Fermer le menu", en: "Close menu" },
+  titre: { fr: "Test de placement — French with Alban", en: "Placement test — French with Alban" }
+};
+function majBurger() { const ouvert = !menu.hidden; burger.setAttribute("aria-expanded", String(ouvert)); burger.setAttribute("aria-label", LIBELLES[ouvert ? "fermer" : "ouvrir"][LANG]); }
+burger.addEventListener("click", () => { menu.hidden = !menu.hidden; majBurger(); });
+
+/* ---------- langue : même mécanisme que les autres pages ; le test en cours est conservé ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll(".t").forEach(el => {
+    const txt = el.getAttribute("data-" + lang);
+    if (txt === null) return;
+    if (el.getAttribute("data-html")) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle("on", lang === "fr"); btnEn.classList.toggle("on", lang === "en");
+  btnFr.setAttribute("aria-pressed", String(lang === "fr")); btnEn.setAttribute("aria-pressed", String(lang === "en"));
+  document.querySelector(".ac-nav").setAttribute("aria-label", LIBELLES.nav[lang]);
+  document.querySelector(".ac-langue").setAttribute("aria-label", LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem("fwa-lang", lang); } catch (e) {}
+  render();
+}
+
+let choix = null;
+try { const enr = localStorage.getItem("fwa-lang"); if (enr === "fr" || enr === "en") choix = enr; } catch (e) {}
+if (!choix) choix = (navigator.language || "fr").toLowerCase().indexOf("fr") === 0 ? "fr" : "en";
+appliquer(choix);
+btnFr.addEventListener("click", () => appliquer("fr"));
+btnEn.addEventListener("click", () => appliquer("en"));
+charger();
+</script>
+</body>
+</html>

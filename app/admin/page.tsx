@@ -12,8 +12,8 @@ export default function AdminHub() {
     },
     {
       title: 'Demandes de contact',
-      desc: 'Formulaires envoyés depuis la page Réserver.',
-            href: '/admin/leads',
+      desc: 'Formulaires envoyés depuis la page Réserver et résultats du test de placement.',
+      href: '/admin/leads',
     },
     {
       title: 'Tarifs',
