@@ -664,4 +664,10 @@ html:has(.accueil),body:has(.accueil){background:#fff7ee}
   .ac-preuves strong{font-size:1.1rem}
   .ac-niveaux{gap:10px}
 }
+/* ---------- EN-TÊTE TRICOLORE ----------
+   Fond en fondu doux bleu → blanc → rouge, et liseré bleu-blanc-rouge sous l'en-tête
+   (le liseré remplace l'ancien trait foncé du bas, encadré de deux traits foncés). */
+.ac-entete { background: linear-gradient(90deg, #c9d4ff 0%, #fff 35%, #fff 65%, #ffd0d4 100%); border-bottom: 0; }
+.ac-entete::after { content: ""; display: block; box-sizing: content-box; height: 6px; background: linear-gradient(90deg, #002395 0 33.34%, #fff 33.34% 66.67%, #ED2939 66.67%); border-top: 2px solid var(--ink); border-bottom: 3px solid var(--ink); }
+/* fin en-tête tricolore */
 `;
