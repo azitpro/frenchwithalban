@@ -145,7 +145,8 @@ h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; bo
 .progress-track { height: 16px; background: #fff; border: 2.5px solid var(--ink); border-radius: 99px; margin-bottom: 24px; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--pink); border-right: 2.5px solid var(--ink); transition: width .25s ease; }
 .progress-fill[style="width:0%"] { border-right: none; }
-.prompt-eyebrow { display: inline-block; padding: 2px 12px; border: 2px solid var(--ink); border-radius: 99px; font-size: .78rem; font-weight: 700; letter-spacing: .04em; margin-bottom: 10px; rotate: -1.5deg; background: var(--lime); }
+/* pastille du temps demandé (présent, imparfait, passé composé) */
+.prompt-eyebrow { display: inline-block; padding: 3px 16px 5px; border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 2px 2px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.2rem; font-weight: 800; line-height: 1.25; margin-bottom: 12px; rotate: -1.5deg; background: var(--lime); }
 .prompt-eyebrow.t-imparfait { background: var(--aqua); }
 .prompt-eyebrow.t-passeCompose { background: var(--lemon); }
 .prompt-verb { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3rem; line-height: 1.05; letter-spacing: -.025em; }
@@ -353,45 +354,74 @@ function baseConj(s){ return s.trim().toLowerCase().replace(/^(je|j'|j|tu|il|ell
 function normEn(s){ return stripAccents(s.trim().toLowerCase()).replace(/^to\s+/,"").replace(/[().,]/g,"").replace(/\s+/g," ").trim(); }
 function levenshtein(a,b){ const m=a.length,n=b.length,d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]); for(let j=0;j<=n;j++) d[0][j]=j; for(let i=1;i<=m;i++) for(let j=1;j<=n;j++) d[i][j]=a[i-1]===b[j-1]?d[i-1][j-1]:1+Math.min(d[i-1][j-1],d[i-1][j],d[i][j-1]); return d[m][n]; }
 /* --- traduction : début --- */
-/* La traduction accepte aussi les formes conjuguées : « I was », « you were », « I took », « I have taken »,
-   « I was taking », « I used to drink »… Le temps et la personne ne sont pas exigés : seul le verbe compte. */
-const EN_IRREGULIERS = {
-  be:["am","is","are","was","were","been","being"], have:["has","had","having"], go:["goes","went","gone","going"],
-  make:["makes","made","making"], do:["does","did","done","doing"], can:["could"], must:[],
-  know:["knows","knew","known","knowing"], come:["comes","came","coming"], hold:["holds","held","holding"],
-  read:["reads","read","reading"], say:["says","said","saying"], see:["sees","saw","seen","seeing"],
-  drink:["drinks","drank","drunk","drinking"], write:["writes","wrote","written","writing"], sleep:["sleeps","slept","sleeping"],
-  leave:["leaves","left","leaving"], put:["puts","put","putting"], take:["takes","took","taken","taking"], drive:["drives","drove","driven","driving"],
+/* La traduction est acceptée si elle donne l'infinitif (« to be », « be ») ou la forme anglaise conjuguée
+   à la personne et au temps demandés, avec ou sans pronom : « nous étions » → « we were », « were ».
+   Une forme d'une autre personne (« I was ») ou d'un autre temps (« we are ») est refusée.
+   Imparfait : prétérit, forme en -ing (« we were taking ») ou « used to » ; passé composé : « have taken » ou prétérit.
+   Une petite faute de frappe est tolérée sur le verbe, jamais sur le pronom. */
+const EN_VERBES = {
+  // base : [3e personne du singulier au présent, prétérit, participe passé, forme en -ing]
+  have: ["has", "had", "had", "having"], go: ["goes", "went", "gone", "going"], make: ["makes", "made", "made", "making"],
+  do: ["does", "did", "done", "doing"], want: ["wants", "wanted", "wanted", "wanting"], know: ["knows", "knew", "known", "knowing"],
+  come: ["comes", "came", "come", "coming"], hold: ["holds", "held", "held", "holding"], read: ["reads", "read", "read", "reading"],
+  say: ["says", "said", "said", "saying"], receive: ["receives", "received", "received", "receiving"], see: ["sees", "saw", "seen", "seeing"],
+  believe: ["believes", "believed", "believed", "believing"], drink: ["drinks", "drank", "drunk", "drinking"], write: ["writes", "wrote", "written", "writing"],
+  sleep: ["sleeps", "slept", "slept", "sleeping"], leave: ["leaves", "left", "left", "leaving"], put: ["puts", "put", "put", "putting"],
+  take: ["takes", "took", "taken", "taking"], open: ["opens", "opened", "opened", "opening"], offer: ["offers", "offered", "offered", "offering"],
+  call: ["calls", "called", "called", "calling"], drive: ["drives", "drove", "driven", "driving"], produce: ["produces", "produced", "produced", "producing"],
 };
-const AUXILIAIRES_EN = /^(will|would|used to|did|does|do|have|has|had|am|is|are|was|were)\s+(?=\S)/;
-function formesVerbeEn(base){
-  if(EN_IRREGULIERS[base]) return [base,...EN_IRREGULIERS[base]];
-  const radical=base.endsWith("e")?base.slice(0,-1):base;   /* verbes réguliers : receive → receives, received, receiving */
-  return [base,base+"s",radical+"ed",radical+"ing"];
+/* verbes d'état : pas de forme en -ing (« I am knowing » n'est pas une traduction) */
+const EN_ETAT = new Set(["be", "have", "want", "know", "believe", "see"]);
+const EN_PRONOMS = { je: ["i"], tu: ["you"], il: ["he", "it"], elle: ["she", "it"], nous: ["we"], vous: ["you"], ils: ["they"], elles: ["they"] };
+const EN_TOUS_PRONOMS = ["i", "you", "he", "she", "it", "we", "they"];
+
+/* options de traduction du verbe : « to be able to / can » → ["be able to", "can"] */
+function optionsAnglaises(en) { return en.replace(/\(.*?\)/g, "").split("/").map(o => normEn(o)).filter(Boolean); }
+
+/* formes conjuguées (sans pronom) d'une option, pour une personne et un temps */
+function formesAnglaises(option, pronom, temps) {
+  const mots = option.split(" "), base = mots[0], suite = mots.slice(1).join(" ");
+  const avec = f => suite ? f + " " + suite : f;
+  const troisieme = pronom === "il" || pronom === "elle", singulier = pronom === "je" || troisieme;
+  if (base === "can" || base === "must") return temps === "present" ? [base] : [base === "can" ? "could" : "had to"];
+  const f = EN_VERBES[base];
+  if (base !== "be" && !f) return [];
+  const beP = pronom === "je" ? "am" : troisieme ? "is" : "are", beT = singulier ? "was" : "were";
+  const present = base === "be" ? beP : (troisieme ? f[0] : base);
+  const preterit = base === "be" ? beT : f[1];
+  const participe = base === "be" ? "been" : f[2];
+  const ing = base === "be" ? "being" : f[3];
+  const etat = EN_ETAT.has(base) || suite === "able to" || (base === "have" && suite === "to");
+  const out = [];
+  if (temps === "present") { out.push(avec(present)); if (!etat) out.push(beP + " " + avec(ing)); }
+  if (temps === "imparfait") { out.push(avec(preterit)); if (!etat) out.push(beT + " " + avec(ing)); out.push("used to " + avec(base)); }
+  if (temps === "passeCompose") { out.push((troisieme ? "has" : "have") + " " + avec(participe), avec(preterit)); }
+  return out;
 }
-function formesTraduction(en){
-  const formes=new Set();
-  for(const option of en.replace(/\(.*?\)/g,"").split("/")){
-    const mots=normEn(option).split(" ").filter(Boolean);
-    if(!mots.length) continue;
-    const reste=mots.slice(1).join(" ");                     /* be able to, have to, go out */
-    for(const f of formesVerbeEn(mots[0])) formes.add(reste?f+" "+reste:f);
-  }
-  return formes;
+
+/* forme affichée dans la correction : « we were », « she has taken » */
+function formeAnglaiseAttendue(q) {
+  const option = optionsAnglaises(q.en)[0], forme = formesAnglaises(option, q.pronoun, q.tense)[0];
+  const pronom = EN_PRONOMS[q.pronoun][0];
+  return forme ? (pronom === "i" ? "I" : pronom) + " " + forme : q.en;
 }
-function reponseEnSansPronom(s){
-  return normEn(s).replace(/’/g,"'").replace(/\bi'm\b/g,"i am").replace(/'re\b/g," are").replace(/'ve\b/g," have").replace(/'s\b/g," is").replace(/'d\b/g," had")
-    .replace(/^(you all|i|you|he|she|it|we|they|one)\s+/,"").trim();
-}
-function translationApprox(guess,correct){
-  if(!guess.trim()) return false;
-  const g=normEn(guess),opts=normEn(correct).split("/").map(x=>x.trim()).filter(Boolean);
-  for(const opt of opts){ if(g===opt||opt.includes(g)||g.includes(opt)) return true; if(levenshtein(g,opt)<=Math.max(1,Math.floor(opt.length*0.25))) return true; }
-  const formes=formesTraduction(correct), sansPronom=reponseEnSansPronom(guess);
-  for(const c of [sansPronom, sansPronom.replace(AUXILIAIRES_EN,"")]){
-    if(!c) continue;
-    if(formes.has(c)) return true;
-    for(const f of formes) if(f.length>=5 && levenshtein(c,f)<=1) return true;   /* une faute de frappe tolérée sur les formes longues */
+
+function translationApprox(guess, q) {
+  if (!guess.trim()) return false;
+  const proche = (a, b) => a === b || (b.length >= 4 && levenshtein(a, b) <= Math.max(1, Math.floor(b.length * 0.2)));
+  const brut = normEn(guess.replace(/’/g, "'"));
+  const variantes = [...new Set([brut, brut.replace(/'s\b/g, " is"), brut.replace(/'s\b/g, " has")]
+    .map(v => v.replace(/\bi'm\b/g, "i am").replace(/'re\b/g, " are").replace(/'ve\b/g, " have").replace(/'d\b/g, " had").replace(/\s+/g, " ").trim()))];
+  const options = optionsAnglaises(q.en);
+  for (const v of variantes) {
+    if (options.some(o => proche(v, o))) return true; // infinitif
+    const mots = v.split(" ");
+    let verbe = v;
+    if (EN_TOUS_PRONOMS.includes(mots[0])) {
+      if (!EN_PRONOMS[q.pronoun].includes(mots[0])) continue; // pronom d'une autre personne : refusé
+      verbe = mots.slice(1).join(" ");
+    }
+    if (verbe && options.some(o => formesAnglaises(o, q.pronoun, q.tense).some(f => proche(verbe, f)))) return true;
   }
   return false;
 }
@@ -432,7 +462,7 @@ function submitAnswer(ci,ti){
   const q=currentQ(), given=ci.value;
   const status=conjStatus(given,q.answer);
   const trans=ti.value.trim().length>0;
-  const correctTrans=trans?translationApprox(ti.value,q.en):false;
+  const correctTrans=trans?translationApprox(ti.value,q):false;
   let pts=pointsFor(status);
   if(correctTrans) pts+=0.1;              /* bonus indépendant de la conjugaison */
   state.totalScore+=pts;
@@ -479,10 +509,10 @@ const TXT = {
   transOk:        {fr:"Traduction correcte (+0,1). ", en:"Correct translation (+0.1). "},
   bonus:          {fr:"+0,1", en:"+0.1"},
 };
-const EYEBROW_EN = { present:"Conjugate in the présent", imparfait:"Conjugate in the imparfait", passeCompose:"Conjugate in the passé composé" };
 const MENTION_EN = { "parfait !":"perfect!", "très bien":"very good", "bien":"good", "assez bien":"fairly good", "à revoir":"needs work" };
 function t(cle){ return TXT[cle][LANG]; }
-function eyebrow(tense){ return LANG==="fr" ? TENSE_META[tense].eyebrow : EYEBROW_EN[tense]; }
+/* pastille : le nom du temps seulement, en français dans les deux langues */
+function eyebrow(tense){ return TENSE_META[tense].label; }
 function resumeVerbes(){
   const n=state.selectedVerbs.size, total=VERBS.length;
   if(LANG==="fr") return n===total?`<b>Tous les verbes</b> (${total})`:`<b>${n} verbe${n>1?'s':''}</b> sur ${total}`;
@@ -495,12 +525,12 @@ function messageCorrection(r,pDisp){
     if(r.status==="exact") msg=`Correct — ${forme}. `;
     else if(r.status==="accent") msg=`Presque : attention aux accents. La forme exacte est ${forme} (0,5 pt). `;
     else msg=`La bonne forme est ${forme}. `;
-    msg+=r.gaveTranslation?(r.correctTrans?t("transOk"):`Traduction attendue : <b>${r.en}</b>.`):`Traduction : <b>${r.en}</b>.`;
+    msg+=r.gaveTranslation?(r.correctTrans?t("transOk"):`Traduction attendue : <b>${r.en}</b> ou <b>${formeAnglaiseAttendue(r)}</b>.`):`Traduction : <b>${r.en}</b> ou <b>${formeAnglaiseAttendue(r)}</b>.`;
   }else{
     if(r.status==="exact") msg=`Correct — ${forme}. `;
     else if(r.status==="accent") msg=`Almost: watch the accents. The exact form is ${forme} (0.5 pt). `;
     else msg=`The correct form is ${forme}. `;
-    msg+=r.gaveTranslation?(r.correctTrans?t("transOk"):`Expected translation: <b>${r.en}</b>.`):`Translation: <b>${r.en}</b>.`;
+    msg+=r.gaveTranslation?(r.correctTrans?t("transOk"):`Expected translation: <b>${r.en}</b> or <b>${formeAnglaiseAttendue(r)}</b>.`):`Translation: <b>${r.en}</b> or <b>${formeAnglaiseAttendue(r)}</b>.`;
   }
   return msg;
 }
