@@ -209,6 +209,14 @@ li.m .g { background: var(--masc); }
 .exc-ligne > b { flex: none; min-width: 64px; padding: 1px 8px; border: 2px solid var(--ink); border-radius: 10px; background: var(--bg); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; text-align: center; }
 .exc-ligne .chips li { border-style: dashed; }
 
+/* ---------- APPEL VERS LE TEST ---------- */
+.appel-test { display: flex; align-items: center; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; margin-top: 36px; padding: 24px 28px; background: var(--ink); color: #fff; border-radius: 22px; box-shadow: 7px 7px 0 var(--lime); }
+.appel-test strong { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.6rem; line-height: 1.15; }
+.appel-test p { color: rgba(255,255,255,.8); margin-top: 4px; }
+.appel-test-btn { flex: none; padding: 12px 24px; background: var(--pink); color: #fff; border: 3px solid #fff; border-radius: 99px; box-shadow: 4px 4px 0 var(--lime); font-weight: 800; text-decoration: none; white-space: nowrap; transition: translate .12s, box-shadow .12s; }
+.appel-test-btn:hover { translate: -2px -2px; box-shadow: 6px 6px 0 var(--lime); }
+@media (max-width: 720px) { .appel-test { padding: 20px 20px; } .appel-test strong { font-size: 1.3rem; } }
+
 /* ---------- PIED DE PAGE (charte du site) ---------- */
 footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
@@ -748,6 +756,15 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </ul>
           </div>
         </div>
+      </div>
+
+      <div class="appel-test">
+        <div>
+          <strong class="t" data-fr="Prêt à vous tester ?" data-en="Ready to test yourself?">Prêt à vous tester ?</strong>
+          <p class="t" data-fr="Masculin ou féminin : 10 ou 20 mots, avec la correction et la règle à chaque réponse."
+             data-en="Masculine or feminine: 10 or 20 words, with the answer and the rule every time.">Masculin ou féminin : 10 ou 20 mots, avec la correction et la règle à chaque réponse.</p>
+        </div>
+        <a class="appel-test-btn t" href="/test_genre.html" data-fr="Faire le test →" data-en="Take the test →">Faire le test →</a>
       </div>
     </div>
   </section>

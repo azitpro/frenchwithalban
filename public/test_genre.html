@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test : le genre des noms — French with Alban</title>
+<meta name="description" content="Testez-vous sur le genre des noms en français : 170 mots courants, masculin ou féminin, en 10 ou 20 questions, avec correction immédiate et la règle à retenir.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --ok-fond: #ecffc4; --faux-fond: #ffe1ee;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
+  /* genre : mêmes couleurs que la leçon (féminin rose, masculin violet) */
+  --fem: #ff5fa2; --fem-texte: #d42a78; --fem-clair: #ffe1ee;
+  --masc: #7c5cff; --masc-texte: #5b3be0; --masc-clair: #ebe5ff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre. Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). */
+.suite > :nth-child(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ (mêmes règles que les autres pages) ---------- */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+main {
+  flex: 1; padding: 40px 20px 72px;
+  background:
+    radial-gradient(circle at 6% 6%, rgba(200,245,96,.55) 0, transparent 26%),
+    radial-gradient(circle at 96% 20%, rgba(255,95,162,.26) 0, transparent 24%),
+    radial-gradient(circle at 4% 80%, rgba(124,92,255,.18) 0, transparent 24%),
+    radial-gradient(circle at 96% 92%, rgba(255,228,92,.42) 0, transparent 24%);
+}
+.app { width: 100%; max-width: 720px; margin: 0 auto; }
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 18px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.pastille { display: inline-block; padding: 4px 13px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .76rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(odd) { rotate: -2.5deg; }
+.pastille:nth-child(even) { rotate: 2deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.4rem; line-height: 1.02; letter-spacing: -0.035em; margin-bottom: 14px; }
+h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; border-radius: 12px; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); display: inline-block; rotate: -2deg; }
+.lead { color: var(--soft); font-size: 1.08rem; margin-bottom: 14px; max-width: 600px; }
+.lien-lecon { display: inline-block; margin-bottom: 26px; padding: 5px 16px; background: var(--lemon); border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 var(--ink); font-weight: 700; font-size: .92rem; text-decoration: none; transition: translate .12s, box-shadow .12s; }
+.lien-lecon:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+
+.card { background: #fff; border: 3px solid var(--ink); border-radius: 24px; box-shadow: 8px 8px 0 var(--ink); padding: 30px 32px 32px; }
+.section-label { font-family: 'Bricolage Grotesque', sans-serif; font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-bottom: 10px; }
+
+/* ---------- ACCUEIL DU TEST ---------- */
+.accueil h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 8px; }
+.accueil .lede { color: var(--soft); margin-bottom: 24px; }
+.mode-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 26px; }
+.mode-btn { display: flex; flex-direction: column; align-items: center; padding: 14px 10px 12px; background: #fff; border: 3px solid var(--ink); border-radius: 16px; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: translate .12s, box-shadow .12s, background .15s; }
+.mode-btn .num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.4rem; line-height: 1; }
+.mode-btn .lbl { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); margin-top: 4px; }
+.mode-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); background: var(--bg); }
+.mode-btn.selected { background: var(--lime); }
+.mode-btn.selected .lbl { color: var(--ink); }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.btn { flex: 1; padding: 13px 18px; border: 3px solid var(--ink); border-radius: 99px; font-weight: 800; font-size: 1rem; cursor: pointer; text-align: center; text-decoration: none; transition: translate .12s, box-shadow .12s, background .15s; }
+.btn-rose { background: var(--pink); color: #fff; box-shadow: 4px 4px 0 var(--ink); }
+.btn-rose:hover { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); }
+.btn-primary { background: var(--ink); color: #fff; box-shadow: 4px 4px 0 var(--pink); }
+.btn-primary:hover { translate: -1px -1px; box-shadow: 5px 5px 0 var(--pink); }
+.btn-ghost { background: #fff; color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.btn-ghost:hover { translate: -1px -1px; background: var(--lemon); }
+
+/* ---------- QUESTION ---------- */
+.quiz-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; font-size: .88rem; font-weight: 700; }
+.quiz-top span { padding: 1px 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--bg); }
+.progress-track { height: 16px; background: #fff; border: 2.5px solid var(--ink); border-radius: 99px; margin-bottom: 24px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--pink); transition: width .25s ease; }
+.carte-mot { position: relative; margin-bottom: 18px; padding: 30px 20px 18px; text-align: center; background: var(--bg); border: 3px dashed var(--ink); border-radius: 20px; }
+.autocollant { position: absolute; top: -16px; right: -10px; padding: 4px 13px; background: var(--lemon); border: 3px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1rem; rotate: 8deg; white-space: nowrap; }
+/* le mot reste sur une ligne : sa taille est réduite si besoin par ajusterMot() */
+.mot-question { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3.6rem; line-height: 1.1; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; }
+/* mots longs (gouvernement, connaissance…) : plus petits pour tenir sur une ligne */
+.mot-question.long { font-size: 2.9rem; }
+@media (max-width: 720px) { .mot-question.long { font-size: 2rem; } }
+@media (max-width: 380px) { .mot-question.long { font-size: 1.65rem; } }
+.voir-trad { margin-top: 10px; padding: 2px 12px; background: #fff; border: 2px solid var(--ink); border-radius: 99px; font-size: .82rem; font-weight: 600; cursor: pointer; }
+.voir-trad:hover { background: var(--lemon); }
+.trad { display: inline-block; margin-top: 10px; padding: 2px 12px; background: var(--ink); color: #fff; border-radius: 99px; font-size: .9rem; font-weight: 600; }
+.trad b { margin-right: 6px; padding: 0 6px; border-radius: 6px; background: var(--lime); color: var(--ink); font-size: .7rem; }
+.consigne { text-align: center; font-weight: 700; margin-bottom: 12px; }
+.choix { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.choix-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 10px; border: 3px solid var(--ink); border-radius: 18px; color: #fff; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: translate .12s, box-shadow .12s, opacity .15s; }
+.choix-btn b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.6rem; line-height: 1.1; }
+.choix-btn small { font-size: .85rem; font-weight: 600; opacity: .9; }
+.choix-m { background: var(--masc); }
+.choix-f { background: var(--fem); }
+.choix-btn:hover:not(:disabled) { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); }
+.choix-btn:disabled { cursor: default; opacity: .38; box-shadow: none; }
+.choix-btn.bonne { opacity: 1; box-shadow: 0 0 0 4px var(--lime), 4px 4px 0 4px var(--ink); }
+.choix-btn.bonne::after { content: '✓'; font-weight: 800; }
+.choix-btn.fausse { opacity: .6; text-decoration: line-through; }
+.retour { margin-top: 18px; padding: 12px 16px; border: 2.5px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); }
+.retour.ok { background: var(--ok-fond); }
+.retour.faux { background: var(--faux-fond); }
+.retour strong { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; margin-right: 6px; }
+.forme { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; }
+.forme.f { color: var(--fem-texte); }
+.forme.m { color: var(--masc-texte); }
+.retour .en { color: var(--soft); font-weight: 600; }
+.retour p { margin-top: 4px; font-size: .95rem; }
+.raccourcis { margin-top: 16px; text-align: center; font-size: .78rem; color: var(--soft); }
+@media (hover: none) { .raccourcis { display: none; } }
+
+/* ---------- RÉSULTAT ---------- */
+.result h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: .9rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+.result .score { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 5rem; line-height: 1; letter-spacing: -.04em; margin: 6px 0 10px; }
+.result .score span { font-size: .4em; color: var(--soft); letter-spacing: 0; }
+.mention { display: inline-block; padding: 5px 16px; margin-bottom: 8px; border: 3px solid var(--ink); border-radius: 99px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.15rem; font-weight: 800; box-shadow: 3px 3px 0 var(--ink); rotate: -2deg; }
+.m-revoir { background: var(--pink); color: #fff; }
+.m-assezbien { background: var(--lemon); }
+.m-bien { background: var(--aqua); }
+.m-tresbien { background: var(--lime); }
+.m-parfait { background: var(--violet); color: #fff; }
+.a-revoir { margin-top: 22px; padding-top: 16px; border-top: 2.5px dashed rgba(27,19,64,.25); }
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { padding: 3px 11px; border: 2px solid var(--ink); border-radius: 10px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; }
+.chips li.f { background: var(--fem-clair); }
+.chips li.m { background: var(--masc-clair); }
+.chips li span { font-family: 'Inter', sans-serif; font-weight: 500; font-size: .85em; color: var(--soft); }
+.sans-erreur { font-weight: 700; }
+
+/* ---------- PIED DE PAGE (charte du site) ---------- */
+footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
+.footer-copy { font-size: .72rem; font-weight: 300; color: rgba(250,247,242,.4); }
+.footer-copy a { color: rgba(250,247,242,.6); }
+
+@media (prefers-reduced-motion: reduce) { .mode-btn, .btn, .choix-btn, .progress-fill, .fil { transition: none; } }
+
+@media (max-width: 720px) {
+  main { padding: 26px 16px 56px; }
+  h1 { font-size: 2.5rem; }
+  .lead { font-size: 1rem; margin-bottom: 22px; }
+  .card { padding: 24px 18px 24px; border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); }
+  .accueil h2 { font-size: 1.55rem; }
+  .mot-question { font-size: 2.7rem; }
+  .choix-btn b { font-size: 1.3rem; }
+  .result .score { font-size: 4rem; }
+  footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+@media (max-width: 380px) {
+  h1 { font-size: 2.15rem; }
+  .mot-question { font-size: 2.2rem; }
+  .choix { gap: 10px; }
+  .choix-btn { padding: 12px 6px; }
+  .choix-btn b { font-size: 1.15rem; }
+  .actions .btn { flex-basis: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
+</header>
+
+<main>
+<div class="app">
+  <a class="fil t" href="/ressources.html#a1-a2" data-fr="← Ressources · Faux débutant" data-en="← Resources · Elementary">← Ressources · Faux débutant</a>
+  <div class="pastilles suite">
+    <span class="pastille t" data-fr="Test" data-en="Test">Test</span>
+    <span class="pastille t" data-fr="Masculin · Féminin" data-en="Masculine · Feminine">Masculin · Féminin</span>
+    <span class="pastille">A1</span>
+  </div>
+  <h1 class="t" data-html="1" data-fr="Test : le &lt;mark&gt;genre&lt;/mark&gt; des noms" data-en="&lt;mark&gt;Noun gender&lt;/mark&gt; test">Test : le <mark>genre</mark> des noms</h1>
+  <p class="lead t"
+     data-fr="170 mots courants, 10 ou 20 questions tirées au hasard. Correction immédiate, avec la règle à retenir."
+     data-en="170 common words, 10 or 20 questions drawn at random. Instant feedback, with the rule to remember.">170 mots courants, 10 ou 20 questions tirées au hasard. Correction immédiate, avec la règle à retenir.</p>
+  <a class="lien-lecon t" href="/genre_terminaison.html" data-fr="↺ Réviser la leçon" data-en="↺ Review the lesson">↺ Réviser la leçon</a>
+  <div class="card" id="cardRoot" aria-live="polite"></div>
+</div>
+</main>
+
+<footer>
+  <div class="footer-logo">French with Alban</div>
+  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+</footer>
+
+<script>
+/* ---------- les 170 mots ----------
+   mot : sans article · art : le, la ou l' · g : f ou m · en : traduction
+   regle : e (règle générale), fin (terminaison), exc-fin (exception à une terminaison), exc-e (masculin en -e),
+           exc-sans-e (féminin sans -e), exc-eur (féminin en -eur) · fin : la terminaison concernée.
+   Liste générée depuis la leçon genre_terminaison.html (136 mots) + 34 mots réguliers ; ne pas modifier à la main. */
+const MOTS = /* MOTS:DEBUT */[
+  { mot: "fromage", art: "le", g: "m", en: "cheese", regle: "fin", fin: "-age" },
+  { mot: "voyage", art: "le", g: "m", en: "trip", regle: "fin", fin: "-age" },
+  { mot: "garage", art: "le", g: "m", en: "garage", regle: "fin", fin: "-age" },
+  { mot: "visage", art: "le", g: "m", en: "face", regle: "fin", fin: "-age" },
+  { mot: "ménage", art: "le", g: "m", en: "housework", regle: "fin", fin: "-age" },
+  { mot: "plage", art: "la", g: "f", en: "beach", regle: "exc-fin", fin: "-age" },
+  { mot: "page", art: "la", g: "f", en: "page", regle: "exc-fin", fin: "-age" },
+  { mot: "image", art: "l'", g: "f", en: "picture", regle: "exc-fin", fin: "-age" },
+  { mot: "cage", art: "la", g: "f", en: "cage", regle: "exc-fin", fin: "-age" },
+  { mot: "nage", art: "la", g: "f", en: "swimming", regle: "exc-fin", fin: "-age" },
+  { mot: "rage", art: "la", g: "f", en: "rage", regle: "exc-fin", fin: "-age" },
+  { mot: "moment", art: "le", g: "m", en: "moment", regle: "fin", fin: "-ment" },
+  { mot: "appartement", art: "l'", g: "m", en: "flat, apartment", regle: "fin", fin: "-ment" },
+  { mot: "vêtement", art: "le", g: "m", en: "piece of clothing", regle: "fin", fin: "-ment" },
+  { mot: "médicament", art: "le", g: "m", en: "medicine", regle: "fin", fin: "-ment" },
+  { mot: "gouvernement", art: "le", g: "m", en: "government", regle: "fin", fin: "-ment" },
+  { mot: "bureau", art: "le", g: "m", en: "desk, office", regle: "fin", fin: "-eau" },
+  { mot: "gâteau", art: "le", g: "m", en: "cake", regle: "fin", fin: "-eau" },
+  { mot: "cadeau", art: "le", g: "m", en: "present, gift", regle: "fin", fin: "-eau" },
+  { mot: "chapeau", art: "le", g: "m", en: "hat", regle: "fin", fin: "-eau" },
+  { mot: "couteau", art: "le", g: "m", en: "knife", regle: "fin", fin: "-eau" },
+  { mot: "eau", art: "l'", g: "f", en: "water", regle: "exc-fin", fin: "-eau" },
+  { mot: "peau", art: "la", g: "f", en: "skin", regle: "exc-fin", fin: "-eau" },
+  { mot: "téléphone", art: "le", g: "m", en: "phone", regle: "fin", fin: "-phone / -scope" },
+  { mot: "microphone", art: "le", g: "m", en: "microphone", regle: "fin", fin: "-phone / -scope" },
+  { mot: "interphone", art: "l'", g: "m", en: "intercom", regle: "fin", fin: "-phone / -scope" },
+  { mot: "microscope", art: "le", g: "m", en: "microscope", regle: "fin", fin: "-phone / -scope" },
+  { mot: "télescope", art: "le", g: "m", en: "telescope", regle: "fin", fin: "-phone / -scope" },
+  { mot: "tourisme", art: "le", g: "m", en: "tourism", regle: "fin", fin: "-isme" },
+  { mot: "journalisme", art: "le", g: "m", en: "journalism", regle: "fin", fin: "-isme" },
+  { mot: "réalisme", art: "le", g: "m", en: "realism", regle: "fin", fin: "-isme" },
+  { mot: "socialisme", art: "le", g: "m", en: "socialism", regle: "fin", fin: "-isme" },
+  { mot: "question", art: "la", g: "f", en: "question", regle: "fin", fin: "-tion" },
+  { mot: "information", art: "l'", g: "f", en: "information", regle: "fin", fin: "-tion" },
+  { mot: "solution", art: "la", g: "f", en: "solution", regle: "fin", fin: "-tion" },
+  { mot: "situation", art: "la", g: "f", en: "situation", regle: "fin", fin: "-tion" },
+  { mot: "réservation", art: "la", g: "f", en: "booking, reservation", regle: "fin", fin: "-tion" },
+  { mot: "télévision", art: "la", g: "f", en: "television", regle: "fin", fin: "-sion" },
+  { mot: "décision", art: "la", g: "f", en: "decision", regle: "fin", fin: "-sion" },
+  { mot: "profession", art: "la", g: "f", en: "profession", regle: "fin", fin: "-sion" },
+  { mot: "émission", art: "l'", g: "f", en: "programme (TV, radio)", regle: "fin", fin: "-sion" },
+  { mot: "maison", art: "la", g: "f", en: "house", regle: "fin", fin: "-aison" },
+  { mot: "saison", art: "la", g: "f", en: "season", regle: "fin", fin: "-aison" },
+  { mot: "raison", art: "la", g: "f", en: "reason", regle: "fin", fin: "-aison" },
+  { mot: "livraison", art: "la", g: "f", en: "delivery", regle: "fin", fin: "-aison" },
+  { mot: "comparaison", art: "la", g: "f", en: "comparison", regle: "fin", fin: "-aison" },
+  { mot: "conjugaison", art: "la", g: "f", en: "conjugation", regle: "fin", fin: "-aison" },
+  { mot: "santé", art: "la", g: "f", en: "health", regle: "fin", fin: "-té" },
+  { mot: "liberté", art: "la", g: "f", en: "freedom", regle: "fin", fin: "-té" },
+  { mot: "beauté", art: "la", g: "f", en: "beauty", regle: "fin", fin: "-té" },
+  { mot: "société", art: "la", g: "f", en: "society, company", regle: "fin", fin: "-té" },
+  { mot: "réalité", art: "la", g: "f", en: "reality", regle: "fin", fin: "-té" },
+  { mot: "côté", art: "le", g: "m", en: "side", regle: "exc-fin", fin: "-té" },
+  { mot: "été", art: "l'", g: "m", en: "summer", regle: "exc-fin", fin: "-té" },
+  { mot: "comité", art: "le", g: "m", en: "committee", regle: "exc-fin", fin: "-té" },
+  { mot: "député", art: "le", g: "m", en: "member of parliament", regle: "exc-fin", fin: "-té" },
+  { mot: "pâté", art: "le", g: "m", en: "pâté", regle: "exc-fin", fin: "-té" },
+  { mot: "baguette", art: "la", g: "f", en: "baguette", regle: "fin", fin: "-ette" },
+  { mot: "fourchette", art: "la", g: "f", en: "fork", regle: "fin", fin: "-ette" },
+  { mot: "serviette", art: "la", g: "f", en: "towel, napkin", regle: "fin", fin: "-ette" },
+  { mot: "chaussette", art: "la", g: "f", en: "sock", regle: "fin", fin: "-ette" },
+  { mot: "bicyclette", art: "la", g: "f", en: "bicycle", regle: "fin", fin: "-ette" },
+  { mot: "squelette", art: "le", g: "m", en: "skeleton", regle: "exc-fin", fin: "-ette" },
+  { mot: "chance", art: "la", g: "f", en: "luck", regle: "fin", fin: "-ance" },
+  { mot: "distance", art: "la", g: "f", en: "distance", regle: "fin", fin: "-ance" },
+  { mot: "ambiance", art: "l'", g: "f", en: "atmosphere", regle: "fin", fin: "-ance" },
+  { mot: "connaissance", art: "la", g: "f", en: "knowledge", regle: "fin", fin: "-ance" },
+  { mot: "différence", art: "la", g: "f", en: "difference", regle: "fin", fin: "-ence" },
+  { mot: "patience", art: "la", g: "f", en: "patience", regle: "fin", fin: "-ence" },
+  { mot: "expérience", art: "l'", g: "f", en: "experience", regle: "fin", fin: "-ence" },
+  { mot: "présence", art: "la", g: "f", en: "presence", regle: "fin", fin: "-ence" },
+  { mot: "silence", art: "le", g: "m", en: "silence", regle: "exc-fin", fin: "-ence" },
+  { mot: "voiture", art: "la", g: "f", en: "car", regle: "fin", fin: "-ure" },
+  { mot: "nourriture", art: "la", g: "f", en: "food", regle: "fin", fin: "-ure" },
+  { mot: "confiture", art: "la", g: "f", en: "jam", regle: "fin", fin: "-ure" },
+  { mot: "culture", art: "la", g: "f", en: "culture", regle: "fin", fin: "-ure" },
+  { mot: "peinture", art: "la", g: "f", en: "painting, paint", regle: "fin", fin: "-ure" },
+  { mot: "mercure", art: "le", g: "m", en: "mercury", regle: "exc-fin", fin: "-ure" },
+  { mot: "cyanure", art: "le", g: "m", en: "cyanide", regle: "exc-fin", fin: "-ure" },
+  { mot: "méthode", art: "la", g: "f", en: "method", regle: "fin", fin: "-ode / -ade / -ude" },
+  { mot: "période", art: "la", g: "f", en: "period", regle: "fin", fin: "-ode / -ade / -ude" },
+  { mot: "salade", art: "la", g: "f", en: "salad", regle: "fin", fin: "-ode / -ade / -ude" },
+  { mot: "promenade", art: "la", g: "f", en: "walk", regle: "fin", fin: "-ode / -ade / -ude" },
+  { mot: "habitude", art: "l'", g: "f", en: "habit", regle: "fin", fin: "-ode / -ade / -ude" },
+  { mot: "problème", art: "le", g: "m", en: "problem", regle: "exc-e" },
+  { mot: "système", art: "le", g: "m", en: "system", regle: "exc-e" },
+  { mot: "programme", art: "le", g: "m", en: "programme", regle: "exc-e" },
+  { mot: "volume", art: "le", g: "m", en: "volume", regle: "exc-e" },
+  { mot: "modèle", art: "le", g: "m", en: "model", regle: "exc-e" },
+  { mot: "groupe", art: "le", g: "m", en: "group", regle: "exc-e" },
+  { mot: "domaine", art: "le", g: "m", en: "field, area", regle: "exc-e" },
+  { mot: "rôle", art: "le", g: "m", en: "role", regle: "exc-e" },
+  { mot: "livre", art: "le", g: "m", en: "book", regle: "exc-e" },
+  { mot: "verre", art: "le", g: "m", en: "glass", regle: "exc-e" },
+  { mot: "beurre", art: "le", g: "m", en: "butter", regle: "exc-e" },
+  { mot: "sucre", art: "le", g: "m", en: "sugar", regle: "exc-e" },
+  { mot: "monde", art: "le", g: "m", en: "world", regle: "exc-e" },
+  { mot: "nombre", art: "le", g: "m", en: "number", regle: "exc-e" },
+  { mot: "rêve", art: "le", g: "m", en: "dream", regle: "exc-e" },
+  { mot: "musée", art: "le", g: "m", en: "museum", regle: "exc-e" },
+  { mot: "lycée", art: "le", g: "m", en: "high school", regle: "exc-e" },
+  { mot: "collège", art: "le", g: "m", en: "secondary school", regle: "exc-e" },
+  { mot: "parapluie", art: "le", g: "m", en: "umbrella", regle: "exc-e" },
+  { mot: "dentifrice", art: "le", g: "m", en: "toothpaste", regle: "exc-e" },
+  { mot: "main", art: "la", g: "f", en: "hand", regle: "exc-sans-e" },
+  { mot: "nuit", art: "la", g: "f", en: "night", regle: "exc-sans-e" },
+  { mot: "mer", art: "la", g: "f", en: "sea", regle: "exc-sans-e" },
+  { mot: "fin", art: "la", g: "f", en: "end", regle: "exc-sans-e" },
+  { mot: "faim", art: "la", g: "f", en: "hunger", regle: "exc-sans-e" },
+  { mot: "dent", art: "la", g: "f", en: "tooth", regle: "exc-sans-e" },
+  { mot: "clé", art: "la", g: "f", en: "key", regle: "exc-sans-e" },
+  { mot: "forêt", art: "la", g: "f", en: "forest", regle: "exc-sans-e" },
+  { mot: "souris", art: "la", g: "f", en: "mouse", regle: "exc-sans-e" },
+  { mot: "radio", art: "la", g: "f", en: "radio", regle: "exc-sans-e" },
+  { mot: "photo", art: "la", g: "f", en: "photo", regle: "exc-sans-e" },
+  { mot: "moto", art: "la", g: "f", en: "motorbike", regle: "exc-sans-e" },
+  { mot: "chanson", art: "la", g: "f", en: "song", regle: "exc-sans-e" },
+  { mot: "leçon", art: "la", g: "f", en: "lesson", regle: "exc-sans-e" },
+  { mot: "boisson", art: "la", g: "f", en: "drink", regle: "exc-sans-e" },
+  { mot: "couleur", art: "la", g: "f", en: "colour", regle: "exc-eur" },
+  { mot: "odeur", art: "l'", g: "f", en: "smell", regle: "exc-eur" },
+  { mot: "saveur", art: "la", g: "f", en: "flavour", regle: "exc-eur" },
+  { mot: "peur", art: "la", g: "f", en: "fear", regle: "exc-eur" },
+  { mot: "douleur", art: "la", g: "f", en: "pain", regle: "exc-eur" },
+  { mot: "fleur", art: "la", g: "f", en: "flower", regle: "exc-eur" },
+  { mot: "erreur", art: "l'", g: "f", en: "mistake", regle: "exc-eur" },
+  { mot: "valeur", art: "la", g: "f", en: "value", regle: "exc-eur" },
+  { mot: "chaleur", art: "la", g: "f", en: "heat", regle: "exc-eur" },
+  { mot: "fenêtre", art: "la", g: "f", en: "window", regle: "e" },
+  { mot: "chaise", art: "la", g: "f", en: "chair", regle: "e" },
+  { mot: "tasse", art: "la", g: "f", en: "cup", regle: "e" },
+  { mot: "porte", art: "la", g: "f", en: "door", regle: "e" },
+  { mot: "lit", art: "le", g: "m", en: "bed", regle: "e" },
+  { mot: "pain", art: "le", g: "m", en: "bread", regle: "e" },
+  { mot: "sac", art: "le", g: "m", en: "bag", regle: "e" },
+  { mot: "mur", art: "le", g: "m", en: "wall", regle: "e" },
+  { mot: "table", art: "la", g: "f", en: "table", regle: "e" },
+  { mot: "lampe", art: "la", g: "f", en: "lamp", regle: "e" },
+  { mot: "cuisine", art: "la", g: "f", en: "kitchen", regle: "e" },
+  { mot: "chambre", art: "la", g: "f", en: "bedroom", regle: "e" },
+  { mot: "pomme", art: "la", g: "f", en: "apple", regle: "e" },
+  { mot: "banane", art: "la", g: "f", en: "banana", regle: "e" },
+  { mot: "fraise", art: "la", g: "f", en: "strawberry", regle: "e" },
+  { mot: "tomate", art: "la", g: "f", en: "tomato", regle: "e" },
+  { mot: "soupe", art: "la", g: "f", en: "soup", regle: "e" },
+  { mot: "ville", art: "la", g: "f", en: "town", regle: "e" },
+  { mot: "rue", art: "la", g: "f", en: "street", regle: "e" },
+  { mot: "école", art: "l'", g: "f", en: "school", regle: "e" },
+  { mot: "gare", art: "la", g: "f", en: "station", regle: "e" },
+  { mot: "robe", art: "la", g: "f", en: "dress", regle: "e" },
+  { mot: "chemise", art: "la", g: "f", en: "shirt", regle: "e" },
+  { mot: "tête", art: "la", g: "f", en: "head", regle: "e" },
+  { mot: "jambe", art: "la", g: "f", en: "leg", regle: "e" },
+  { mot: "chat", art: "le", g: "m", en: "cat", regle: "e" },
+  { mot: "chien", art: "le", g: "m", en: "dog", regle: "e" },
+  { mot: "stylo", art: "le", g: "m", en: "pen", regle: "e" },
+  { mot: "crayon", art: "le", g: "m", en: "pencil", regle: "e" },
+  { mot: "bus", art: "le", g: "m", en: "bus", regle: "e" },
+  { mot: "train", art: "le", g: "m", en: "train", regle: "e" },
+  { mot: "avion", art: "l'", g: "m", en: "plane", regle: "e" },
+  { mot: "vélo", art: "le", g: "m", en: "bike", regle: "e" },
+  { mot: "lait", art: "le", g: "m", en: "milk", regle: "e" },
+  { mot: "riz", art: "le", g: "m", en: "rice", regle: "e" },
+  { mot: "poulet", art: "le", g: "m", en: "chicken", regle: "e" },
+  { mot: "jardin", art: "le", g: "m", en: "garden", regle: "e" },
+  { mot: "parc", art: "le", g: "m", en: "park", regle: "e" },
+  { mot: "jour", art: "le", g: "m", en: "day", regle: "e" },
+  { mot: "soir", art: "le", g: "m", en: "evening", regle: "e" },
+  { mot: "nez", art: "le", g: "m", en: "nose", regle: "e" },
+  { mot: "pied", art: "le", g: "m", en: "foot", regle: "e" }
+]/* MOTS:FIN */;
+
+/* ---------- textes de l'interface (les mots testés restent en français) ---------- */
+let LANG = "fr";
+const TXT = {
+  titreAccueil: { fr: "Masculin ou féminin ?", en: "Masculine or feminine?" },
+  lede: { fr: "Un mot s'affiche sans son article : dites s'il est masculin ou féminin.",
+          en: "A word appears without its article: say whether it is masculine or feminine." },
+  nbQuestions: { fr: "Nombre de questions", en: "Number of questions" },
+  questions: { fr: "questions", en: "questions" },
+  commencer: { fr: "Commencer le test", en: "Start the test" },
+  revoir: { fr: "Réviser la leçon", en: "Review the lesson" },
+  score: { fr: "Score : ", en: "Score: " },
+  consigne: { fr: "Ce mot est…", en: "This word is…" },
+  masculin: { fr: "masculin", en: "masculine" },
+  feminin: { fr: "féminin", en: "feminine" },
+  voirTrad: { fr: "Voir la traduction", en: "Show the translation" },
+  bravo: { fr: "Bravo !", en: "Correct!" },
+  rate: { fr: "Raté !", en: "Not quite!" },
+  suivant: { fr: "Suivant", en: "Next" },
+  voirResultat: { fr: "Voir le résultat", en: "See the result" },
+  raccourcis: { fr: "Clavier : M = masculin, F = féminin, Entrée = suivant", en: "Keyboard: M = masculine, F = feminine, Enter = next" },
+  resultat: { fr: "Résultat", en: "Result" },
+  aRevoir: { fr: "À revoir", en: "To review" },
+  sansErreur: { fr: "Aucune erreur, bravo !", en: "No mistakes, well done!" },
+  refaire: { fr: "Refaire un test", en: "Take another test" },
+  changer: { fr: "Changer le nombre de questions", en: "Change the number of questions" },
+  fem: { fr: "fém.", en: "fem." },
+  masc: { fr: "masc.", en: "masc." }
+};
+const MENTION_EN = { "parfait !": "perfect!", "très bien": "very good", "bien": "good", "assez bien": "fairly good", "à revoir": "needs work" };
+function t(cle) { return TXT[cle][LANG]; }
+
+/* Mentions : mêmes seuils que le test de conjugaison */
+function mention(pct) {
+  if (pct >= 100) return { label: "parfait !", cls: "m-parfait" };
+  if (pct >= 90) return { label: "très bien", cls: "m-tresbien" };
+  if (pct >= 80) return { label: "bien", cls: "m-bien" };
+  if (pct >= 70) return { label: "assez bien", cls: "m-assezbien" };
+  return { label: "à revoir", cls: "m-revoir" };
+}
+function melanger(liste) { const a = [...liste]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function echapper(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
+function genre(g) { return g === "f" ? t("feminin") : t("masculin"); }
+/* « la plage », « l'été (masc.) » */
+function formeComplete(m) { return m.art === "l'" ? `l'${m.mot} (${m.g === "f" ? t("fem") : t("masc")})` : `${m.art} ${m.mot}`; }
+/* règle qui explique le genre du mot */
+function indice(m) {
+  const autre = m.g === "f" ? "m" : "f";
+  const fr = LANG === "fr";
+  switch (m.regle) {
+    case "e": return m.g === "f"
+      ? (fr ? "Il se termine par -e : féminin, comme le dit la règle générale." : "It ends in -e: feminine, just as the general rule says.")
+      : (fr ? "Pas de -e à la fin : masculin, comme le dit la règle générale." : "No -e at the end: masculine, just as the general rule says.");
+    case "fin": return fr ? `Terminaison ${m.fin} : ${genre(m.g)}.` : `${m.fin} ending: ${genre(m.g)}.`;
+    case "exc-fin": return fr ? `Exception : les noms en ${m.fin} sont d'habitude ${autre === "f" ? "féminins" : "masculins"}.` : `Exception: nouns in ${m.fin} are usually ${genre(autre)}.`;
+    case "exc-e": return fr ? "Exception : il se termine par -e, mais il est masculin." : "Exception: it ends in -e, but it is masculine.";
+    case "exc-sans-e": return fr ? "Exception : pas de -e à la fin, mais il est féminin." : "Exception: no -e at the end, but it is feminine.";
+    case "exc-eur": return fr ? "Exception : la plupart des noms en -eur sont masculins, mais pas celui-ci." : "Exception: most nouns in -eur are masculine, but not this one.";
+  }
+  return "";
+}
+
+let state = { ecran: "accueil", nb: 10, questions: [], idx: 0, reponses: [], tradVisible: false };
+
+function commencer() {
+  state.questions = melanger(MOTS).slice(0, state.nb); // tirage sans remise : aucun mot deux fois
+  state.idx = 0; state.reponses = []; state.tradVisible = false; state.ecran = "question";
+  render();
+}
+function repondre(g) {
+  if (state.ecran !== "question" || state.reponses.length > state.idx) return;
+  state.reponses.push(g);
+  render();
+  const suivant = document.getElementById("suivant");
+  if (suivant) suivant.focus();
+}
+function suivant() {
+  if (state.reponses.length <= state.idx) return;
+  state.tradVisible = false;
+  if (state.idx + 1 >= state.questions.length) state.ecran = "resultat"; else state.idx++;
+  render();
+}
+/* réduit la taille du mot jusqu'à ce qu'il tienne sur une ligne (petits écrans, mots longs) */
+function ajusterMot(el) {
+  if (!el) return;
+  el.style.fontSize = "";
+  let taille = parseFloat(getComputedStyle(el).fontSize);
+  while (el.scrollWidth > el.clientWidth + 1 && taille > 18) {
+    taille *= 0.92;
+    el.style.fontSize = taille + "px";
+  }
+}
+window.addEventListener("resize", () => ajusterMot(document.querySelector(".mot-question")));
+function bonnes() { return state.reponses.filter((g, i) => g === state.questions[i].g).length; }
+
+function render() {
+  const root = document.getElementById("cardRoot");
+
+  if (state.ecran === "accueil") {
+    root.innerHTML = `
+      <div class="accueil">
+        <h2>${t("titreAccueil")}</h2>
+        <p class="lede">${t("lede")}</p>
+        <div class="section-label">${t("nbQuestions")}</div>
+        <div class="mode-choice">
+          ${[10, 20].map(n => `<button type="button" class="mode-btn ${state.nb === n ? "selected" : ""}" data-nb="${n}" aria-pressed="${state.nb === n}"><span class="num">${n}</span><span class="lbl">${t("questions")}</span></button>`).join("")}
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-rose" id="commencer">${t("commencer")}</button>
+          <a class="btn btn-ghost" href="/genre_terminaison.html">${t("revoir")}</a>
+        </div>
+      </div>`;
+    root.querySelectorAll(".mode-btn").forEach(b => b.addEventListener("click", () => { state.nb = Number(b.dataset.nb); render(); }));
+    document.getElementById("commencer").addEventListener("click", commencer);
+    return;
+  }
+
+  if (state.ecran === "question") {
+    const q = state.questions[state.idx], total = state.questions.length, num = state.idx + 1;
+    const rep = state.reponses[state.idx], repondu = rep !== undefined, juste = rep === q.g;
+    const bouton = g => {
+      const cls = ["choix-btn", g === "m" ? "choix-m" : "choix-f"];
+      if (repondu && g === q.g) cls.push("bonne");
+      if (repondu && g === rep && !juste) cls.push("fausse");
+      return `<button type="button" class="${cls.join(" ")}" data-g="${g}" ${repondu ? "disabled" : ""}><b>${genre(g)}</b><small lang="fr">${g === "m" ? "le · un" : "la · une"}</small></button>`;
+    };
+    root.innerHTML = `
+      <div class="quiz-top"><span>Question ${num} / ${total}</span><span>${t("score")}${bonnes()}</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.round((state.reponses.length) / total * 100)}%"></div></div>
+      <div class="carte-mot">
+        <span class="autocollant" lang="fr" aria-hidden="true">le ou la ?</span>
+        <div class="mot-question${q.mot.length >= 11 ? " long" : ""}" lang="fr">${echapper(q.mot)}</div>
+        ${state.tradVisible || repondu ? `<div class="trad" lang="en"><b>EN</b>${echapper(q.en)}</div>` : `<button type="button" class="voir-trad" id="voirTrad">${t("voirTrad")}</button>`}
+      </div>
+      <p class="consigne">${t("consigne")}</p>
+      <div class="choix">${bouton("m")}${bouton("f")}</div>
+      ${repondu ? `<div class="retour ${juste ? "ok" : "faux"}">
+          <strong>${juste ? t("bravo") : t("rate")}</strong>
+          <span class="forme ${q.g}" lang="fr">${echapper(formeComplete(q))}</span> <span class="en" lang="en">· ${echapper(q.en)}</span>
+          <p>${echapper(indice(q))}</p>
+        </div>
+        <div class="actions"><button type="button" class="btn btn-primary" id="suivant">${num === total ? t("voirResultat") : t("suivant")}</button></div>` : ""}
+      <p class="raccourcis">${t("raccourcis")}</p>`;
+    ajusterMot(root.querySelector(".mot-question"));
+    root.querySelectorAll(".choix-btn").forEach(b => b.addEventListener("click", () => repondre(b.dataset.g)));
+    const vt = document.getElementById("voirTrad");
+    if (vt) vt.addEventListener("click", () => { state.tradVisible = true; render(); });
+    const sv = document.getElementById("suivant");
+    if (sv) sv.addEventListener("click", suivant);
+    return;
+  }
+
+  if (state.ecran === "resultat") {
+    const total = state.questions.length, score = bonnes(), m = mention(score / total * 100);
+    const erreurs = state.questions.filter((q, i) => state.reponses[i] !== q.g);
+    root.innerHTML = `
+      <div class="result">
+        <h2>${t("resultat")}</h2>
+        <div class="score">${score} <span>/ ${total}</span></div>
+        <span class="mention ${m.cls}">${LANG === "fr" ? m.label : MENTION_EN[m.label]}</span>
+        <div class="a-revoir">
+          ${erreurs.length ? `<div class="section-label">${t("aRevoir")}</div>
+            <ul class="chips">${erreurs.map(q => `<li class="${q.g}"><span lang="fr">${echapper(formeComplete(q))}</span> <span lang="en">· ${echapper(q.en)}</span></li>`).join("")}</ul>`
+            : `<p class="sans-erreur">${t("sansErreur")}</p>`}
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="refaire">${t("refaire")}</button>
+          <button type="button" class="btn btn-ghost" id="changer">${t("changer")}</button>
+        </div>
+        <div class="actions" style="margin-top:12px"><a class="btn btn-ghost" href="/genre_terminaison.html">${t("revoir")}</a></div>
+      </div>`;
+    // les mots de la liste : la forme en français reste en gras, la traduction en retrait
+    root.querySelectorAll(".chips li span[lang=fr]").forEach(s => { s.style.fontFamily = "inherit"; s.style.fontWeight = "700"; s.style.fontSize = "1em"; s.style.color = "var(--ink)"; });
+    document.getElementById("refaire").addEventListener("click", commencer);
+    document.getElementById("changer").addEventListener("click", () => { state.ecran = "accueil"; render(); });
+  }
+}
+
+/* raccourcis clavier : M / F pour répondre, Entrée pour passer à la suite */
+document.addEventListener("keydown", e => {
+  if (state.ecran !== "question" || e.ctrlKey || e.metaKey || e.altKey) return;
+  const cle = e.key.toLowerCase();
+  if (state.reponses.length <= state.idx && (cle === "m" || cle === "f")) { e.preventDefault(); repondre(cle); return; }
+  // sur un bouton, Entrée déclenche déjà le clic : on ne passe pas deux fois à la suite
+  if (e.key === "Enter" && state.reponses.length > state.idx && !(e.target instanceof HTMLButtonElement)) { e.preventDefault(); suivant(); }
+});
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+const btnFr = document.getElementById("btn-fr"), btnEn = document.getElementById("btn-en");
+const burger = document.querySelector(".ac-burger"), menu = document.getElementById("ac-menu");
+const LIBELLES = {
+  nav: { fr: "Navigation principale", en: "Main navigation" },
+  langue: { fr: "Choix de la langue", en: "Language" },
+  ouvrir: { fr: "Ouvrir le menu", en: "Open menu" },
+  fermer: { fr: "Fermer le menu", en: "Close menu" },
+  titre: { fr: "Test : le genre des noms — French with Alban", en: "Noun gender test — French with Alban" }
+};
+function majBurger() { const ouvert = !menu.hidden; burger.setAttribute("aria-expanded", String(ouvert)); burger.setAttribute("aria-label", LIBELLES[ouvert ? "fermer" : "ouvrir"][LANG]); }
+burger.addEventListener("click", () => { menu.hidden = !menu.hidden; majBurger(); });
+
+/* ---------- langue : même mécanisme que les autres pages ; le test en cours est conservé ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll(".t").forEach(el => {
+    const txt = el.getAttribute("data-" + lang);
+    if (txt === null) return;
+    if (el.getAttribute("data-html")) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle("on", lang === "fr"); btnEn.classList.toggle("on", lang === "en");
+  btnFr.setAttribute("aria-pressed", String(lang === "fr")); btnEn.setAttribute("aria-pressed", String(lang === "en"));
+  document.querySelector(".ac-nav").setAttribute("aria-label", LIBELLES.nav[lang]);
+  document.querySelector(".ac-langue").setAttribute("aria-label", LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem("fwa-lang", lang); } catch (e) {}
+  render();
+}
+
+let choix = null;
+try { const enr = localStorage.getItem("fwa-lang"); if (enr === "fr" || enr === "en") choix = enr; } catch (e) {}
+if (!choix) choix = (navigator.language || "fr").toLowerCase().indexOf("fr") === 0 ? "fr" : "en";
+appliquer(choix);
+btnFr.addEventListener("click", () => appliquer("fr"));
+btnEn.addEventListener("click", () => appliquer("en"));
+</script>
+</body>
+</html>
