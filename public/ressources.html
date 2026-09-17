@@ -167,6 +167,30 @@ a.resource-card:hover { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); 
 .resource-arrow { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; display: grid; place-items: center; border: 2.5px solid var(--ink); border-radius: 50%; background: #fff; font-weight: 700; line-height: 1; transition: background .15s, translate .15s; }
 a.resource-card:hover .resource-arrow { background: var(--lime); translate: 3px 0; }
 
+/* vignettes des ressources publiées (même esprit que le tableau de bord de l'administration) */
+a.resource-card { display: grid; grid-template-columns: 58px minmax(0, 1fr); column-gap: 16px; row-gap: 8px; align-items: start; }
+a.resource-card .resource-tag { grid-column: 2; justify-self: start; }
+a.resource-card .resource-info { grid-column: 2; }
+.resource-signe { grid-row: 1 / span 2; display: grid; place-items: center; width: 58px; height: 58px; background: var(--c); color: var(--c-texte); border: 3px solid var(--ink); border-radius: 16px; box-shadow: 3px 3px 0 var(--ink); rotate: -4deg; transition: rotate .2s; }
+.grille > :nth-child(even) .resource-signe { rotate: 4deg; }
+a.resource-card:hover .resource-signe { rotate: 0deg; }
+.resource-signe svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.resource-signe .plein { stroke: var(--ink); stroke-width: 2; }
+.resource-signe .trait { fill: currentColor; stroke: none; }
+.resource-signe .fond { fill: #fff; }
+.resource-signe .rose { fill: var(--pink); } .resource-signe .jaune { fill: var(--lemon); } .resource-signe .violet { fill: var(--violet); }
+.resource-signe-texte { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.6rem; line-height: 1; letter-spacing: -.03em; white-space: nowrap; }
+.resource-signe-petit { font-size: 1.12rem; letter-spacing: -.04em; }
+@media (prefers-reduced-motion: reduce) { .resource-signe { transition: none; } }
+@media (max-width: 720px) {
+  a.resource-card { grid-template-columns: 48px minmax(0, 1fr); column-gap: 12px; }
+  .resource-signe { width: 48px; height: 48px; border-radius: 13px; }
+  .resource-signe svg { width: 28px; height: 28px; }
+  .resource-signe-texte { font-size: 1.3rem; }
+  .resource-signe-petit { font-size: .95rem; }
+}
+/* fin vignettes */
+
 /* ---------- EN PRÉPARATION ---------- */
 .bientot { margin-top: 30px; }
 .bientot-titre { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; }
@@ -359,9 +383,11 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
           <div class="chevron" aria-hidden="true">▾</div>
         </button>
         <div class="niveau-corps" id="corps-a0">
-          <div class="grille">
+          <div class="grille suite">
 
             <a href="/salutations.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><path d="M6 7h20a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H14l-6 5v-5H6a3 3 0 0 1-3-3V10a3 3 0 0 1 3-3z"/><path d="M10 14h12M10 18h7"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Salutations et politesse" data-en="Greetings and politeness">Salutations et politesse</div>
@@ -372,6 +398,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/les_nombres.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte resource-signe-petit" aria-hidden="true">123</span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les nombres" data-en="Numbers">Les nombres</div>
@@ -382,6 +410,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/couleurs.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><circle cx="12" cy="12" r="7" class="plein rose"/><circle cx="21" cy="13" r="7" class="plein jaune"/><circle cx="16" cy="21" r="7" class="plein violet"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les couleurs" data-en="Colours">Les couleurs</div>
@@ -392,6 +422,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/jours_heure.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><circle cx="16" cy="16" r="12"/><path d="M16 9v7l5 3"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les jours et l'heure" data-en="Days and time">Les jours et l'heure</div>
@@ -402,6 +434,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/saisons.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><path d="M7 25C7 13 14 6 26 6c0 12-7 19-19 19z"/><path d="M7 25 18 14"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les saisons et les mois" data-en="Seasons and months">Les saisons et les mois</div>
@@ -412,6 +446,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/meteo.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><circle cx="12" cy="11" r="5"/><path d="M12 2.5v2M4.5 11h-2M6.7 5.7 5.3 4.3M17.3 5.7l1.4-1.4"/><path d="M10 27h14a5 5 0 0 0 .6-10A7 7 0 0 0 11.3 19 4 4 0 0 0 10 27z" class="plein fond"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="La météo" data-en="The weather">La météo</div>
@@ -422,6 +458,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/animaux.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><ellipse cx="16" cy="21" rx="6.5" ry="5.5" class="plein trait"/><circle cx="7.5" cy="13" r="2.6" class="plein trait"/><circle cx="12.5" cy="7.5" r="2.6" class="plein trait"/><circle cx="19.5" cy="7.5" r="2.6" class="plein trait"/><circle cx="24.5" cy="13" r="2.6" class="plein trait"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les animaux" data-en="Animals">Les animaux</div>
@@ -432,6 +470,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/phrases_essentielles.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte" aria-hidden="true">« »</span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Phrases essentielles" data-en="Essential phrases">Phrases essentielles</div>
@@ -442,6 +482,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/phrases_touristes.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><rect x="4" y="10" width="24" height="16" rx="3"/><path d="M12 10V7a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3M10 10v16M22 10v16"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Phrases utiles pour touristes" data-en="Useful phrases for travellers">Phrases utiles pour touristes</div>
@@ -452,6 +494,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/famille.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><circle cx="10" cy="9" r="3.5"/><circle cx="22" cy="9" r="3.5"/><circle cx="16" cy="17" r="2.6"/><path d="M4 27v-4a6 6 0 0 1 6-6 6 6 0 0 1 3 .8M28 27v-4a6 6 0 0 0-6-6 6 6 0 0 0-3 .8M11.5 27v-1.5a4.5 4.5 0 0 1 9 0V27"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="La famille" data-en="Family">La famille</div>
@@ -584,9 +628,11 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
           <div class="chevron" aria-hidden="true">▾</div>
         </button>
         <div class="niveau-corps" id="corps-a1-a2">
-          <div class="grille">
+          <div class="grille suite">
 
             <a href="/genre_terminaison.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte resource-signe-petit" aria-hidden="true">le/la</span><!-- /signe -->
               <div class="resource-tag tag-gram t" data-fr="Grammaire" data-en="Grammar">Grammaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Le genre des noms et la terminaison" data-en="Noun gender and word endings">Le genre des noms et la terminaison</div>
@@ -597,6 +643,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/test_genre.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte resource-signe-petit" aria-hidden="true">m/f</span><!-- /signe -->
               <div class="resource-tag tag-test t" data-fr="Test" data-en="Test">Test</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Test : le genre des noms" data-en="Noun gender test">Test : le genre des noms</div>
@@ -607,6 +655,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/verbes_er.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte" aria-hidden="true">-er</span><!-- /signe -->
               <div class="resource-tag tag-conj t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les verbes en -ER au présent" data-en="-ER verbs in the present tense">Les verbes en -ER au présent</div>
@@ -617,6 +667,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/verbes_ir.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte" aria-hidden="true">-ir</span><!-- /signe -->
               <div class="resource-tag tag-conj t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les verbes du 2e groupe (-ir)" data-en="2nd-group verbs (-ir)">Les verbes du 2e groupe (-ir)</div>
@@ -627,6 +679,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/verbes_irreguliers.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte resource-signe-petit" aria-hidden="true">être</span><!-- /signe -->
               <div class="resource-tag tag-conj t" data-fr="Conjugaison" data-en="Conjugation">Conjugaison</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les verbes irréguliers au présent" data-en="Irregular verbs in the present tense">Les verbes irréguliers au présent</div>
@@ -637,6 +691,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/conjugaison.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><rect x="4" y="4" width="24" height="24" rx="4"/><path d="M9 11l2 2 4-4M9 21l2 2 4-4M19 11h4M19 21h4"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-test t" data-fr="Test" data-en="Test">Test</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Test de conjugaison" data-en="Conjugation test">Test de conjugaison</div>
@@ -647,6 +703,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/adjectifs.html" class="resource-card">
+
+              <span class="resource-signe" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><circle cx="9" cy="21" r="4"/><circle cx="21" cy="15" r="8"/></svg></span><!-- /signe -->
               <div class="resource-tag tag-vocab t" data-fr="Vocabulaire" data-en="Vocabulary">Vocabulaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les adjectifs essentiels" data-en="The essential adjectives">Les adjectifs essentiels</div>
@@ -657,6 +715,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/mots_interrogatifs_page.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte" aria-hidden="true">?</span><!-- /signe -->
               <div class="resource-tag tag-gram t" data-fr="Grammaire" data-en="Grammar">Grammaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Les mots interrogatifs" data-en="Question words">Les mots interrogatifs</div>
@@ -667,6 +727,8 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
             </a>
 
             <a href="/qui_que.html" class="resource-card">
+
+              <span class="resource-signe resource-signe-texte resource-signe-petit" aria-hidden="true">qui</span><!-- /signe -->
               <div class="resource-tag tag-gram t" data-fr="Grammaire" data-en="Grammar">Grammaire</div>
               <div class="resource-info">
                 <div class="resource-name t" data-fr="Qui ou que ?" data-en="Qui or que?">Qui ou que ?</div>
