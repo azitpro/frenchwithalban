@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { AdminChargement, AdminShell } from '../admin-ui';
 import { trouverQuestion } from '@/lib/placement';
 import type { TestPlacement } from '@/lib/placement';
+import type { Signalement } from '@/lib/signalements';
 
 // Page protégée par proxy.ts (authentification HTTP Basic) : le navigateur envoie le même
 // mot de passe aux routes /api/admin appelées ici.
@@ -21,14 +22,18 @@ type Lead = {
   submittedAt: string;
 };
 
-type Filtre = 'tous' | 'reservations' | 'tests';
-type Entree = { type: 'reservation'; date: string; lead: Lead } | { type: 'test'; date: string; test: TestPlacement };
+type Filtre = 'tous' | 'reservations' | 'tests' | 'signalements';
+type Entree =
+  | { type: 'reservation'; date: string; lead: Lead }
+  | { type: 'test'; date: string; test: TestPlacement }
+  | { type: 'signalement'; date: string; signalement: Signalement };
 
 const LETTRES = ['a', 'b', 'c', 'd'];
 
 export default function LeadsAdmin() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [tests, setTests] = useState<TestPlacement[]>([]);
+  const [signalements, setSignalements] = useState<Signalement[]>([]);
   const [filtre, setFiltre] = useState<Filtre>('tous');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -38,16 +43,19 @@ export default function LeadsAdmin() {
     let annule = false;
     (async () => {
       try {
-        const [resLeads, resTests] = await Promise.all([
+        const [resLeads, resTests, resSignalements] = await Promise.all([
           fetch('/api/admin/leads', { cache: 'no-store' }),
           fetch('/api/admin/placement', { cache: 'no-store' }),
+          fetch('/api/admin/signalements', { cache: 'no-store' }),
         ]);
-        if (!resLeads.ok || !resTests.ok) throw new Error('chargement');
+        if (!resLeads.ok || !resTests.ok || !resSignalements.ok) throw new Error('chargement');
         const donneesLeads: Lead[] = await resLeads.json();
         const donneesTests: { tests: TestPlacement[] } = await resTests.json();
+        const donneesSignalements: { signalements: Signalement[] } = await resSignalements.json();
         if (annule) return;
         setLeads(donneesLeads);
         setTests(donneesTests.tests);
+        setSignalements(donneesSignalements.signalements);
       } catch {
         if (!annule) setError('Impossible de charger les demandes.');
       }
@@ -58,11 +66,12 @@ export default function LeadsAdmin() {
     };
   }, []);
 
-  const cle = (e: Entree) => `${e.type}-${e.type === 'test' ? e.test.id : e.lead.id}`;
+  const cle = (e: Entree) => `${e.type}-${e.type === 'test' ? e.test.id : e.type === 'signalement' ? e.signalement.id : e.lead.id}`;
 
   async function supprimer(entree: Entree) {
-    const url = entree.type === 'test' ? '/api/admin/placement' : '/api/admin/leads';
-    const id = entree.type === 'test' ? entree.test.id : entree.lead.id;
+    const url = entree.type === 'test' ? '/api/admin/placement'
+      : entree.type === 'signalement' ? '/api/admin/signalements' : '/api/admin/leads';
+    const id = entree.type === 'test' ? entree.test.id : entree.type === 'signalement' ? entree.signalement.id : entree.lead.id;
     setAConfirmer(null);
     const res = await fetch(url, {
       method: 'DELETE',
@@ -74,6 +83,7 @@ export default function LeadsAdmin() {
       return;
     }
     if (entree.type === 'test') setTests((t) => t.filter((x) => x.id !== id));
+    else if (entree.type === 'signalement') setSignalements((s) => s.filter((x) => x.id !== id));
     else setLeads((l) => l.filter((x) => x.id !== id));
   }
 
@@ -82,8 +92,12 @@ export default function LeadsAdmin() {
   const entrees: Entree[] = [
     ...leads.map((lead): Entree => ({ type: 'reservation', date: lead.submittedAt, lead })),
     ...tests.map((test): Entree => ({ type: 'test', date: test.passeLe, test })),
+    ...signalements.map((signalement): Entree => ({ type: 'signalement', date: signalement.envoyeLe, signalement })),
   ]
-    .filter((e) => filtre === 'tous' || (filtre === 'tests' ? e.type === 'test' : e.type === 'reservation'))
+    .filter((e) => filtre === 'tous'
+      || (filtre === 'tests' && e.type === 'test')
+      || (filtre === 'signalements' && e.type === 'signalement')
+      || (filtre === 'reservations' && e.type === 'reservation'))
     .sort((a, b) => b.date.localeCompare(a.date));
 
   const boutonFiltre = (valeur: Filtre, libelle: string, nombre: number) => (
@@ -92,26 +106,43 @@ export default function LeadsAdmin() {
     </button>
   );
 
+  const total = leads.length + tests.length + signalements.length;
+
   return (
-    <AdminShell titre="Demandes de contact" intro="Formulaires envoyés depuis la page Réserver et résultats du test de placement, du plus récent au plus ancien.">
+    <AdminShell titre="Demandes de contact" intro="Formulaires de la page Réserver, résultats du test de placement et problèmes signalés par les visiteurs, du plus récent au plus ancien.">
       <style href="admin-leads" precedence="default">{CSS}</style>
       <div className="dl-filtres">
-        {boutonFiltre('tous', 'Tous', leads.length + tests.length)}
+        {boutonFiltre('tous', 'Tous', total)}
         {boutonFiltre('reservations', 'Réservations', leads.length)}
         {boutonFiltre('tests', 'Tests de placement', tests.length)}
+        {boutonFiltre('signalements', 'Signalements', signalements.length)}
       </div>
       {error && <p className="ad-message ad-erreur">{error}</p>}
 
       <div className="ad-liste dl-liste">
         {entrees.map((e) => (
-          <article key={cle(e)} className={`dl-carte ${e.type === 'test' ? 'dl-test' : 'dl-resa'}`}>
+          <article key={cle(e)} className={`dl-carte ${e.type === 'test' ? 'dl-test' : e.type === 'signalement' ? 'dl-signalement' : 'dl-resa'}`}>
             <div className="dl-tete">
-              <strong className="dl-nom">{e.type === 'test' ? e.test.prenom || 'Anonyme' : e.lead.firstName}</strong>
-              <span className="ad-etiquette dl-type">{e.type === 'test' ? 'Test de placement' : 'Réservation'}</span>
+              <strong className="dl-nom">
+                {e.type === 'test' ? e.test.prenom || 'Anonyme' : e.type === 'signalement' ? 'Problème signalé' : e.lead.firstName}
+              </strong>
+              <span className="ad-etiquette dl-type">
+                {e.type === 'test' ? 'Test de placement' : e.type === 'signalement' ? 'Signalement' : 'Réservation'}
+              </span>
               <span className="dl-date">{new Date(e.date).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' })}</span>
             </div>
 
-            {e.type === 'reservation' ? (
+            {e.type === 'signalement' ? (
+              <>
+                <p className="dl-message">{e.signalement.message}</p>
+                <dl className="dl-champs">
+                  <dt>Page</dt><dd>{e.signalement.page || <i>non précisée</i>}</dd>
+                  <dt>Email</dt>
+                  <dd>{e.signalement.email ? <a href={`mailto:${e.signalement.email}`}>{e.signalement.email}</a> : <i>non laissé</i>}</dd>
+                  <dt>Langue de la page</dt><dd>{e.signalement.langue === 'en' ? 'anglais' : 'français'}</dd>
+                </dl>
+              </>
+            ) : e.type === 'reservation' ? (
               <dl className="dl-champs">
                 <dt>Email</dt><dd><a href={`mailto:${e.lead.email}`}>{e.lead.email}</a></dd>
                 <dt>Fuseau horaire</dt><dd>{e.lead.timezone}</dd>
@@ -186,6 +217,8 @@ const CSS = `
 .dl-carte{background:#fff;border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:14px 18px}
 .dl-resa{--c:var(--aqua);--c-texte:var(--ink)}
 .dl-test{--c:var(--lemon);--c-texte:var(--ink)}
+.dl-signalement{--c:var(--pink);--c-texte:#fff}
+.dl-message{margin:0 0 10px;padding:10px 14px;background:var(--bg);border:2px solid var(--ink);border-radius:12px;font-size:.95rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .dl-tete{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap;margin-bottom:10px}
 .dl-nom{font-family:var(--titre);font-weight:800;font-size:1.25rem;letter-spacing:-.01em}
 .dl-date{margin-left:auto;font-size:.78rem;font-weight:600;color:var(--soft);white-space:nowrap}

@@ -217,11 +217,34 @@ h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .
 .m-bien { background: var(--aqua); }
 .m-tresbien { background: var(--lime); }
 
-/* ---------- PIED DE PAGE (charte du site) ---------- */
-footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-.footer-logo { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400; color: var(--cream); }
-.footer-copy { font-size: 0.72rem; font-weight: 300; color: rgba(250,247,242,0.4); }
-.footer-copy a { color: rgba(250,247,242,0.6); }
+/* ---------- PIED DE PAGE ----------
+   Fond encre, liseré tricolore en haut, bouton de signalement. Même bloc sur toutes les pages. */
+.ac-pied { background: var(--ink); color: #fff; text-align: left; font-size: .9rem; }
+.ac-pied::before { content: ""; display: block; height: 6px; background: linear-gradient(90deg, #002395 0 33.34%, #fff 33.34% 66.67%, #ED2939 66.67%); }
+.ac-pied-wrap { max-width: 1180px; margin: 0 auto; padding: 30px 40px 24px; display: grid; grid-template-columns: 1.4fr 1fr auto; gap: 26px 32px; align-items: start; }
+.ac-pied-marque { display: flex; align-items: flex-start; gap: 14px; }
+.ac-pied-hex { width: 30px; height: 35px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 rgba(0,0,0,.4)); }
+.ac-pied-nom { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; letter-spacing: -.02em; }
+.ac-pied-nom b { display: inline-block; padding: 0 6px 1px; background: var(--lime); color: var(--ink); border-radius: 6px; rotate: -2deg; }
+.ac-pied-slogan { margin: 7px 0 0; max-width: 300px; color: rgba(255,255,255,.7); font-size: .85rem; line-height: 1.5; }
+.ac-pied-liens { display: grid; gap: 6px; }
+.ac-pied :where(a) { color: #fff; text-decoration: none; }
+.ac-pied-liens a { width: fit-content; color: rgba(255,255,255,.85); border-bottom: 2px solid transparent; }
+.ac-pied-liens a:hover { color: var(--lime); border-bottom-color: var(--lime); }
+.ac-pied-actions { display: grid; gap: 12px; justify-items: start; }
+.ac-pied-signaler { display: inline-flex; align-items: center; gap: 9px; padding: 9px 18px; background: var(--lime); color: var(--ink); border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 rgba(255,255,255,.35); font-weight: 800; font-size: .88rem; transition: translate .15s, box-shadow .15s; }
+.ac-pied-signaler::before { content: "!"; display: grid; place-items: center; width: 19px; height: 19px; flex: none; border: 2px solid var(--ink); border-radius: 50%; font-size: .72rem; }
+.ac-pied-signaler:hover { translate: -1px -1px; box-shadow: 4px 4px 0 rgba(255,255,255,.5); }
+.ac-pied-legal { display: flex; gap: 12px; flex-wrap: wrap; font-size: .8rem; }
+.ac-pied-legal a { color: rgba(255,255,255,.6); text-decoration: underline; text-underline-offset: 3px; }
+.ac-pied-legal a:hover { color: #fff; }
+.ac-pied-bas { border-top: 1px solid rgba(255,255,255,.18); padding: 12px 40px; text-align: center; font-size: .75rem; color: rgba(255,255,255,.45); }
+@media (prefers-reduced-motion: reduce) { .ac-pied-signaler { transition: none; } }
+@media (max-width: 860px) {
+  .ac-pied-wrap { grid-template-columns: 1fr; gap: 20px; padding: 26px 20px 20px; }
+  .ac-pied-bas { padding: 12px 20px; }
+}
+/* fin pied de page */
 
 @media (prefers-reduced-motion: reduce) {
   .fil, .toggle-btn, .qcm-opt, .scramble-letter, .btn, .v .fr, .v .pho, .v .en { transition: none; }
@@ -423,9 +446,31 @@ footer { background: var(--navy); padding: 28px 48px; border-top: 4px solid var(
 
 </main>
 
-<footer>
-  <div class="footer-logo">French with Alban</div>
-  <div class="footer-copy">© 2026 · frenchwithalban.com · <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a> · <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a> · <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a></div>
+<footer class="ac-pied">
+  <div class="ac-pied-wrap">
+    <div class="ac-pied-marque">
+      <svg class="ac-pied-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <div>
+        <span class="ac-pied-nom">French with <b>Alban</b></span>
+        <p class="ac-pied-slogan t" data-fr="Cours de français en ligne, du débutant complet au niveau avancé." data-en="French lessons online, from complete beginner to advanced.">Cours de français en ligne, du débutant complet au niveau avancé.</p>
+      </div>
+    </div>
+    <nav class="ac-pied-liens" aria-label="Pied de page">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+      <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+    </nav>
+    <div class="ac-pied-actions">
+      <a href="/signaler.html" class="ac-pied-signaler t" data-fr="Signaler un problème" data-en="Report a problem">Signaler un problème</a>
+      <div class="ac-pied-legal">
+        <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a>
+        <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+  <div class="ac-pied-bas">© 2026 · frenchwithalban.com</div>
 </footer>
 
 <script>

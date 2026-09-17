@@ -359,14 +359,30 @@ export default function Accueil({ nombreRessources }: { nombreRessources: number
 
       {/* pied de page : charte du site, comme sur les pages statiques */}
       <footer className="ac-pied">
-        <div className="ac-wrap">
-          <span className="ac-pied-logo">French with Alban</span>
-          <span>
-            © 2026 · frenchwithalban.com · <a href={DON} target="_blank" rel="noopener">{t('Soutenir le site', 'Support the site')}</a>
-            {' · '}<a href="/mentions-legales.html">{t('Mentions légales', 'Legal notice')}</a>
-            {' · '}<a href="/confidentialite.html">{t('Confidentialité', 'Privacy')}</a>
-          </span>
+        <div className="ac-pied-wrap">
+          <div className="ac-pied-marque">
+            <HexDrapeau className="ac-pied-hex" />
+            <div>
+              <span className="ac-pied-nom">French with <b>Alban</b></span>
+              <p className="ac-pied-slogan">{t('Cours de français en ligne, du débutant complet au niveau avancé.', 'French lessons online, from complete beginner to advanced.')}</p>
+            </div>
+          </div>
+          <nav className="ac-pied-liens" aria-label={t('Pied de page', 'Footer')}>
+            <a href="/cours.html">{t('Cours', 'Lessons')}</a>
+            <a href="/planning_public.html">{t('Créneaux', 'Availability')}</a>
+            <a href="/ressources.html">{t('Ressources', 'Resources')}</a>
+            <a href="/apropos.html">{t('À propos', 'About')}</a>
+            <a href={DON} target="_blank" rel="noopener">{t('Soutenir le site', 'Support the site')}</a>
+          </nav>
+          <div className="ac-pied-actions">
+            <a href="/signaler.html" className="ac-pied-signaler">{t('Signaler un problème', 'Report a problem')}</a>
+            <div className="ac-pied-legal">
+              <a href="/mentions-legales.html">{t('Mentions légales', 'Legal notice')}</a>
+              <a href="/confidentialite.html">{t('Confidentialité', 'Privacy')}</a>
+            </div>
+          </div>
         </div>
+        <div className="ac-pied-bas">© 2026 · frenchwithalban.com</div>
       </footer>
 
       {/* ---------- barre de réservation (mobile) ---------- */}
@@ -577,11 +593,34 @@ html:has(.accueil),body:has(.accueil){background:#fff7ee}
 .ac-final p{color:rgba(255,255,255,.75);margin-top:10px}
 .ac-final .ac-btn{border-color:#fff}
 
-/* ---------- pied de page (charte du site) ---------- */
-.ac-pied{background:var(--navy);border-top:4px solid var(--gold);color:rgba(250,247,242,.45);font-size:.78rem;padding:28px 0}
-.ac-pied .ac-wrap{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap}
-.ac-pied-logo{font-family:'Fraunces',Georgia,serif;font-size:1rem;color:var(--cream)}
-.ac-pied a{color:rgba(250,247,242,.7);text-decoration:underline;text-underline-offset:3px}
+/* ---------- PIED DE PAGE ----------
+   Fond encre, liseré tricolore en haut, bouton de signalement. Même bloc sur toutes les pages. */
+.ac-pied { background: var(--ink); color: #fff; text-align: left; font-size: .9rem; }
+.ac-pied::before { content: ""; display: block; height: 6px; background: linear-gradient(90deg, #002395 0 33.34%, #fff 33.34% 66.67%, #ED2939 66.67%); }
+.ac-pied-wrap { max-width: 1180px; margin: 0 auto; padding: 30px 40px 24px; display: grid; grid-template-columns: 1.4fr 1fr auto; gap: 26px 32px; align-items: start; }
+.ac-pied-marque { display: flex; align-items: flex-start; gap: 14px; }
+.ac-pied-hex { width: 30px; height: 35px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 rgba(0,0,0,.4)); }
+.ac-pied-nom { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; letter-spacing: -.02em; }
+.ac-pied-nom b { display: inline-block; padding: 0 6px 1px; background: var(--lime); color: var(--ink); border-radius: 6px; rotate: -2deg; }
+.ac-pied-slogan { margin: 7px 0 0; max-width: 300px; color: rgba(255,255,255,.7); font-size: .85rem; line-height: 1.5; }
+.ac-pied-liens { display: grid; gap: 6px; }
+.ac-pied :where(a) { color: #fff; text-decoration: none; }
+.ac-pied-liens a { width: fit-content; color: rgba(255,255,255,.85); border-bottom: 2px solid transparent; }
+.ac-pied-liens a:hover { color: var(--lime); border-bottom-color: var(--lime); }
+.ac-pied-actions { display: grid; gap: 12px; justify-items: start; }
+.ac-pied-signaler { display: inline-flex; align-items: center; gap: 9px; padding: 9px 18px; background: var(--lime); color: var(--ink); border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 rgba(255,255,255,.35); font-weight: 800; font-size: .88rem; transition: translate .15s, box-shadow .15s; }
+.ac-pied-signaler::before { content: "!"; display: grid; place-items: center; width: 19px; height: 19px; flex: none; border: 2px solid var(--ink); border-radius: 50%; font-size: .72rem; }
+.ac-pied-signaler:hover { translate: -1px -1px; box-shadow: 4px 4px 0 rgba(255,255,255,.5); }
+.ac-pied-legal { display: flex; gap: 12px; flex-wrap: wrap; font-size: .8rem; }
+.ac-pied-legal a { color: rgba(255,255,255,.6); text-decoration: underline; text-underline-offset: 3px; }
+.ac-pied-legal a:hover { color: #fff; }
+.ac-pied-bas { border-top: 1px solid rgba(255,255,255,.18); padding: 12px 40px; text-align: center; font-size: .75rem; color: rgba(255,255,255,.45); }
+@media (prefers-reduced-motion: reduce) { .ac-pied-signaler { transition: none; } }
+@media (max-width: 860px) {
+  .ac-pied-wrap { grid-template-columns: 1fr; gap: 20px; padding: 26px 20px 20px; }
+  .ac-pied-bas { padding: 12px 20px; }
+}
+/* fin pied de page */
 .ac-barre-mobile{display:none}
 
 /* ---------- tablette et mobile ---------- */
@@ -646,11 +685,10 @@ html:has(.accueil),body:has(.accueil){background:#fff7ee}
   .ac-final-carte{flex-direction:column;align-items:flex-start;padding:28px 22px;box-shadow:6px 6px 0 var(--lime)}
   .ac-final-hex{position:static;margin:0;width:36px;height:42px}
   .accueil .ac-final h2{font-size:1.7rem}
-  .ac-pied .ac-wrap{flex-direction:column;text-align:center}
   .ac-barre-mobile{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:3px solid var(--ink);padding:10px 16px;align-items:center;gap:12px}
   .ac-barre-mobile div{font-size:.8rem;color:var(--soft);line-height:1.2;margin-right:auto}
   .ac-barre-mobile strong{display:block;font-family:var(--titre);font-size:1.35rem;font-weight:800;color:var(--ink)}
-  .ac-pied{padding-bottom:90px}
+  .ac-pied-bas{padding-bottom:90px}
 }
 @media (max-width:370px){
   .ac-wrap{padding:0 12px}

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signaler un problème — French with Alban</title>
+<meta name="description" content="Signaler une faute, un lien cassé ou un exercice qui ne fonctionne pas sur frenchwithalban.com.">
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* charte du site (pied de page) */
+  --cream: #faf7f2; --navy: #0d2b45; --red: #c0392b; --gold: #c9972a;
+  /* style acidulé */
+  --ink: #1b1340; --soft: #564f70; --bg: #fff7ee;
+  --lime: #c8f560; --pink: #ff5fa2; --orange: #ff8a3d; --lemon: #ffe45c; --aqua: #3ee0c6; --violet: #7c5cff;
+  --radius: 18px; --shadow: 5px 5px 0 var(--ink);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+/* ---------- ORDRE OFFICIEL DES COULEURS ----------
+   1 citron vert · 2 rose · 3 turquoise · 4 jaune · 5 orange · 6 violet, puis on recommence.
+   « .suite » : les enfants directs suivent cet ordre ; « .suite-sections » : ses <section> le suivent.
+   Chaque rang définit --c (fond) et --c-texte (texte lisible dessus). Ne pas attribuer de couleur à la main. */
+.suite > :nth-child(6n+1), .suite-sections > section:nth-of-type(6n+1) { --c: var(--lime);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+2), .suite-sections > section:nth-of-type(6n+2) { --c: var(--pink);   --c-texte: #fff; }
+.suite > :nth-child(6n+3), .suite-sections > section:nth-of-type(6n+3) { --c: var(--aqua);   --c-texte: var(--ink); }
+.suite > :nth-child(6n+4), .suite-sections > section:nth-of-type(6n+4) { --c: var(--lemon);  --c-texte: var(--ink); }
+.suite > :nth-child(6n+5), .suite-sections > section:nth-of-type(6n+5) { --c: var(--orange); --c-texte: #fff; }
+.suite > :nth-child(6n),   .suite-sections > section:nth-of-type(6n)   { --c: var(--violet); --c-texte: #fff; }
+
+/* ---------- EN-TÊTE ACIDULÉ ----------
+   Même structure et même comportement que l'en-tête de l'accueil (app/_accueil/Accueil.tsx),
+   habillé du style acidulé, avec le logo « empilé ». */
+.ac-entete { position: sticky; top: 0; z-index: 40; color: var(--ink); background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+.ac-wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+.ac-barre { display: flex; align-items: center; gap: 22px; height: 76px; }
+.ac-logo { display: flex; align-items: center; gap: .28em; margin-right: auto; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 26px; line-height: 1; }
+.logo-hex { width: 1.3em; height: 1.53em; flex: none; rotate: -12deg; filter: drop-shadow(.07em .1em 0 var(--ink)); overflow: visible; }
+.logo-pile { display: flex; flex-direction: column; align-items: flex-start; gap: .12em; }
+.logo-pile small { font-family: 'Inter', sans-serif; font-weight: 700; font-size: max(8.5px, .36em); letter-spacing: .16em; text-transform: uppercase; color: var(--soft); padding-left: .15em; }
+.logo-nom { display: inline-block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.03em; color: var(--ink); background: var(--lime); border: .065em solid var(--ink); border-radius: .2em; padding: 0 .16em .04em; box-shadow: .07em .07em 0 var(--ink); rotate: -2deg; }
+.ac-nav { display: flex; gap: 6px; font-size: .95rem; font-weight: 600; }
+.ac-nav a { color: var(--ink); text-decoration: none; padding: 6px 14px; border-radius: 99px; border: 2px solid transparent; transition: background .15s, border-color .15s; }
+.ac-nav a:hover { background: var(--lemon); border-color: var(--ink); }
+.ac-nav a[aria-current] { background: var(--lime); border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue { display: flex; gap: 2px; padding: 2px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+.ac-langue button { border: none; background: none; padding: 3px 10px; border-radius: 99px; font: 700 .78rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.ac-langue button.on { background: var(--ink); color: #fff; }
+.ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: .95rem; padding: 10px 22px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: translate .15s, box-shadow .15s; }
+.ac-rouge { background: var(--pink); color: #fff; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.ac-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--ink); }
+.ac-burger { display: none; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 12px; background: #fff; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; place-items: center; }
+.ac-burger i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: var(--ink); box-shadow: 0 -6px 0 var(--ink), 0 6px 0 var(--ink); }
+.ac-menu { display: none; }
+.ac-entete :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .ac-nav a, .ac-btn { transition: none; } }
+@media (max-width: 1060px) { .ac-nav { gap: 2px; } .ac-nav a { padding: 6px 10px; } .ac-barre { gap: 14px; } }
+@media (max-width: 900px) {
+  .ac-wrap { padding: 0 20px; }
+  .ac-barre { height: 64px; gap: 12px; }
+  .ac-logo { font-size: 21px; }
+  .ac-nav, .ac-btn-entete { display: none; }
+  .ac-burger { display: grid; }
+  .ac-menu:not([hidden]) { display: grid; gap: 8px; padding: 12px 20px 20px; border-top: 2px solid var(--ink); background: var(--bg); }
+  .ac-menu a { padding: 10px 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; }
+  .ac-menu a[aria-current] { background: var(--lime); }
+  .ac-menu .ac-btn { margin-top: 6px; padding: 12px 22px; background: var(--pink); color: #fff; border-width: 2.5px; }
+}
+.ac-burger, .ac-langue { flex: none; }
+@media (max-width: 370px) {
+  .ac-wrap { padding: 0 12px; }
+  .ac-barre { gap: 6px; }
+  .ac-logo { font-size: 19px; }
+  .ac-langue button { padding: 3px 6px; font-size: .72rem; }
+  .ac-burger { width: 38px; height: 38px; }
+}
+
+/* ---------- MISE EN PAGE ---------- */
+.page {
+  background:
+    radial-gradient(circle at 6% 3%, rgba(200,245,96,.55) 0, transparent 20%),
+    radial-gradient(circle at 97% 12%, rgba(62,224,198,.28) 0, transparent 20%),
+    radial-gradient(circle at 3% 48%, rgba(255,95,162,.2) 0, transparent 18%),
+    radial-gradient(circle at 98% 70%, rgba(255,228,92,.42) 0, transparent 20%),
+    radial-gradient(circle at 10% 94%, rgba(124,92,255,.16) 0, transparent 20%);
+  overflow: hidden;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+section { padding: 52px 0; }
+.titre-section { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* hexagone penché devant chaque titre (les sections ne sont pas des étapes : pas de numéros) */
+.hex-penche { width: 34px; height: 40px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 var(--ink)); }
+h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 1.1; letter-spacing: -0.02em; }
+h2 .traduction { display: block; font-size: .5em; font-weight: 700; color: var(--violet); letter-spacing: 0; margin-top: 4px; }
+.intro { color: var(--soft); max-width: 680px; margin: -6px 0 26px; font-size: 1.05rem; }
+.sous-titre { display: flex; align-items: center; gap: 10px; margin: 42px 0 18px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.45rem; line-height: 1.2; }
+.sous-titre::after { content: ''; flex: 1; border-top: 2.5px dashed rgba(27,19,64,.25); }
+.sous-titre .hex-penche { width: 22px; height: 26px; filter: drop-shadow(1.5px 2px 0 var(--ink)); }
+.sous-titre + .intro { margin-top: -4px; }
+b, strong { font-weight: 700; }
+
+/* ---------- FIL D'ARIANE ---------- */
+.fil { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 4px 14px; border: 2px solid var(--ink); border-radius: 99px; background: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; box-shadow: 2px 2px 0 var(--ink); transition: background .15s; }
+.fil:hover { background: var(--lemon); }
+
+/* ---------- HÉROS ---------- */
+.hero { padding: 44px 0 30px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.pastilles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.pastille { display: inline-block; padding: 5px 14px; border: 2.5px solid var(--ink); border-radius: 99px; font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); background: var(--c); color: var(--c-texte); }
+.pastille:nth-child(3n+1) { rotate: -3deg; }
+.pastille:nth-child(3n+2) { rotate: 2deg; }
+.pastille:nth-child(3n) { rotate: -1deg; }
+h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 4.4rem; line-height: .98; letter-spacing: -0.035em; margin-bottom: 22px; }
+h1 mark { background: var(--aqua); color: var(--ink); padding: 0 .12em; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); border: 3px solid var(--ink); display: inline-block; rotate: -2deg; }
+h1 .petit { display: block; font-size: .5em; color: var(--violet); margin-top: .45em; letter-spacing: -0.02em; }
+.lead { font-size: 1.18rem; color: var(--soft); max-width: 520px; }
+
+/* ---------- FORMULAIRE ---------- */
+.sg-carte { max-width: 700px; background: #fff; border: 3px solid var(--ink); border-radius: 24px; box-shadow: 7px 7px 0 var(--ink); padding: 28px 30px 30px; }
+.sg-champ { display: block; margin-bottom: 18px; }
+.sg-champ > span { display: block; font-size: .95rem; font-weight: 700; margin-bottom: 7px; }
+.sg-champ .facultatif { font-weight: 500; font-style: italic; color: var(--soft); font-size: .85rem; }
+.sg-champ input, .sg-champ textarea {
+  display: block; width: 100%; padding: 11px 14px; border: 2.5px solid var(--ink); border-radius: 12px;
+  background: var(--bg); font: 400 1rem/1.5 'Inter', sans-serif; color: var(--ink);
+}
+.sg-champ textarea { min-height: 150px; resize: vertical; }
+.sg-champ input:focus, .sg-champ textarea:focus { outline: 3px solid var(--violet); outline-offset: 2px; background: #fff; box-shadow: 3px 3px 0 var(--ink); }
+.sg-aide { margin: -12px 0 18px; font-size: .84rem; color: var(--soft); }
+/* pot de miel : invisible pour les personnes, rempli seulement par les robots */
+.sg-pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.sg-envoyer { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 13px 22px; background: var(--pink); color: #fff; border: 3px solid var(--ink); border-radius: 99px; box-shadow: 4px 4px 0 var(--ink); font-weight: 800; font-size: 1.05rem; cursor: pointer; transition: translate .12s, box-shadow .12s; }
+.sg-envoyer:hover:not(:disabled) { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); }
+.sg-envoyer:disabled { opacity: .55; cursor: default; box-shadow: none; }
+.sg-note { margin-top: 12px; font-size: .84rem; color: var(--soft); text-align: center; }
+.sg-note a { color: var(--ink); font-weight: 600; text-decoration-color: var(--pink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.sg-message { margin-top: 16px; padding: 12px 16px; border: 2.5px solid var(--ink); border-radius: 14px; font-weight: 600; box-shadow: 3px 3px 0 var(--ink); }
+.sg-ok { background: #ecffc4; }
+.sg-erreur { background: #ffe1ee; }
+.sg-merci:not([hidden]) { display: grid; gap: 14px; justify-items: start; }
+.sg-merci h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1.1; }
+.sg-liens { display: flex; gap: 10px; flex-wrap: wrap; }
+.sg-lien { padding: 9px 18px; border: 2.5px solid var(--ink); border-radius: 99px; background: #fff; box-shadow: 3px 3px 0 var(--ink); font-weight: 700; text-decoration: none; }
+.sg-lien:hover { background: var(--lemon); }
+
+@media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+  section { padding: 34px 0; }
+  .hero { padding: 28px 0 14px; }
+  h1 { font-size: 2.6rem; }
+  .lead { font-size: 1.02rem; }
+  .sg-carte { padding: 22px 18px 24px; border-radius: 20px; box-shadow: 5px 5px 0 var(--ink); }
+}
+
+/* ---------- PIED DE PAGE ----------
+   Fond encre, liseré tricolore en haut, bouton de signalement. Même bloc sur toutes les pages. */
+.ac-pied { background: var(--ink); color: #fff; text-align: left; font-size: .9rem; }
+.ac-pied::before { content: ""; display: block; height: 6px; background: linear-gradient(90deg, #002395 0 33.34%, #fff 33.34% 66.67%, #ED2939 66.67%); }
+.ac-pied-wrap { max-width: 1180px; margin: 0 auto; padding: 30px 40px 24px; display: grid; grid-template-columns: 1.4fr 1fr auto; gap: 26px 32px; align-items: start; }
+.ac-pied-marque { display: flex; align-items: flex-start; gap: 14px; }
+.ac-pied-hex { width: 30px; height: 35px; flex: none; rotate: -12deg; filter: drop-shadow(2px 3px 0 rgba(0,0,0,.4)); }
+.ac-pied-nom { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; letter-spacing: -.02em; }
+.ac-pied-nom b { display: inline-block; padding: 0 6px 1px; background: var(--lime); color: var(--ink); border-radius: 6px; rotate: -2deg; }
+.ac-pied-slogan { margin: 7px 0 0; max-width: 300px; color: rgba(255,255,255,.7); font-size: .85rem; line-height: 1.5; }
+.ac-pied-liens { display: grid; gap: 6px; }
+.ac-pied :where(a) { color: #fff; text-decoration: none; }
+.ac-pied-liens a { width: fit-content; color: rgba(255,255,255,.85); border-bottom: 2px solid transparent; }
+.ac-pied-liens a:hover { color: var(--lime); border-bottom-color: var(--lime); }
+.ac-pied-actions { display: grid; gap: 12px; justify-items: start; }
+.ac-pied-signaler { display: inline-flex; align-items: center; gap: 9px; padding: 9px 18px; background: var(--lime); color: var(--ink); border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 rgba(255,255,255,.35); font-weight: 800; font-size: .88rem; transition: translate .15s, box-shadow .15s; }
+.ac-pied-signaler::before { content: "!"; display: grid; place-items: center; width: 19px; height: 19px; flex: none; border: 2px solid var(--ink); border-radius: 50%; font-size: .72rem; }
+.ac-pied-signaler:hover { translate: -1px -1px; box-shadow: 4px 4px 0 rgba(255,255,255,.5); }
+.ac-pied-legal { display: flex; gap: 12px; flex-wrap: wrap; font-size: .8rem; }
+.ac-pied-legal a { color: rgba(255,255,255,.6); text-decoration: underline; text-underline-offset: 3px; }
+.ac-pied-legal a:hover { color: #fff; }
+.ac-pied-bas { border-top: 1px solid rgba(255,255,255,.18); padding: 12px 40px; text-align: center; font-size: .75rem; color: rgba(255,255,255,.45); }
+@media (prefers-reduced-motion: reduce) { .ac-pied-signaler { transition: none; } }
+@media (max-width: 860px) {
+  .ac-pied-wrap { grid-template-columns: 1fr; gap: 20px; padding: 26px 20px 20px; }
+  .ac-pied-bas { padding: 12px 20px; }
+}
+/* fin pied de page */
+
+/* ---------- EN-TÊTE TRICOLORE ----------
+   Fond en fondu doux bleu → blanc → rouge, et liseré bleu-blanc-rouge sous l'en-tête
+   (le liseré remplace l'ancien trait foncé du bas, encadré de deux traits foncés). */
+.ac-entete { background: linear-gradient(90deg, #c9d4ff 0%, #fff 35%, #fff 65%, #ffd0d4 100%); border-bottom: 0; }
+.ac-entete::after { content: ""; display: block; box-sizing: content-box; height: 6px; background: linear-gradient(90deg, #002395 0 33.34%, #fff 33.34% 66.67%, #ED2939 66.67%); border-top: 2px solid var(--ink); border-bottom: 3px solid var(--ink); }
+/* fin en-tête tricolore */
+</style>
+</head>
+<body>
+
+<!-- logo hexagone tricolore, réutilisé par <use> ; bandes découpées à la main (sans clipPath) pour un rendu identique partout -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="hex-drapeau" viewBox="0 0 24 28">
+    <polygon points="1,7 8,3.18 8,24.82 1,21" fill="#002395"/>
+    <polygon points="8,3.18 12,1 16,3.18 16,24.82 12,27 8,24.82" fill="#ffffff"/>
+    <polygon points="16,3.18 23,7 23,21 16,24.82" fill="#ED2939"/>
+    <polygon points="12,1 23,7 23,21 12,27 1,21 1,7" fill="none" stroke="#1b1340" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="ac-entete">
+  <div class="ac-wrap ac-barre">
+    <a href="/" class="ac-logo">
+      <svg class="logo-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <span class="logo-pile"><small>French with</small> <span class="logo-nom">Alban</span></span>
+    </a>
+    <nav class="ac-nav" aria-label="Navigation principale">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    </nav>
+    <div class="ac-langue" role="group" aria-label="Choix de la langue">
+      <button type="button" id="btn-fr" class="on" aria-pressed="true" title="Français">FR</button>
+      <button type="button" id="btn-en" aria-pressed="false" title="English">EN</button>
+    </div>
+    <a href="/reserver.html" class="ac-btn ac-rouge ac-btn-entete t" data-fr="Réserver" data-en="Book a lesson">Réserver</a>
+    <button type="button" class="ac-burger" aria-expanded="false" aria-controls="ac-menu" aria-label="Ouvrir le menu"><i></i></button>
+  </div>
+  <div id="ac-menu" class="ac-menu" hidden>
+    <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+    <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+    <a href="/ressources.html" class="t" aria-current="true" data-fr="Ressources" data-en="Resources">Ressources</a>
+    <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+    <a href="/reserver.html" class="ac-btn ac-rouge t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+  </div>
+</header>
+
+<!-- Page de signalement : le message part vers /api/signalement et s'affiche dans l'administration. -->
+<main class="page">
+
+  <div class="hero">
+    <div class="wrap">
+      <a class="fil t" href="/" data-fr="← Accueil" data-en="← Home">← Accueil</a>
+      <div class="pastilles suite">
+        <span class="pastille t" data-fr="Aide" data-en="Help">Aide</span>
+      </div>
+      <h1 class="t" data-html="1"
+          data-fr="Signaler un &lt;mark&gt;problème&lt;/mark&gt;"
+          data-en="Report a &lt;mark&gt;problem&lt;/mark&gt;">Signaler un <mark>problème</mark></h1>
+      <p class="lead t"
+         data-fr="Une faute, un lien cassé, un exercice qui ne marche pas ? Dites-le-moi, je corrige."
+         data-en="A mistake, a broken link, an exercise that doesn't work? Tell me and I'll fix it.">Une faute, un lien cassé, un exercice qui ne marche pas ? Dites-le-moi, je corrige.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="sg-carte">
+        <form id="formSignalement" novalidate>
+          <label class="sg-champ">
+            <span class="t" data-fr="Le problème" data-en="The problem">Le problème</span>
+            <textarea id="message" name="message" maxlength="2000" required
+              data-ph-fr="Sur cette page, le bouton « Suivant » ne fait rien…"
+              data-ph-en="On this page, the « Next » button does nothing…"></textarea>
+          </label>
+          <label class="sg-champ">
+            <span class="t" data-html="1" data-fr="Page concernée &lt;span class=&quot;facultatif&quot;&gt;(facultatif)&lt;/span&gt;" data-en="Page concerned &lt;span class=&quot;facultatif&quot;&gt;(optional)&lt;/span&gt;">Page concernée <span class="facultatif">(facultatif)</span></span>
+            <input id="page" name="page" type="text" maxlength="300">
+          </label>
+          <p class="sg-aide t" data-fr="Remplie automatiquement si vous arrivez depuis une page du site." data-en="Filled in automatically if you come from a page of the site.">Remplie automatiquement si vous arrivez depuis une page du site.</p>
+          <label class="sg-champ">
+            <span class="t" data-html="1" data-fr="Votre email &lt;span class=&quot;facultatif&quot;&gt;(facultatif, pour vous répondre)&lt;/span&gt;" data-en="Your email &lt;span class=&quot;facultatif&quot;&gt;(optional, so I can reply)&lt;/span&gt;">Votre email <span class="facultatif">(facultatif, pour vous répondre)</span></span>
+            <input id="email" name="email" type="email" maxlength="254" autocomplete="email">
+          </label>
+          <div class="sg-pot" aria-hidden="true"><label for="site">Site</label><input id="site" name="site" type="text" tabindex="-1" autocomplete="off"></div>
+          <button type="submit" class="sg-envoyer t" id="envoyer" data-fr="Envoyer le signalement" data-en="Send the report">Envoyer le signalement</button>
+          <p class="sg-note t" data-html="1"
+             data-fr="Votre message est enregistré pour être lu par Alban, et effacé au bout de 12 mois. &lt;a href=&quot;/confidentialite.html&quot;&gt;Confidentialité&lt;/a&gt;"
+             data-en="Your message is stored for Alban to read, and deleted after 12 months. &lt;a href=&quot;/confidentialite.html&quot;&gt;Privacy&lt;/a&gt;">Votre message est enregistré pour être lu par Alban, et effacé au bout de 12 mois. <a href="/confidentialite.html">Confidentialité</a></p>
+          <p class="sg-message sg-erreur" id="erreur" hidden role="alert"></p>
+        </form>
+
+        <div class="sg-merci" id="merci" hidden>
+          <h2 class="t" data-fr="Merci !" data-en="Thank you!">Merci !</h2>
+          <p class="t" data-fr="Votre signalement est bien arrivé. Je regarde ça dès que possible." data-en="Your report has arrived. I'll look into it as soon as I can.">Votre signalement est bien arrivé. Je regarde ça dès que possible.</p>
+          <div class="sg-liens">
+            <a class="sg-lien t" href="/" data-fr="Retour à l'accueil" data-en="Back to the home page">Retour à l'accueil</a>
+            <a class="sg-lien t" href="/ressources.html" data-fr="Voir les ressources" data-en="See the resources">Voir les ressources</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer class="ac-pied">
+  <div class="ac-pied-wrap">
+    <div class="ac-pied-marque">
+      <svg class="ac-pied-hex" aria-hidden="true" focusable="false"><use href="#hex-drapeau"/></svg>
+      <div>
+        <span class="ac-pied-nom">French with <b>Alban</b></span>
+        <p class="ac-pied-slogan t" data-fr="Cours de français en ligne, du débutant complet au niveau avancé." data-en="French lessons online, from complete beginner to advanced.">Cours de français en ligne, du débutant complet au niveau avancé.</p>
+      </div>
+    </div>
+    <nav class="ac-pied-liens" aria-label="Pied de page">
+      <a href="/cours.html" class="t" data-fr="Cours" data-en="Lessons">Cours</a>
+      <a href="/planning_public.html" class="t" data-fr="Créneaux" data-en="Availability">Créneaux</a>
+      <a href="/ressources.html" class="t" data-fr="Ressources" data-en="Resources">Ressources</a>
+      <a href="/apropos.html" class="t" data-fr="À propos" data-en="About">À propos</a>
+      <a href="/reserver.html" class="t" data-fr="Réserver un cours" data-en="Book a lesson">Réserver un cours</a>
+    </nav>
+    <div class="ac-pied-actions">
+      <a href="/signaler.html" class="ac-pied-signaler t" data-fr="Signaler un problème" data-en="Report a problem">Signaler un problème</a>
+      <div class="ac-pied-legal">
+        <a href="/mentions-legales.html" class="t" data-fr="Mentions légales" data-en="Legal notice">Mentions légales</a>
+        <a href="/confidentialite.html" class="t" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+  <div class="ac-pied-bas">© 2026 · frenchwithalban.com</div>
+</footer>
+
+<script>
+var LANG = 'fr';
+var btnFr = document.getElementById('btn-fr');
+var btnEn = document.getElementById('btn-en');
+
+/* ---------- en-tête : menu mobile et libellés d'accessibilité ---------- */
+var burger = document.querySelector('.ac-burger');
+var menu = document.getElementById('ac-menu');
+var LIBELLES = {
+  nav: { fr: 'Navigation principale', en: 'Main navigation' },
+  langue: { fr: 'Choix de la langue', en: 'Language' },
+  ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  titre: { fr: 'Signaler un problème — French with Alban', en: 'Report a problem — French with Alban' }
+};
+function majBurger() {
+  var ouvert = !menu.hidden;
+  burger.setAttribute('aria-expanded', String(ouvert));
+  burger.setAttribute('aria-label', LIBELLES[ouvert ? 'fermer' : 'ouvrir'][LANG]);
+}
+burger.addEventListener('click', function () { menu.hidden = !menu.hidden; majBurger(); });
+
+
+/* ---------- signalement ---------- */
+/* les champs à remplir changent aussi de langue */
+var appliquerSansPlaceholders = appliquer;
+appliquer = function (lang) {
+  appliquerSansPlaceholders(lang);
+  document.querySelectorAll('[data-ph-fr]').forEach(function (el) { el.placeholder = el.getAttribute('data-ph-' + lang) || ''; });
+};
+
+var champMessage = document.getElementById('message');
+var champPage = document.getElementById('page');
+var champEmail = document.getElementById('email');
+var formulaire = document.getElementById('formSignalement');
+var blocErreur = document.getElementById('erreur');
+var boutonEnvoyer = document.getElementById('envoyer');
+var TEXTES_SG = {
+  vide: { fr: 'Écrivez d’abord le problème rencontré.', en: 'Please describe the problem first.' },
+  email: { fr: 'Cette adresse email ne semble pas valide.', en: 'This email address does not look valid.' },
+  envoi: { fr: 'Envoi…', en: 'Sending…' },
+  echec: { fr: 'L’envoi n’a pas fonctionné. Réessayez dans un instant.', en: 'Sending failed. Please try again in a moment.' }
+};
+
+/* page concernée : reprise du paramètre ?p= ou de la page d'où l'on vient (même site) */
+(function () {
+  var params = new URLSearchParams(location.search);
+  var p = params.get('p');
+  if (!p && document.referrer) {
+    try {
+      var url = new URL(document.referrer);
+      if (url.origin === location.origin && url.pathname !== '/signaler.html') p = url.pathname + url.search + url.hash;
+    } catch (e) {}
+  }
+  if (p) champPage.value = p.slice(0, 300);
+})();
+
+formulaire.addEventListener('submit', function (e) {
+  e.preventDefault();
+  blocErreur.hidden = true;
+  var message = champMessage.value.trim();
+  if (!message) { blocErreur.textContent = TEXTES_SG.vide[LANG]; blocErreur.hidden = false; champMessage.focus(); return; }
+  if (champEmail.value.trim() && !champEmail.checkValidity()) { blocErreur.textContent = TEXTES_SG.email[LANG]; blocErreur.hidden = false; champEmail.focus(); return; }
+
+  boutonEnvoyer.disabled = true;
+  boutonEnvoyer.textContent = TEXTES_SG.envoi[LANG];
+  fetch('/api/signalement', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: message, email: champEmail.value.trim(), page: champPage.value.trim(), langue: LANG, site: document.getElementById('site').value })
+  }).then(function (res) {
+    if (!res.ok) throw new Error('envoi');
+    formulaire.hidden = true;
+    document.getElementById('merci').hidden = false;
+  }).catch(function () {
+    blocErreur.textContent = TEXTES_SG.echec[LANG];
+    blocErreur.hidden = false;
+    boutonEnvoyer.disabled = false;
+    boutonEnvoyer.textContent = boutonEnvoyer.getAttribute('data-' + LANG);
+  });
+});
+
+/* ---------- langue (même mécanisme que les autres pages) ---------- */
+function appliquer(lang) {
+  LANG = lang;
+  document.querySelectorAll('.t').forEach(function (el) {
+    var txt = el.getAttribute('data-' + lang);
+    if (txt === null) return;
+    if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
+  });
+  document.documentElement.lang = lang;
+  document.title = LIBELLES.titre[lang];
+  btnFr.classList.toggle('on', lang === 'fr');
+  btnEn.classList.toggle('on', lang === 'en');
+  btnFr.setAttribute('aria-pressed', String(lang === 'fr'));
+  btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+  document.querySelector('.ac-nav').setAttribute('aria-label', LIBELLES.nav[lang]);
+  document.querySelector('.ac-langue').setAttribute('aria-label', LIBELLES.langue[lang]);
+  majBurger();
+  try { localStorage.setItem('fwa-lang', lang); } catch (e) {}
+}
+
+var choix = null;
+try {
+  var enr = localStorage.getItem('fwa-lang');
+  if (enr === 'fr' || enr === 'en') choix = enr;
+} catch (e) {}
+if (!choix) choix = (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+appliquer(choix);
+btnFr.addEventListener('click', function () { appliquer('fr'); });
+btnEn.addEventListener('click', function () { appliquer('en'); });
+</script></body>
+</html>
