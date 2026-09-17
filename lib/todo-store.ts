@@ -1,32 +1,36 @@
 /**
- * Lecture et écriture de la to-do list dans Redis, sur le même principe que le planning personnel :
- * chaque enregistrement porte la révision chargée par la page ; si la liste a changé entre-temps
- * (autre onglet, autre appareil), le serveur refuse au lieu d'écraser. Les 20 versions remplacées
- * sont gardées dans un historique.
+ * Lecture et écriture de la to-do list dans Redis (document unique avec révision : voir store-revision.ts).
+ * 20 versions remplacées sont gardées dans un historique.
  *
  * Aucune route publique n'utilise ce module.
  */
-import type { Redis } from '@upstash/redis';
+import { creerStoreRevision } from './store-revision';
+import type { StoreClient } from './store-revision';
 import { EMPTY_TODO, nettoyer, validerTodo } from './todo';
 import type { Todo } from './todo';
 
-export const TODO_KEY = 'todo';
-export const REVISION_KEY = 'todo:revision';
-export const HISTORY_KEY = 'todo:history';
+export type { StoreClient };
+
+const store = creerStoreRevision<Todo>({
+  cle: 'todo',
+  vide: EMPTY_TODO,
+  valider: (brut) => {
+    const r = validerTodo(brut);
+    return r.ok ? { ok: true, value: r.todo } : r;
+  },
+  avantEcriture: nettoyer,
+  historique: 20,
+  messagePerime: 'Page périmée : rechargez-la avant de modifier la liste.',
+});
+
+export const TODO_KEY = store.cles.document;
+export const REVISION_KEY = store.cles.revision;
+export const HISTORY_KEY = store.cles.historique;
 export const HISTORY_LENGTH = 20;
 
-export type StoreClient = Pick<Redis, 'mget' | 'multi'>;
-
-const toRevision = (value: unknown): number => {
-  const n = Number(value ?? 0);
-  return Number.isInteger(n) && n >= 0 ? n : 0;
-};
-
 export async function readTodo(redis: StoreClient): Promise<{ ok: true; todo: Todo; revision: number } | { ok: false; error: string }> {
-  const [raw, rev] = await redis.mget<[unknown, unknown]>(TODO_KEY, REVISION_KEY);
-  const result = validerTodo(raw ?? EMPTY_TODO);
-  if (!result.ok) return { ok: false, error: result.error };
-  return { ok: true, todo: result.todo, revision: toRevision(rev) };
+  const r = await store.lire(redis);
+  return r.ok ? { ok: true, todo: r.value, revision: r.revision } : r;
 }
 
 export type SaveResult =
@@ -36,30 +40,7 @@ export type SaveResult =
   | { status: 'unreadable'; error: string };
 
 export async function saveTodo(redis: StoreClient, input: unknown, baseRevision: unknown, now: Date = new Date()): Promise<SaveResult> {
-  const result = validerTodo(input);
-  if (!result.ok) return { status: 'invalid', error: result.error };
-  if (typeof baseRevision !== 'number' || !Number.isInteger(baseRevision) || baseRevision < 0) {
-    return { status: 'invalid', error: 'Page périmée : rechargez-la avant de modifier la liste.' };
-  }
-
-  const [raw, rev] = await redis.mget<[unknown, unknown]>(TODO_KEY, REVISION_KEY);
-  const current = toRevision(rev);
-  if (baseRevision !== current) {
-    const stored = validerTodo(raw ?? EMPTY_TODO);
-    return stored.ok
-      ? { status: 'conflict', todo: stored.todo, revision: current }
-      : { status: 'unreadable', error: stored.error };
-  }
-
-  const revision = current + 1;
-  const todo = nettoyer(result.todo, now);
-  const tx = redis.multi();
-  if (raw) {
-    tx.lpush(HISTORY_KEY, { replacedAt: now.toISOString(), revision: current, todo: raw });
-    tx.ltrim(HISTORY_KEY, 0, HISTORY_LENGTH - 1);
-  }
-  tx.set(TODO_KEY, todo);
-  tx.set(REVISION_KEY, revision);
-  await tx.exec();
-  return { status: 'saved', todo, revision };
+  const r = await store.enregistrer(redis, input, baseRevision, now);
+  if (r.status === 'saved' || r.status === 'conflict') return { status: r.status, todo: r.value, revision: r.revision };
+  return r;
 }

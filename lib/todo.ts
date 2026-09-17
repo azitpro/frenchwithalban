@@ -156,6 +156,17 @@ export function basculerObjectif(todo: Todo, id: string, maintenant = new Date()
   };
 }
 
+/** Déplace l'objectif juste avant (ou juste après) un autre objectif de la liste. */
+export function placerObjectif(todo: Todo, id: string, cibleId: string, apres: boolean): Todo {
+  if (id === cibleId) return todo;
+  const deplace = todo.objectifs.find((o) => o.id === id);
+  if (!deplace || !todo.objectifs.some((o) => o.id === cibleId)) return todo;
+  const reste = todo.objectifs.filter((o) => o.id !== id);
+  const i = reste.findIndex((o) => o.id === cibleId) + (apres ? 1 : 0);
+  const objectifs = [...reste.slice(0, i), deplace, ...reste.slice(i)];
+  return objectifs.every((o, k) => o === todo.objectifs[k]) ? todo : { objectifs };
+}
+
 export function supprimerObjectif(todo: Todo, id: string): Todo {
   return { objectifs: todo.objectifs.filter((o) => o.id !== id) };
 }
@@ -227,11 +238,13 @@ export type Groupe = { cle: string; titre: string; retard: boolean; objectifs: O
 /**
  * Objectifs d'une colonne (un type d'horizon), regroupés :
  * jours et semaines par date (en retard d'abord), autres horizons par nom (échéance la plus proche d'abord).
- * Dans un groupe : à faire d'abord, puis terminés ; ordre de création sinon.
+ * Dans un groupe : à faire d'abord, puis terminés ; sinon l'ordre de la liste enregistrée,
+ * que l'on change en déplaçant les objectifs (placerObjectif).
  */
 export function grouper(objectifs: Objectif[], type: TypeHorizon, aujourdhui: string): Groupe[] {
+  const position = new Map(objectifs.map((o, i) => [o.id, i]));
   const liste = objectifs.filter((o) => o.horizon.type === type);
-  const ordreInterne = (a: Objectif, b: Objectif) => Number(a.fait) - Number(b.fait) || a.creeLe.localeCompare(b.creeLe);
+  const ordreInterne = (a: Objectif, b: Objectif) => Number(a.fait) - Number(b.fait) || position.get(a.id)! - position.get(b.id)!;
   const groupes = new Map<string, Groupe & { tri: string }>();
   for (const o of liste) {
     const h = o.horizon;

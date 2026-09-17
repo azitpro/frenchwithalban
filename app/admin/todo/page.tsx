@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { FormEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import type { DragEvent, FormEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { AdminChargement, AdminShell } from '../admin-ui';
+import { useDocumentEnregistre } from '../use-document';
 import { addDays, nowInParis, weekStartOf } from '@/lib/planning';
 import {
   EMPTY_TODO, ETAPES_MAX, ETAPE_MAX, LIBELLE_MAX, NOTES_MAX, TITRE_MAX, TYPES_HORIZON,
   ajouterEtape, ajouterObjectif, basculerEtape, basculerObjectif, enRetard, grouper, modifierObjectif,
-  avantLe, nomSemaine, supprimerObjectif, validerHorizon,
+  avantLe, nomSemaine, placerObjectif, supprimerObjectif, validerHorizon,
 } from '@/lib/todo';
 import type { Horizon, Objectif, Todo, TypeHorizon } from '@/lib/todo';
 
@@ -98,13 +99,6 @@ function ChoixHorizon({ valeur, onChange, aujourdhui, libelles, prefixe }: {
 
 /* ======================= page ======================= */
 
-async function charger(): Promise<{ todo: Todo; revision: number }> {
-  const res = await fetch('/api/admin/todo', { cache: 'no-store' });
-  const data = await res.json().catch(() => null);
-  if (!res.ok || !data?.todo || !Number.isInteger(data.revision)) throw new Error(data?.error || 'Chargement impossible.');
-  return data;
-}
-
 const COLONNES: { type: TypeHorizon; titre: string; vide: string }[] = [
   { type: 'jour', titre: 'Jour', vide: 'Aucun objectif daté.' },
   { type: 'semaine', titre: 'Semaine', vide: 'Aucun objectif de semaine.' },
@@ -114,13 +108,14 @@ const COLONNES: { type: TypeHorizon; titre: string; vide: string }[] = [
 
 export default function TodoAdmin() {
   const [aujourdhui, setAujourdhui] = useState(() => nowInParis().date);
-  const [todo, setTodo] = useState<Todo>(EMPTY_TODO);
-  const [chargement, setChargement] = useState(true);
-  const [fatal, setFatal] = useState('');
-  const [erreur, setErreur] = useState('');
-  const [avert, setAvert] = useState('');
-  const [enCours, setEnCours] = useState(false);
+  const { donnees: todo, chargement, fatal, erreur, avert, etat, appliquer, reessayer } = useDocumentEnregistre<Todo>(
+    '/api/admin/todo', 'todo', EMPTY_TODO,
+    'La liste a été modifiée ailleurs (autre onglet ou appareil) : la version la plus récente est affichée, votre dernière modification n’a pas été enregistrée.',
+  );
   const [voirTermines, setVoirTermines] = useState(false);
+  // glisser-déposer : objectif saisi (et son groupe), cible survolée
+  const [glisse, setGlisse] = useState<{ id: string; groupe: string } | null>(null);
+  const [survol, setSurvol] = useState<{ id: string; apres: boolean } | null>(null);
   const [cochesSession, setCochesSession] = useState<Set<string>>(() => new Set());
   const [edition, setEdition] = useState<Objectif | null>(null);
 
@@ -129,64 +124,36 @@ export default function TodoAdmin() {
   const [erreurForm, setErreurForm] = useState('');
   const champTitre = useRef<HTMLInputElement>(null);
 
-  // enregistrement : la dernière version locale est envoyée avec la révision chargée ; une seule requête à la fois
-  const todoRef = useRef<Todo>(EMPTY_TODO);
-  const revisionRef = useRef(0);
-  const modifieRef = useRef(false);
-  const fileRef = useRef<Promise<void>>(Promise.resolve());
-
   useEffect(() => {
-    charger()
-      .then((d) => { todoRef.current = d.todo; revisionRef.current = d.revision; setTodo(d.todo); })
-      .catch((e) => setFatal(e instanceof Error ? e.message : 'Chargement impossible.'))
-      .finally(() => setChargement(false));
     const minute = setInterval(() => setAujourdhui(nowInParis().date), 60_000);
-    const avantDepart = (e: BeforeUnloadEvent) => { if (modifieRef.current) e.preventDefault(); };
-    window.addEventListener('beforeunload', avantDepart);
-    return () => { clearInterval(minute); window.removeEventListener('beforeunload', avantDepart); };
+    return () => clearInterval(minute);
   }, []);
 
-  async function enregistrer() {
-    if (!modifieRef.current) return;
-    modifieRef.current = false;
-    const envoye = todoRef.current;
-    setEnCours(true);
-    try {
-      const res = await fetch('/api/admin/todo', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ todo: envoye, revision: revisionRef.current }),
-      });
-      const data = await res.json().catch(() => null);
-      if (res.ok && data?.todo) {
-        revisionRef.current = data.revision;
-        setErreur('');
-        if (!modifieRef.current) { todoRef.current = data.todo; setTodo(data.todo); }
-      } else if (res.status === 409 && data?.todo) {
-        revisionRef.current = data.revision;
-        modifieRef.current = false;
-        todoRef.current = data.todo;
-        setTodo(data.todo);
-        setAvert('La liste a été modifiée ailleurs (autre onglet ou appareil) : la version la plus récente est affichée, votre dernière modification n’a pas été enregistrée.');
-      } else {
-        modifieRef.current = true;
-        setErreur(res.status === 401 ? 'Session expirée : rechargez la page.' : data?.error || 'Enregistrement impossible.');
-      }
-    } catch {
-      modifieRef.current = true;
-      setErreur('Enregistrement impossible : vérifiez la connexion.');
+  /* ---------- glisser-déposer (dans un même groupe, entre objectifs à faire) ---------- */
+  function debutGlisse(e: DragEvent, o: Objectif, groupe: string) {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', o.id);
+    const carte = (e.currentTarget as HTMLElement).closest('li');
+    if (carte) e.dataTransfer.setDragImage(carte, 20, 20);
+    setGlisse({ id: o.id, groupe });
+  }
+  function survolGlisse(e: DragEvent, o: Objectif, groupe: string) {
+    if (!glisse || glisse.groupe !== groupe || o.fait || o.id === glisse.id) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const apres = e.clientY > r.top + r.height / 2;
+    if (survol?.id !== o.id || survol.apres !== apres) setSurvol({ id: o.id, apres });
+  }
+  function deposer(e: DragEvent, o: Objectif) {
+    e.preventDefault();
+    if (glisse && survol?.id === o.id) {
+      const { id } = glisse;
+      appliquer((d) => placerObjectif(d, id, o.id, survol.apres));
     }
-    setEnCours(false);
+    finGlisse();
   }
-
-  function appliquer(changer: (t: Todo) => Todo) {
-    const suivant = changer(todoRef.current);
-    todoRef.current = suivant;
-    setTodo(suivant);
-    setAvert('');
-    modifieRef.current = true;
-    fileRef.current = fileRef.current.then(enregistrer);
-  }
-  const reessayer = () => { fileRef.current = fileRef.current.then(enregistrer); };
+  const finGlisse = () => { setGlisse(null); setSurvol(null); };
 
   function ajouter(e: FormEvent) {
     e.preventDefault();
@@ -230,7 +197,7 @@ export default function TodoAdmin() {
       intro="Définissez un objectif, puis son horizon : un jour, une semaine, un autre horizon ou le long terme."
       actions={
         <>
-          <span className="td-etat" aria-live="polite">{enCours ? 'Enregistrement…' : erreur ? 'Non enregistré' : 'Enregistré'}</span>
+          <span className="td-etat" aria-live="polite">{etat}</span>
           <button className="ad-btn ad-petit" aria-pressed={voirTermines} onClick={() => setVoirTermines((v) => !v)}>
             {voirTermines ? 'Masquer' : 'Afficher'} les terminés ({nbTermines})
           </button>
@@ -283,11 +250,26 @@ export default function TodoAdmin() {
                     </h3>
                   )}
                   <ul className="td-liste">
-                    {g.objectifs.map((o) => (
-                      <CarteObjectif key={o.id} objectif={o} aujourdhui={aujourdhui}
-                        onCocher={() => cocher(o)} onModifier={() => setEdition(o)}
-                        onChanger={appliquer} />
-                    ))}
+                    {g.objectifs.map((o, i) => {
+                      const groupe = `${col.type}:${g.cle}`;
+                      // on ne déplace que les objectifs à faire, entre eux (les terminés restent en bas du groupe)
+                      const avant = !o.fait && i > 0 ? g.objectifs[i - 1] : undefined;
+                      const apres = !o.fait && g.objectifs[i + 1] && !g.objectifs[i + 1].fait ? g.objectifs[i + 1] : undefined;
+                      return (
+                        <CarteObjectif key={o.id} objectif={o} aujourdhui={aujourdhui}
+                          onCocher={() => cocher(o)} onModifier={() => setEdition(o)}
+                          onChanger={appliquer}
+                          onMonter={avant ? () => appliquer((d) => placerObjectif(d, o.id, avant.id, false)) : undefined}
+                          onDescendre={apres ? () => appliquer((d) => placerObjectif(d, o.id, apres.id, true)) : undefined}
+                          deplacable={!o.fait && g.objectifs.filter((x) => !x.fait).length > 1}
+                          glisse={glisse?.id === o.id}
+                          survol={survol?.id === o.id ? (survol.apres ? 'apres' : 'avant') : null}
+                          onDebutGlisse={(e) => debutGlisse(e, o, groupe)}
+                          onSurvolGlisse={(e) => survolGlisse(e, o, groupe)}
+                          onDeposer={(e) => deposer(e, o)}
+                          onFinGlisse={finGlisse} />
+                      );
+                    })}
                   </ul>
                 </div>
               ))}
@@ -312,8 +294,13 @@ export default function TodoAdmin() {
 
 /* ======================= carte d'un objectif ======================= */
 
-function CarteObjectif({ objectif: o, aujourdhui, onCocher, onModifier, onChanger }: {
+function CarteObjectif({
+  objectif: o, aujourdhui, onCocher, onModifier, onChanger, onMonter, onDescendre, deplacable, glisse, survol,
+  onDebutGlisse, onSurvolGlisse, onDeposer, onFinGlisse,
+}: {
   objectif: Objectif; aujourdhui: string; onCocher: () => void; onModifier: () => void; onChanger: (f: (t: Todo) => Todo) => void;
+  onMonter?: () => void; onDescendre?: () => void; deplacable: boolean; glisse: boolean; survol: 'avant' | 'apres' | null;
+  onDebutGlisse: (e: DragEvent) => void; onSurvolGlisse: (e: DragEvent) => void; onDeposer: (e: DragEvent) => void; onFinGlisse: () => void;
 }) {
   const [nouvelleEtape, setNouvelleEtape] = useState<string | null>(null);
   const faites = o.etapes.filter((e) => e.fait).length;
@@ -330,13 +317,22 @@ function CarteObjectif({ objectif: o, aujourdhui, onCocher, onModifier, onChange
   }
 
   return (
-    <li className={`td-objectif ${o.fait ? 'td-fait' : ''} ${retard ? 'td-en-retard' : ''}`}>
+    <li className={`td-objectif ${o.fait ? 'td-fait' : ''} ${retard ? 'td-en-retard' : ''} ${glisse ? 'td-glisse' : ''} ${survol ? `td-survol-${survol}` : ''}`}
+      onDragOver={onSurvolGlisse} onDrop={onDeposer}>
       <div className="td-objectif-tete">
         <button type="button" className="td-case" role="checkbox" aria-checked={o.fait} onClick={onCocher}
           aria-label={`${o.fait ? 'Marquer comme à faire' : 'Marquer comme terminé'} : ${o.titre}`}>
           <span aria-hidden="true">✓</span>
         </button>
         <button type="button" className="td-objectif-titre" onClick={onModifier} title="Modifier">{o.titre}</button>
+        {deplacable && (
+          <div className="td-ordre">
+            <span className="td-poignee" draggable onDragStart={onDebutGlisse} onDragEnd={onFinGlisse}
+              title="Glisser pour changer l’ordre" aria-hidden="true">⠿</span>
+            <button type="button" className="td-fleche" onClick={onMonter} disabled={!onMonter} aria-label={`Monter : ${o.titre}`}>↑</button>
+            <button type="button" className="td-fleche" onClick={onDescendre} disabled={!onDescendre} aria-label={`Descendre : ${o.titre}`}>↓</button>
+          </div>
+        )}
       </div>
       <div className="td-meta">
         {o.horizon.type === 'autre' && o.horizon.echeance && <span>{avantLe(o.horizon.echeance, aujourdhui)}</span>}
@@ -371,6 +367,14 @@ function CarteObjectif({ objectif: o, aujourdhui, onCocher, onModifier, onChange
 }
 
 /* ======================= fenêtre de modification ======================= */
+
+function deplacer<T>(liste: T[], i: number, sens: -1 | 1): T[] {
+  const j = i + sens;
+  if (j < 0 || j >= liste.length) return liste;
+  const copie = [...liste];
+  [copie[i], copie[j]] = [copie[j], copie[i]];
+  return copie;
+}
 
 function Edition({ objectif, aujourdhui, libelles, onFermer, onEnregistrer, onSupprimer }: {
   objectif: Objectif; aujourdhui: string; libelles: string[];
@@ -419,10 +423,14 @@ function Edition({ objectif, aujourdhui, libelles, onFermer, onEnregistrer, onSu
             <div className="td-bloc">
               <span className="ad-label">Étapes</span>
               <ul className="td-etapes-edition">
-                {etapes.map((x) => (
+                {etapes.map((x, i) => (
                   <li key={x.id}>
                     <input type="text" maxLength={ETAPE_MAX} value={x.texte} aria-label="Étape"
                       onChange={(e) => setEtapes((l) => l.map((y) => (y.id === x.id ? { ...y, texte: e.target.value } : y)))} />
+                    <button type="button" className="ad-btn ad-petit" disabled={i === 0} aria-label={`Monter l’étape ${x.texte}`}
+                      onClick={() => setEtapes((l) => deplacer(l, i, -1))}>↑</button>
+                    <button type="button" className="ad-btn ad-petit" disabled={i === etapes.length - 1} aria-label={`Descendre l’étape ${x.texte}`}
+                      onClick={() => setEtapes((l) => deplacer(l, i, 1))}>↓</button>
                     <button type="button" className="ad-btn ad-petit ad-danger" aria-label={`Supprimer l’étape ${x.texte}`}
                       onClick={() => setEtapes((l) => l.filter((y) => y.id !== x.id))}>×</button>
                   </li>
@@ -488,6 +496,18 @@ const CSS = `
 .td-case:hover span{opacity:.35}
 .td-case[aria-checked="true"]{background:var(--lime)}
 .td-case[aria-checked="true"] span{opacity:1}
+/* ordre : poignée à glisser et flèches, discrètes jusqu'au survol (toujours visibles sur écran tactile) */
+.td-ordre{flex:none;display:flex;align-items:center;gap:1px;margin:-2px -4px 0 0;opacity:.3;transition:opacity .15s}
+.td-objectif:hover .td-ordre,.td-ordre:focus-within{opacity:1}
+@media (hover:none){.td-ordre{opacity:1}.td-poignee{display:none}}
+.td-poignee{padding:2px 3px;font-size:1rem;line-height:1;cursor:grab;user-select:none;color:var(--soft)}
+.td-poignee:active{cursor:grabbing}
+.td-fleche{width:22px;height:22px;padding:0;border:1.5px solid transparent;border-radius:6px;background:none;font-weight:800;font-size:.8rem;line-height:1}
+.td-fleche:hover:not(:disabled){border-color:var(--ink);background:var(--lemon)}
+.td-fleche:disabled{opacity:.25;cursor:default}
+.td-objectif.td-glisse{opacity:.45}
+.td-objectif.td-survol-avant{box-shadow:0 -5px 0 -1px var(--violet),3px 3px 0 var(--ink)}
+.td-objectif.td-survol-apres{box-shadow:0 5px 0 -1px var(--violet),3px 3px 0 var(--ink)}
 .td-objectif-titre{flex:1;min-width:0;padding:2px 0;border:0;background:none;text-align:left;font-weight:600;font-size:.95rem;line-height:1.35;overflow-wrap:anywhere}
 .td-objectif-titre:hover{text-decoration:underline;text-decoration-color:var(--pink);text-decoration-thickness:2px;text-underline-offset:3px}
 .td-objectif.td-fait{background:#f6f3ee;box-shadow:none;border-style:dashed}

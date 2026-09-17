@@ -2,6 +2,7 @@ import { AdminShell } from './admin-ui';
 
 const SECTIONS = [
   { titre: 'To-do list', desc: 'Objectifs du jour, de la semaine, à un autre horizon ou à long terme.', href: '/admin/todo', signe: '✓' },
+  { titre: 'Fiches élèves', desc: 'Niveau, points forts et faibles, notions à retenir, devoirs et prochains cours.', href: '/admin/eleves', signe: '✎' },
   { titre: 'Organisation personnelle', desc: 'Semaine type : cours, routines et quotas hebdomadaires, export PDF.', href: '/admin/planning', signe: '▦' },
   { titre: 'Planning des cours', desc: 'Disponibilités générales, créneaux élèves, cours ponctuels, indisponibilités.', href: '/admin/schedule', signe: '◷' },
   { titre: 'Demandes de contact', desc: 'Formulaires de la page Réserver et résultats du test de placement.', href: '/admin/leads', signe: '✉' },
