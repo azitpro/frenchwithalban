@@ -38,6 +38,8 @@ export type Schedule = {
   availability: AvailabilityWindow[];
   unavailability: Unavailability[];
   forced: Forced[];
+  /** Élèves ajoutés depuis l'administration (prénoms : données personnelles, jamais publiques). */
+  students: string[];
 };
 
 export const EMPTY_SCHEDULE: Schedule = {
@@ -47,7 +49,44 @@ export const EMPTY_SCHEDULE: Schedule = {
   availability: [],
   unavailability: [],
   forced: [],
+  students: [],
 };
+
+export const STUDENT_NAME_MAX = 60;
+export const STUDENTS_MAX = 300;
+
+/** Prénom nettoyé, ou null s'il est vide, trop long ou contient un caractère de contrôle. */
+export function cleanStudentName(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const name = value.trim().replace(/\s+/g, ' ');
+  if (!name || name.length > STUDENT_NAME_MAX || [...name].some((c) => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127)) return null;
+  return name;
+}
+
+const byName = (a: string, b: string) => a.localeCompare(b, 'fr', { sensitivity: 'base' });
+
+/** Liste nettoyée : sans vide, sans doublon (casse ignorée), triée, limitée à STUDENTS_MAX. */
+export function normalizeStudents(raw: unknown): string[] {
+  const seen = new Set<string>();
+  const names: string[] = [];
+  for (const value of Array.isArray(raw) ? raw : []) {
+    const name = cleanStudentName(value);
+    if (name && !seen.has(name.toLocaleLowerCase('fr'))) {
+      seen.add(name.toLocaleLowerCase('fr'));
+      names.push(name);
+    }
+  }
+  return names.sort(byName).slice(0, STUDENTS_MAX);
+}
+
+/** Élèves proposés dans l'administration : liste enregistrée + prénoms déjà présents dans les cours. */
+export function studentNames(schedule: Schedule): string[] {
+  return normalizeStudents([
+    ...schedule.students,
+    ...schedule.recurring.map((r) => r.student),
+    ...schedule.oneOff.map((o) => o.student),
+  ]);
+}
 
 /** Données complètes, avec les listes manquantes remplacées par des listes vides. */
 export function withDefaults(raw: unknown): Schedule {
@@ -61,10 +100,11 @@ export function withDefaults(raw: unknown): Schedule {
     availability: source.availability ?? [],
     unavailability: source.unavailability ?? [],
     forced: source.forced ?? [],
+    students: normalizeStudents(source.students),
   };
 }
 
-/** Version publique : chaque champ est repris explicitement, jamais le prénom. */
+/** Version publique : chaque champ est repris explicitement, jamais le prénom ni la liste des élèves. */
 export function toPublicSchedule(schedule: Schedule) {
   return {
     recurring: schedule.recurring.map(({ id, weekday, hour, duration, active }) => ({ id, weekday, hour, duration, active })),

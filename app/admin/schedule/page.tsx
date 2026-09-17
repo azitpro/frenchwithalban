@@ -1,67 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
+import type { FormEvent } from 'react';
 import { AdminChargement, AdminShell } from '../admin-ui';
+import { STUDENT_NAME_MAX, cleanStudentName, normalizeStudents, studentNames, withDefaults } from '@/lib/schedule';
+import type { AvailabilityWindow, Forced, OneOff, RecurringSlot, Schedule, Unavailability } from '@/lib/schedule';
 
 // Page protégée par proxy.ts (authentification HTTP Basic) : le navigateur envoie le même
 // mot de passe à /api/admin/schedule.
-
-type RecurringSlot = {
-  id: string;
-  student: string;
-  weekday: string;
-  hour: number;
-  duration: 25 | 50;
-  active: boolean;
-};
-
-type Exception = { recurringId: string; date: string };
-
-type OneOff = {
-  id: string;
-  student: string;
-  date: string;
-  hour: number;
-  duration: 25 | 50;
-};
-
-type AvailabilityWindow = {
-  id: string;
-  weekday: string;
-  start: number;
-  end: number;
-};
-
-type Unavailability = {
-  id: string;
-  type: 'day' | 'range';
-  date: string;
-  start?: number;
-  end?: number;
-};
-
-type Forced = {
-  id: string;
-  date: string;
-  hour: number;
-};
-
-type Schedule = {
-  recurring: RecurringSlot[];
-  exceptions: Exception[];
-  oneOff: OneOff[];
-  availability: AvailabilityWindow[];
-  unavailability: Unavailability[];
-  forced: Forced[];
-};
+// Les prénoms des élèves sont des données personnelles : ils ne figurent jamais dans le code
+// (servi publiquement sous /_next/static) et arrivent uniquement par /api/admin/schedule.
 
 const WEEKDAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-
-const STUDENTS = [
-  'Daniele', 'Susanne', 'Eric', 'Anaé', 'Wojciech', 'Brian', 'Marc', 'Nicola',
-  'Michael', 'Monika', 'Rick', 'Michal', 'Annamaria', 'Aimé', 'Miso', 'Tomas',
-  'Nadya', 'Gabriel', 'Sarah', 'Ola', 'Omri', 'Sylvia', 'Nobuko', 'Amanda',
-  'Anastasiia', 'Yoshi',
-];
 
 const HOUR_OPTIONS: { value: number; label: string }[] = [];
 for (let h = 6; h <= 23; h++) {
@@ -95,17 +44,8 @@ function HourSelect({ value, onChange, label }: { value: number; onChange: (v: n
   );
 }
 
-const normaliser = (current: Partial<Schedule> | null): Schedule => ({
-  recurring: current?.recurring || [],
-  exceptions: current?.exceptions || [],
-  oneOff: current?.oneOff || [],
-  availability: current?.availability || [],
-  unavailability: current?.unavailability || [],
-  forced: current?.forced || [],
-});
-
 export default function ScheduleAdmin() {
-  const [schedule, setSchedule] = useState<Schedule>(normaliser(null));
+  const [schedule, setSchedule] = useState<Schedule>(() => withDefaults(null));
   const [loading, setLoading] = useState(true);
   const [fatal, setFatal] = useState('');
   const [forcedDate, setForcedDate] = useState('');
@@ -117,12 +57,15 @@ export default function ScheduleAdmin() {
   const [availStart, setAvailStart] = useState(9);
   const [availEnd, setAvailEnd] = useState(18);
 
-  const [newStudent, setNewStudent] = useState(STUDENTS[0]);
+  const [newStudent, setNewStudent] = useState('');
   const [newWeekday, setNewWeekday] = useState('Lundi');
   const [newHour, setNewHour] = useState(10);
   const [newDuration, setNewDuration] = useState<25 | 50>(50);
 
-  const [oneOffStudent, setOneOffStudent] = useState(STUDENTS[0]);
+  const [oneOffStudent, setOneOffStudent] = useState('');
+
+  const [studentDraft, setStudentDraft] = useState('');
+  const [studentError, setStudentError] = useState('');
   const [oneOffDate, setOneOffDate] = useState('');
   const [oneOffHour, setOneOffHour] = useState(10);
   const [oneOffDuration, setOneOffDuration] = useState<25 | 50>(50);
@@ -137,12 +80,20 @@ export default function ScheduleAdmin() {
   useEffect(() => {
     fetch('/api/admin/schedule', { cache: 'no-store' })
       .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
-      .then((data) => setSchedule(normaliser(data)))
+      .then((data) => setSchedule(withDefaults(data)))
       .catch(() => setFatal('Impossible de charger le planning.'))
       .finally(() => setLoading(false));
   }, []);
 
-  async function save(updated: Schedule) {
+  // élèves proposés : liste enregistrée + prénoms déjà présents dans les cours ; choix par défaut : le premier
+  const students = studentNames(schedule);
+  const pick = (value: string) => (students.includes(value) ? value : students[0] ?? '');
+  const recurringStudent = pick(newStudent);
+  const selectedOneOffStudent = pick(oneOffStudent);
+
+  async function save(changed: Schedule): Promise<boolean> {
+    // la liste enregistrée garde tous les élèves connus : supprimer le dernier cours d'un élève ne l'efface pas
+    const updated = { ...changed, students: studentNames(changed) };
     setSaving(true);
     setError('');
     try {
@@ -153,15 +104,38 @@ export default function ScheduleAdmin() {
       });
       if (res.ok) {
         setSchedule(updated);
-      } else {
-        const data = await res.json().catch(() => null);
-        setError(res.status === 401 ? 'Session expirée : rechargez la page.' : data?.error || 'Erreur de sauvegarde.');
+        setSaving(false);
+        return true;
       }
+      const data = await res.json().catch(() => null);
+      setError(res.status === 401 ? 'Session expirée : rechargez la page.' : data?.error || 'Erreur de sauvegarde.');
     } catch {
       setError('Erreur de sauvegarde : vérifiez la connexion.');
     }
     setSaving(false);
+    return false;
   }
+
+  /** Un ou plusieurs prénoms, séparés par des virgules. */
+  async function addStudents(e: FormEvent) {
+    e.preventDefault();
+    const parts = studentDraft.split(',').map((p) => p.trim()).filter(Boolean);
+    if (!parts.length) { setStudentError('Écrivez au moins un prénom.'); return; }
+    const invalid = parts.find((p) => !cleanStudentName(p));
+    if (invalid !== undefined) { setStudentError(`Prénom invalide (${STUDENT_NAME_MAX} caractères au plus).`); return; }
+    const known = new Set(students.map((s) => s.toLocaleLowerCase('fr')));
+    const fresh = parts.filter((p) => !known.has(cleanStudentName(p)!.toLocaleLowerCase('fr')));
+    if (!fresh.length) { setStudentError(parts.length > 1 ? 'Ces élèves sont déjà dans la liste.' : 'Cet élève est déjà dans la liste.'); return; }
+    setStudentError('');
+    if (await save({ ...schedule, students: normalizeStudents([...schedule.students, ...fresh]) })) setStudentDraft('');
+  }
+
+  function removeStudent(name: string) {
+    save({ ...schedule, students: schedule.students.filter((s) => s !== name) });
+  }
+
+  const inUse = (name: string) =>
+    schedule.recurring.some((r) => r.student === name) || schedule.oneOff.some((o) => o.student === name);
 
   function addAvailability() {
     const win: AvailabilityWindow = { id: uid(), weekday: availWeekday, start: availStart, end: availEnd };
@@ -173,7 +147,8 @@ export default function ScheduleAdmin() {
   }
 
   function addRecurring() {
-    const slot: RecurringSlot = { id: uid(), student: newStudent, weekday: newWeekday, hour: newHour, duration: newDuration, active: true };
+    if (!recurringStudent) return;
+    const slot: RecurringSlot = { id: uid(), student: recurringStudent, weekday: newWeekday, hour: newHour, duration: newDuration, active: true };
     save({ ...schedule, recurring: [...schedule.recurring, slot] });
   }
 
@@ -197,8 +172,8 @@ export default function ScheduleAdmin() {
   }
 
   function addOneOff() {
-    if (!oneOffDate) return;
-    const item: OneOff = { id: uid(), student: oneOffStudent, date: oneOffDate, hour: oneOffHour, duration: oneOffDuration };
+    if (!oneOffDate || !selectedOneOffStudent) return;
+    const item: OneOff = { id: uid(), student: selectedOneOffStudent, date: oneOffDate, hour: oneOffHour, duration: oneOffDuration };
     save({ ...schedule, oneOff: [...schedule.oneOff, item] });
     setOneOffDate('');
   }
@@ -331,13 +306,39 @@ export default function ScheduleAdmin() {
           </div>
         </section>
 
+        {/* ÉLÈVES */}
+        <section className="ad-carte sc-section" id="eleves">
+          <h2 className="ad-h2"><span className="sc-puce" aria-hidden="true" />Élèves</h2>
+          <p className="ad-aide">Prénoms proposés pour les cours. Plusieurs à la fois : séparez-les par des virgules. Un élève qui a un cours ne peut pas être retiré.</p>
+          <form className="ad-champs sc-form" onSubmit={addStudents} noValidate>
+            <input type="text" className="sc-nouvel-eleve" value={studentDraft} placeholder="Prénom de l’élève" aria-label="Nouvel élève"
+              maxLength={STUDENT_NAME_MAX * 5} onChange={(e) => { setStudentDraft(e.target.value); setStudentError(''); }} />
+            <button type="submit" className="ad-btn ad-plein" disabled={saving}>Ajouter</button>
+          </form>
+          {studentError && <p className="sc-erreur" role="alert">{studentError}</p>}
+          {students.length > 0 ? (
+            <ul className="sc-eleves">
+              {students.map((name) => (
+                <li key={name} className="sc-eleve">
+                  {name}
+                  {!inUse(name) && schedule.students.includes(name) && (
+                    <button onClick={() => removeStudent(name)} disabled={saving} aria-label={`Retirer ${name} de la liste`}>×</button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="ad-vide">Aucun élève : ajoutez un prénom pour pouvoir créer des cours.</p>
+          )}
+        </section>
+
         {/* CRÉNEAUX HEBDOMADAIRES */}
         <section className="ad-carte sc-section">
           <h2 className="ad-h2"><span className="sc-puce" aria-hidden="true" />Créneaux hebdomadaires (élèves)</h2>
           <p className="ad-aide">Cours qui reviennent chaque semaine. Une occurrence peut être annulée à une date précise.</p>
           <div className="ad-champs sc-form">
-            <select value={newStudent} onChange={(e) => setNewStudent(e.target.value)} aria-label="Élève">
-              {STUDENTS.map((s) => <option key={s} value={s}>{s}</option>)}
+            <select value={recurringStudent} onChange={(e) => setNewStudent(e.target.value)} aria-label="Élève" disabled={!students.length}>
+              {students.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
             <select value={newWeekday} onChange={(e) => setNewWeekday(e.target.value)} aria-label="Jour">
               {WEEKDAYS.map((d) => <option key={d} value={d}>{d}</option>)}
@@ -347,7 +348,7 @@ export default function ScheduleAdmin() {
               <option value={25}>25 min</option>
               <option value={50}>50 min</option>
             </select>
-            <button className="ad-btn ad-plein" onClick={addRecurring} disabled={saving}>Ajouter</button>
+            <button className="ad-btn ad-plein" onClick={addRecurring} disabled={saving || !recurringStudent}>Ajouter</button>
           </div>
           <div className="ad-liste">
             {schedule.recurring.map((r) => {
@@ -384,8 +385,8 @@ export default function ScheduleAdmin() {
           <h2 className="ad-h2"><span className="sc-puce" aria-hidden="true" />Cours ponctuels</h2>
           <p className="ad-aide">Cours isolés, à une date précise.</p>
           <div className="ad-champs sc-form">
-            <select value={oneOffStudent} onChange={(e) => setOneOffStudent(e.target.value)} aria-label="Élève">
-              {STUDENTS.map((s) => <option key={s} value={s}>{s}</option>)}
+            <select value={selectedOneOffStudent} onChange={(e) => setOneOffStudent(e.target.value)} aria-label="Élève" disabled={!students.length}>
+              {students.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
             <input type="date" value={oneOffDate} onChange={(e) => setOneOffDate(e.target.value)} aria-label="Date" />
             <HourSelect value={oneOffHour} onChange={setOneOffHour} label="Heure" />
@@ -393,7 +394,7 @@ export default function ScheduleAdmin() {
               <option value={25}>25 min</option>
               <option value={50}>50 min</option>
             </select>
-            <button className="ad-btn ad-plein" onClick={addOneOff} disabled={saving || !oneOffDate}>Ajouter</button>
+            <button className="ad-btn ad-plein" onClick={addOneOff} disabled={saving || !oneOffDate || !selectedOneOffStudent}>Ajouter</button>
           </div>
           <div className="ad-liste">
             {schedule.oneOff.map((o) => (
@@ -425,5 +426,12 @@ const CSS = `
 .sc-exception{display:inline-flex;align-items:center;gap:4px;padding:1px 4px 1px 10px;border:2px solid var(--ink);border-radius:99px;background:#ffe1ee;font-size:.78rem;font-weight:600}
 .sc-exception button{border:0;background:none;padding:0 5px;font-weight:800;font-size:.95rem;line-height:1}
 .sc-exception button:hover{color:var(--rose)}
-@media (max-width:560px){.sc-form select,.sc-form input{flex:1 1 140px}}
+.sc-form .sc-nouvel-eleve{flex:1 1 240px;max-width:360px;width:auto}
+.sc-erreur{margin:-6px 0 12px;color:var(--rose);font-weight:700;font-size:.88rem}
+.sc-eleves{list-style:none;margin:0;padding:0;display:flex;gap:8px;flex-wrap:wrap}
+.sc-eleve{display:inline-flex;align-items:center;gap:2px;padding:2px 12px;border:2px solid var(--ink);border-radius:99px;background:var(--bg);font-size:.88rem;font-weight:600;box-shadow:2px 2px 0 var(--ink)}
+.sc-eleve:has(button){padding-right:4px}
+.sc-eleve button{border:0;background:none;padding:0 6px;font-weight:800;font-size:1rem;line-height:1}
+.sc-eleve button:hover{color:var(--rose)}
+@media (max-width:560px){.sc-form select,.sc-form input{flex:1 1 140px}.sc-form .sc-nouvel-eleve{max-width:none}}
 `;
