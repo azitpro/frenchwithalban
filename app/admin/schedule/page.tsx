@@ -4,6 +4,7 @@ import type { FormEvent } from 'react';
 import { AdminChargement, AdminShell } from '../admin-ui';
 import { STUDENT_NAME_MAX, cleanStudentName, normalizeStudents, studentNames, withDefaults } from '@/lib/schedule';
 import type { AvailabilityWindow, Forced, OneOff, RecurringSlot, Schedule, Unavailability } from '@/lib/schedule';
+import type { CreneauRepere } from '@/lib/preply-recurrents';
 
 // Page protégée par proxy.ts (authentification HTTP Basic) : le navigateur envoie le même
 // mot de passe à /api/admin/schedule.
@@ -72,6 +73,14 @@ export default function ScheduleAdmin() {
 
   const [excDates, setExcDates] = useState<Record<string, string>>({});
 
+  // créneaux repérés sur l'agenda Preply mais absents des créneaux hebdomadaires
+  const [reperes, setReperes] = useState<CreneauRepere[]>([]);
+  const [reperesIgnores, setReperesIgnores] = useState<CreneauRepere[]>([]);
+  const [reperesEtat, setReperesEtat] = useState<'chargement' | 'pret' | 'erreur'>('chargement');
+  const [reperesNoms, setReperesNoms] = useState<Record<string, string>>({});
+  const [reperesDurees, setReperesDurees] = useState<Record<string, 25 | 50>>({});
+  const [repereErreur, setRepereErreur] = useState<Record<string, string>>({});
+
   const [unavType, setUnavType] = useState<'day' | 'range'>('day');
   const [unavDate, setUnavDate] = useState('');
   const [unavStart, setUnavStart] = useState(9);
@@ -84,6 +93,21 @@ export default function ScheduleAdmin() {
       .catch(() => setFatal('Impossible de charger le planning.'))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => { chargerReperes(); }, []);
+
+  async function chargerReperes() {
+    try {
+      const res = await fetch('/api/admin/preply-recurrents', { cache: 'no-store' });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setReperes(data.creneaux ?? []);
+      setReperesIgnores(data.ignores ?? []);
+      setReperesEtat(data.erreur ? 'erreur' : 'pret');
+    } catch {
+      setReperesEtat('erreur');
+    }
+  }
 
   // élèves proposés : liste enregistrée + prénoms déjà présents dans les cours ; choix par défaut : le premier
   const students = studentNames(schedule);
@@ -169,6 +193,34 @@ export default function ScheduleAdmin() {
 
   function removeException(recurringId: string, date: string) {
     save({ ...schedule, exceptions: schedule.exceptions.filter((e) => !(e.recurringId === recurringId && e.date === date)) });
+  }
+
+  /** Déclare le créneau repéré comme cours hebdomadaire, au nom saisi. */
+  async function ajouterRepere(c: CreneauRepere) {
+    const nom = cleanStudentName(reperesNoms[c.cle] ?? '');
+    if (!nom) {
+      setRepereErreur((e) => ({ ...e, [c.cle]: `Écrivez le prénom de l’élève (${STUDENT_NAME_MAX} caractères au plus).` }));
+      return;
+    }
+    setRepereErreur((e) => ({ ...e, [c.cle]: '' }));
+    const slot: RecurringSlot = { id: uid(), student: nom, weekday: c.weekday, hour: c.hour, duration: reperesDurees[c.cle] ?? c.duration, active: true };
+    const ok = await save({
+      ...schedule,
+      recurring: [...schedule.recurring, slot],
+      ignoredRecurring: schedule.ignoredRecurring.filter((k) => k !== c.cle),
+    });
+    if (ok) {
+      setReperesNoms((n) => ({ ...n, [c.cle]: '' }));
+      chargerReperes();
+    }
+  }
+
+  async function ignorerRepere(cle: string) {
+    if (await save({ ...schedule, ignoredRecurring: [...schedule.ignoredRecurring, cle] })) chargerReperes();
+  }
+
+  async function reafficherRepere(cle: string) {
+    if (await save({ ...schedule, ignoredRecurring: schedule.ignoredRecurring.filter((k) => k !== cle) })) chargerReperes();
   }
 
   function addOneOff() {
@@ -332,6 +384,58 @@ export default function ScheduleAdmin() {
           )}
         </section>
 
+        {/* REPÉRÉS SUR PREPLY */}
+        <section className="ad-carte sc-section" id="preply">
+          <h2 className="ad-h2"><span className="sc-puce" aria-hidden="true" />Repérés sur Preply</h2>
+          <p className="ad-aide">
+            Ces heures reviennent chaque semaine dans l’agenda Preply mais ne figurent pas dans vos créneaux hebdomadaires.
+            L’agenda Preply s’arrête au renouvellement de l’abonnement : après cette date, le site les proposerait comme libres.
+          </p>
+          {reperesEtat === 'chargement' && <p className="ad-vide">Lecture de l’agenda Preply…</p>}
+          {reperesEtat === 'erreur' && <p className="ad-vide">L’agenda Preply n’a pas pu être lu : rien à signaler pour l’instant.</p>}
+          {reperesEtat === 'pret' && reperes.length === 0 && <p className="ad-vide">Rien à signaler : tous les cours hebdomadaires de Preply sont déclarés.</p>}
+          <div className="ad-liste">
+            {reperes.map((c) => (
+              <div key={c.cle} className="ad-ligne ad-jaune sc-repere">
+                <span className="ad-ligne-texte">
+                  <strong>{c.weekday} {fmtHour(c.hour)}</strong> · {c.occurrences} cours du {fmtDate(c.premiere)} au {fmtDate(c.derniere)}
+                  {c.aVenir > 0 ? `, dont ${c.aVenir} encore à l’agenda` : ', plus aucun à l’agenda'}
+                </span>
+                <button className="ad-btn ad-petit" onClick={() => ignorerRepere(c.cle)} disabled={saving} aria-label={`Ignorer le créneau du ${c.weekday} ${fmtHour(c.hour)}`}>Ignorer</button>
+                <div className="sc-repere-form">
+                  <input type="text" list="sc-eleves-connus" className="sc-repere-nom" value={reperesNoms[c.cle] ?? ''}
+                    placeholder="Prénom de l’élève" maxLength={STUDENT_NAME_MAX}
+                    aria-label={`Élève du créneau ${c.weekday} ${fmtHour(c.hour)}`}
+                    onChange={(e) => { setReperesNoms((n) => ({ ...n, [c.cle]: e.target.value })); setRepereErreur((x) => ({ ...x, [c.cle]: '' })); }} />
+                  <select value={reperesDurees[c.cle] ?? c.duration} aria-label={`Durée du créneau ${c.weekday} ${fmtHour(c.hour)}`}
+                    onChange={(e) => setReperesDurees((d) => ({ ...d, [c.cle]: Number(e.target.value) as 25 | 50 }))}>
+                    <option value={25}>25 min</option>
+                    <option value={50}>50 min</option>
+                  </select>
+                  <button className="ad-btn ad-plein ad-petit" onClick={() => ajouterRepere(c)} disabled={saving}>Ajouter aux créneaux hebdomadaires</button>
+                </div>
+                {repereErreur[c.cle] && <p className="sc-erreur sc-repere-erreur" role="alert">{repereErreur[c.cle]}</p>}
+              </div>
+            ))}
+          </div>
+          <datalist id="sc-eleves-connus">
+            {students.map((s) => <option key={s} value={s} />)}
+          </datalist>
+          {reperesIgnores.length > 0 && (
+            <details className="sc-ignores">
+              <summary>Créneaux ignorés ({reperesIgnores.length})</summary>
+              <div className="ad-liste">
+                {reperesIgnores.map((c) => (
+                  <div key={c.cle} className="ad-ligne">
+                    <span className="ad-ligne-texte">{c.weekday} {fmtHour(c.hour)} · {c.occurrences} cours sur Preply</span>
+                    <button className="ad-btn ad-petit" onClick={() => reafficherRepere(c.cle)} disabled={saving}>Réafficher</button>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
+        </section>
+
         {/* CRÉNEAUX HEBDOMADAIRES */}
         <section className="ad-carte sc-section">
           <h2 className="ad-h2"><span className="sc-puce" aria-hidden="true" />Créneaux hebdomadaires (élèves)</h2>
@@ -428,6 +532,15 @@ const CSS = `
 .sc-exception button:hover{color:var(--rose)}
 .sc-form .sc-nouvel-eleve{flex:1 1 240px;max-width:360px;width:auto}
 .sc-erreur{margin:-6px 0 12px;color:var(--rose);font-weight:700;font-size:.88rem}
+.sc-repere{align-items:flex-start}
+.sc-repere-form{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%}
+.sc-repere-form input,.sc-repere-form select{width:auto!important;padding:5px 12px!important;font-size:.88rem!important;border-width:2px!important}
+.sc-repere-form select{padding-right:30px!important}
+.sc-repere-nom{flex:1 1 180px;max-width:260px}
+.sc-repere-erreur{margin:0;width:100%}
+.sc-ignores{margin-top:16px}
+.sc-ignores summary{cursor:pointer;font-weight:700;font-size:.88rem;color:var(--soft)}
+.sc-ignores .ad-liste{margin-top:10px}
 .sc-eleves{list-style:none;margin:0;padding:0;display:flex;gap:8px;flex-wrap:wrap}
 .sc-eleve{display:inline-flex;align-items:center;gap:2px;padding:2px 12px;border:2px solid var(--ink);border-radius:99px;background:var(--bg);font-size:.88rem;font-weight:600;box-shadow:2px 2px 0 var(--ink)}
 .sc-eleve:has(button){padding-right:4px}

@@ -6,6 +6,8 @@
  * - withDefaults     : pour l'administration, données complètes.
  */
 
+import { normaliserIgnores } from './preply-recurrents';
+
 export type RecurringSlot = {
   id: string;
   student: string;
@@ -40,6 +42,8 @@ export type Schedule = {
   forced: Forced[];
   /** Élèves ajoutés depuis l'administration (prénoms : données personnelles, jamais publiques). */
   students: string[];
+  /** Créneaux repérés sur Preply qu'Alban a choisi de ne plus voir signalés (clés « Jeudi|17 »). */
+  ignoredRecurring: string[];
 };
 
 export const EMPTY_SCHEDULE: Schedule = {
@@ -50,6 +54,7 @@ export const EMPTY_SCHEDULE: Schedule = {
   unavailability: [],
   forced: [],
   students: [],
+  ignoredRecurring: [],
 };
 
 export const STUDENT_NAME_MAX = 60;
@@ -101,6 +106,7 @@ export function withDefaults(raw: unknown): Schedule {
     unavailability: source.unavailability ?? [],
     forced: source.forced ?? [],
     students: normalizeStudents(source.students),
+    ignoredRecurring: normaliserIgnores(source.ignoredRecurring),
   };
 }
 
