@@ -234,6 +234,11 @@ export default function AdminPricing() {
               </p>
             </details>
 
+            <div className="ap-impression-tete" aria-hidden="true">
+              <strong>Roster des élèves</strong>
+              <span>{totaux.nbEleves} élèves · {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+            </div>
+
             {lignes.length === 0 ? (
               <p className="ad-vide">Aucun élève : ajoutez-en un, ou importez votre CSV ci-dessous.</p>
             ) : (
@@ -248,6 +253,7 @@ export default function AdminPricing() {
                             {c.titre}
                             <span className="ap-fleche" aria-hidden="true">{tri === c.tri ? (sens === 'asc' ? '▲' : '▼') : '⇅'}</span>
                           </button>
+                          <span className="ap-imprime ap-imprime-titre">{c.titre}</span>
                         </th>
                       ))}
                       <th scope="col"><span className="ad-invisible">Notes et suppression</span></th>
@@ -290,6 +296,9 @@ export default function AdminPricing() {
 
             <div className="ap-actions">
               <button className="ad-btn ad-plein" onClick={ajouter}>Ajouter un élève</button>
+              {lignes.length > 0 && (
+                <button className="ad-btn" onClick={() => window.print()}>Télécharger le PDF</button>
+              )}
             </div>
 
             <details className="ap-import">
@@ -360,6 +369,7 @@ function Ligne({ l, ouvert, basculer, modifier, supprimer, montant }: LigneProps
         <th scope="row">
           <input className="ap-saisie ap-saisie-nom" type="text" maxLength={NOM_MAX} value={l.nom}
             aria-label={`Prénom de ${l.nom}`} onChange={(e) => champ('nom')(e.target.value)} />
+          <span className="ap-imprime">{l.nom}</span>
           {l.note && <span className="ap-tag">{l.note}</span>}
         </th>
 
@@ -368,6 +378,7 @@ function Ligne({ l, ouvert, basculer, modifier, supprimer, montant }: LigneProps
             aria-label={`Plateforme de ${l.nom}`} onChange={(e) => champ('plateforme')(e.target.value as Plateforme)}>
             {PLATEFORMES.map((p) => <option key={p} value={p}>{p}</option>)}
           </select>
+          <span className="ap-imprime ap-imprime-pastille">{l.plateforme}</span>
         </td>
 
         <td className="ap-num">
@@ -378,6 +389,7 @@ function Ligne({ l, ouvert, basculer, modifier, supprimer, montant }: LigneProps
               onChange={(e) => champ('devise')(e.target.value as Devise)}>
               {DEVISES.map((d) => <option key={d} value={d}>{SYMBOLE[d]}</option>)}
             </select>
+            <span className="ap-imprime">{l.tarif} {SYMBOLE[l.devise]}</span>
           </span>
         </td>
 
@@ -387,6 +399,7 @@ function Ligne({ l, ouvert, basculer, modifier, supprimer, montant }: LigneProps
         <td className="ap-num">
           <input className="ap-saisie ap-saisie-nombre" type="number" step="0.5" min="0" value={l.frequence}
             aria-label={`Cours par semaine de ${l.nom}`} onChange={(e) => champ('frequence')(Number(e.target.value))} />
+          <span className="ap-imprime">{freq.format(l.frequence)}</span>
         </td>
 
         <td className="ap-num">
@@ -396,6 +409,7 @@ function Ligne({ l, ouvert, basculer, modifier, supprimer, montant }: LigneProps
             <option value="">—</option>
             {NOTES.map((n) => <option key={n} value={n}>{n}</option>)}
           </select>
+          <span className="ap-imprime ap-imprime-pastille">{l.assiduite ?? '—'}</span>
         </td>
 
         <td>
@@ -512,4 +526,50 @@ const CSS = `
 .ad-invisible{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 @media (prefers-reduced-motion:reduce){.ap-depot{transition:none}}
 @media (max-width:760px){.ap-grille,.ap-grille-3{grid-template-columns:minmax(0,1fr)}}
+
+/* les doublures de texte ne servent qu'à l'impression */
+.ap-imprime,.ap-impression-tete{display:none}
+
+/* ---------- impression : le roster seul, en A4 portrait ---------- */
+@page{size:A4 portrait;margin:12mm}
+@media print{
+  .ad-barre,.ad-retour,.ad-h1,.ad-intro,.ap-roster>.ad-aide,.ap-reglages,.ap-import,.ap-actions,.ap-etat{display:none!important}
+  .ad-carte:not(.ap-roster){display:none!important}
+  .ad{background:#fff}
+  .ad-corps{max-width:none;padding:0}
+  .ap-roster{margin:0;padding:0;border:0;border-radius:0;box-shadow:none}
+  .ap-roster>.ad-h2{display:none}
+  .ap-impression-tete{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    margin-bottom:6mm;padding-bottom:2mm;border-bottom:2px solid var(--ink)}
+  .ap-impression-tete strong{font-family:var(--titre);font-size:15pt}
+  .ap-impression-tete span{font-size:9pt;color:var(--soft)}
+  .ap-defilement{overflow:visible;margin:0}
+  .ap-table{min-width:0;font-size:9pt}
+  .ap-table th,.ap-table td{padding:1.6mm 2mm}
+  .ap-table tr{break-inside:avoid}
+  .ap-table thead{display:table-header-group} /* l'en-tête se répète à chaque page */
+  .ap-table thead th{background:var(--ink)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ap-table thead button{display:none!important}
+  .ap-imprime-titre{display:block;padding:1.6mm 2mm;color:#fff;font-family:var(--titre);
+    font-size:7.5pt;letter-spacing:.05em;text-transform:uppercase}
+  .ap-table thead .ap-num .ap-imprime-titre{text-align:right}
+  /* la ligne de totaux ne doit apparaître qu'une fois, à la fin */
+  .ap-table tfoot{display:table-row-group}
+  .ap-table th:last-child,.ap-table td:last-child{display:none} /* colonne des boutons */
+  .ap-saisie,.ap-plateforme,.ap-note-lettre,.ap-devise,.ap-tarif select,.ap-tarif input{display:none!important}
+  .ap-imprime{display:inline;font:inherit}
+  .ap-imprime-pastille{display:inline-block;padding:.4mm 2.5mm;border:.4mm solid var(--ink);border-radius:99px;
+    font-weight:800;font-size:8pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ap-direct+.ap-imprime-pastille{background:var(--lime)}
+  .ap-preply+.ap-imprime-pastille{background:var(--orange)}
+  .ap-note-A+.ap-imprime-pastille{background:var(--aqua)}
+  .ap-note-B+.ap-imprime-pastille{background:var(--lime)}
+  .ap-note-C+.ap-imprime-pastille{background:var(--lemon)}
+  .ap-note-D+.ap-imprime-pastille{background:var(--orange)}
+  .ap-note-F+.ap-imprime-pastille{background:var(--pink);color:#fff}
+  .ap-note-vide+.ap-imprime-pastille{border-color:#ded8e8;color:var(--soft)}
+  .ap-bilan{background:transparent!important;border:.5mm solid var(--ink);margin-top:5mm;font-size:10pt}
+  .ap-edition{display:none}
+  .ap-tag{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 `;
