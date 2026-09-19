@@ -45,3 +45,6 @@ next-env.d.ts
 
 # images sources haute definition, non publiees
 /_originaux
+
+# manuel A1 : produit destine a la vente, jamais publie ni versionne ici
+/_manuel
