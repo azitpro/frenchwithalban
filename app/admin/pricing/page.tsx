@@ -5,7 +5,7 @@ import { AdminShell } from '../admin-ui';
 import { useDocumentEnregistre } from '../use-document';
 import {
   CRITERES, DEVISES, EMPTY_ROSTER, NOM_MAX, PLATEFORMES, SYMBOLE, TEXTE_MAX,
-  calculer, lireCsv, nouvelId,
+  calculer, decoderCsv, lireCsv, nouvelId,
 } from '@/lib/roster';
 import type { Devise, EleveRoster, Plateforme, Reglages, Roster } from '@/lib/roster';
 
@@ -72,6 +72,8 @@ export default function AdminPricing() {
   const [csv, setCsv] = useState('');
   const [apercu, setApercu] = useState<{ eleves: EleveRoster[]; ignorees: string[] } | null>(null);
   const [csvErreur, setCsvErreur] = useState('');
+  const [survol, setSurvol] = useState(false);
+  const [nomFichier, setNomFichier] = useState('');
 
   const { lignes, totaux } = useMemo(() => calculer(roster), [roster]);
 
@@ -95,11 +97,25 @@ export default function AdminPricing() {
     setOuvert('');
   };
 
-  function analyser() {
-    const r = lireCsv(csv);
+  function analyser(texte: string) {
+    const r = lireCsv(texte);
     if (!r.ok) { setCsvErreur(r.error); setApercu(null); return; }
     setCsvErreur('');
     setApercu({ eleves: r.eleves, ignorees: r.ignorees });
+  }
+
+  /** Un fichier choisi ou déposé est lu puis analysé tout de suite : rien d'autre à cliquer. */
+  async function lireFichier(fichier: File | undefined) {
+    if (!fichier) return;
+    setNomFichier(fichier.name);
+    try {
+      const texte = decoderCsv(await fichier.arrayBuffer());
+      setCsv(texte);
+      analyser(texte);
+    } catch {
+      setCsvErreur('Fichier illisible.');
+      setApercu(null);
+    }
   }
 
   function importer() {
@@ -248,22 +264,42 @@ export default function AdminPricing() {
             <details className="ap-import">
               <summary>Importer depuis un CSV</summary>
               <p className="ad-aide">
-                Collez le contenu de votre tableur, séparateur « ; ». Les colonnes calculées sont ignorées puisque le site les recalcule.
+                Choisissez le fichier exporté de votre tableur, ou déposez-le ici. Les colonnes calculées sont ignorées puisque le site les recalcule.
                 <strong> L’import remplace tout le roster.</strong>
               </p>
-              <textarea className="ap-csv" rows={6} value={csv} placeholder="Nom;Plateforme;Tarif;…"
-                onChange={(e) => { setCsv(e.target.value); setApercu(null); setCsvErreur(''); }} aria-label="Contenu du CSV" />
+
+              <label className={`ap-depot${survol ? ' ap-survol' : ''}`}
+                onDragOver={(e) => { e.preventDefault(); setSurvol(true); }}
+                onDragLeave={() => setSurvol(false)}
+                onDrop={(e) => { e.preventDefault(); setSurvol(false); lireFichier(e.dataTransfer.files[0]); }}>
+                <input type="file" accept=".csv,text/csv,text/plain" className="ad-invisible"
+                  onChange={(e) => { lireFichier(e.target.files?.[0]); e.target.value = ''; }} />
+                <span className="ap-depot-bouton">Choisir un fichier CSV</span>
+                <span className="ap-depot-note">{nomFichier || 'ou déposez le fichier ici'}</span>
+              </label>
+
               {csvErreur && <p className="ad-message ad-erreur">{csvErreur}</p>}
-              <div className="ap-actions">
-                <button className="ad-btn" onClick={analyser} disabled={!csv.trim()}>Analyser</button>
-                {apercu && <button className="ad-btn ad-plein" onClick={importer}>Remplacer le roster par ces {apercu.eleves.length} élèves</button>}
-              </div>
+              {apercu && (
+                <div className="ap-actions">
+                  <button className="ad-btn ad-plein" onClick={importer}>Remplacer le roster par ces {apercu.eleves.length} élèves</button>
+                  <button className="ad-btn" onClick={() => { setApercu(null); setCsv(''); setNomFichier(''); }}>Annuler</button>
+                </div>
+              )}
               {apercu && (
                 <div className="ap-apercu-csv">
                   <p><strong>{apercu.eleves.length}</strong> élève{apercu.eleves.length > 1 ? 's' : ''} lu{apercu.eleves.length > 1 ? 's' : ''} : {apercu.eleves.map((e) => e.nom).join(', ')}</p>
                   {apercu.ignorees.length > 0 && <p className="ap-ignorees">Lignes ignorées : {apercu.ignorees.join(' · ')}</p>}
                 </div>
               )}
+
+              <details className="ap-collage">
+                <summary>Ou coller le texte à la main</summary>
+                <textarea className="ap-csv" rows={5} value={csv} placeholder="Nom;Plateforme;Tarif;…"
+                  onChange={(e) => { setCsv(e.target.value); setApercu(null); setCsvErreur(''); setNomFichier(''); }} aria-label="Contenu du CSV" />
+                <div className="ap-actions">
+                  <button className="ad-btn" onClick={() => analyser(csv)} disabled={!csv.trim()}>Analyser</button>
+                </div>
+              </details>
             </details>
           </>
         )}
@@ -404,6 +440,15 @@ const CSS = `
 
 .ap-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .ap-csv{width:100%;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem}
+.ap-depot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 20px;background:var(--bg);border:3px dashed var(--ink);border-radius:16px;cursor:pointer;transition:background .15s}
+.ap-depot:hover,.ap-survol{background:#f3ffdd}
+.ap-survol{border-style:solid}
+.ap-depot-bouton{padding:9px 18px;background:var(--lime);border:2.5px solid var(--ink);border-radius:99px;box-shadow:3px 3px 0 var(--ink);font-weight:800;font-size:.9rem}
+.ap-depot-note{color:var(--soft);font-size:.86rem}
+.ap-collage{margin-top:14px}
+.ap-collage summary{cursor:pointer;font-size:.84rem;color:var(--soft);font-weight:700}
+.ap-collage .ap-csv{margin-top:8px}
+@media (prefers-reduced-motion:reduce){.ap-depot{transition:none}}
 .ap-apercu-csv{margin-top:10px;padding:10px 14px;background:var(--bg);border:2.5px dashed var(--ink);border-radius:12px;font-size:.86rem}
 .ap-ignorees{color:var(--rose);font-weight:600}
 .ad-invisible{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}

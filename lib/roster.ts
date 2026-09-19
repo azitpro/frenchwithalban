@@ -262,6 +262,24 @@ const ENTETES: Record<string, number> = {
 };
 
 /**
+ * Texte d'un fichier CSV, quel que soit son encodage.
+ *
+ * Un tableur français enregistre indifféremment en UTF-8 ou en Windows-1252.
+ * On tente l'UTF-8 ; s'il en sort des caractères de remplacement, c'est que le
+ * fichier était en Windows-1252, et on relit avec cet encodage.
+ */
+export function decoderCsv(octets: ArrayBuffer | Uint8Array): string {
+  const vue = octets instanceof Uint8Array ? octets : new Uint8Array(octets);
+  const utf8 = new TextDecoder('utf-8').decode(vue);
+  if (!utf8.includes('�')) return utf8;
+  try {
+    return new TextDecoder('windows-1252').decode(vue);
+  } catch {
+    return utf8;
+  }
+}
+
+/**
  * Lit le CSV exporté du tableur : séparateur « ; », décimales à la virgule,
  * colonnes calculées ignorées puisqu'elles sont recalculées, ligne TOTAL écartée.
  */
