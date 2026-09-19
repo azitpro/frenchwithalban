@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { AdminShell } from '../admin-ui';
 import { useDocumentEnregistre } from '../use-document';
 import {
-  CRITERES, DEVISES, EMPTY_ROSTER, NOM_MAX, PLATEFORMES, SYMBOLE, TEXTE_MAX,
+  DEVISES, EMPTY_ROSTER, NOM_MAX, PLATEFORMES, SYMBOLE, TEXTE_MAX,
   calculer, decoderCsv, lireCsv, nouvelId,
 } from '@/lib/roster';
-import type { Devise, EleveRoster, Plateforme, Reglages, Roster } from '@/lib/roster';
+import type { Devise, EleveRoster, LigneRoster, Plateforme, Reglages, Roster, Sens, Tri } from '@/lib/roster';
 
 // Page protégée par proxy.ts (authentification HTTP Basic) : le navigateur envoie le même
 // mot de passe à /api/admin/roster.
@@ -17,6 +17,17 @@ import type { Devise, EleveRoster, Plateforme, Reglages, Roster } from '@/lib/ro
 const eur = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const freq = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 });
 const pct = (n: number | null) => (n === null ? '—' : `${Math.round(n)} %`);
+
+/** Les colonnes du tableau, dans l'ordre, avec la clé de tri de chacune. */
+const COLONNES: { tri: Tri; titre: string; nombre: boolean; aide?: string }[] = [
+  { tri: 'nom', titre: 'Élève', nombre: false },
+  { tri: 'plateforme', titre: 'Plateforme', nombre: false },
+  { tri: 'tarif', titre: 'Tarif brut', nombre: true, aide: 'Ce que paie l’élève. Le tri se fait sur la valeur en euros, les devises n’étant pas comparables entre elles.' },
+  { tri: 'sansCommission', titre: 'Sans commission', nombre: true, aide: 'En euros, une fois la commission de la plateforme déduite.' },
+  { tri: 'sansUrssaf', titre: 'Sans URSSAF', nombre: true, aide: 'Ce qu’il vous reste vraiment, cotisations déduites.' },
+  { tri: 'frequence', titre: 'Fréquence', nombre: true, aide: 'Cours par semaine.' },
+  { tri: 'assiduite', titre: 'Assiduité', nombre: true, aide: 'Les élèves non évalués restent en bas du classement.' },
+];
 
 export default function AdminPricing() {
   /* ---------- tarifs publics ---------- */
@@ -68,6 +79,8 @@ export default function AdminPricing() {
   const { donnees: roster, chargement, fatal, erreur, avert, etat, appliquer } =
     useDocumentEnregistre<Roster>('/api/admin/roster', 'roster', EMPTY_ROSTER, 'Le roster a été modifié ailleurs : la version du serveur est affichée.');
 
+  const [tri, setTri] = useState<Tri>('sansUrssaf');
+  const [sens, setSens] = useState<Sens>('desc');
   const [ouvert, setOuvert] = useState('');
   const [csv, setCsv] = useState('');
   const [apercu, setApercu] = useState<{ eleves: EleveRoster[]; ignorees: string[] } | null>(null);
@@ -75,7 +88,15 @@ export default function AdminPricing() {
   const [survol, setSurvol] = useState(false);
   const [nomFichier, setNomFichier] = useState('');
 
-  const { lignes, totaux } = useMemo(() => calculer(roster), [roster]);
+  const { lignes, totaux } = useMemo(() => calculer(roster, tri, sens), [roster, tri, sens]);
+
+  /** Un clic sur un en-tête trie dessus ; un second inverse le sens. */
+  function trierPar(cle: Tri) {
+    if (cle === tri) { setSens(sens === 'asc' ? 'desc' : 'asc'); return; }
+    setTri(cle);
+    // un nom se lit de A à Z, un montant se regarde du plus gros au plus petit
+    setSens(cle === 'nom' || cle === 'plateforme' ? 'asc' : 'desc');
+  }
 
   const modifier = (id: string, champ: keyof EleveRoster, valeur: unknown) =>
     appliquer((r) => ({ ...r, eleves: r.eleves.map((e) => (e.id === id ? { ...e, [champ]: valeur } : e)) }));
@@ -86,7 +107,7 @@ export default function AdminPricing() {
   function ajouter() {
     const e: EleveRoster = {
       id: nouvelId(), nom: 'Nouvel élève', plateforme: 'Direct', tarif: 20, devise: 'EUR',
-      frequence: 1, relation: null, horaire: null, prix: null, assiduite: null, derniereAugmentation: '', note: '',
+      frequence: 1, assiduite: null, derniereAugmentation: '', note: '',
     };
     appliquer((r) => ({ ...r, eleves: [...r.eleves, e] }));
     setOuvert(e.id);
@@ -125,13 +146,13 @@ export default function AdminPricing() {
     setCsv('');
   }
 
-  const nombre = (v: number) => (Number.isFinite(v) ? eur.format(v) : '—');
+  const montant = (v: number) => (Number.isFinite(v) ? `${eur.format(v)} €` : '—');
 
   return (
     <AdminShell
       titre="Tarifs"
       largeur="large"
-      intro="Le prix réel est affiché barré sur la page de réservation, le prix remisé à côté. En dessous, le roster de vos élèves : ce que chacun rapporte réellement."
+      intro="Le prix réel est affiché barré sur la page de réservation, le prix remisé à côté. En dessous, le roster : ce que chaque élève vous rapporte réellement."
       actions={<span className="ap-etat" aria-live="polite">{chargement ? '' : etat}</span>}
     >
       <style href="admin-pricing" precedence="default">{CSS}</style>
@@ -174,8 +195,8 @@ export default function AdminPricing() {
       <section className="ad-carte ap-roster" aria-labelledby="ap-roster-titre">
         <h2 className="ad-h2" id="ap-roster-titre">Roster des élèves</h2>
         <p className="ad-aide">
-          Seuls le tarif, la plateforme, la fréquence et les quatre critères sont enregistrés.
-          Le net horaire, les revenus et le score sont recalculés : changez la commission ou un taux de change, tout suit.
+          Cliquez sur un titre de colonne pour trier dessus, une seconde fois pour inverser.
+          Les montants sont recalculés à chaque affichage : changez la commission ou les cotisations, tout suit.
         </p>
 
         {fatal && <p className="ad-message ad-erreur">{fatal}</p>}
@@ -186,11 +207,19 @@ export default function AdminPricing() {
         {!chargement && !fatal && (
           <>
             <details className="ap-reglages">
-              <summary>Commission et taux de change</summary>
-              <div className="ap-grille ap-grille-4">
+              <summary>Commission, cotisations et taux de change</summary>
+              <div className="ap-grille ap-grille-3">
                 <label className="ad-champ"><span>Commission Preply (%)</span>
                   <input type="number" step="0.5" min="0" max="99" value={Math.round(roster.reglages.commissionPreply * 1000) / 10}
                     onChange={(e) => modifierReglage('commissionPreply', Number(e.target.value) / 100)} />
+                </label>
+                <label className="ad-champ"><span>Cotisations URSSAF (%)</span>
+                  <input type="number" step="0.1" min="0" max="99" value={Math.round(roster.reglages.cotisationsUrssaf * 1000) / 10}
+                    onChange={(e) => modifierReglage('cotisationsUrssaf', Number(e.target.value) / 100)} />
+                </label>
+                <label className="ad-champ"><span>Semaines par mois</span>
+                  <input type="number" step="0.01" min="1" max="6" value={roster.reglages.semainesParMois}
+                    onChange={(e) => modifierReglage('semainesParMois', Number(e.target.value))} />
                 </label>
                 <label className="ad-champ"><span>1 $ en €</span>
                   <input type="number" step="0.001" min="0.001" value={roster.reglages.tauxUSD}
@@ -200,11 +229,10 @@ export default function AdminPricing() {
                   <input type="number" step="0.001" min="0.001" value={roster.reglages.tauxGBP}
                     onChange={(e) => modifierReglage('tauxGBP', Number(e.target.value))} />
                 </label>
-                <label className="ad-champ"><span>Semaines par mois</span>
-                  <input type="number" step="0.01" min="1" max="6" value={roster.reglages.semainesParMois}
-                    onChange={(e) => modifierReglage('semainesParMois', Number(e.target.value))} />
-                </label>
               </div>
+              <p className="ad-aide ap-verifier">
+                Le taux URSSAF est à vérifier selon votre régime : j’ai mis 24,6 % par défaut.
+              </p>
             </details>
 
             {lignes.length === 0 ? (
@@ -214,47 +242,46 @@ export default function AdminPricing() {
                 <table className="ap-table">
                   <thead>
                     <tr>
-                      <th scope="col">Élève</th>
-                      <th scope="col">Plateforme</th>
-                      <th scope="col" className="ap-num">Tarif</th>
-                      <th scope="col" className="ap-num">Net/h</th>
-                      <th scope="col" className="ap-num">% moyen</th>
-                      <th scope="col" className="ap-num">Fréq.</th>
-                      <th scope="col" className="ap-num">Hebdo</th>
-                      <th scope="col" className="ap-num">Mensuel</th>
-                      {CRITERES.map((c) => <th scope="col" key={c.cle} className="ap-num">{c.titre}</th>)}
-                      <th scope="col" className="ap-num">Score</th>
-                      <th scope="col">Dern. augm.</th>
-                      <th scope="col">Note</th>
+                      {COLONNES.map((c) => (
+                        <th key={c.tri} scope="col" className={c.nombre ? 'ap-num' : ''}
+                          aria-sort={tri === c.tri ? (sens === 'asc' ? 'ascending' : 'descending') : 'none'}>
+                          <button type="button" onClick={() => trierPar(c.tri)} title={c.aide}>
+                            {c.titre}
+                            <span className="ap-fleche" aria-hidden="true">{tri === c.tri ? (sens === 'asc' ? '▲' : '▼') : '⇅'}</span>
+                          </button>
+                        </th>
+                      ))}
                       <th scope="col"><span className="ad-invisible">Actions</span></th>
                     </tr>
                   </thead>
                   <tbody>
                     {lignes.map((l) => (
-                      <RowGroup key={l.id} l={l} ouvert={ouvert === l.id}
+                      <Ligne key={l.id} l={l} ouvert={ouvert === l.id}
                         basculer={() => setOuvert(ouvert === l.id ? '' : l.id)}
-                        modifier={modifier} supprimer={supprimer} nombre={nombre} />
+                        modifier={modifier} supprimer={supprimer} montant={montant} />
                     ))}
                   </tbody>
                   <tfoot>
                     <tr>
-                      <th scope="row">Total · {totaux.nbEleves} élèves</th>
+                      <th scope="row">{totaux.nbEleves} élèves</th>
                       <td />
                       <td />
-                      <td className="ap-num">{nombre(totaux.netMoyen)} €</td>
                       <td />
+                      <td className="ap-num">{montant(totaux.hebdo)} / sem.</td>
                       <td className="ap-num">{freq.format(totaux.frequence)}</td>
-                      <td className="ap-num">{nombre(totaux.hebdo)} €</td>
-                      <td className="ap-num">{nombre(totaux.mensuel)} €</td>
-                      {CRITERES.map((c) => <td key={c.cle} className="ap-num">{pct(totaux.criteres[c.cle])}</td>)}
-                      <td className="ap-num">{pct(totaux.scoreMoyen)}</td>
-                      <td />
-                      <td />
+                      <td className="ap-num">{pct(totaux.assiduiteMoyenne)}</td>
                       <td />
                     </tr>
                   </tfoot>
                 </table>
               </div>
+            )}
+
+            {lignes.length > 0 && (
+              <p className="ap-bilan">
+                Net de tout : <strong>{montant(totaux.hebdo)}</strong> par semaine ·{' '}
+                <strong>{montant(totaux.mensuel)}</strong> par mois
+              </p>
             )}
 
             <div className="ap-actions">
@@ -264,7 +291,7 @@ export default function AdminPricing() {
             <details className="ap-import">
               <summary>Importer depuis un CSV</summary>
               <p className="ad-aide">
-                Choisissez le fichier exporté de votre tableur, ou déposez-le ici. Les colonnes calculées sont ignorées puisque le site les recalcule.
+                Choisissez le fichier exporté de votre tableur, ou déposez-le ici. Les colonnes inconnues sont ignorées.
                 <strong> L’import remplace tout le roster.</strong>
               </p>
 
@@ -311,35 +338,33 @@ export default function AdminPricing() {
 /* ---------- une ligne, et son formulaire de modification ---------- */
 
 type LigneProps = {
-  l: ReturnType<typeof calculer>['lignes'][number];
+  l: LigneRoster;
   ouvert: boolean;
   basculer: () => void;
   modifier: (id: string, champ: keyof EleveRoster, valeur: unknown) => void;
   supprimer: (id: string) => void;
-  nombre: (v: number) => string;
+  montant: (v: number) => string;
 };
 
-function RowGroup({ l, ouvert, basculer, modifier, supprimer, nombre }: LigneProps) {
+function Ligne({ l, ouvert, basculer, modifier, supprimer, montant }: LigneProps) {
   const [confirme, setConfirme] = useState(false);
   return (
     <>
       <tr className={ouvert ? 'ap-ouvert' : ''}>
-        <th scope="row">{l.nom}</th>
-        <td>{l.plateforme}</td>
+        <th scope="row">
+          {l.nom}
+          {l.note && <span className="ap-tag">{l.note}</span>}
+        </th>
+        <td><span className={`ap-plateforme ap-${l.plateforme.toLowerCase()}`}>{l.plateforme}</span></td>
         <td className="ap-num">{l.tarif} {SYMBOLE[l.devise]}</td>
-        <td className="ap-num ap-fort">{nombre(l.net)} €</td>
-        <td className="ap-num">{Math.round(l.partNetMoyen)} %</td>
+        <td className="ap-num">{montant(l.sansCommission)}</td>
+        <td className="ap-num ap-fort">{montant(l.sansUrssaf)}</td>
         <td className="ap-num">{freq.format(l.frequence)}</td>
-        <td className="ap-num">{nombre(l.hebdo)} €</td>
-        <td className="ap-num">{nombre(l.mensuel)} €</td>
-        {CRITERES.map((c) => <td key={c.cle} className="ap-num">{pct(l[c.cle])}</td>)}
         <td className="ap-num">
-          {l.score === null
+          {l.assiduite === null
             ? <span className="ap-rien">—</span>
-            : <span className={`ap-score${l.score < 50 ? ' ap-score-bas' : ''}`}>{pct(l.score)}</span>}
+            : <span className={`ap-assiduite${l.assiduite < 50 ? ' ap-assiduite-basse' : ''}`}>{pct(l.assiduite)}</span>}
         </td>
-        <td>{l.derniereAugmentation || <span className="ap-rien">—</span>}</td>
-        <td>{l.note ? <span className="ap-tag">{l.note}</span> : <span className="ap-rien">—</span>}</td>
         <td>
           <button className="ad-btn ad-petit" onClick={basculer} aria-expanded={ouvert}>
             {ouvert ? 'Fermer' : 'Modifier'}
@@ -349,7 +374,7 @@ function RowGroup({ l, ouvert, basculer, modifier, supprimer, nombre }: LignePro
 
       {ouvert && (
         <tr className="ap-edition">
-          <td colSpan={16}>
+          <td colSpan={8}>
             <div className="ap-form">
               <label className="ad-champ"><span>Prénom</span>
                 <input type="text" maxLength={NOM_MAX} value={l.nom} onChange={(e) => modifier(l.id, 'nom', e.target.value)} />
@@ -359,7 +384,7 @@ function RowGroup({ l, ouvert, basculer, modifier, supprimer, nombre }: LignePro
                   {PLATEFORMES.map((p) => <option key={p} value={p}>{p}</option>)}
                 </select>
               </label>
-              <label className="ad-champ"><span>Tarif</span>
+              <label className="ad-champ"><span>Tarif brut</span>
                 <input type="number" step="0.5" min="0" value={l.tarif} onChange={(e) => modifier(l.id, 'tarif', Number(e.target.value))} />
               </label>
               <label className="ad-champ"><span>Devise</span>
@@ -370,17 +395,15 @@ function RowGroup({ l, ouvert, basculer, modifier, supprimer, nombre }: LignePro
               <label className="ad-champ"><span>Cours / semaine</span>
                 <input type="number" step="0.5" min="0" value={l.frequence} onChange={(e) => modifier(l.id, 'frequence', Number(e.target.value))} />
               </label>
-              {CRITERES.map((c) => (
-                <label className="ad-champ" key={c.cle}><span>{c.titre} (%)</span>
-                  <input type="number" step="1" min="0" max="100" value={l[c.cle] ?? ''}
-                    onChange={(e) => modifier(l.id, c.cle, e.target.value === '' ? null : Number(e.target.value))} />
-                </label>
-              ))}
+              <label className="ad-champ"><span>Assiduité (%)</span>
+                <input type="number" step="1" min="0" max="100" value={l.assiduite ?? ''}
+                  onChange={(e) => modifier(l.id, 'assiduite', e.target.value === '' ? null : Number(e.target.value))} />
+              </label>
               <label className="ad-champ"><span>Dernière augmentation</span>
                 <input type="text" maxLength={TEXTE_MAX} value={l.derniereAugmentation}
                   onChange={(e) => modifier(l.id, 'derniereAugmentation', e.target.value)} />
               </label>
-              <label className="ad-champ ap-large-champ"><span>Note</span>
+              <label className="ad-champ"><span>Note</span>
                 <input type="text" maxLength={TEXTE_MAX} value={l.note} placeholder="À sortir, +1 $ (avril 2027)…"
                   onChange={(e) => modifier(l.id, 'note', e.target.value)} />
               </label>
@@ -405,7 +428,7 @@ function RowGroup({ l, ouvert, basculer, modifier, supprimer, nombre }: LignePro
 const CSS = `
 .ap-etat{font-size:.75rem;font-weight:700;color:var(--soft)}
 .ap-grille{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.ap-grille-4{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:12px}
+.ap-grille-3{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:12px}
 .ap-apercu{margin:20px 0;padding:16px;text-align:center;background:var(--bg);border:2.5px dashed var(--ink);border-radius:16px}
 .ap-apercu .ad-label{display:block;margin-bottom:4px}
 .ap-ancien{font-size:1.15rem;color:var(--soft);text-decoration:line-through;margin-right:10px}
@@ -417,25 +440,35 @@ const CSS = `
 .ap-roster{margin-top:22px}
 .ap-reglages,.ap-import{margin:14px 0}
 .ap-reglages summary,.ap-import summary{cursor:pointer;font-weight:700;font-size:.9rem}
+.ap-verifier{margin-top:10px}
 .ap-defilement{overflow-x:auto;margin:14px -4px 0}
-.ap-table{width:100%;min-width:1080px;border-collapse:collapse;font-size:.86rem}
-.ap-table th,.ap-table td{padding:6px 9px;text-align:left;vertical-align:middle;border-bottom:2px solid #eae5f2;white-space:nowrap}
-.ap-table thead th{background:var(--ink);color:#fff;font-family:var(--titre);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;border-bottom:0}
+.ap-table{width:100%;min-width:720px;border-collapse:collapse;font-size:.9rem}
+.ap-table th,.ap-table td{padding:7px 10px;text-align:left;vertical-align:middle;border-bottom:2px solid #eae5f2;white-space:nowrap}
+.ap-table thead th{padding:0;background:var(--ink);border-bottom:0}
 .ap-table thead th:first-child{border-radius:10px 0 0 0}
 .ap-table thead th:last-child{border-radius:0 10px 0 0}
+.ap-table thead button{display:flex;align-items:center;gap:6px;width:100%;padding:7px 10px;background:none;border:0;color:#fff;font-family:var(--titre);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.ap-table thead .ap-num button{justify-content:flex-end}
+.ap-table thead button:hover{background:rgba(255,255,255,.14)}
+.ap-fleche{opacity:.45;font-size:.8em}
+.ap-table thead th[aria-sort="ascending"] .ap-fleche,.ap-table thead th[aria-sort="descending"] .ap-fleche{opacity:1;color:var(--lime)}
 .ap-table tbody th{font-weight:700}
 .ap-table .ap-num{text-align:right}
 .ap-table tbody tr.ap-ouvert{background:#f6f3ff}
-.ap-fort{font-weight:700}
+.ap-fort{font-weight:800}
 .ap-rien{color:var(--soft)}
-.ap-score{display:inline-block;min-width:44px;padding:1px 8px;background:var(--lime);border:2px solid var(--ink);border-radius:99px;text-align:center;font-weight:800;font-size:.78rem}
-.ap-score-bas{background:var(--lemon)}
-.ap-tag{display:inline-block;padding:1px 8px;background:#ffe1ee;border:2px solid var(--ink);border-radius:99px;font-size:.76rem;font-weight:700}
+.ap-plateforme{display:inline-block;padding:1px 11px;border:2px solid var(--ink);border-radius:99px;font-size:.78rem;font-weight:800}
+.ap-direct{background:var(--lime)}
+.ap-preply{background:var(--orange)}
+.ap-assiduite{display:inline-block;min-width:46px;padding:1px 8px;background:var(--aqua);border:2px solid var(--ink);border-radius:99px;text-align:center;font-weight:800;font-size:.78rem}
+.ap-assiduite-basse{background:var(--lemon)}
+.ap-tag{display:inline-block;margin-left:8px;padding:0 8px;background:#ffe1ee;border:2px solid var(--ink);border-radius:99px;font-size:.72rem;font-weight:700}
 .ap-table tfoot th,.ap-table tfoot td{border-top:3px solid var(--ink);border-bottom:0;font-weight:800;background:var(--bg)}
+.ap-bilan{margin:14px 0 0;padding:10px 14px;background:var(--lime);border:2.5px solid var(--ink);border-radius:12px;font-size:.92rem}
+.ap-bilan strong{font-family:var(--titre);font-size:1.08rem}
 
 .ap-edition td{background:#f6f3ff;white-space:normal}
 .ap-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:6px 0 10px}
-.ap-large-champ{grid-column:span 2}
 .ap-suppression{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
 
 .ap-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
@@ -448,9 +481,9 @@ const CSS = `
 .ap-collage{margin-top:14px}
 .ap-collage summary{cursor:pointer;font-size:.84rem;color:var(--soft);font-weight:700}
 .ap-collage .ap-csv{margin-top:8px}
-@media (prefers-reduced-motion:reduce){.ap-depot{transition:none}}
 .ap-apercu-csv{margin-top:10px;padding:10px 14px;background:var(--bg);border:2.5px dashed var(--ink);border-radius:12px;font-size:.86rem}
 .ap-ignorees{color:var(--rose);font-weight:600}
 .ad-invisible{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-@media (max-width:760px){.ap-grille,.ap-grille-4{grid-template-columns:minmax(0,1fr)}.ap-large-champ{grid-column:auto}}
+@media (prefers-reduced-motion:reduce){.ap-depot{transition:none}}
+@media (max-width:760px){.ap-grille,.ap-grille-3{grid-template-columns:minmax(0,1fr)}}
 `;

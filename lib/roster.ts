@@ -1,9 +1,10 @@
 /**
- * Roster des élèves : tarif, plateforme, fréquence et critères d'évaluation.
+ * Roster des élèves : ce que chacun rapporte vraiment, une fois la commission
+ * de la plateforme et les cotisations URSSAF déduites.
  *
- * Seuls les faits bruts sont stockés. Tout le reste — net horaire, revenu
- * hebdomadaire et mensuel, part du net moyen, score — est recalculé à l'affichage,
- * pour qu'un changement de commission ou de taux de change se propage partout.
+ * Seuls les faits bruts sont stockés — tarif, plateforme, fréquence, assiduité.
+ * Les montants nets sont recalculés à l'affichage, pour qu'un changement de
+ * commission, de taux de change ou de cotisations se propage partout.
  *
  * Prénoms et tarifs sont des données personnelles : ce module n'est utilisé que par
  * l'administration, jamais par une page ou une API publique.
@@ -16,15 +17,6 @@ export const DEVISES = ['EUR', 'USD', 'GBP'] as const;
 export type Devise = (typeof DEVISES)[number];
 
 export const SYMBOLE: Record<Devise, string> = { EUR: '€', USD: '$', GBP: '£' };
-
-/** Les quatre critères notés, dans l'ordre d'affichage. */
-export const CRITERES = [
-  { cle: 'relation', titre: 'Relation' },
-  { cle: 'horaire', titre: 'Horaire' },
-  { cle: 'prix', titre: 'Prix' },
-  { cle: 'assiduite', titre: 'Assiduité' },
-] as const;
-export type CleCritere = (typeof CRITERES)[number]['cle'];
 
 export const NOM_MAX = 60;
 export const TEXTE_MAX = 120;
@@ -40,11 +32,9 @@ export type EleveRoster = {
   devise: Devise;
   /** Cours par semaine : 0,5 pour un cours toutes les deux semaines. */
   frequence: number;
-  /** Notes sur 100, ou null quand le critère n'est pas encore évalué. */
-  relation: number | null;
-  horaire: number | null;
-  prix: number | null;
+  /** Note sur 100, ou null tant qu'elle n'est pas évaluée. */
   assiduite: number | null;
+  /** Gardés pour mémoire, hors du tableau : « juin 2026 », « À sortir ». */
   derniereAugmentation: string;
   note: string;
 };
@@ -52,6 +42,8 @@ export type EleveRoster = {
 export type Reglages = {
   /** Part prélevée par Preply, entre 0 et 1. */
   commissionPreply: number;
+  /** Cotisations URSSAF, entre 0 et 1, appliquées après la commission. */
+  cotisationsUrssaf: number;
   /** Un dollar vaut tant d'euros. */
   tauxUSD: number;
   /** Une livre vaut tant d'euros. */
@@ -63,6 +55,7 @@ export type Roster = { eleves: EleveRoster[]; reglages: Reglages };
 
 export const REGLAGES_DEFAUT: Reglages = {
   commissionPreply: 0.18,
+  cotisationsUrssaf: 0.246,
   tauxUSD: 0.86,
   tauxGBP: 1.167,
   semainesParMois: 4.33,
@@ -79,86 +72,82 @@ export function tauxDe(devise: Devise, r: Reglages): number {
   return devise === 'EUR' ? 1 : devise === 'USD' ? r.tauxUSD : r.tauxGBP;
 }
 
-/** Ce qui reste réellement, en euros, pour une heure de cours. */
-export function netHoraire(e: EleveRoster, r: Reglages): number {
+/** Tarif converti en euros, commission de la plateforme déduite. */
+export function sansCommission(e: EleveRoster, r: Reglages): number {
   const commission = e.plateforme === 'Preply' ? r.commissionPreply : 0;
   return e.tarif * (1 - commission) * tauxDe(e.devise, r);
 }
 
-/**
- * Moyenne des quatre critères — et seulement s'ils sont tous renseignés :
- * noter un élève 100 % sur un seul critère le placerait en tête du classement
- * sans rien dire de fiable.
- */
-export function score(e: EleveRoster): number | null {
-  const notes = CRITERES.map((c) => e[c.cle]);
-  return notes.every((n): n is number => n !== null)
-    ? notes.reduce((s, n) => s + n, 0) / notes.length
-    : null;
+/** Ce qui reste une fois les cotisations payées. */
+export function sansUrssaf(e: EleveRoster, r: Reglages): number {
+  return sansCommission(e, r) * (1 - r.cotisationsUrssaf);
 }
 
-export type LigneCalculee = EleveRoster & {
-  net: number;
+export type LigneRoster = EleveRoster & {
+  sansCommission: number;
+  sansUrssaf: number;
+  /** Revenu hebdomadaire net de tout, pour les totaux. */
   hebdo: number;
-  mensuel: number;
-  /** Part du net horaire moyen, en pourcentage. */
-  partNetMoyen: number;
-  score: number | null;
 };
 
 export type Totaux = {
   nbEleves: number;
-  netMoyen: number;
   frequence: number;
   hebdo: number;
   mensuel: number;
-  /** Moyenne de chaque critère sur les élèves qui l'ont renseigné. */
-  criteres: Record<CleCritere, number | null>;
-  scoreMoyen: number | null;
+  assiduiteMoyenne: number | null;
 };
 
-const moyenne = (l: number[]) => (l.length ? l.reduce((s, n) => s + n, 0) / l.length : null);
+/** Les colonnes sur lesquelles on peut trier. */
+export const TRIS = ['nom', 'plateforme', 'tarif', 'sansCommission', 'sansUrssaf', 'frequence', 'assiduite'] as const;
+export type Tri = (typeof TRIS)[number];
+export type Sens = 'asc' | 'desc';
 
-/** Lignes calculées, triées par score décroissant — les non évalués à la fin. */
-export function calculer(roster: Roster): { lignes: LigneCalculee[]; totaux: Totaux } {
+function comparer(a: LigneRoster, b: LigneRoster, tri: Tri): number {
+  switch (tri) {
+    case 'nom': return a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' });
+    case 'plateforme': return a.plateforme.localeCompare(b.plateforme, 'fr');
+    // le tarif brut n'est comparable qu'une fois ramené à une même monnaie
+    case 'tarif': return a.sansCommission - b.sansCommission;
+    case 'assiduite': {
+      // les élèves non évalués restent en bas, quel que soit le sens
+      if (a.assiduite === null || b.assiduite === null) return 0;
+      return a.assiduite - b.assiduite;
+    }
+    default: return a[tri] - b[tri];
+  }
+}
+
+/** Lignes calculées et triées, plus les totaux. */
+export function calculer(roster: Roster, tri: Tri = 'sansUrssaf', sens: Sens = 'desc'): { lignes: LigneRoster[]; totaux: Totaux } {
   const { reglages } = roster;
-  const nets = roster.eleves.map((e) => netHoraire(e, reglages));
-  const netMoyen = nets.length ? nets.reduce((s, n) => s + n, 0) / nets.length : 0;
 
-  const lignes: LigneCalculee[] = roster.eleves.map((e, i) => {
-    const net = nets[i];
-    const hebdo = net * e.frequence;
-    return {
-      ...e,
-      net,
-      hebdo,
-      mensuel: hebdo * reglages.semainesParMois,
-      partNetMoyen: netMoyen > 0 ? (net / netMoyen) * 100 : 0,
-      score: score(e),
-    };
+  const lignes: LigneRoster[] = roster.eleves.map((e) => {
+    const net = sansUrssaf(e, reglages);
+    return { ...e, sansCommission: sansCommission(e, reglages), sansUrssaf: net, hebdo: net * e.frequence };
   });
 
+  const signe = sens === 'asc' ? 1 : -1;
   lignes.sort((a, b) => {
-    if (a.score === null && b.score === null) return a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' });
-    if (a.score === null) return 1;
-    if (b.score === null) return -1;
-    return b.score - a.score || a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' });
+    // un élève sans assiduité n'a pas sa place en tête du classement
+    if (tri === 'assiduite') {
+      if (a.assiduite === null && b.assiduite !== null) return 1;
+      if (b.assiduite === null && a.assiduite !== null) return -1;
+    }
+    return comparer(a, b, tri) * signe || a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' });
   });
 
-  const criteres = Object.fromEntries(
-    CRITERES.map((c) => [c.cle, moyenne(roster.eleves.map((e) => e[c.cle]).filter((n): n is number => n !== null))]),
-  ) as Record<CleCritere, number | null>;
+  const notees = lignes.map((l) => l.assiduite).filter((n): n is number => n !== null);
+  const hebdo = lignes.reduce((s, l) => s + l.hebdo, 0);
 
   return {
     lignes,
     totaux: {
       nbEleves: lignes.length,
-      netMoyen,
       frequence: lignes.reduce((s, l) => s + l.frequence, 0),
-      hebdo: lignes.reduce((s, l) => s + l.hebdo, 0),
-      mensuel: lignes.reduce((s, l) => s + l.mensuel, 0),
-      criteres,
-      scoreMoyen: moyenne(lignes.map((l) => l.score).filter((n): n is number => n !== null)),
+      hebdo,
+      mensuel: hebdo * reglages.semainesParMois,
+      assiduiteMoyenne: notees.length ? notees.reduce((s, n) => s + n, 0) / notees.length : null,
     },
   };
 }
@@ -188,11 +177,16 @@ const nombrePositif = (v: unknown, max: number, defaut: number): number => {
   return Number.isFinite(n) && n > 0 && n <= max ? Math.round(n * 1000) / 1000 : defaut;
 };
 
+const part = (v: unknown, defaut: number): number => {
+  const n = Number(v);
+  return Number.isFinite(n) && n >= 0 && n < 1 ? Math.round(n * 10000) / 10000 : defaut;
+};
+
 export function validerReglages(brut: unknown): Reglages {
   const r = brut && typeof brut === 'object' ? (brut as Partial<Reglages>) : {};
-  const commission = Number(r.commissionPreply);
   return {
-    commissionPreply: Number.isFinite(commission) && commission >= 0 && commission < 1 ? Math.round(commission * 10000) / 10000 : REGLAGES_DEFAUT.commissionPreply,
+    commissionPreply: part(r.commissionPreply, REGLAGES_DEFAUT.commissionPreply),
+    cotisationsUrssaf: part(r.cotisationsUrssaf, REGLAGES_DEFAUT.cotisationsUrssaf),
     tauxUSD: nombrePositif(r.tauxUSD, 100, REGLAGES_DEFAUT.tauxUSD),
     tauxGBP: nombrePositif(r.tauxGBP, 100, REGLAGES_DEFAUT.tauxGBP),
     semainesParMois: nombrePositif(r.semainesParMois, 6, REGLAGES_DEFAUT.semainesParMois),
@@ -221,9 +215,6 @@ export function validerRoster(brut: unknown): { ok: true; value: Roster } | { ok
       tarif: nombrePositif(e.tarif, TARIF_MAX, 0),
       devise: DEVISES.includes(e.devise as Devise) ? (e.devise as Devise) : 'EUR',
       frequence: nombrePositif(e.frequence, FREQUENCE_MAX, 1),
-      relation: noteValide(e.relation),
-      horaire: noteValide(e.horaire),
-      prix: noteValide(e.prix),
       assiduite: noteValide(e.assiduite),
       derniereAugmentation: texteCourt(e.derniereAugmentation, TEXTE_MAX),
       note: texteCourt(e.note, TEXTE_MAX),
@@ -257,9 +248,49 @@ function lireTarif(v: string): { tarif: number; devise: Devise } | null {
   return { tarif: montant, devise };
 }
 
-const ENTETES: Record<string, number> = {
-  nom: 0, plateforme: 1, tarif: 2, frequence: 5, relation: 8, horaire: 9, prix: 10, assiduite: 11, augmentation: 13, note: 14,
+type CleColonne = 'nom' | 'plateforme' | 'tarif' | 'frequence' | 'assiduite' | 'augmentation' | 'note';
+
+/** Disposition de secours, quand le fichier n'a pas de ligne d'en-tête. */
+const POSITIONS: Record<CleColonne, number> = {
+  nom: 0, plateforme: 1, tarif: 2, frequence: 5, assiduite: 11, augmentation: 13, note: 14,
 };
+
+/** « Freq./sem » et « Assiduité » deviennent « freqsem » et « assiduite ». */
+const normaliser = (s: string) =>
+  s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+/** Un en-tête par colonne : le premier qui correspond gagne. */
+const RECONNAISSANCE: [CleColonne, (t: string) => boolean][] = [
+  ['nom', (t) => t.startsWith('nom') || t.startsWith('prenom') || t.startsWith('eleve')],
+  ['plateforme', (t) => t.startsWith('plateforme')],
+  ['tarif', (t) => t.startsWith('tarif')],
+  ['frequence', (t) => t.startsWith('freq')],
+  ['assiduite', (t) => t.startsWith('assiduit')],
+  ['augmentation', (t) => t.includes('augm')],
+  ['note', (t) => t === 'note' || t.startsWith('commentaire') || t.startsWith('remarque')],
+];
+
+/**
+ * Associe chaque donnée à sa colonne d'après les titres, pour qu'un tableur réorganisé
+ * n'envoie pas les valeurs dans le mauvais champ. Renvoie null si la ligne n'est pas un en-tête.
+ */
+function lireEntete(ligne: string): Record<CleColonne, number> | null {
+  const cellules = ligne.split(';').map((c) => normaliser(c));
+  const colonnes = {} as Record<CleColonne, number>;
+  for (const [cle, correspond] of RECONNAISSANCE) {
+    const i = cellules.findIndex((t) => t && correspond(t));
+    if (i !== -1) colonnes[cle] = i;
+  }
+  if (colonnes.nom === undefined) return null; // sans colonne « Nom », ce n'est pas un en-tête
+
+  // la colonne des notes n'a pas toujours de titre : on prend la première colonne sans titre après les autres
+  if (colonnes.note === undefined) {
+    const dernier = Math.max(...Object.values(colonnes));
+    const i = cellules.findIndex((t, j) => j > dernier && !t);
+    if (i !== -1) colonnes.note = i;
+  }
+  return colonnes;
+}
 
 /**
  * Texte d'un fichier CSV, quel que soit son encodage.
@@ -280,48 +311,46 @@ export function decoderCsv(octets: ArrayBuffer | Uint8Array): string {
 }
 
 /**
- * Lit le CSV exporté du tableur : séparateur « ; », décimales à la virgule,
- * colonnes calculées ignorées puisqu'elles sont recalculées, ligne TOTAL écartée.
+ * Lit le CSV exporté du tableur : séparateur « ; », décimales à la virgule.
+ * Les colonnes inconnues sont ignorées, la ligne TOTAL écartée.
  */
 export function lireCsv(texte: string): { ok: true; eleves: EleveRoster[]; ignorees: string[] } | { ok: false; error: string } {
   // un fichier enregistré en UTF-8 commence souvent par une marque d'ordre invisible
   const lignes = texte.replace(/^﻿/, '').split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
   if (!lignes.length) return { ok: false, error: 'Le fichier est vide.' };
 
-  const premiere = lignes[0].toLowerCase().trimStart();
-  const debut = premiere.startsWith('nom;') || premiere.startsWith('nom ;') ? 1 : 0;
+  const entete = lireEntete(lignes[0]);
+  const colonnes = entete ?? POSITIONS;
+  const debut = entete ? 1 : 0;
   if (lignes.length === debut) return { ok: false, error: 'Le fichier ne contient aucune ligne d’élève.' };
 
   const eleves: EleveRoster[] = [];
   const ignorees: string[] = [];
   for (const ligne of lignes.slice(debut)) {
     const c = ligne.split(';');
-    const nom = nettoyerNom(c[ENTETES.nom]);
+    /** Cellule d'une colonne, vide si cette colonne n'existe pas dans le fichier. */
+    const cellule = (cle: CleColonne) => (colonnes[cle] === undefined ? '' : c[colonnes[cle]] ?? '');
+
+    const nom = nettoyerNom(cellule('nom'));
     if (!nom) { ignorees.push(ligne.slice(0, 40)); continue; }
     if (nom.toUpperCase() === 'TOTAL') continue;
 
-    const tarif = lireTarif(c[ENTETES.tarif] ?? '');
+    const tarif = lireTarif(cellule('tarif'));
     if (!tarif) { ignorees.push(nom + ' — tarif illisible'); continue; }
 
-    const frequence = nombreFr(c[ENTETES.frequence] ?? '');
-    const note = (i: number) => {
-      const n = nombreFr(c[i] ?? '');
-      return n === null || n < 0 || n > 100 ? null : n;
-    };
+    const frequence = nombreFr(cellule('frequence'));
+    const assiduite = nombreFr(cellule('assiduite'));
 
     eleves.push({
       id: nouvelId(),
       nom,
-      plateforme: (c[ENTETES.plateforme] ?? '').trim().toLowerCase() === 'preply' ? 'Preply' : 'Direct',
+      plateforme: cellule('plateforme').trim().toLowerCase() === 'preply' ? 'Preply' : 'Direct',
       tarif: tarif.tarif,
       devise: tarif.devise,
       frequence: frequence && frequence > 0 && frequence <= FREQUENCE_MAX ? frequence : 1,
-      relation: note(ENTETES.relation),
-      horaire: note(ENTETES.horaire),
-      prix: note(ENTETES.prix),
-      assiduite: note(ENTETES.assiduite),
-      derniereAugmentation: texteCourt(c[ENTETES.augmentation], TEXTE_MAX),
-      note: texteCourt(c[ENTETES.note], TEXTE_MAX),
+      assiduite: assiduite === null || assiduite < 0 || assiduite > 100 ? null : assiduite,
+      derniereAugmentation: texteCourt(cellule('augmentation'), TEXTE_MAX),
+      note: texteCourt(cellule('note'), TEXTE_MAX),
     });
   }
 
