@@ -18,6 +18,18 @@ export type Devise = (typeof DEVISES)[number];
 
 export const SYMBOLE: Record<Devise, string> = { EUR: '€', USD: '$', GBP: '£' };
 
+/** Notes d'assiduité, de la meilleure à la pire. */
+export const NOTES = ['A', 'B', 'C', 'D', 'F'] as const;
+export type Note = (typeof NOTES)[number];
+
+/** Barème à quatre points, pour classer et faire une moyenne. */
+export const POINTS: Record<Note, number> = { A: 4, B: 3, C: 2, D: 1, F: 0 };
+
+/** Lettre correspondant à une moyenne de points. */
+export function lettreDe(points: number): Note {
+  return NOTES.find((n) => POINTS[n] <= Math.round(points)) ?? 'F';
+}
+
 export const NOM_MAX = 60;
 export const TEXTE_MAX = 120;
 export const ELEVES_MAX = 300;
@@ -32,8 +44,8 @@ export type EleveRoster = {
   devise: Devise;
   /** Cours par semaine : 0,5 pour un cours toutes les deux semaines. */
   frequence: number;
-  /** Note sur 100, ou null tant qu'elle n'est pas évaluée. */
-  assiduite: number | null;
+  /** Note attribuée à la main, ou null tant que l'élève n'est pas évalué. */
+  assiduite: Note | null;
   /** Gardés pour mémoire, hors du tableau : « juin 2026 », « À sortir ». */
   derniereAugmentation: string;
   note: string;
@@ -95,6 +107,7 @@ export type Totaux = {
   frequence: number;
   hebdo: number;
   mensuel: number;
+  /** Moyenne des notes, en points sur quatre. */
   assiduiteMoyenne: number | null;
 };
 
@@ -112,7 +125,7 @@ function comparer(a: LigneRoster, b: LigneRoster, tri: Tri): number {
     case 'assiduite': {
       // les élèves non évalués restent en bas, quel que soit le sens
       if (a.assiduite === null || b.assiduite === null) return 0;
-      return a.assiduite - b.assiduite;
+      return POINTS[a.assiduite] - POINTS[b.assiduite];
     }
     default: return a[tri] - b[tri];
   }
@@ -137,7 +150,7 @@ export function calculer(roster: Roster, tri: Tri = 'sansUrssaf', sens: Sens = '
     return comparer(a, b, tri) * signe || a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' });
   });
 
-  const notees = lignes.map((l) => l.assiduite).filter((n): n is number => n !== null);
+  const notees = lignes.map((l) => l.assiduite).filter((n): n is Note => n !== null).map((n) => POINTS[n]);
   const hebdo = lignes.reduce((s, l) => s + l.hebdo, 0);
 
   return {
@@ -166,11 +179,9 @@ export function nettoyerNom(v: unknown): string | null {
   return t || null;
 }
 
-const noteValide = (v: unknown): number | null => {
-  if (v === null || v === undefined || v === '') return null;
-  const n = Number(v);
-  return Number.isFinite(n) && n >= 0 && n <= 100 ? Math.round(n * 100) / 100 : null;
-};
+/** Une lettre A à F, sinon rien. */
+const noteValide = (v: unknown): Note | null =>
+  (typeof v === 'string' && NOTES.includes(v.trim().toUpperCase() as Note) ? (v.trim().toUpperCase() as Note) : null);
 
 const nombrePositif = (v: unknown, max: number, defaut: number): number => {
   const n = Number(v);
@@ -246,6 +257,18 @@ function lireTarif(v: string): { tarif: number; devise: Devise } | null {
   const montant = nombreFr(t.replace(/[^\d,.-]/g, ''));
   if (montant === null || montant <= 0) return null;
   return { tarif: montant, devise };
+}
+
+/**
+ * Lit une assiduité : une lettre si le fichier en contient déjà, sinon un pourcentage
+ * converti — les anciens exports notaient l'assiduité de 0 à 100 %.
+ */
+function lireAssiduite(v: string): Note | null {
+  const lettre = noteValide(v);
+  if (lettre) return lettre;
+  const n = nombreFr(v);
+  if (n === null || n < 0 || n > 100) return null;
+  return n >= 90 ? 'A' : n >= 75 ? 'B' : n >= 60 ? 'C' : n >= 45 ? 'D' : 'F';
 }
 
 type CleColonne = 'nom' | 'plateforme' | 'tarif' | 'frequence' | 'assiduite' | 'augmentation' | 'note';
@@ -339,7 +362,6 @@ export function lireCsv(texte: string): { ok: true; eleves: EleveRoster[]; ignor
     if (!tarif) { ignorees.push(nom + ' — tarif illisible'); continue; }
 
     const frequence = nombreFr(cellule('frequence'));
-    const assiduite = nombreFr(cellule('assiduite'));
 
     eleves.push({
       id: nouvelId(),
@@ -348,7 +370,7 @@ export function lireCsv(texte: string): { ok: true; eleves: EleveRoster[]; ignor
       tarif: tarif.tarif,
       devise: tarif.devise,
       frequence: frequence && frequence > 0 && frequence <= FREQUENCE_MAX ? frequence : 1,
-      assiduite: assiduite === null || assiduite < 0 || assiduite > 100 ? null : assiduite,
+      assiduite: lireAssiduite(cellule('assiduite')),
       derniereAugmentation: texteCourt(cellule('augmentation'), TEXTE_MAX),
       note: texteCourt(cellule('note'), TEXTE_MAX),
     });

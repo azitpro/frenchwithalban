@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { AdminShell } from '../admin-ui';
 import { useDocumentEnregistre } from '../use-document';
 import {
-  DEVISES, EMPTY_ROSTER, NOM_MAX, PLATEFORMES, SYMBOLE, TEXTE_MAX,
-  calculer, decoderCsv, lireCsv, nouvelId,
+  DEVISES, EMPTY_ROSTER, NOM_MAX, NOTES, PLATEFORMES, SYMBOLE, TEXTE_MAX,
+  calculer, decoderCsv, lettreDe, lireCsv, nouvelId,
 } from '@/lib/roster';
-import type { Devise, EleveRoster, LigneRoster, Plateforme, Reglages, Roster, Sens, Tri } from '@/lib/roster';
+import type { Devise, EleveRoster, LigneRoster, Note, Plateforme, Reglages, Roster, Sens, Tri } from '@/lib/roster';
 
 // Page protégée par proxy.ts (authentification HTTP Basic) : le navigateur envoie le même
 // mot de passe à /api/admin/roster.
@@ -16,17 +16,16 @@ import type { Devise, EleveRoster, LigneRoster, Plateforme, Reglages, Roster, Se
 
 const eur = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const freq = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 });
-const pct = (n: number | null) => (n === null ? '—' : `${Math.round(n)} %`);
 
 /** Les colonnes du tableau, dans l'ordre, avec la clé de tri de chacune. */
 const COLONNES: { tri: Tri; titre: string; nombre: boolean; aide?: string }[] = [
   { tri: 'nom', titre: 'Élève', nombre: false },
   { tri: 'plateforme', titre: 'Plateforme', nombre: false },
   { tri: 'tarif', titre: 'Tarif brut', nombre: true, aide: 'Ce que paie l’élève. Le tri se fait sur la valeur en euros, les devises n’étant pas comparables entre elles.' },
-  { tri: 'sansCommission', titre: 'Sans commission', nombre: true, aide: 'En euros, une fois la commission de la plateforme déduite.' },
-  { tri: 'sansUrssaf', titre: 'Sans URSSAF', nombre: true, aide: 'Ce qu’il vous reste vraiment, cotisations déduites.' },
+  { tri: 'sansCommission', titre: 'Sans commission', nombre: true, aide: 'En euros, une fois la commission de la plateforme déduite. Calculé, non modifiable.' },
+  { tri: 'sansUrssaf', titre: 'Sans URSSAF', nombre: true, aide: 'Ce qu’il vous reste vraiment, cotisations déduites. Calculé, non modifiable.' },
   { tri: 'frequence', titre: 'Fréquence', nombre: true, aide: 'Cours par semaine.' },
-  { tri: 'assiduite', titre: 'Assiduité', nombre: true, aide: 'Les élèves non évalués restent en bas du classement.' },
+  { tri: 'assiduite', titre: 'Assiduité', nombre: true, aide: 'Note que vous attribuez, de A à F. Les élèves non notés restent en bas du classement.' },
 ];
 
 export default function AdminPricing() {
@@ -195,8 +194,8 @@ export default function AdminPricing() {
       <section className="ad-carte ap-roster" aria-labelledby="ap-roster-titre">
         <h2 className="ad-h2" id="ap-roster-titre">Roster des élèves</h2>
         <p className="ad-aide">
-          Cliquez sur un titre de colonne pour trier dessus, une seconde fois pour inverser.
-          Les montants sont recalculés à chaque affichage : changez la commission ou les cotisations, tout suit.
+          Tout se modifie directement dans le tableau : cliquez dans une case et changez la valeur.
+          Seules les deux colonnes de net sont calculées. Cliquez sur un titre de colonne pour trier dessus, une seconde fois pour inverser.
         </p>
 
         {fatal && <p className="ad-message ad-erreur">{fatal}</p>}
@@ -251,7 +250,7 @@ export default function AdminPricing() {
                           </button>
                         </th>
                       ))}
-                      <th scope="col"><span className="ad-invisible">Actions</span></th>
+                      <th scope="col"><span className="ad-invisible">Notes et suppression</span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -269,7 +268,12 @@ export default function AdminPricing() {
                       <td />
                       <td className="ap-num">{montant(totaux.hebdo)} / sem.</td>
                       <td className="ap-num">{freq.format(totaux.frequence)}</td>
-                      <td className="ap-num">{pct(totaux.assiduiteMoyenne)}</td>
+                      <td className="ap-num">
+                        {totaux.assiduiteMoyenne === null
+                          ? <span className="ap-rien">—</span>
+                          : <span className={`ap-note-lettre ap-note-${lettreDe(totaux.assiduiteMoyenne)}`}
+                              title={`${totaux.assiduiteMoyenne.toFixed(2)} sur 4`}>{lettreDe(totaux.assiduiteMoyenne)}</span>}
+                      </td>
                       <td />
                     </tr>
                   </tfoot>
@@ -291,7 +295,8 @@ export default function AdminPricing() {
             <details className="ap-import">
               <summary>Importer depuis un CSV</summary>
               <p className="ad-aide">
-                Choisissez le fichier exporté de votre tableur, ou déposez-le ici. Les colonnes inconnues sont ignorées.
+                Choisissez le fichier exporté de votre tableur, ou déposez-le ici. Les colonnes inconnues sont ignorées,
+                et une assiduité en pourcentage est convertie en note.
                 <strong> L’import remplace tout le roster.</strong>
               </p>
 
@@ -335,7 +340,7 @@ export default function AdminPricing() {
   );
 }
 
-/* ---------- une ligne, et son formulaire de modification ---------- */
+/* ---------- une ligne : tout y est modifiable sur place ---------- */
 
 type LigneProps = {
   l: LigneRoster;
@@ -348,27 +353,54 @@ type LigneProps = {
 
 function Ligne({ l, ouvert, basculer, modifier, supprimer, montant }: LigneProps) {
   const [confirme, setConfirme] = useState(false);
+  const champ = (c: keyof EleveRoster) => (v: unknown) => modifier(l.id, c, v);
   return (
     <>
       <tr className={ouvert ? 'ap-ouvert' : ''}>
         <th scope="row">
-          {l.nom}
+          <input className="ap-saisie ap-saisie-nom" type="text" maxLength={NOM_MAX} value={l.nom}
+            aria-label={`Prénom de ${l.nom}`} onChange={(e) => champ('nom')(e.target.value)} />
           {l.note && <span className="ap-tag">{l.note}</span>}
         </th>
-        <td><span className={`ap-plateforme ap-${l.plateforme.toLowerCase()}`}>{l.plateforme}</span></td>
-        <td className="ap-num">{l.tarif} {SYMBOLE[l.devise]}</td>
-        <td className="ap-num">{montant(l.sansCommission)}</td>
-        <td className="ap-num ap-fort">{montant(l.sansUrssaf)}</td>
-        <td className="ap-num">{freq.format(l.frequence)}</td>
-        <td className="ap-num">
-          {l.assiduite === null
-            ? <span className="ap-rien">—</span>
-            : <span className={`ap-assiduite${l.assiduite < 50 ? ' ap-assiduite-basse' : ''}`}>{pct(l.assiduite)}</span>}
-        </td>
+
         <td>
-          <button className="ad-btn ad-petit" onClick={basculer} aria-expanded={ouvert}>
-            {ouvert ? 'Fermer' : 'Modifier'}
-          </button>
+          <select className={`ap-plateforme ap-${l.plateforme.toLowerCase()}`} value={l.plateforme}
+            aria-label={`Plateforme de ${l.nom}`} onChange={(e) => champ('plateforme')(e.target.value as Plateforme)}>
+            {PLATEFORMES.map((p) => <option key={p} value={p}>{p}</option>)}
+          </select>
+        </td>
+
+        <td className="ap-num">
+          <span className="ap-tarif">
+            <input className="ap-saisie ap-saisie-nombre" type="number" step="0.5" min="0" value={l.tarif}
+              aria-label={`Tarif de ${l.nom}`} onChange={(e) => champ('tarif')(Number(e.target.value))} />
+            <select className="ap-devise" value={l.devise} aria-label={`Devise de ${l.nom}`}
+              onChange={(e) => champ('devise')(e.target.value as Devise)}>
+              {DEVISES.map((d) => <option key={d} value={d}>{SYMBOLE[d]}</option>)}
+            </select>
+          </span>
+        </td>
+
+        <td className="ap-num ap-calcule">{montant(l.sansCommission)}</td>
+        <td className="ap-num ap-calcule ap-fort">{montant(l.sansUrssaf)}</td>
+
+        <td className="ap-num">
+          <input className="ap-saisie ap-saisie-nombre" type="number" step="0.5" min="0" value={l.frequence}
+            aria-label={`Cours par semaine de ${l.nom}`} onChange={(e) => champ('frequence')(Number(e.target.value))} />
+        </td>
+
+        <td className="ap-num">
+          <select className={`ap-note-lettre ap-note-${l.assiduite ?? 'vide'}`} value={l.assiduite ?? ''}
+            aria-label={`Assiduité de ${l.nom}`}
+            onChange={(e) => champ('assiduite')(e.target.value === '' ? null : (e.target.value as Note))}>
+            <option value="">—</option>
+            {NOTES.map((n) => <option key={n} value={n}>{n}</option>)}
+          </select>
+        </td>
+
+        <td>
+          <button className="ad-btn ad-petit" onClick={basculer} aria-expanded={ouvert}
+            aria-label={`Note et suppression pour ${l.nom}`}>{ouvert ? 'Fermer' : '···'}</button>
         </td>
       </tr>
 
@@ -376,36 +408,13 @@ function Ligne({ l, ouvert, basculer, modifier, supprimer, montant }: LigneProps
         <tr className="ap-edition">
           <td colSpan={8}>
             <div className="ap-form">
-              <label className="ad-champ"><span>Prénom</span>
-                <input type="text" maxLength={NOM_MAX} value={l.nom} onChange={(e) => modifier(l.id, 'nom', e.target.value)} />
-              </label>
-              <label className="ad-champ"><span>Plateforme</span>
-                <select value={l.plateforme} onChange={(e) => modifier(l.id, 'plateforme', e.target.value as Plateforme)}>
-                  {PLATEFORMES.map((p) => <option key={p} value={p}>{p}</option>)}
-                </select>
-              </label>
-              <label className="ad-champ"><span>Tarif brut</span>
-                <input type="number" step="0.5" min="0" value={l.tarif} onChange={(e) => modifier(l.id, 'tarif', Number(e.target.value))} />
-              </label>
-              <label className="ad-champ"><span>Devise</span>
-                <select value={l.devise} onChange={(e) => modifier(l.id, 'devise', e.target.value as Devise)}>
-                  {DEVISES.map((d) => <option key={d} value={d}>{d} {SYMBOLE[d]}</option>)}
-                </select>
-              </label>
-              <label className="ad-champ"><span>Cours / semaine</span>
-                <input type="number" step="0.5" min="0" value={l.frequence} onChange={(e) => modifier(l.id, 'frequence', Number(e.target.value))} />
-              </label>
-              <label className="ad-champ"><span>Assiduité (%)</span>
-                <input type="number" step="1" min="0" max="100" value={l.assiduite ?? ''}
-                  onChange={(e) => modifier(l.id, 'assiduite', e.target.value === '' ? null : Number(e.target.value))} />
-              </label>
-              <label className="ad-champ"><span>Dernière augmentation</span>
-                <input type="text" maxLength={TEXTE_MAX} value={l.derniereAugmentation}
-                  onChange={(e) => modifier(l.id, 'derniereAugmentation', e.target.value)} />
-              </label>
               <label className="ad-champ"><span>Note</span>
                 <input type="text" maxLength={TEXTE_MAX} value={l.note} placeholder="À sortir, +1 $ (avril 2027)…"
-                  onChange={(e) => modifier(l.id, 'note', e.target.value)} />
+                  onChange={(e) => champ('note')(e.target.value)} />
+              </label>
+              <label className="ad-champ"><span>Dernière augmentation</span>
+                <input type="text" maxLength={TEXTE_MAX} value={l.derniereAugmentation} placeholder="juin 2026"
+                  onChange={(e) => champ('derniereAugmentation')(e.target.value)} />
               </label>
               <div className="ap-suppression">
                 {confirme ? (
@@ -442,33 +451,50 @@ const CSS = `
 .ap-reglages summary,.ap-import summary{cursor:pointer;font-weight:700;font-size:.9rem}
 .ap-verifier{margin-top:10px}
 .ap-defilement{overflow-x:auto;margin:14px -4px 0}
-.ap-table{width:100%;min-width:720px;border-collapse:collapse;font-size:.9rem}
-.ap-table th,.ap-table td{padding:7px 10px;text-align:left;vertical-align:middle;border-bottom:2px solid #eae5f2;white-space:nowrap}
+.ap-table{width:100%;min-width:780px;border-collapse:collapse;font-size:.9rem}
+.ap-table th,.ap-table td{padding:4px 8px;text-align:left;vertical-align:middle;border-bottom:2px solid #eae5f2;white-space:nowrap}
 .ap-table thead th{padding:0;background:var(--ink);border-bottom:0}
 .ap-table thead th:first-child{border-radius:10px 0 0 0}
 .ap-table thead th:last-child{border-radius:0 10px 0 0}
-.ap-table thead button{display:flex;align-items:center;gap:6px;width:100%;padding:7px 10px;background:none;border:0;color:#fff;font-family:var(--titre);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.ap-table thead button{display:flex;align-items:center;gap:6px;width:100%;padding:7px 8px;background:none;border:0;color:#fff;font-family:var(--titre);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
 .ap-table thead .ap-num button{justify-content:flex-end}
 .ap-table thead button:hover{background:rgba(255,255,255,.14)}
 .ap-fleche{opacity:.45;font-size:.8em}
 .ap-table thead th[aria-sort="ascending"] .ap-fleche,.ap-table thead th[aria-sort="descending"] .ap-fleche{opacity:1;color:var(--lime)}
-.ap-table tbody th{font-weight:700}
 .ap-table .ap-num{text-align:right}
 .ap-table tbody tr.ap-ouvert{background:#f6f3ff}
-.ap-fort{font-weight:800}
+.ap-calcule{color:var(--soft)}
+.ap-fort{font-weight:800;color:var(--ink)}
 .ap-rien{color:var(--soft)}
-.ap-plateforme{display:inline-block;padding:1px 11px;border:2px solid var(--ink);border-radius:99px;font-size:.78rem;font-weight:800}
+
+/* saisies : discrètes tant qu'on n'y touche pas, pour que le tableau reste lisible */
+.ap-saisie{width:100%;padding:3px 6px!important;background:transparent;border:2px solid transparent!important;border-radius:8px;font:inherit;color:inherit}
+.ap-saisie:hover{border-color:#ded8e8!important;background:#fff}
+.ap-saisie:focus{border-color:var(--violet)!important;background:#fff;outline:none}
+.ap-saisie-nom{width:150px!important;font-weight:700}
+.ap-saisie-nombre{width:62px!important;text-align:right;-moz-appearance:textfield}
+.ap-saisie-nombre::-webkit-outer-spin-button,.ap-saisie-nombre::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ap-tarif{display:inline-flex;align-items:center;gap:2px}
+.ap-devise{width:auto!important;padding:3px 2px!important;background:transparent;border:2px solid transparent!important;font:inherit;text-align:center}
+.ap-devise:hover,.ap-devise:focus{border-color:#ded8e8!important;background:#fff;outline:none}
+
+.ap-plateforme{width:auto!important;padding:2px 10px!important;border:2px solid var(--ink)!important;border-radius:99px!important;font-size:.78rem;font-weight:800;cursor:pointer}
 .ap-direct{background:var(--lime)}
 .ap-preply{background:var(--orange)}
-.ap-assiduite{display:inline-block;min-width:46px;padding:1px 8px;background:var(--aqua);border:2px solid var(--ink);border-radius:99px;text-align:center;font-weight:800;font-size:.78rem}
-.ap-assiduite-basse{background:var(--lemon)}
-.ap-tag{display:inline-block;margin-left:8px;padding:0 8px;background:#ffe1ee;border:2px solid var(--ink);border-radius:99px;font-size:.72rem;font-weight:700}
-.ap-table tfoot th,.ap-table tfoot td{border-top:3px solid var(--ink);border-bottom:0;font-weight:800;background:var(--bg)}
+.ap-note-lettre{width:auto!important;min-width:40px;padding:2px 10px!important;border:2px solid var(--ink)!important;border-radius:99px!important;text-align:center;font-family:var(--titre);font-weight:800;font-size:.86rem;cursor:pointer}
+.ap-note-A{background:var(--aqua)}
+.ap-note-B{background:var(--lime)}
+.ap-note-C{background:var(--lemon)}
+.ap-note-D{background:var(--orange)}
+.ap-note-F{background:var(--pink);color:#fff}
+.ap-note-vide{background:transparent;border-color:#ded8e8!important;color:var(--soft)}
+.ap-tag{display:inline-block;margin-left:6px;padding:0 8px;background:#ffe1ee;border:2px solid var(--ink);border-radius:99px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.ap-table tfoot th,.ap-table tfoot td{border-top:3px solid var(--ink);border-bottom:0;padding:8px;font-weight:800;background:var(--bg)}
 .ap-bilan{margin:14px 0 0;padding:10px 14px;background:var(--lime);border:2.5px solid var(--ink);border-radius:12px;font-size:.92rem}
 .ap-bilan strong{font-family:var(--titre);font-size:1.08rem}
 
 .ap-edition td{background:#f6f3ff;white-space:normal}
-.ap-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:6px 0 10px}
+.ap-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;padding:6px 0 10px}
 .ap-suppression{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
 
 .ap-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
