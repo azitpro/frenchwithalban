@@ -70,18 +70,25 @@ export type PlanningSettings = {
   lastPlacement?: PlacementDefaults;
 };
 
+/**
+ * Cours Preply retiré du calendrier personnel. Le flux iCal est en lecture seule :
+ * on ne peut pas l'y supprimer, on note donc ici qu'il ne doit plus s'afficher.
+ */
+export type HiddenLesson = { date: string; startMin: number };
+
 export type Planning = {
   routines: Routine[];
   slots: RoutineSlot[];
   overrides: SlotOverride[];
   events: PlanningEvent[];
   journal: JournalEntry[];
+  hiddenLessons: HiddenLesson[];
   settings: PlanningSettings;
 };
 
 export const DEFAULT_SETTINGS: PlanningSettings = { countRoundingMin: 30 };
 
-export const EMPTY_PLANNING: Planning = { routines: [], slots: [], overrides: [], events: [], journal: [], settings: DEFAULT_SETTINGS };
+export const EMPTY_PLANNING: Planning = { routines: [], slots: [], overrides: [], events: [], journal: [], hiddenLessons: [], settings: DEFAULT_SETTINGS };
 
 export const ROUNDING_OPTIONS: Array<{ value: RoundingMin; label: string }> = [
   { value: 0, label: 'Minutes exactes' },
@@ -202,6 +209,8 @@ export type PreplyBusy = { date: string; startHour: number; endHour: number };
 
 export type Lesson = {
   source: 'recurring' | 'oneOff' | 'preply';
+  /** Identifiant dans le planning des élèves ; absent pour un cours venu de Preply. */
+  refId?: string;
   date: string;
   startMin: number;
   endMin: number;
@@ -212,7 +221,7 @@ const byDateThenStart = (a: { date: string; startMin: number }, b: { date: strin
   a.date === b.date ? a.startMin - b.startMin : a.date < b.date ? -1 : 1;
 
 /** Cours de la semaine, tirés du planning des élèves et du flux Preply. */
-export function lessonsForWeek(weekStart: string, schedule: Schedule, preply: PreplyBusy[]): Lesson[] {
+export function lessonsForWeek(weekStart: string, schedule: Schedule, preply: PreplyBusy[], hidden: HiddenLesson[] = []): Lesson[] {
   const dates = weekDates(weekStart);
   const named: Lesson[] = [];
 
@@ -223,13 +232,13 @@ export function lessonsForWeek(weekStart: string, schedule: Schedule, preply: Pr
     const date = dates[index];
     if (schedule.exceptions.some((e) => e.recurringId === r.id && e.date === date)) continue;
     const startMin = Math.round(r.hour * 60);
-    named.push({ source: 'recurring', date, startMin, endMin: startMin + r.duration, label: r.student });
+    named.push({ source: 'recurring', refId: r.id, date, startMin, endMin: startMin + r.duration, label: r.student });
   }
 
   for (const o of schedule.oneOff) {
     if (!dates.includes(o.date)) continue;
     const startMin = Math.round(o.hour * 60);
-    named.push({ source: 'oneOff', date: o.date, startMin, endMin: startMin + o.duration, label: o.student });
+    named.push({ source: 'oneOff', refId: o.id, date: o.date, startMin, endMin: startMin + o.duration, label: o.student });
   }
 
   const fromPreply: Lesson[] = preply
@@ -242,10 +251,55 @@ export function lessonsForWeek(weekStart: string, schedule: Schedule, preply: Pr
       label: 'Preply',
     }))
     .filter((p) => p.endMin > p.startMin)
+    .filter((p) => !hidden.some((h) => h.date === p.date && h.startMin === p.startMin))
     // un cours nommé est plus informatif : le bloc Preply qui le recouvre est masqué
     .filter((p) => !named.some((n) => n.date === p.date && overlapMinutes(n.startMin, n.endMin, p.startMin, p.endMin) > 0));
 
   return [...named, ...fromPreply].sort(byDateThenStart);
+}
+
+/* ======================= supprimer un cours ======================= */
+
+/** Le créneau d'un cours, en heure décimale, comme le planning des élèves les enregistre. */
+const lessonHour = (lesson: Lesson) => Math.round((lesson.startMin / 60) * 1000) / 1000;
+
+/**
+ * Retire un cours du planning des élèves : une occurrence annulée pour un cours
+ * hebdomadaire, une suppression pure pour un cours ponctuel. Un cours Preply ne
+ * s'y trouve pas — il se masque avec hideLesson.
+ */
+export function removeLessonFromSchedule(schedule: Schedule, lesson: Lesson): Schedule {
+  if (!lesson.refId) return schedule;
+  if (lesson.source === 'recurring') {
+    if (schedule.exceptions.some((e) => e.recurringId === lesson.refId && e.date === lesson.date)) return schedule;
+    return { ...schedule, exceptions: [...schedule.exceptions, { recurringId: lesson.refId, date: lesson.date }] };
+  }
+  if (lesson.source === 'oneOff') {
+    return { ...schedule, oneOff: schedule.oneOff.filter((o) => o.id !== lesson.refId) };
+  }
+  return schedule;
+}
+
+/** Masque un cours Preply dans le calendrier personnel, sans toucher au flux iCal. */
+export function hideLesson(planning: Planning, lesson: Lesson): Planning {
+  const hidden = planning.hiddenLessons ?? [];
+  if (hidden.some((h) => h.date === lesson.date && h.startMin === lesson.startMin)) return planning;
+  return { ...planning, hiddenLessons: [...hidden, { date: lesson.date, startMin: lesson.startMin }] };
+}
+
+/** Le créneau est-il déjà forcé comme réservable sur le site ? */
+export function slotIsFreed(schedule: Schedule, lesson: Lesson): boolean {
+  const hour = lessonHour(lesson);
+  return (schedule.forced ?? []).some((f) => f.date === lesson.date && Math.abs(f.hour - hour) < 0.005);
+}
+
+/**
+ * Rend le créneau réservable sur la page publique, quelle que soit l'origine du cours :
+ * un créneau forcé passe outre Preply, les cours déclarés et les indisponibilités.
+ */
+export function freeSlotOnSite(schedule: Schedule, lesson: Lesson, id: string = newId()): Schedule {
+  if (slotIsFreed(schedule, lesson)) return schedule;
+  return { ...schedule, forced: [...(schedule.forced ?? []), { id, date: lesson.date, hour: lessonHour(lesson) }] };
 }
 
 /* ======================= routines de la semaine ======================= */
@@ -546,7 +600,8 @@ export function pruneOld(p: Planning, today: string, weeks: number = RETENTION_W
     if (!r) return false;
     return r.kind === 'e' ? eventIds.has(r.eventId) : slotIds.has(r.slotId) && r.weekStart >= cutoff;
   });
-  return { ...p, slots, overrides, events, journal };
+  const hiddenLessons = (p.hiddenLessons ?? []).filter((h) => h.date >= cutoff);
+  return { ...p, slots, overrides, events, journal, hiddenLessons };
 }
 
 /* ======================= validation (API) ======================= */
@@ -567,11 +622,20 @@ export function validatePlanning(raw: unknown): Result {
   const overridesIn = src.overrides ?? [];
   const eventsIn = src.events ?? [];
   const journalIn = src.journal ?? [];
+  const hiddenIn = src.hiddenLessons ?? [];
+  if (!Array.isArray(hiddenIn)) return { ok: false, error: 'Structure invalide.' };
   if (!Array.isArray(routinesIn) || !Array.isArray(slotsIn) || !Array.isArray(overridesIn) || !Array.isArray(eventsIn) || !Array.isArray(journalIn)) {
     return { ok: false, error: 'Structure invalide.' };
   }
-  if (routinesIn.length > 100 || slotsIn.length > 3000 || overridesIn.length > 10000 || eventsIn.length > 3000 || journalIn.length > 6000) {
+  if (routinesIn.length > 100 || slotsIn.length > 3000 || overridesIn.length > 10000 || eventsIn.length > 3000 || journalIn.length > 6000 || hiddenIn.length > 3000) {
     return { ok: false, error: 'Trop d’éléments.' };
+  }
+
+  const hiddenLessons: HiddenLesson[] = [];
+  for (const h of hiddenIn as Record<string, unknown>[]) {
+    if (!isDateKey(h?.date) || !isInt(h?.startMin, 0, 24 * 60 - 1)) return { ok: false, error: 'Cours masqué invalide.' };
+    if (hiddenLessons.some((x) => x.date === h.date && x.startMin === h.startMin)) continue; // doublon sans conséquence
+    hiddenLessons.push({ date: h.date, startMin: h.startMin });
   }
 
   const settingsIn = (src.settings && typeof src.settings === 'object' ? src.settings : {}) as Record<string, unknown>;
@@ -684,5 +748,5 @@ export function validatePlanning(raw: unknown): Result {
   if (lp && typeof lp === 'object' && routineIds.has(lp.routineId as string) && isInt(lp.durationMin, 5, 24 * 60) && (lp.kind === 'weekly' || lp.kind === 'once')) {
     settings.lastPlacement = { routineId: lp.routineId as string, durationMin: lp.durationMin as number, kind: lp.kind };
   }
-  return { ok: true, planning: { routines, slots, overrides, events, journal, settings } };
+  return { ok: true, planning: { routines, slots, overrides, events, journal, hiddenLessons, settings } };
 }

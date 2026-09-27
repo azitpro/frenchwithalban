@@ -8,6 +8,7 @@ import {
   DAY_END_MIN, DAY_START_MIN, DEFAULT_SETTINGS, EMPTY_PLANNING, EVENT_COLORS, EVENT_TITLE_MAX, JOURNAL_ITEM_MAX, JOURNAL_MAX_ITEMS,
   JOURNAL_NOTES_MAX, RETENTION_WEEKS, ROUNDING_OPTIONS, ROUTINE_COLORS, WEEKDAY_NAMES,
   addDays, addEvent, addRoutine, addSlot, deleteEvent, deleteOccurrence, deleteRoutine, eventRef, eventsForWeek,
+  freeSlotOnSite, hideLesson, removeLessonFromSchedule, slotIsFreed,
   fmtDuration, fmtTime, lessonsForWeek, normalizeNotes, nowInParis, occurrenceRef, occurrencesForWeek, retentionStart, setJournal, setRounding,
   updateEvent, updateOccurrence, updateRoutine, weekDates, weekStartOf, weeklyQuotas,
 } from '@/lib/planning';
@@ -26,6 +27,7 @@ type Dialog =
   | { type: 'edit'; occ: Occurrence; durationMin?: number }
   | { type: 'event'; event: PlanningEvent }
   | { type: 'routine'; routine?: Routine }
+  | { type: 'lesson'; lesson: Lesson }
   | null;
 
 /** Bloc personnel affiché dans la grille : occurrence de routine ou événement ponctuel. */
@@ -226,9 +228,53 @@ export default function PlanningPersonnel() {
     });
   }
 
+  /* ---------- enregistrement du planning des élèves ----------
+     Le planning des élèves n'a pas de révision : on recharge après écriture pour rester
+     aligné si /admin/schedule a été modifié entre-temps. */
+  async function persistSchedule(next: Schedule): Promise<boolean> {
+    const previous = schedule;
+    setSchedule(next);
+    setSaving(true);
+    setSaveError('');
+    try {
+      const res = await fetch('/api/admin/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ schedule: next }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Enregistrement refusé.');
+      return true;
+    } catch (e) {
+      setSchedule(previous);
+      setSaveError(`${e instanceof Error ? e.message : 'Enregistrement impossible.'} Le cours n'a pas été supprimé.`);
+      return false;
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  /** Retire le cours du calendrier, et rend éventuellement le créneau réservable sur le site. */
+  async function supprimerCours(lesson: Lesson, liberer: boolean) {
+    setDialog(null);
+    let prochain = schedule;
+    if (lesson.source !== 'preply') prochain = removeLessonFromSchedule(prochain, lesson);
+    if (liberer) prochain = freeSlotOnSite(prochain, lesson);
+
+    if (prochain !== schedule && !(await persistSchedule(prochain))) return;
+    // un cours Preply ne peut pas être retiré à la source : on le masque côté planning
+    if (lesson.source === 'preply') persist(hideLesson(planning, lesson));
+    setNotice(liberer
+      ? `Cours retiré du calendrier, et le créneau du ${formatLongDate(lesson.date, false)} à ${fmtTime(lesson.startMin)} est désormais réservable sur le site.`
+      : 'Cours retiré du calendrier. Le créneau reste occupé sur le site.');
+  }
+
   /* ---------- calculs de la semaine ---------- */
   const dates = useMemo(() => weekDates(weekStart), [weekStart]);
-  const lessons = useMemo(() => lessonsForWeek(weekStart, schedule, preply), [weekStart, schedule, preply]);
+  const lessons = useMemo(
+    () => lessonsForWeek(weekStart, schedule, preply, planning.hiddenLessons ?? []),
+    [weekStart, schedule, preply, planning.hiddenLessons],
+  );
   const occurrences = useMemo(() => occurrencesForWeek(weekStart, planning, lessons), [weekStart, planning, lessons]);
   const events = useMemo(() => eventsForWeek(weekStart, planning), [weekStart, planning]);
   const quotas = useMemo(() => weeklyQuotas(planning, occurrences), [planning, occurrences]);
@@ -421,6 +467,7 @@ export default function PlanningPersonnel() {
                 journal={journal}
                 resize={resize}
                 onColumnClick={onColumnClick}
+                onLesson={(lesson) => setDialog({ type: 'lesson', lesson })}
                 onEdit={(occ) => setDialog({ type: 'edit', occ })}
                 onEditEvent={(event) => setDialog({ type: 'event', event })}
                 onResizeStart={onResizeStart}
@@ -443,6 +490,7 @@ export default function PlanningPersonnel() {
             ))}
           </div>
           <MobileDay
+            onLesson={(lesson) => setDialog({ type: 'lesson', lesson })}
             lessons={lessons.filter((l) => l.date === dates[mobileDay])}
             occurrences={occurrences.filter((o) => o.date === dates[mobileDay])}
             events={events.filter((e) => e.date === dates[mobileDay])}
@@ -579,6 +627,15 @@ export default function PlanningPersonnel() {
           onDelete={() => { setDialog(null); persist(deleteEvent(planning, dialog.event.id)); }}
         />
       )}
+      {dialog?.type === 'lesson' && (
+        <LessonDialog
+          lesson={dialog.lesson}
+          dejaLibere={slotIsFreed(schedule, dialog.lesson)}
+          onCancel={() => setDialog(null)}
+          onDelete={(liberer) => supprimerCours(dialog.lesson, liberer)}
+        />
+      )}
+
       {dialog?.type === 'routine' && (
         <RoutineDialog
           routine={dialog.routine}
@@ -621,8 +678,9 @@ function DayColumn(props: {
   onResizeStart: (e: ReactPointerEvent<HTMLDivElement>, occ: Occurrence) => void;
   onResizeMove: (e: ReactPointerEvent<HTMLDivElement>) => void;
   onResizeEnd: () => void;
+  onLesson: (lesson: Lesson) => void;
 }) {
-  const { date, lessons, occurrences, events, routineById, journal, resize } = props;
+  const { date, lessons, occurrences, events, routineById, journal, resize, onLesson } = props;
   const blocs: Bloc[] = [
     ...occurrences.map((o) => ({ key: `r-${o.slotId}`, startMin: o.startMin, endMin: o.endMin, occ: o })),
     ...events.map((e) => ({ key: `e-${e.id}`, startMin: e.startMin, endMin: e.startMin + e.durationMin, event: e })),
@@ -712,8 +770,11 @@ function DayColumn(props: {
             key={`${l.source}-${l.startMin}-${l.label}`}
             className={`pp-bloc pp-cours ${overBloc ? 'pp-decale' : ''} ${l.source === 'preply' ? 'pp-preply' : ''}`}
             style={cssVars({ '--s': pos.top, '--d': pos.height })}
-            title={`Cours · ${l.label} · ${fmtTime(l.startMin)}–${fmtTime(l.endMin)} (lecture seule)`}
-            onClick={(e) => e.stopPropagation()}
+            title={`Cours · ${l.label} · ${fmtTime(l.startMin)}–${fmtTime(l.endMin)} · cliquez pour le supprimer`}
+            role="button"
+            tabIndex={0}
+            onClick={(e) => { e.stopPropagation(); onLesson(l); }}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); onLesson(l); } }}
           >
             <div className="pp-nom">{l.source === 'preply' ? 'Occupé' : l.label}{l.source === 'preply' && <span className="pp-src">Preply</span>}</div>
             <div className="pp-heure">{fmtTime(l.startMin)}–{fmtTime(l.endMin)}</div>
@@ -727,6 +788,7 @@ function DayColumn(props: {
 /* ======================= liste mobile ======================= */
 
 function MobileDay(props: {
+  onLesson: (lesson: Lesson) => void;
   lessons: Lesson[];
   occurrences: Occurrence[];
   events: PlanningEvent[];
@@ -746,10 +808,10 @@ function MobileDay(props: {
       start: l.startMin,
       key: `c-${l.source}-${l.startMin}`,
       node: (
-        <div className="pp-item pp-item-cours">
+        <button type="button" className="pp-item pp-item-cours" onClick={() => props.onLesson(l)}>
           <div className="pp-item-h">{fmtTime(l.startMin)} – {fmtTime(l.endMin)}</div>
-          <div><b>{l.source === 'preply' ? 'Occupé (Preply)' : l.label}</b><span>Cours · lecture seule</span></div>
-        </div>
+          <div><b>{l.source === 'preply' ? 'Occupé (Preply)' : l.label}</b><span>Cours · toucher pour supprimer</span></div>
+        </button>
       ),
     })),
     ...props.occurrences.map((o) => {
@@ -929,6 +991,49 @@ function Modal({ title, children, onCancel, large }: { title: string; children: 
         {children}
       </div>
     </div>
+  );
+}
+
+/**
+ * Suppression d'un cours. La question de la libération est posée en deux boutons :
+ * retirer le cours de l'agenda ne dit pas si le créneau doit redevenir réservable.
+ */
+function LessonDialog({ lesson, dejaLibere, onCancel, onDelete }: {
+  lesson: Lesson;
+  dejaLibere: boolean;
+  onCancel: () => void;
+  onDelete: (liberer: boolean) => void;
+}) {
+  const quand = `${formatLongDate(lesson.date, false)} · ${fmtTime(lesson.startMin)}–${fmtTime(lesson.endMin)}`;
+  const quoi = lesson.source === 'preply' ? 'Créneau occupé (Preply)' : `Cours · ${lesson.label}`;
+  return (
+    <Modal title="Supprimer ce cours ?" onCancel={onCancel}>
+      <p className="pp-dlg-recap"><b>{quoi}</b><span>{quand}</span></p>
+
+      <p className="pp-dlg-texte">
+        {lesson.source === 'recurring' && 'Seule cette occurrence est annulée : le cours hebdomadaire reste en place les autres semaines.'}
+        {lesson.source === 'oneOff' && 'Ce cours ponctuel sera retiré du planning des élèves.'}
+        {lesson.source === 'preply' && 'Le calendrier Preply ne peut pas être modifié depuis ici : le créneau sera simplement masqué dans votre planning.'}
+      </p>
+
+      <p className="pp-dlg-texte">
+        {dejaLibere
+          ? 'Ce créneau est déjà forcé comme réservable sur le site.'
+          : 'Voulez-vous aussi libérer ce créneau sur le site, pour qu’il redevienne réservable ?'}
+      </p>
+
+      <div className="pp-dlg-actions">
+        {!dejaLibere && (
+          <button type="button" className="pp-btn pp-plein" onClick={() => onDelete(true)}>
+            Supprimer et libérer le créneau
+          </button>
+        )}
+        <button type="button" className="pp-btn" onClick={() => onDelete(false)}>
+          {dejaLibere ? 'Supprimer le cours' : 'Supprimer sans libérer'}
+        </button>
+        <button type="button" className="pp-btn" onClick={onCancel}>Annuler</button>
+      </div>
+    </Modal>
   );
 }
 
@@ -1343,7 +1448,14 @@ const CSS = `
 .pp-poignee{position:absolute;left:0;right:0;bottom:0;height:6px;cursor:ns-resize;background:rgba(27,19,64,.22);touch-action:none}
 .pp-coupe{position:absolute;right:3px;top:1px;font-size:.55rem;font-weight:700}
 .pp-coupe-bas{top:auto;bottom:6px}
-.pp-cours{z-index:3;left:3px;right:3px;background:var(--ink);color:#fff;cursor:default}
+.pp-cours{z-index:3;left:3px;right:3px;background:var(--ink);color:#fff;cursor:pointer}
+.pp-cours:hover{outline:2px solid var(--lime);outline-offset:-2px}
+.pp-cours:focus-visible{outline:3px solid var(--lime);outline-offset:-2px}
+.pp-dlg-recap{display:flex;flex-direction:column;gap:2px;margin:0 0 12px;padding:10px 12px;background:var(--bg);border:2px solid var(--ink);border-radius:12px}
+.pp-dlg-recap b{font-family:var(--titre);font-size:1rem}
+.pp-dlg-recap span{font-size:.85rem;color:var(--soft)}
+.pp-dlg-texte{margin:0 0 12px;font-size:.9rem;line-height:1.45}
+.pp-dlg-actions{display:flex;flex-direction:column;gap:8px}
 .pp-decale{left:22%}
 .pp-preply{box-shadow:inset 0 -3px 0 var(--lemon)}
 .pp-src{display:inline-block;margin-left:4px;padding:0 5px;border-radius:99px;background:var(--lemon);color:var(--ink);font-family:Inter,sans-serif;font-size:.5rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
