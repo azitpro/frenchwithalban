@@ -1,6 +1,7 @@
 import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
 import { adresseIp, limiter } from '@/lib/placement-store';
+import { notifierEnArrierePlan } from '@/lib/courriel';
 import { validerSignalement } from '@/lib/signalements';
 import { enregistrerSignalement } from '@/lib/signalements-store';
 
@@ -34,6 +35,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Trop de signalements envoyés. Réessayez plus tard.' }, { status: 429, headers: NO_STORE });
   }
 
-  await enregistrerSignalement(redis, valide.valeur);
+  const signalement = await enregistrerSignalement(redis, valide.valeur);
+
+  notifierEnArrierePlan({
+    sujet: `Problème signalé${signalement.page ? ' sur ' + signalement.page : ''}`,
+    repondreA: signalement.email || undefined,
+    lignes: [
+      signalement.message,
+      '',
+      `Page : ${signalement.page || 'non précisée'}`,
+      `Email : ${signalement.email || 'non laissé'}`,
+      `Langue de la page : ${signalement.langue === 'en' ? 'anglais' : 'français'}`,
+    ],
+  });
+
   return NextResponse.json({ success: true }, { headers: NO_STORE });
 }

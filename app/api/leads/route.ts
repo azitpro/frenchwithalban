@@ -1,6 +1,8 @@
 import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { notifierEnArrierePlan } from '@/lib/courriel';
+
 const redis = Redis.fromEnv();
 
 type Lead = {
@@ -41,5 +43,23 @@ export async function POST(req: NextRequest) {
   };
   leads.push(newLead);
   await redis.set('leads', leads);
+
+  notifierEnArrierePlan({
+    sujet: `Demande de contact : ${newLead.firstName || 'sans prénom'}`,
+    repondreA: newLead.email || undefined,
+    lignes: [
+      `${newLead.firstName || 'Quelqu’un'} a rempli le formulaire de la page Réserver.`,
+      '',
+      `Email : ${newLead.email || 'non laissé'}`,
+      `Fuseau : ${newLead.timezone || 'non précisé'}`,
+      `Disponibilités : ${newLead.availability.join(', ') || 'non précisées'}`,
+      `Niveau : ${newLead.level || 'non précisé'}`,
+      `Cours par semaine : ${newLead.lessonsPerWeek || 'non précisé'}`,
+      newLead.goals ? `Objectifs : ${newLead.goals}` : '',
+      newLead.priorities ? `Priorités : ${newLead.priorities}` : '',
+      newLead.other ? `Autre : ${newLead.other}` : '',
+    ].filter(Boolean),
+  });
+
   return NextResponse.json({ success: true });
 }

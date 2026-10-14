@@ -148,16 +148,56 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
 .jour-titre { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.01em; }
 .jour-nb { font-size: .85rem; font-weight: 700; white-space: nowrap; }
 .creneaux { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 18px 18px; }
+/* chaque créneau est un bouton : un clic ouvre la demande de réservation */
 .creneau {
-  font-weight: 700; font-size: .95rem; font-variant-numeric: tabular-nums; white-space: nowrap;
+  font: 700 .95rem 'Inter', sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--ink);
   padding: 5px 12px; border: 2px solid var(--ink); border-radius: 10px; background: var(--bg);
+  cursor: pointer; transition: translate .12s, background .12s, box-shadow .12s;
 }
+.creneau:hover { background: var(--lemon); translate: -1px -1px; box-shadow: 2px 2px 0 var(--ink); }
+.creneau:active { translate: 0 0; box-shadow: none; }
+.creneaux-aide { padding: 0 18px 16px; margin-top: -8px; font-size: .84rem; color: var(--soft); }
 .etat {
   grid-column: 1 / -1; background: #fff; border: 3px dashed var(--ink); border-radius: var(--radius);
   padding: 22px 24px; font-weight: 600;
 }
 .etat.erreur { border-style: solid; background: #ffe1ee; }
 .vide-astuce { font-weight: 400; color: var(--soft); margin-top: 4px; }
+
+/* ---------- DEMANDE DE RÉSERVATION ---------- */
+.rs-fond { position: fixed; inset: 0; z-index: 60; background: rgba(27,19,64,.55); display: grid; place-items: center; padding: 20px; overflow: auto; }
+.rs-fond[hidden] { display: none; }
+.rs-carte {
+  width: 100%; max-width: 520px; background: #fff; color: var(--ink);
+  border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px;
+}
+.rs-tete { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+.rs-titre { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.8rem; line-height: 1.05; letter-spacing: -.02em; margin-right: auto; }
+.rs-fermer { flex: none; width: 36px; height: 36px; border: 2.5px solid var(--ink); border-radius: 50%; background: #fff; box-shadow: 2px 2px 0 var(--ink); font: 700 1rem 'Inter', sans-serif; color: var(--ink); cursor: pointer; }
+.rs-fermer:hover { background: var(--pink); color: #fff; }
+.rs-quand { display: inline-block; padding: 4px 16px 6px; background: var(--lime); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; line-height: 1.25; rotate: -1deg; }
+.rs-paris { margin: 10px 0 0; font-size: .86rem; color: var(--soft); }
+.rs-intro { margin: 14px 0 18px; font-size: .95rem; color: var(--soft); }
+.rs-champ { display: block; margin-bottom: 16px; }
+.rs-champ > span { display: block; font-size: .95rem; font-weight: 700; margin-bottom: 7px; }
+.rs-champ .facultatif { font-weight: 500; font-style: italic; color: var(--soft); font-size: .85rem; }
+.rs-champ input, .rs-champ textarea {
+  width: 100%; font: 400 1rem 'Inter', sans-serif; color: var(--ink); background: var(--bg);
+  padding: 11px 13px; border: 2.5px solid var(--ink); border-radius: 12px;
+}
+.rs-champ textarea { min-height: 90px; resize: vertical; }
+.rs-champ input:focus, .rs-champ textarea:focus { outline: 3px solid var(--violet); outline-offset: 2px; background: #fff; box-shadow: 3px 3px 0 var(--ink); }
+.rs-pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.rs-envoyer { width: 100%; font: 700 1.05rem 'Inter', sans-serif; color: #fff; background: var(--pink); padding: 13px 20px; border: 3px solid var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); cursor: pointer; }
+.rs-envoyer:hover:not(:disabled) { translate: -1px -1px; box-shadow: 5px 5px 0 var(--ink); }
+.rs-envoyer:disabled { opacity: .6; cursor: progress; }
+.rs-note { margin-top: 14px; font-size: .82rem; color: var(--soft); }
+.rs-note a { text-decoration-color: var(--pink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.rs-message { margin-top: 14px; padding: 11px 14px; border: 2.5px solid var(--ink); border-radius: 12px; background: #ffe1ee; font-weight: 600; font-size: .92rem; }
+.rs-merci:not([hidden]) { display: grid; gap: 12px; justify-items: start; }
+.rs-merci h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.7rem; line-height: 1.1; }
+.rs-merci p { font-size: .95rem; color: var(--soft); }
+.rs-merci button { font: 700 1rem 'Inter', sans-serif; color: var(--ink); background: var(--lime); padding: 10px 20px; border: 2.5px solid var(--ink); border-radius: 99px; box-shadow: 3px 3px 0 var(--ink); cursor: pointer; }
 
 /* ---------- APPEL À RÉSERVER ---------- */
 .cta {
@@ -237,6 +277,9 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
   .jours { grid-template-columns: 1fr; }
   .cta { padding: 22px; }
   .cta h2 { font-size: 1.4rem; }
+  .rs-fond { place-items: start center; padding: 12px; }
+  .rs-carte { padding: 20px; }
+  .rs-titre { font-size: 1.5rem; }
   footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
 @media (max-width: 400px) {
@@ -304,8 +347,8 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
       </div>
       <h1 class="t" data-html="1" data-fr="Créneaux &lt;mark&gt;disponibles&lt;/mark&gt;" data-en="Available &lt;mark&gt;slots&lt;/mark&gt;">Créneaux <mark>disponibles</mark></h1>
       <p class="lead t"
-         data-fr="Choisissez la durée du cours et votre fuseau horaire, puis parcourez les quatre prochaines semaines."
-         data-en="Choose the lesson length and your time zone, then browse the next four weeks.">Choisissez la durée du cours et votre fuseau horaire, puis parcourez les quatre prochaines semaines.</p>
+         data-fr="Choisissez la durée du cours et votre fuseau horaire, parcourez les quatre prochaines semaines, puis cliquez sur l’horaire qui vous convient."
+         data-en="Choose the lesson length and your time zone, browse the next four weeks, then click the time that suits you.">Choisissez la durée du cours et votre fuseau horaire, parcourez les quatre prochaines semaines, puis cliquez sur l’horaire qui vous convient.</p>
     </div>
   </div>
 
@@ -357,7 +400,7 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
       <div class="cta">
         <div>
           <h2 class="t" data-fr="Un créneau vous convient ?" data-en="Found a time that works?">Un créneau vous convient ?</h2>
-          <p class="t" data-fr="Passez à la réservation : directement avec moi ou via Preply." data-en="Go ahead and book — directly with me or through Preply.">Passez à la réservation : directement avec moi ou via Preply.</p>
+          <p class="t" data-fr="Cliquez sur l’horaire plus haut, ou passez par le formulaire pour me dire ce que vous cherchez." data-en="Click the time above, or use the form to tell me what you're looking for.">Cliquez sur l’horaire plus haut, ou passez par le formulaire pour me dire ce que vous cherchez.</p>
         </div>
         <a href="/reserver.html" class="cta-reserver t" data-fr="Réserver un cours →" data-en="Book a lesson →">Réserver un cours →</a>
       </div>
@@ -365,6 +408,54 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
   </section>
 
 </main>
+
+<!-- ===== DEMANDE DE RÉSERVATION (ouverte en cliquant un créneau) ===== -->
+<div class="rs-fond" id="rsFond" hidden>
+  <div class="rs-carte" role="dialog" aria-modal="true" aria-labelledby="rsTitre">
+    <div class="rs-tete">
+      <h2 class="rs-titre t" id="rsTitre" data-fr="Demander ce créneau" data-en="Request this slot">Demander ce créneau</h2>
+      <button type="button" class="rs-fermer" id="rsFermer" aria-label="Fermer">✕</button>
+    </div>
+
+    <form id="rsForm" novalidate>
+      <p><span class="rs-quand" id="rsQuand"></span></p>
+      <p class="rs-paris" id="rsParis" hidden></p>
+      <p class="rs-intro t"
+         data-fr="Le créneau n’est pas encore bloqué : je vous confirme le cours par retour de message."
+         data-en="The slot isn’t booked yet: I’ll confirm the lesson by message.">Le créneau n’est pas encore bloqué : je vous confirme le cours par retour de message.</p>
+
+      <label class="rs-champ">
+        <span class="t" data-fr="Votre prénom" data-en="Your first name">Votre prénom</span>
+        <input id="rsPrenom" name="prenom" type="text" maxlength="60" autocomplete="given-name" required>
+      </label>
+      <label class="rs-champ">
+        <span class="t" data-html="1" data-fr="Votre email &lt;span class=&quot;facultatif&quot;&gt;(facultatif, pour vous répondre)&lt;/span&gt;" data-en="Your email &lt;span class=&quot;facultatif&quot;&gt;(optional, so I can reply)&lt;/span&gt;">Votre email <span class="facultatif">(facultatif, pour vous répondre)</span></span>
+        <input id="rsEmail" name="email" type="email" maxlength="254" autocomplete="email">
+      </label>
+      <label class="rs-champ">
+        <span class="t" data-html="1" data-fr="Un message &lt;span class=&quot;facultatif&quot;&gt;(facultatif)&lt;/span&gt;" data-en="A message &lt;span class=&quot;facultatif&quot;&gt;(optional)&lt;/span&gt;">Un message <span class="facultatif">(facultatif)</span></span>
+        <textarea id="rsMessage" name="message" maxlength="500"
+          data-ph-fr="Je débute, je voudrais surtout parler…"
+          data-ph-en="I'm a beginner, I'd mainly like to speak…"></textarea>
+      </label>
+      <div class="rs-pot" aria-hidden="true"><label for="rsSite">Site</label><input id="rsSite" name="site" type="text" tabindex="-1" autocomplete="off"></div>
+
+      <button type="submit" class="rs-envoyer t" id="rsEnvoyer" data-fr="Envoyer la demande" data-en="Send the request">Envoyer la demande</button>
+      <p class="rs-note t" data-html="1"
+         data-fr="Votre demande est enregistrée pour être lue par Alban, et effacée au bout de 12 mois. &lt;a href=&quot;/confidentialite.html&quot;&gt;Confidentialité&lt;/a&gt;"
+         data-en="Your request is stored for Alban to read, and deleted after 12 months. &lt;a href=&quot;/confidentialite.html&quot;&gt;Privacy&lt;/a&gt;">Votre demande est enregistrée pour être lue par Alban, et effacée au bout de 12 mois. <a href="/confidentialite.html">Confidentialité</a></p>
+      <p class="rs-message" id="rsErreur" hidden role="alert"></p>
+    </form>
+
+    <div class="rs-merci" id="rsMerci" hidden>
+      <h3 class="t" data-fr="Demande envoyée !" data-en="Request sent!">Demande envoyée !</h3>
+      <p class="t"
+         data-fr="Alban vous répond pour confirmer le créneau. Pensez à vérifier vos indésirables."
+         data-en="Alban will get back to you to confirm the slot. Do check your spam folder.">Alban vous répond pour confirmer le créneau. Pensez à vérifier vos indésirables.</p>
+      <button type="button" class="t" id="rsFini" data-fr="Fermer" data-en="Close">Fermer</button>
+    </div>
+  </div>
+</div>
 
 <footer class="ac-pied">
   <div class="ac-pied-wrap">
@@ -417,7 +508,15 @@ var TEXTES = {
   nav: { fr: 'Navigation principale', en: 'Main navigation' },
   langue: { fr: 'Choix de la langue', en: 'Language' },
   ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
-  fermer: { fr: 'Fermer le menu', en: 'Close menu' }
+  fermer: { fr: 'Fermer le menu', en: 'Close menu' },
+  aide: { fr: 'Cliquez sur un horaire pour le demander.', en: 'Click a time to request it.' },
+  demander: { fr: 'Demander le créneau de', en: 'Request the slot at' },
+  rsFermer: { fr: 'Fermer', en: 'Close' },
+  rsParis: { fr: 'Soit %s, heure de Paris.', en: 'That is %s, Paris time.' },
+  rsDuree: { fr: '%s min', en: '%s min' },
+  rsPrenom: { fr: 'Indiquez votre prénom.', en: 'Please give your first name.' },
+  rsEnvoi: { fr: 'Envoi…', en: 'Sending…' },
+  rsErreur: { fr: 'L’envoi a échoué. Réessayez dans un instant.', en: "The request couldn't be sent. Please try again in a moment." }
 };
 function tx(cle) { return TEXTES[cle][LANG]; }
 
@@ -598,7 +697,12 @@ function render() {
       html += `
         <article class="jour">
           <div class="jour-tete"><h3 class="jour-titre">${JOURS[LANG][date.getDay()]} ${date.getDate()}/${date.getMonth() + 1}</h3><span class="jour-nb">${slots.length} ${mot}</span></div>
-          <div class="creneaux">${slots.map(h => `<span class="creneau">${formatHourWithTz(h)}</span>`).join('')}</div>
+          <div class="creneaux">${slots.map(h => {
+            const heureTexte = formatHourWithTz(h);
+            const quand = `${JOURS[LANG][date.getDay()]} ${date.getDate()}/${date.getMonth() + 1}, ${heureTexte}`;
+            return `<button type="button" class="creneau" data-date="${dateStr}" data-heure="${h}" aria-label="${tx('demander')} ${quand}">${heureTexte}</button>`;
+          }).join('')}</div>
+          <p class="creneaux-aide">${tx('aide')}</p>
         </article>`;
     }
   });
@@ -638,6 +742,125 @@ async function loadSchedule() {
     afficherErreur();
   }
 }
+
+/* ======================= demande de réservation =======================
+   Cliquer un créneau ouvre une demande : le créneau n'est pas bloqué pour autant,
+   Alban confirme lui-même. La demande part vers /api/reservation. */
+const rsFond = document.getElementById('rsFond');
+const rsForm = document.getElementById('rsForm');
+const rsMerci = document.getElementById('rsMerci');
+const rsErreur = document.getElementById('rsErreur');
+const rsEnvoyer = document.getElementById('rsEnvoyer');
+const rsQuand = document.getElementById('rsQuand');
+const rsParis = document.getElementById('rsParis');
+const rsPrenom = document.getElementById('rsPrenom');
+const rsFini = document.getElementById('rsFini');
+let rsCreneau = null;      // { date, heure } en heure de Paris, comme le planning
+let rsDeclencheur = null;  // le bouton d'où l'on vient, pour y rendre le focus
+
+function rsHeure(h) {
+  const hh = Math.floor(h);
+  const mm = Math.round((h - hh) * 60);
+  if (LANG === 'en') return `${hh}:${String(mm).padStart(2, '0')}`;
+  return `${hh}h${mm > 0 ? String(mm).padStart(2, '0') : ''}`;
+}
+
+/* Le créneau tel que le visiteur le lit : jour et heure dans son fuseau,
+   le jour glissant d'un cran quand le décalage fait changer de date. */
+function rsLisible(dateStr, heure) {
+  refreshTzOffset();
+  let h = heure + tzOffset;
+  let decalage = 0;
+  if (h < 0) { h += 24; decalage = -1; }
+  if (h >= 24) { h -= 24; decalage = 1; }
+  const d = new Date(dateStr + 'T12:00:00');
+  d.setDate(d.getDate() + decalage);
+  return `${JOURS[LANG][d.getDay()]} ${d.getDate()} ${MOIS[LANG][d.getMonth()]} · ${rsHeure(h)}`;
+}
+
+function rsMajTextes() {
+  if (!rsCreneau) return;
+  rsQuand.textContent = `${rsLisible(rsCreneau.date, rsCreneau.heure)} · ${tx('rsDuree').replace('%s', currentDuration)}`;
+  refreshTzOffset();
+  // inutile de répéter l'heure de Paris à qui est déjà à Paris
+  rsParis.hidden = tzOffset === 0;
+  rsParis.textContent = tx('rsParis').replace('%s', rsHeure(rsCreneau.heure));
+}
+
+function rsOuvrir(date, heure, bouton) {
+  rsCreneau = { date: date, heure: heure };
+  rsDeclencheur = bouton || null;
+  rsForm.reset();
+  rsForm.hidden = false;
+  rsMerci.hidden = true;
+  rsErreur.hidden = true;
+  rsMajTextes();
+  rsFond.hidden = false;
+  document.body.style.overflow = 'hidden';
+  rsPrenom.focus();
+}
+
+function rsFermerTout() {
+  rsFond.hidden = true;
+  document.body.style.overflow = '';
+  rsCreneau = null;
+  if (rsDeclencheur && document.body.contains(rsDeclencheur)) rsDeclencheur.focus();
+  rsDeclencheur = null;
+}
+
+document.getElementById('scheduleRoot').addEventListener('click', function (ev) {
+  const bouton = ev.target.closest && ev.target.closest('.creneau');
+  if (!bouton) return;
+  rsOuvrir(bouton.dataset.date, Number(bouton.dataset.heure), bouton);
+});
+document.getElementById('rsFermer').addEventListener('click', rsFermerTout);
+rsFini.addEventListener('click', rsFermerTout);
+rsFond.addEventListener('click', function (ev) { if (ev.target === rsFond) rsFermerTout(); });
+document.addEventListener('keydown', function (ev) {
+  if (ev.key === 'Escape' && !rsFond.hidden) rsFermerTout();
+});
+
+rsForm.addEventListener('submit', async function (ev) {
+  ev.preventDefault();
+  if (!rsCreneau) return;
+  const prenom = rsPrenom.value.trim();
+  if (!prenom) {
+    rsErreur.textContent = tx('rsPrenom');
+    rsErreur.hidden = false;
+    rsPrenom.focus();
+    return;
+  }
+  rsErreur.hidden = true;
+  const libelle = rsEnvoyer.textContent;
+  rsEnvoyer.disabled = true;
+  rsEnvoyer.textContent = tx('rsEnvoi');
+  try {
+    const res = await fetch('/api/reservation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prenom: prenom,
+        email: document.getElementById('rsEmail').value.trim(),
+        message: document.getElementById('rsMessage').value.trim(),
+        date: rsCreneau.date,
+        heure: rsCreneau.heure,
+        duree: currentDuration,
+        fuseau: selectedZone,
+        langue: LANG,
+        site: document.getElementById('rsSite').value
+      })
+    });
+    if (!res.ok) throw new Error('envoi');
+    rsForm.hidden = true;
+    rsMerci.hidden = false;
+    rsFini.focus();
+  } catch (e) {
+    rsErreur.textContent = tx('rsErreur');
+    rsErreur.hidden = false;
+  }
+  rsEnvoyer.disabled = false;
+  rsEnvoyer.textContent = libelle;
+});
 
 /* ======================= fuseaux horaires ======================= */
 const sel = document.getElementById('tzSelect');
@@ -743,6 +966,7 @@ function appliquer(lang) {
     if (txt === null) return;
     if (el.getAttribute('data-html')) el.innerHTML = txt; else el.textContent = txt;
   });
+  document.querySelectorAll('[data-ph-fr]').forEach(function (el) { el.placeholder = el.getAttribute('data-ph-' + lang) || ''; });
   document.documentElement.lang = lang;
   document.title = tx('titre');
   btnFr.classList.toggle('on', lang === 'fr');
@@ -754,6 +978,8 @@ function appliquer(lang) {
   document.querySelector('.duration-toggle').setAttribute('aria-label', tx('duree'));
   document.getElementById('prevWeek').setAttribute('aria-label', tx('prec'));
   document.getElementById('nextWeek').setAttribute('aria-label', tx('suiv'));
+  document.getElementById('rsFermer').setAttribute('aria-label', tx('rsFermer'));
+  rsMajTextes();
   majBurger();
   nommerZones();
   if (scheduleData) render();

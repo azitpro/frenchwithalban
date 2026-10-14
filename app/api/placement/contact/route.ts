@@ -1,6 +1,7 @@
 import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
 import { adresseIp, ajouterContact, ID_VALIDE, JETON_VALIDE, limiter, validerContact } from '@/lib/placement-store';
+import { notifierEnArrierePlan } from '@/lib/courriel';
 
 const redis = Redis.fromEnv();
 const NO_STORE = { 'Cache-Control': 'no-store' };
@@ -34,5 +35,17 @@ export async function POST(request: NextRequest) {
   if (resultat === 'refuse') {
     return NextResponse.json({ error: 'Requête refusée.' }, { status: 403, headers: NO_STORE });
   }
+
+  notifierEnArrierePlan({
+    sujet: `Test de placement passé : ${contact.prenom || 'sans prénom'}`,
+    repondreA: contact.email || undefined,
+    lignes: [
+      `${contact.prenom || 'Quelqu’un'} vient de passer le test de placement et a laissé ses coordonnées.`,
+      '',
+      `Email : ${contact.email || 'non laissé'}`,
+      'Le résultat et le détail des réponses sont dans les demandes de contact.',
+    ],
+  });
+
   return NextResponse.json({ success: true }, { headers: NO_STORE });
 }

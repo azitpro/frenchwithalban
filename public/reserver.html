@@ -106,6 +106,22 @@ h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size
 h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; border-radius: 12px; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); display: inline-block; rotate: -2deg; }
 .subtitle { font-size: 1.2rem; color: var(--soft); max-width: 560px; }
 
+/* ---------- RACCOURCI VERS LES CRÉNEAUX ---------- */
+.raccourci {
+  display: flex; align-items: center; gap: 14px 24px; flex-wrap: wrap; margin-bottom: 34px;
+  background: var(--lime); color: var(--ink); border: 3px solid var(--ink); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 26px;
+}
+.raccourci div { margin-right: auto; }
+.raccourci strong { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.35rem; line-height: 1.15; letter-spacing: -.01em; }
+.raccourci p { font-size: .95rem; color: var(--soft); margin-top: 2px; }
+.raccourci a {
+  display: inline-block; text-decoration: none; font-weight: 800; white-space: nowrap;
+  padding: 12px 26px; border-radius: 99px; background: var(--ink); color: #fff;
+  border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 #fff; transition: translate .15s, box-shadow .15s;
+}
+.raccourci a:hover { translate: -1px -1px; box-shadow: 4px 4px 0 #fff; }
+
 /* ---------- LES DEUX FAÇONS DE RÉSERVER ---------- */
 .option-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 32px; align-items: stretch; }
 .option-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; background: #fff; border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px 28px; }
@@ -243,6 +259,9 @@ h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; bo
   .subtitle { font-size: 1.06rem; }
   h2 { font-size: 1.7rem; }
   .hex-penche { width: 28px; height: 33px; }
+  .raccourci { padding: 18px 20px; }
+  .raccourci strong { font-size: 1.2rem; }
+  .raccourci a { width: 100%; text-align: center; }
   .option-card { padding: 22px 20px 24px; }
   .option-card.principal { padding: 24px 20px 26px; box-shadow: 6px 6px 0 var(--c); }
   .option-card.principal .option-title { font-size: 1.8rem; }
@@ -326,6 +345,16 @@ h1 mark { background: var(--lime); color: var(--ink); padding: 0 .12em .02em; bo
   </div>
 
   <div class="wrap">
+
+    <!-- ===== RACCOURCI : demander directement un créneau ===== -->
+    <div class="raccourci">
+      <div>
+        <strong class="t" data-fr="Vous savez déjà quand ?" data-en="Already know when?">Vous savez déjà quand ?</strong>
+        <p class="t" data-fr="Cliquez sur un horaire libre et demandez-le en deux champs : votre prénom et, si vous voulez, votre email."
+           data-en="Click a free time and request it with two fields: your first name and, if you like, your email.">Cliquez sur un horaire libre et demandez-le en deux champs : votre prénom et, si vous voulez, votre email.</p>
+      </div>
+      <a href="/planning_public.html" class="t" data-fr="Choisir un créneau →" data-en="Pick a slot →">Choisir un créneau →</a>
+    </div>
 
     <!-- ===== LES DEUX OPTIONS (prix mis à jour en direct par /api/pricing) ===== -->
     <div class="option-grid suite">
