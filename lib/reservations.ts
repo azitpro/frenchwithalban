@@ -6,6 +6,8 @@
  * que par /api/admin/reservations.
  */
 
+import { estDateReelle } from './dates';
+
 export const PRENOM_MAX = 60;
 export const EMAIL_MAX = 254;
 export const FUSEAU_MAX = 60;
@@ -43,7 +45,6 @@ export type Entree = {
   langue?: unknown;
 };
 
-const DATE_VALIDE = /^\d{4}-\d{2}-\d{2}$/;
 // volontairement permissif : refuser un email valide est pire que d'en accepter un douteux
 const EMAIL_VALIDE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -65,8 +66,8 @@ export function validerReservation(entree: Entree):
   const email = texte(entree.email, EMAIL_MAX) ?? '';
   if (email && !EMAIL_VALIDE.test(email)) return { ok: false, erreur: 'Adresse email invalide.' };
 
-  const date = typeof entree.date === 'string' && DATE_VALIDE.test(entree.date) ? entree.date : null;
-  if (!date || Number.isNaN(new Date(date + 'T12:00:00Z').getTime())) return { ok: false, erreur: 'Date de créneau invalide.' };
+  const date = estDateReelle(entree.date) ? entree.date : null;
+  if (!date) return { ok: false, erreur: 'Date de créneau invalide.' };
 
   const heure = Number(entree.heure);
   // les créneaux sont posés au quart d'heure : tout le reste vient d'ailleurs que de la page

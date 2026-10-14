@@ -66,7 +66,8 @@ export function jourDe(date: string): string {
   return JOURS[(d.getUTCDay() + 6) % 7];
 }
 
-function decaler(date: string, jours: number): string {
+/** Date décalée de n jours, « 2026-10-01 » → « 2026-10-08 ». */
+export function decaler(date: string, jours: number): string {
   const d = new Date(date + 'T12:00:00Z');
   d.setUTCDate(d.getUTCDate() + jours);
   return d.toISOString().slice(0, 10);

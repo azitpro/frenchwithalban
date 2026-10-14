@@ -4,6 +4,8 @@ import type { FormEvent } from 'react';
 import { AdminChargement, AdminShell } from '../admin-ui';
 import { STUDENT_NAME_MAX, cleanStudentName, normalizeStudents, studentNames, withDefaults } from '@/lib/schedule';
 import type { AvailabilityWindow, Forced, OneOff, RecurringSlot, Schedule, Unavailability } from '@/lib/schedule';
+import { libererAbsence } from '@/lib/preply-absences';
+import type { Absence } from '@/lib/preply-absences';
 import type { CreneauRepere } from '@/lib/preply-recurrents';
 
 // Page protégée par proxy.ts (authentification HTTP Basic) : le navigateur envoie le même
@@ -81,6 +83,10 @@ export default function ScheduleAdmin() {
   const [reperesDurees, setReperesDurees] = useState<Record<string, 25 | 50>>({});
   const [repereErreur, setRepereErreur] = useState<Record<string, string>>({});
 
+  // cours déclarés que l'agenda Preply ne montre plus à une date à venir
+  const [absences, setAbsences] = useState<Absence[]>([]);
+  const [absencesIgnorees, setAbsencesIgnorees] = useState<Absence[]>([]);
+
   const [unavType, setUnavType] = useState<'day' | 'range'>('day');
   const [unavDate, setUnavDate] = useState('');
   const [unavStart, setUnavStart] = useState(9);
@@ -98,11 +104,13 @@ export default function ScheduleAdmin() {
 
   async function chargerReperes() {
     try {
-      const res = await fetch('/api/admin/preply-recurrents', { cache: 'no-store' });
+      const res = await fetch('/api/admin/preply', { cache: 'no-store' });
       if (!res.ok) throw new Error();
       const data = await res.json();
       setReperes(data.creneaux ?? []);
       setReperesIgnores(data.ignores ?? []);
+      setAbsences(data.absences ?? []);
+      setAbsencesIgnorees(data.absencesIgnorees ?? []);
       setReperesEtat(data.erreur ? 'erreur' : 'pret');
     } catch {
       setReperesEtat('erreur');
@@ -221,6 +229,20 @@ export default function ScheduleAdmin() {
 
   async function reafficherRepere(cle: string) {
     if (await save({ ...schedule, ignoredRecurring: schedule.ignoredRecurring.filter((k) => k !== cle) })) chargerReperes();
+  }
+
+  /** Annule le cours à cette date et rend l'heure réservable sur le site. */
+  async function libererCreneau(a: Absence) {
+    const suite = libererAbsence(schedule, a, uid());
+    if (await save({ ...suite, ignoredAbsences: suite.ignoredAbsences.filter((k) => k !== a.cle) })) chargerReperes();
+  }
+
+  async function ignorerAbsence(cle: string) {
+    if (await save({ ...schedule, ignoredAbsences: [...schedule.ignoredAbsences, cle] })) chargerReperes();
+  }
+
+  async function reafficherAbsence(cle: string) {
+    if (await save({ ...schedule, ignoredAbsences: schedule.ignoredAbsences.filter((k) => k !== cle) })) chargerReperes();
   }
 
   function addOneOff() {
@@ -436,6 +458,48 @@ export default function ScheduleAdmin() {
           )}
         </section>
 
+        {/* COURS ABSENTS DE PREPLY */}
+        <section className="ad-carte sc-section" id="preply-absences">
+          <h2 className="ad-h2"><span className="sc-puce" aria-hidden="true" />Cours absents de Preply</h2>
+          <p className="ad-aide">
+            Ces cours hebdomadaires sont déclarés chez vous, mais l’agenda Preply ne montre rien à ces dates :
+            l’élève n’a pas repris sa semaine. Le site affiche pourtant l’heure comme occupée.
+            Seuls les créneaux dont les cours passés ont bien été retrouvés sur Preply sont examinés — vos cours en direct n’apparaissent jamais ici.
+          </p>
+          {reperesEtat === 'chargement' && <p className="ad-vide">Lecture de l’agenda Preply…</p>}
+          {reperesEtat === 'erreur' && <p className="ad-vide">L’agenda Preply n’a pas pu être lu : rien à signaler pour l’instant.</p>}
+          {reperesEtat === 'pret' && absences.length === 0 && <p className="ad-vide">Rien à signaler : tous vos cours Preply à venir sont bien à l’agenda.</p>}
+          <div className="ad-liste">
+            {absences.map((a) => (
+              <div key={a.cle} className="ad-ligne ad-jaune sc-absence">
+                <span className="ad-ligne-texte">
+                  <strong>{a.student}</strong> · {fmtDate(a.date)} à {fmtHour(a.hour)} ({a.duration} min)
+                  {' — '}rien sur Preply ce jour-là, alors que {a.passes} cours y ont eu lieu ces dernières semaines.
+                  {!a.reservable && <em className="sc-absence-hors"> Hors de vos disponibilités : le créneau sera forcé pour devenir réservable.</em>}
+                </span>
+                <button className="ad-btn ad-plein ad-petit" onClick={() => libererCreneau(a)} disabled={saving}>
+                  Libérer ce créneau
+                </button>
+                <button className="ad-btn ad-petit" onClick={() => ignorerAbsence(a.cle)} disabled={saving}
+                  aria-label={`Garder le cours de ${a.student} du ${fmtDate(a.date)}`}>Garder</button>
+              </div>
+            ))}
+          </div>
+          {absencesIgnorees.length > 0 && (
+            <details className="sc-ignores">
+              <summary>Absences gardées ({absencesIgnorees.length})</summary>
+              <div className="ad-liste">
+                {absencesIgnorees.map((a) => (
+                  <div key={a.cle} className="ad-ligne">
+                    <span className="ad-ligne-texte">{a.student} · {fmtDate(a.date)} à {fmtHour(a.hour)}</span>
+                    <button className="ad-btn ad-petit" onClick={() => reafficherAbsence(a.cle)} disabled={saving}>Réafficher</button>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
+        </section>
+
         {/* CRÉNEAUX HEBDOMADAIRES */}
         <section className="ad-carte sc-section">
           <h2 className="ad-h2"><span className="sc-puce" aria-hidden="true" />Créneaux hebdomadaires (élèves)</h2>
@@ -538,6 +602,8 @@ const CSS = `
 .sc-repere-form select{padding-right:30px!important}
 .sc-repere-nom{flex:1 1 180px;max-width:260px}
 .sc-repere-erreur{margin:0;width:100%}
+.sc-absence{align-items:flex-start;flex-wrap:wrap}
+.sc-absence-hors{display:block;margin-top:3px;font-size:.84rem;color:var(--soft)}
 .sc-ignores{margin-top:16px}
 .sc-ignores summary{cursor:pointer;font-weight:700;font-size:.88rem;color:var(--soft)}
 .sc-ignores .ad-liste{margin-top:10px}
