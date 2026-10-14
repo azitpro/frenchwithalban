@@ -164,6 +164,22 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
 .etat.erreur { border-style: solid; background: #ffe1ee; }
 .vide-astuce { font-weight: 400; color: var(--soft); margin-top: 4px; }
 
+/* ---------- À QUI S'ADRESSENT LES BOUTONS ---------- */
+.avis-eleves {
+  display: flex; align-items: flex-start; gap: 14px 20px; flex-wrap: wrap; margin-bottom: 22px;
+  background: var(--lemon); border: 3px solid var(--ink); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 18px 24px;
+}
+.avis-eleves div { flex: 1 1 320px; }
+.avis-eleves strong { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.25rem; line-height: 1.15; letter-spacing: -.01em; }
+.avis-eleves p { margin-top: 4px; font-size: .95rem; }
+.avis-eleves a.avis-lien {
+  flex: none; display: inline-block; text-decoration: none; font-weight: 800; white-space: nowrap;
+  padding: 11px 24px; border-radius: 99px; background: var(--ink); color: #fff;
+  border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 #fff; transition: translate .15s, box-shadow .15s;
+}
+.avis-eleves a.avis-lien:hover { translate: -1px -1px; box-shadow: 4px 4px 0 #fff; }
+
 /* ---------- DEMANDE DE RÉSERVATION ---------- */
 .rs-fond { position: fixed; inset: 0; z-index: 60; background: rgba(27,19,64,.55); display: grid; place-items: center; padding: 20px; overflow: auto; }
 .rs-fond[hidden] { display: none; }
@@ -177,7 +193,9 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
 .rs-fermer:hover { background: var(--pink); color: #fff; }
 .rs-quand { display: inline-block; padding: 4px 16px 6px; background: var(--lime); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; line-height: 1.25; rotate: -1deg; }
 .rs-paris { margin: 10px 0 0; font-size: .86rem; color: var(--soft); }
-.rs-intro { margin: 14px 0 18px; font-size: .95rem; color: var(--soft); }
+.rs-intro { margin: 14px 0 6px; font-size: .95rem; color: var(--soft); }
+.rs-nouveau { margin: 0 0 18px; font-size: .88rem; font-weight: 600; }
+.rs-nouveau a { text-decoration-color: var(--pink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .rs-champ { display: block; margin-bottom: 16px; }
 .rs-champ > span { display: block; font-size: .95rem; font-weight: 700; margin-bottom: 7px; }
 .rs-champ .facultatif { font-weight: 500; font-style: italic; color: var(--soft); font-size: .85rem; }
@@ -280,6 +298,9 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
   .rs-fond { place-items: start center; padding: 12px; }
   .rs-carte { padding: 20px; }
   .rs-titre { font-size: 1.5rem; }
+  .avis-eleves { padding: 18px 20px; }
+  .avis-eleves strong { font-size: 1.12rem; }
+  .avis-eleves a.avis-lien { width: 100%; text-align: center; }
   footer { padding: 22px 20px; flex-direction: column; gap: 10px; text-align: center; }
 }
 @media (max-width: 400px) {
@@ -347,8 +368,8 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
       </div>
       <h1 class="t" data-html="1" data-fr="Créneaux &lt;mark&gt;disponibles&lt;/mark&gt;" data-en="Available &lt;mark&gt;slots&lt;/mark&gt;">Créneaux <mark>disponibles</mark></h1>
       <p class="lead t"
-         data-fr="Choisissez la durée du cours et votre fuseau horaire, parcourez les quatre prochaines semaines, puis cliquez sur l’horaire qui vous convient."
-         data-en="Choose the lesson length and your time zone, browse the next four weeks, then click the time that suits you.">Choisissez la durée du cours et votre fuseau horaire, parcourez les quatre prochaines semaines, puis cliquez sur l’horaire qui vous convient.</p>
+         data-fr="Choisissez la durée du cours et votre fuseau horaire, puis parcourez les quatre prochaines semaines. Mes élèves actuels demandent leur prochain cours d’un clic sur l’horaire."
+         data-en="Choose the lesson length and your time zone, then browse the next four weeks. My current students ask for their next lesson with one click on a time.">Choisissez la durée du cours et votre fuseau horaire, puis parcourez les quatre prochaines semaines. Mes élèves actuels demandent leur prochain cours d’un clic sur l’horaire.</p>
     </div>
   </div>
 
@@ -388,6 +409,18 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
       <p class="note-fuseau t" data-html="1"
          data-fr="Les horaires sont affichés dans le fuseau choisi. &lt;strong&gt;(j+1)&lt;/strong&gt; ou &lt;strong&gt;(j-1)&lt;/strong&gt; : le créneau tombe le lendemain ou la veille chez vous."
          data-en="Times are shown in the time zone you picked. &lt;strong&gt;(+1 day)&lt;/strong&gt; or &lt;strong&gt;(-1 day)&lt;/strong&gt;: the slot falls on the next or previous day where you are.">Les horaires sont affichés dans le fuseau choisi. <strong>(j+1)</strong> ou <strong>(j-1)</strong> : le créneau tombe le lendemain ou la veille chez vous.</p>
+
+      <!-- Les boutons de demande ne sont pas une porte d'entrée : la prise de contact passe par /reserver.html -->
+      <div class="avis-eleves">
+        <div>
+          <strong class="t" data-fr="Réservé à mes élèves" data-en="For my current students">Réservé à mes élèves</strong>
+          <p class="t"
+             data-fr="Les boutons ci-dessous servent à mes élèves actuels, pour demander leur prochain cours. Si nous ne nous connaissons pas encore, ce n’est pas ici : écrivez-moi d’abord, on parle de votre niveau et de vos objectifs, et je vous propose un créneau ensuite."
+             data-en="The buttons below are for my current students, to ask for their next lesson. If we haven’t met yet, this isn’t the place: write to me first — we’ll talk about your level and your goals, and I’ll suggest a slot after that.">Les boutons ci-dessous servent à mes élèves actuels, pour demander leur prochain cours. Si nous ne nous connaissons pas encore, ce n’est pas ici : écrivez-moi d’abord, on parle de votre niveau et de vos objectifs, et je vous propose un créneau ensuite.</p>
+        </div>
+        <a href="/reserver.html" class="avis-lien t" data-fr="Me contacter →" data-en="Contact me →">Me contacter →</a>
+      </div>
+
       <div id="scheduleRoot" class="jours" aria-live="polite">
         <p class="etat loading t" data-fr="Chargement..." data-en="Loading…">Chargement...</p>
       </div>
@@ -399,10 +432,10 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
     <div class="wrap">
       <div class="cta">
         <div>
-          <h2 class="t" data-fr="Un créneau vous convient ?" data-en="Found a time that works?">Un créneau vous convient ?</h2>
-          <p class="t" data-fr="Cliquez sur l’horaire plus haut, ou passez par le formulaire pour me dire ce que vous cherchez." data-en="Click the time above, or use the form to tell me what you're looking for.">Cliquez sur l’horaire plus haut, ou passez par le formulaire pour me dire ce que vous cherchez.</p>
+          <h2 class="t" data-fr="Nous ne nous connaissons pas encore ?" data-en="We haven't met yet?">Nous ne nous connaissons pas encore ?</h2>
+          <p class="t" data-fr="Écrivez-moi : on parle de votre niveau et de vos objectifs, et on fixe ensemble le premier cours." data-en="Write to me: we'll talk about your level and your goals, and set up the first lesson together.">Écrivez-moi : on parle de votre niveau et de vos objectifs, et on fixe ensemble le premier cours.</p>
         </div>
-        <a href="/reserver.html" class="cta-reserver t" data-fr="Réserver un cours →" data-en="Book a lesson →">Réserver un cours →</a>
+        <a href="/reserver.html" class="cta-reserver t" data-fr="Me contacter →" data-en="Contact me →">Me contacter →</a>
       </div>
     </div>
   </section>
@@ -421,8 +454,11 @@ h1 mark { background: var(--lemon); color: var(--ink); padding: 0 .12em; border-
       <p><span class="rs-quand" id="rsQuand"></span></p>
       <p class="rs-paris" id="rsParis" hidden></p>
       <p class="rs-intro t"
-         data-fr="Le créneau n’est pas encore bloqué : je vous confirme le cours par retour de message."
-         data-en="The slot isn’t booked yet: I’ll confirm the lesson by message.">Le créneau n’est pas encore bloqué : je vous confirme le cours par retour de message.</p>
+         data-fr="Pour mes élèves actuels. Le créneau n’est pas encore bloqué : je vous confirme le cours par retour de message."
+         data-en="For my current students. The slot isn’t booked yet: I’ll confirm the lesson by message.">Pour mes élèves actuels. Le créneau n’est pas encore bloqué : je vous confirme le cours par retour de message.</p>
+      <p class="rs-nouveau t" data-html="1"
+         data-fr="Nous n’avons pas encore eu cours ensemble ? &lt;a href=&quot;/reserver.html&quot;&gt;Écrivez-moi plutôt ici.&lt;/a&gt;"
+         data-en="We haven’t had a lesson together yet? &lt;a href=&quot;/reserver.html&quot;&gt;Write to me here instead.&lt;/a&gt;">Nous n’avons pas encore eu cours ensemble ? <a href="/reserver.html">Écrivez-moi plutôt ici.</a></p>
 
       <label class="rs-champ">
         <span class="t" data-fr="Votre prénom" data-en="Your first name">Votre prénom</span>
@@ -509,7 +545,7 @@ var TEXTES = {
   langue: { fr: 'Choix de la langue', en: 'Language' },
   ouvrir: { fr: 'Ouvrir le menu', en: 'Open menu' },
   fermer: { fr: 'Fermer le menu', en: 'Close menu' },
-  aide: { fr: 'Cliquez sur un horaire pour le demander.', en: 'Click a time to request it.' },
+  aide: { fr: 'Déjà élève ? Cliquez sur un horaire pour le demander.', en: 'Already a student? Click a time to request it.' },
   demander: { fr: 'Demander le créneau de', en: 'Request the slot at' },
   rsFermer: { fr: 'Fermer', en: 'Close' },
   rsParis: { fr: 'Soit %s, heure de Paris.', en: 'That is %s, Paris time.' },
